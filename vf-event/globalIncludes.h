@@ -1,0 +1,10 @@
+#ifndef GLOBAL_INCLUDES_H
+#define GLOBAL_INCLUDES_H
+
+//#include <QtCore/qglobal.h>
+#include "vh_logging.h"
+
+Q_DECLARE_LOGGING_CATEGORY(VEIN_EVENT)
+Q_DECLARE_LOGGING_CATEGORY(VEIN_SCRIPTEVENT)
+
+#endif // GLOBAL_INCLUDES
