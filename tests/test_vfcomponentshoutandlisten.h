@@ -1,9 +1,9 @@
 #ifndef TEST_VFCOMPONENTSHOUTANDLISTEN_H
 #define TEST_VFCOMPONENTSHOUTANDLISTEN_H
 
-#include "vftestentity.h"
-#include "vftestcomponentlistener.h"
-#include "vftestcomponentshouter.h"
+#include "vftestentitycomponentcreator.h"
+#include "vftestcomponentchangelistener.h"
+#include "vftestcomponentdata.h"
 #include <ve_eventhandler.h>
 #include <vs_veinhash.h>
 
@@ -21,9 +21,9 @@ private:
     static constexpr int entityId = 1;
     VeinEvent::EventHandler* m_vfEventHandler;
     VeinStorage::VeinHash *m_vfStorageHash;
-    VfTestEntity* m_vfEntity;
-    VfTestComponentShouter* m_vfShouter;
-    VfTestComponentListener* m_vfListener;
+    VfTestEntityComponentCreator* m_vfEntity;
+    VfTestComponentData* m_vfComponentData;
+    VfTestComponentChangeListener* m_vfListener;
 
 };
 

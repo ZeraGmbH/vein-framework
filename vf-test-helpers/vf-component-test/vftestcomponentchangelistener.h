@@ -1,15 +1,15 @@
-#ifndef VFTESTCOMPONENTLISTENER_H
-#define VFTESTCOMPONENTLISTENER_H
+#ifndef VFTESTCOMPONENTCHANGELISTENER_H
+#define VFTESTCOMPONENTCHANGELISTENER_H
 
 #include <ve_eventsystem.h>
 #include <vs_veinhash.h>
 
-class VfTestComponentListener : public VeinEvent::EventSystem
+class VfTestComponentChangeListener : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    VfTestComponentListener(VeinStorage::VeinHash *storageHash);
-    void addComponentToNotify(QString componentName, const QVariant* componentValue);
+    VfTestComponentChangeListener(VeinStorage::VeinHash *storageHash);
+    void addComponentToListen(QString componentName, const QVariant* componentValue);
     struct TComponentInfo
     {
         int entityId = -1;
@@ -25,4 +25,4 @@ private:
     QList<TComponentInfo> m_componentChangeList;
 };
 
-#endif // VFTESTCOMPONENTLISTENER_H
+#endif // VFTESTCOMPONENTCHANGELISTENER_H

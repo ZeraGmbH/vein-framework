@@ -1,10 +1,10 @@
-#include "vftestcomponentshouter.h"
+#include "vftestcomponentdata.h"
 #include <vcmp_entitydata.h>
 #include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 
-void VfTestComponentShouter::setValue(int entityId, QString componentName, QVariant newValue)
+void VfTestComponentData::setValue(int entityId, QString componentName, QVariant newValue)
 {
     if(m_value != newValue) {
         m_value = newValue;
@@ -12,17 +12,17 @@ void VfTestComponentShouter::setValue(int entityId, QString componentName, QVari
     }
 }
 
-const QVariant &VfTestComponentShouter::getValue() const
+const QVariant &VfTestComponentData::getValue() const
 {
     return m_value;
 }
 
-bool VfTestComponentShouter::processEvent(QEvent *)
+bool VfTestComponentData::processEvent(QEvent *)
 {
     return false;
 }
 
-void VfTestComponentShouter::notifyValueChange(int entityId, QString componentName)
+void VfTestComponentData::notifyValueChange(int entityId, QString componentName)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(entityId);
@@ -33,6 +33,5 @@ void VfTestComponentShouter::notifyValueChange(int entityId, QString componentNa
     cData->setNewValue(m_value);
 
     VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    event->setPeerId(QUuid());
     emit sigSendEvent(event);
 }

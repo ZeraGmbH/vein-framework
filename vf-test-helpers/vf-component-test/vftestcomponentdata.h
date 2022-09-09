@@ -1,9 +1,9 @@
-#ifndef VFTESTCOMPONENTSHOUTER_H
-#define VFTESTCOMPONENTSHOUTER_H
+#ifndef VFTESTCOMPONENTDATA_H
+#define VFTESTCOMPONENTDATA_H
 
 #include <ve_eventsystem.h>
 
-class VfTestComponentShouter : public VeinEvent::EventSystem
+class VfTestComponentData : public VeinEvent::EventSystem
 {
 public:
     void setValue(int entityId, QString componentName, QVariant newValue);
@@ -15,4 +15,4 @@ private:
     QVariant m_value;
 };
 
-#endif // VFTESTCOMPONENTSHOUTER_H
+#endif // VFTESTCOMPONENTDATA_H
