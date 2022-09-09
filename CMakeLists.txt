@@ -23,7 +23,7 @@ add_subdirectory(vf-test-helpers)
 
 if(NOT CMAKE_CROSSCOMPILING)
     enable_testing()
-    #add_subdirectory(tests)
+    add_subdirectory(tests)
 endif()
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
