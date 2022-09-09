@@ -1,12 +1,9 @@
 #ifndef TEST_VFTESTCOMPONENTBARECLASSES_H
 #define TEST_VFTESTCOMPONENTBARECLASSES_H
 
-#include "vftestentitycomponentcreator.h"
-#include "vftestcomponentchangelistener.h"
-#include "vftestcomponentdata.h"
-#include <ve_eventhandler.h>
+#include "vftesttemplate.h"
 
-class test_vftestcomponentbareclasses : public QObject
+class test_vftestcomponentbareclasses : public QObject, public VfTestTemplate
 {
     Q_OBJECT
 private slots:
@@ -15,17 +12,16 @@ private slots:
 
     void listenerEmpty();
     void detectDoubleEntityComponents();
-    void oneChange();
-    void twoChange();
-    void twoChangeSame();
-    void ignoreUnlistened();
+    void oneChangeOneEntity();
+    void twoChangesOneEntity();
+    void twoIdenticalChangesOneEntity();
+    void ignoreUnlistenedComponent();
+    void ignoreUnlistenedEntity();
 
-private:
-    static constexpr int entityId = 1;
-    VeinEvent::EventHandler* m_vfEventHandler;
-    VfTestEntityComponentCreator* m_vfEntity;
-    VfTestComponentData* m_vfComponentData;
-    VfTestComponentChangeListener* m_vfListener;
+    void oneChangeTwoEntities();
+    void twoChangeTwoEntities();
+    void twoChangeTwoEntitiesDiffCompName();
+    void twoChangeTwoEntitiesCheckContents();
 };
 
 #endif // TEST_VFTESTCOMPONENTBARECLASSES_H
