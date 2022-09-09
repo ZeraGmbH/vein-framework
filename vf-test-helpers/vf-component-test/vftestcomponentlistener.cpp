@@ -1,4 +1,4 @@
-#include "vfcomponenttestlistener.h"
+#include "vftestcomponentlistener.h"
 #include <vcmp_entitydata.h>
 #include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
@@ -9,19 +9,19 @@ using VeinEvent::CommandEvent;
 using VeinEvent::EventData;
 using VeinComponent::ComponentData;
 
-VfComponentTestListener::VfComponentTestListener(int entityId)
+VfTestComponentListener::VfTestComponentListener(int entityId)
 {
     m_eventHandler.addSubsystem(this);
     m_eventHandler.addSubsystem(&m_storageHash);
     createEntity(entityId);
 }
 
-void VfComponentTestListener::addComponentToNotify(QString componentName, const QVariant *componentValue)
+void VfTestComponentListener::addComponentToNotify(QString componentName, const QVariant *componentValue)
 {
     m_hashComponentValuesListening[componentName] = componentValue;
 }
 
-void VfComponentTestListener::createEntity(int entityId)
+void VfTestComponentListener::createEntity(int entityId)
 {
     VeinComponent::EntityData *entityData = new VeinComponent::EntityData();
     entityData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
@@ -31,7 +31,7 @@ void VfComponentTestListener::createEntity(int entityId)
     emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, entityData));
 }
 
-bool VfComponentTestListener::processEvent(QEvent *t_event)
+bool VfTestComponentListener::processEvent(QEvent *t_event)
 {
     if(t_event->type() == VeinEvent::CommandEvent::eventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
