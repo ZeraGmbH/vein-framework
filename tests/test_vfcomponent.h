@@ -1,9 +1,9 @@
-#ifndef TEST_VFTESTCOMPONENTBARECLASSES_H
-#define TEST_VFTESTCOMPONENTBARECLASSES_H
+#ifndef TEST_VFCOMPONENT_H
+#define TEST_VFCOMPONENT_H
 
 #include "vftesttemplate.h"
 
-class test_vftestcomponentbareclasses : public QObject, public VfTestTemplate
+class test_vfcomponent : public QObject, public VfTestTemplate
 {
     Q_OBJECT
 private slots:
@@ -24,4 +24,4 @@ private slots:
     void twoChangeTwoEntitiesCheckContents();
 };
 
-#endif // TEST_VFTESTCOMPONENTBARECLASSES_H
+#endif // TEST_VFCOMPONENT_H

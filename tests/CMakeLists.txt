@@ -38,5 +38,5 @@ function(SETUP_TESTS)
 endfunction()
 
 SETUP_TESTS(
-    test_vftestcomponentbareclasses
+    test_vfcomponent
     )
