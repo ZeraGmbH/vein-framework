@@ -6,15 +6,17 @@
 
 void VfTestComponentData::setValue(int entityId, QString componentName, QVariant newValue)
 {
-    if(m_value != newValue) {
-        m_value = newValue;
-        notifyValueChange(entityId, componentName);
+    QVariant &hashValue = m_valueHash[entityId][componentName];
+    if(hashValue != newValue) {
+        hashValue = newValue;
+        notifyValueChange(entityId, componentName, newValue);
     }
 }
 
-const QVariant &VfTestComponentData::getValue() const
+QVariant VfTestComponentData::getValue(int entityId, QString componentName) const
 {
-    return m_value;
+    return m_valueHash[entityId][componentName];
+
 }
 
 bool VfTestComponentData::processEvent(QEvent *)
@@ -22,7 +24,7 @@ bool VfTestComponentData::processEvent(QEvent *)
     return false;
 }
 
-void VfTestComponentData::notifyValueChange(int entityId, QString componentName)
+void VfTestComponentData::notifyValueChange(int entityId, QString componentName, QVariant newValue)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(entityId);
@@ -30,7 +32,7 @@ void VfTestComponentData::notifyValueChange(int entityId, QString componentName)
     cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
     cData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
     cData->setComponentName(componentName);
-    cData->setNewValue(m_value);
+    cData->setNewValue(newValue);
 
     VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
     emit sigSendEvent(event);

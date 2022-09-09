@@ -3,10 +3,13 @@
 #include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
 
-void VfTestEntityComponentCreator::createEntityComponent(int entityId, QString componentName, QVariant initialValue)
+bool VfTestEntityComponentCreator::createEntityComponent(int entityId, QString componentName, QVariant initialValue)
 {
+    bool alreadyInserted = m_entityComponentsCreated.contains(entityId) && m_entityComponentsCreated[entityId].contains(componentName);
+    m_entityComponentsCreated[entityId].insert(componentName);
     createEntity(entityId);
     createComponent(entityId, componentName, initialValue);
+    return !alreadyInserted;
 }
 
 void VfTestEntityComponentCreator::createEntity(int entityId)

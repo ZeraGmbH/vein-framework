@@ -6,14 +6,9 @@
 
 using VeinComponent::ComponentData;
 
-VfTestComponentChangeListener::VfTestComponentChangeListener(VeinStorage::VeinHash *storageHash) :
-    m_storageHash(storageHash)
+void VfTestComponentChangeListener::addComponentToListen(int entityId, QString componentName)
 {
-}
-
-void VfTestComponentChangeListener::addComponentToListen(QString componentName, const QVariant *componentValue)
-{
-    m_hashComponentValuesListening[componentName] = componentValue;
+    m_hashComponentValuesListening[entityId].insert(componentName);
 }
 
 QList<VfTestComponentChangeListener::TComponentInfo> VfTestComponentChangeListener::getComponentChangeList()
@@ -28,14 +23,13 @@ bool VfTestComponentChangeListener::processEvent(QEvent *t_event)
         if(cmdEvent != nullptr) {
             VeinEvent::EventData *evData = cmdEvent->eventData();
             if(evData->type() == ComponentData::dataType()) {
-                ComponentData *cData = static_cast<ComponentData *>(evData);
-                if(cData->eventCommand() == ComponentData::Command::CCMD_SET) {
-                    QString componentName = cData->componentName();
-                    auto iter = m_hashComponentValuesListening.find(componentName);
-                    if(iter != m_hashComponentValuesListening.end()) {
-                        int entityId = evData->entityId();
-                        QVariant oldValue = m_storageHash->getStoredValue(entityId, componentName);
-                        const QVariant newValue = *iter.value();
+                ComponentData *componentData = static_cast<ComponentData *>(evData);
+                if(componentData->eventCommand() == ComponentData::Command::CCMD_SET) {
+                    int entityId = evData->entityId();
+                    QString componentName = componentData->componentName();
+                    if(wasComponentInserted(entityId, componentName)) {
+                        const QVariant &oldValue = componentData->oldValue();
+                        const QVariant &newValue = componentData->newValue();
                         if(oldValue != newValue) {
                             TComponentInfo info;
                             info.entityId = entityId;
@@ -49,4 +43,10 @@ bool VfTestComponentChangeListener::processEvent(QEvent *t_event)
         }
     }
     return false; // why is processEvent returning bool - it is ignored anyway?
+}
+
+bool VfTestComponentChangeListener::wasComponentInserted(int entityId, QString componentName)
+{
+    return m_hashComponentValuesListening.contains(entityId) &&
+            m_hashComponentValuesListening[entityId].contains(componentName);
 }
