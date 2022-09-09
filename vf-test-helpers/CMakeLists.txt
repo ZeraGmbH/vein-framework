@@ -1,1 +1,1 @@
-add_subdirectory(vf-component-test-listener)
+add_subdirectory(vf-component-test)
