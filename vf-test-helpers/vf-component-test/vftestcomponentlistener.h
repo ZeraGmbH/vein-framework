@@ -2,24 +2,27 @@
 #define VFTESTCOMPONENTLISTENER_H
 
 #include <ve_eventsystem.h>
-#include <ve_eventhandler.h>
 #include <vs_veinhash.h>
 
 class VfTestComponentListener : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    VfTestComponentListener(int entityId);
+    VfTestComponentListener(VeinStorage::VeinHash *storageHash);
     void addComponentToNotify(QString componentName, const QVariant* componentValue);
-signals:
-    void sigComponentChanged(QString componentName, QVariant newValue);
+    struct TComponentInfo
+    {
+        int entityId = -1;
+        QString componentName;
+        QVariant value;
+    };
+    QList<TComponentInfo> getComponentChangeList();
 private:
-    void createEntity(int entityId);
     bool processEvent(QEvent *t_event) override;
 
-    VeinEvent::EventHandler m_eventHandler;
-    VeinStorage::VeinHash m_storageHash;
+    VeinStorage::VeinHash *m_storageHash;
     QHash <QString, const QVariant*> m_hashComponentValuesListening;
+    QList<TComponentInfo> m_componentChangeList;
 };
 
 #endif // VFTESTCOMPONENTLISTENER_H

@@ -4,16 +4,11 @@
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 
-using VeinComponent::EntityData;
-using VeinEvent::CommandEvent;
-using VeinEvent::EventData;
 using VeinComponent::ComponentData;
 
-VfTestComponentListener::VfTestComponentListener(int entityId)
+VfTestComponentListener::VfTestComponentListener(VeinStorage::VeinHash *storageHash) :
+    m_storageHash(storageHash)
 {
-    m_eventHandler.addSubsystem(this);
-    m_eventHandler.addSubsystem(&m_storageHash);
-    createEntity(entityId);
 }
 
 void VfTestComponentListener::addComponentToNotify(QString componentName, const QVariant *componentValue)
@@ -21,22 +16,17 @@ void VfTestComponentListener::addComponentToNotify(QString componentName, const 
     m_hashComponentValuesListening[componentName] = componentValue;
 }
 
-void VfTestComponentListener::createEntity(int entityId)
+QList<VfTestComponentListener::TComponentInfo> VfTestComponentListener::getComponentChangeList()
 {
-    VeinComponent::EntityData *entityData = new VeinComponent::EntityData();
-    entityData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
-    entityData->setEventOrigin(VeinComponent::EntityData::EventOrigin::EO_LOCAL);
-    entityData->setEventTarget(VeinComponent::EntityData::EventTarget::ET_ALL);
-    entityData->setEntityId(entityId);
-    emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, entityData));
+    return m_componentChangeList;
 }
 
 bool VfTestComponentListener::processEvent(QEvent *t_event)
 {
     if(t_event->type() == VeinEvent::CommandEvent::eventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
-        if(cmdEvent != 0) {
-            EventData *evData = cmdEvent->eventData();
+        if(cmdEvent != nullptr) {
+            VeinEvent::EventData *evData = cmdEvent->eventData();
             if(evData->type() == ComponentData::dataType()) {
                 ComponentData *cData = static_cast<ComponentData *>(evData);
                 if(cData->eventCommand() == ComponentData::Command::CCMD_SET) {
@@ -44,10 +34,14 @@ bool VfTestComponentListener::processEvent(QEvent *t_event)
                     auto iter = m_hashComponentValuesListening.find(componentName);
                     if(iter != m_hashComponentValuesListening.end()) {
                         int entityId = evData->entityId();
-                        QVariant oldValue = m_storageHash.getStoredValue(entityId, componentName);
+                        QVariant oldValue = m_storageHash->getStoredValue(entityId, componentName);
                         const QVariant newValue = *iter.value();
                         if(oldValue != newValue) {
-                            emit sigComponentChanged(componentName, newValue);
+                            TComponentInfo info;
+                            info.entityId = entityId;
+                            info.componentName = componentName;
+                            info.value = newValue;
+                            m_componentChangeList.append(info);
                         }
                     }
                 }
