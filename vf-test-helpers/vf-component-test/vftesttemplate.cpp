@@ -1,10 +1,10 @@
 #include "vftesttemplate.h"
 #include <QCoreApplication>
 
-void VfTestTemplate::addSecondEntity(QString compName)
+void VfTestTemplate::addEntityComponent(int entityId, QString componentName)
 {
-    m_vfEntity->createEntityComponent(entityId+1, compName);
-    m_vfListener->addComponentToListen(entityId+1, compName);
+    m_vfEntity->createEntityComponent(entityId, componentName);
+    m_vfListener->addComponentToListen(entityId, componentName);
     QCoreApplication::processEvents();
 }
 
@@ -18,9 +18,6 @@ void VfTestTemplate::_init()
     m_vfEventHandler->addSubsystem(m_vfComponentData);
     m_vfEventHandler->addSubsystem(m_vfEntity);
     m_vfEventHandler->addSubsystem(m_vfListener);
-
-    m_vfEntity->createEntityComponent(entityId, componentName);
-    m_vfListener->addComponentToListen(entityId, componentName);
 
     QCoreApplication::processEvents();
 }
