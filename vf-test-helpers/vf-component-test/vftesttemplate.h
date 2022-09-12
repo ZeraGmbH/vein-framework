@@ -9,12 +9,10 @@
 class VfTestTemplate
 {
 protected:
-    void addSecondEntity(QString compName);
+    void addEntityComponent(int entityId, QString componentName);
     void _init();
     void _cleanup();
 
-    static constexpr int entityId = 1;
-    const char* componentName = "fooName";
     VeinEvent::EventHandler* m_vfEventHandler;
     VfTestEntityComponentCreator* m_vfEntity;
     VfTestComponentData* m_vfComponentData;

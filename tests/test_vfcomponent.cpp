@@ -1,9 +1,13 @@
 #include "test_vfcomponent.h"
 #include <QTest>
 
+static constexpr int entityId = 1;
+const char* componentName = "fooName";
+
 void test_vfcomponent::init()
 {
     _init();
+    addEntityComponent(entityId, componentName);
 }
 
 void test_vfcomponent::cleanup()
@@ -61,7 +65,7 @@ void test_vfcomponent::ignoreUnlistenedEntity()
 
 void test_vfcomponent::oneChangeTwoEntities()
 {
-    addSecondEntity(componentName);
+    addEntityComponent(entityId+1, componentName);
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     QCoreApplication::processEvents();
     QCOMPARE(m_vfListener->getComponentChangeList().count(), 1);
@@ -69,7 +73,7 @@ void test_vfcomponent::oneChangeTwoEntities()
 
 void test_vfcomponent::twoChangeTwoEntities()
 {
-    addSecondEntity(componentName);
+    addEntityComponent(entityId+1, componentName);
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, componentName, QVariant(1));
     QCoreApplication::processEvents();
@@ -78,7 +82,7 @@ void test_vfcomponent::twoChangeTwoEntities()
 
 void test_vfcomponent::twoChangeTwoEntitiesDiffCompName()
 {
-    addSecondEntity("bar");
+    addEntityComponent(entityId+1, "bar");
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, "bar", QVariant(1));
     QCoreApplication::processEvents();
@@ -87,7 +91,7 @@ void test_vfcomponent::twoChangeTwoEntitiesDiffCompName()
 
 void test_vfcomponent::twoChangeTwoEntitiesCheckContents()
 {
-    addSecondEntity("bar");
+    addEntityComponent(entityId+1, "bar");
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, "bar", QVariant(2));
     QCoreApplication::processEvents();
