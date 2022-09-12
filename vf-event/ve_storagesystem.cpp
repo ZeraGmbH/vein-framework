@@ -3,8 +3,8 @@
 
 namespace VeinEvent
 {
-  StorageSystem::StorageSystem(QObject *t_parent) :
+StorageSystem::StorageSystem(QObject *t_parent) :
     EventSystem(t_parent)
-  {
-  }
+{
+}
 }

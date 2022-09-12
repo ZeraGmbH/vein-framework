@@ -16,7 +16,6 @@ void VfTestComponentData::setValue(int entityId, QString componentName, QVariant
 QVariant VfTestComponentData::getValue(int entityId, QString componentName) const
 {
     return m_valueHash[entityId][componentName];
-
 }
 
 bool VfTestComponentData::processEvent(QEvent *)

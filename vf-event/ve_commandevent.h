@@ -10,20 +10,20 @@
 
 namespace VeinEvent
 {
-  class EventData;
+class EventData;
 
-  /**
+/**
    * @brief The CommandEvent class is a container for component and entity changes
    */
-  class VFEVENT_EXPORT CommandEvent : public QEvent
-  {
-  public:
+class VFEVENT_EXPORT CommandEvent : public QEvent
+{
+public:
     /**
      * @brief The EventSubtype enum provides information about the authoritative status of the event
      */
     enum class EventSubtype : int {
-      NOTIFICATION = 0, /**< The event meets the authoritative requirements (if any) */
-      TRANSACTION = 1 /**< The event requires to be inspected about its authoritative status */
+        NOTIFICATION = 0, /**< The event meets the authoritative requirements (if any) */
+        TRANSACTION = 1 /**< The event requires to be inspected about its authoritative status */
     };
 
     explicit CommandEvent(EventSubtype t_subtype, EventData *t_data);
@@ -43,7 +43,7 @@ namespace VeinEvent
      */
     EventData *eventData() const;
 
-  private:
+private:
     /**
      * @brief 'Randomly' assigned static event type (QEvent::Type)
      */
@@ -64,6 +64,6 @@ namespace VeinEvent
      * @brief Payload of the event
      */
     EventData *m_eventData;
-  };
+};
 }
 #endif // VE_COMMANDEVENT_H

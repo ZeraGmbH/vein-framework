@@ -12,14 +12,14 @@ Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE_HASH_VERBOSE)
 
 namespace VeinEvent
 {
-  class CommandEvent;
-  class EventData;
+class CommandEvent;
+class EventData;
 }
 
 namespace VeinComponent
 {
-  class ComponentData;
-  class EntityData;
+class ComponentData;
+class EntityData;
 }
 
 /**
@@ -27,14 +27,14 @@ namespace VeinComponent
  */
 namespace VeinStorage
 {
-  /**
+/**
    * @brief A QHash based VeinEvent::StorageSystem implementation
    */
-  class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
-  {
+class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
+{
     Q_OBJECT
 
-  public:
+public:
     explicit VeinHash(QObject *t_parent=nullptr);
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> t_origins);
     const QList<VeinEvent::EventData::EventOrigin> &getAcceptableOrigin() const;
@@ -46,7 +46,7 @@ namespace VeinStorage
     using ComponentStorage = QHash<T, QHash<QString, QVariant>*>;
 
     //VeinEvent::StorageSystem interface
-  public:
+public:
     bool processEvent(QEvent *t_event) override;
     StorageType getStorageType() const override;
     void dumpToFile(QFile *t_fileDevice, bool t_overwrite) const  override;
@@ -56,7 +56,7 @@ namespace VeinStorage
     QList<QString> getEntityComponents(int t_entityId) const override;
     bool hasEntity(int t_entityId) const override;
     QList<int> getEntityList() const override;
-  private:
+private:
     /**
      * @brief handles ADD, REMOVE and SET for ComponentData events
      * @param t_cData
@@ -80,7 +80,7 @@ namespace VeinStorage
 
     ComponentStorage<int> *m_data = new ComponentStorage<int>();
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins = {VeinEvent::EventData::EventOrigin::EO_LOCAL, VeinEvent::EventData::EventOrigin::EO_FOREIGN};
-  };
+};
 }
 
 #endif // VEINHASH_H

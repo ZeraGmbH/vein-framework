@@ -15,19 +15,19 @@ QT_END_NAMESPACE
 
 namespace VeinEvent
 {
-  /**
+/**
    * @brief Interface to stores entity/component data, abstracts away implementation details of the underlying storage
    */
-  class VFEVENT_EXPORT StorageSystem : public EventSystem
-  {
+class VFEVENT_EXPORT StorageSystem : public EventSystem
+{
     Q_OBJECT
-  public:
+public:
     explicit StorageSystem(QObject *t_parent=nullptr);
 
     enum StorageType {
-      MEMORY_STORAGE = 0, /**< like a QHash or an in memory SQLITE DB */
-      FILE_STORAGE = 1, /**< like a JSON file or a SQLITE file DB */
-      NETWORK_STORAGE = 2 /**< like a DHT or a MySQL database */
+        MEMORY_STORAGE = 0, /**< like a QHash or an in memory SQLITE DB */
+        FILE_STORAGE = 1, /**< like a JSON file or a SQLITE file DB */
+        NETWORK_STORAGE = 2 /**< like a DHT or a MySQL database */
     };
 
     /**
@@ -71,7 +71,7 @@ namespace VeinEvent
      * @return success indicator
      */
     virtual bool initializeData(const QUrl &t_sourceUrl)=0;
-  };
+};
 }
 
 #endif // STORAGESYSTEM_H

@@ -7,29 +7,29 @@
 
 namespace VeinEvent
 {
-  /**
+/**
    * @brief The data representing component and entity changes, designed like the Command pattern from the GoF book
    */
-  class VFEVENT_EXPORT EventData
-  {
-  public:
+class VFEVENT_EXPORT EventData
+{
+public:
     EventData();
     virtual ~EventData() {}
 
     enum class EventOrigin : qint8 {
-      EO_LOCAL = 0, /**< the event is from the local system and generally trustworthy */
-      EO_FOREIGN = 1, /**< the event is from a remote client or generally untrustworthy */
-      EO_USER_DEFINED = 64 /**< the event is from a user defined origin if >= EO_USER_DEFINED */
+        EO_LOCAL = 0, /**< the event is from the local system and generally trustworthy */
+        EO_FOREIGN = 1, /**< the event is from a remote client or generally untrustworthy */
+        EO_USER_DEFINED = 64 /**< the event is from a user defined origin if >= EO_USER_DEFINED */
     };
 
     EventOrigin eventOrigin() const;
     void setEventOrigin(EventOrigin t_eventOrigin);
 
     enum class EventTarget : qint8 {
-      ET_IRRELEVANT = 0, /**< the target is irrelevant for incoming remote events */
-      ET_LOCAL = 1, /**< flags that the event should not be transmitted over the network border */
-      ET_ALL = 2, /**< the event can be transmitted freely */
-      ET_USER_DEFINED = 64 /**< the event is for a user defined target if >= ET_USER_DEFINED */
+        ET_IRRELEVANT = 0, /**< the target is irrelevant for incoming remote events */
+        ET_LOCAL = 1, /**< flags that the event should not be transmitted over the network border */
+        ET_ALL = 2, /**< the event can be transmitted freely */
+        ET_USER_DEFINED = 64 /**< the event is for a user defined target if >= ET_USER_DEFINED */
     };
 
     EventTarget eventTarget() const;
@@ -59,7 +59,7 @@ namespace VeinEvent
     int entityId() const;
     void setEntityId(int t_entityId);
 
-  private:
+private:
     /**
      * @note this member variable is not serialized, as it is only valid in a local context
      */
@@ -74,7 +74,7 @@ namespace VeinEvent
      * @brief the id of the relevant entity
      */
     int m_entityId = -1;
-  };
+};
 } // namespace VeinEvent
 
 #endif // VEINEVENT_VE_EVENTDATA_H

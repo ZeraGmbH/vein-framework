@@ -11,22 +11,22 @@
  */
 namespace VeinEvent
 {
-  class EventSystem;
+class EventSystem;
 
-  /**
+/**
    * @brief A simple event handler for QEvent based types, operates with VeinEvent::EventSystem
    * @note if you want to capture events, eg. for replay, please note that the QEvent::type (see http://doc.qt.io/qt-5/qevent.html#type) of most events is not initialized in a deterministic manner
    * @todo multithreading support
    * @todo maybe implement specialized groups of systems with the strategy pattern, or in a hash table with QEvent::type() as key
    */
-  class VFEVENT_EXPORT EventHandler : public QObject
-  {
+class VFEVENT_EXPORT EventHandler : public QObject
+{
     Q_OBJECT
 
     Q_PROPERTY(bool eventTerminationEnabled READ eventTerminationEnabled WRITE setEventTerminationEnabled)
     Q_PROPERTY(QList<EventSystem*> subsystems READ subsystems WRITE setSubsystems NOTIFY subsystemsChanged)
 
-  public:
+public:
     explicit EventHandler(QObject *t_parent=nullptr);
     ~EventHandler() {m_subsystems.clear();}
 
@@ -34,7 +34,7 @@ namespace VeinEvent
 
     QList<EventSystem*> subsystems() const;
 
-  public slots:
+public slots:
     void setEventTerminationEnabled(bool t_terminationEnabled);
 
     /**
@@ -48,14 +48,14 @@ namespace VeinEvent
 
     void clearSubsystems();
 
-  signals:
+signals:
     void subsystemsChanged(QList<EventSystem*> t_subsystems);
 
     //QObject interface
-  protected:
+protected:
     virtual void customEvent(QEvent *t_event) override;
 
-  private:
+private:
     /**
      * @brief If set events will be set as accepted after processing to not pollute other event handlers
      */
@@ -66,6 +66,6 @@ namespace VeinEvent
      * @todo add partitioning of event systems by event type to reduce overhead in event processing
      */
     QList<EventSystem*> m_subsystems;
-  };
+};
 }
 #endif // VEINEVENTHANDLER_H

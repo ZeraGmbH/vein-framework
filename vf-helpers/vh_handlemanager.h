@@ -11,13 +11,13 @@
  */
 namespace VeinHelper
 {
-  /**
+/**
    * @brief Implements a Handle management system
    * @note the type Key must be default constructible and must provide operator==() and operator++()
    */
-  template<typename Key, typename T> class VFHELPERS_EXPORT HandleManager
-  {
-  public:
+template<typename Key, typename T> class VFHELPERS_EXPORT HandleManager
+{
+public:
     HandleManager() : m_max(Key()) {}
 
     /**
@@ -37,9 +37,9 @@ namespace VeinHelper
      */
     Key append(const T &t_value)
     {
-      Key k = nextKey();
-      m_currentHandles.insert(k, t_value);
-      return k;
+        Key k = nextKey();
+        m_currentHandles.insert(k, t_value);
+        return k;
     }
 
     /**
@@ -48,10 +48,10 @@ namespace VeinHelper
      */
     void remove(const Key &t_key)
     {
-      if(m_currentHandles.remove(t_key)>0)
-      {
-        m_recycledHandles.append(t_key);
-      }
+        if(m_currentHandles.remove(t_key)>0)
+        {
+            m_recycledHandles.append(t_key);
+        }
     }
 
     /**
@@ -59,9 +59,9 @@ namespace VeinHelper
      */
     void clear()
     {
-      m_currentHandles.clear();
-      m_recycledHandles.clear();
-      m_max = Key();
+        m_currentHandles.clear();
+        m_recycledHandles.clear();
+        m_max = Key();
     }
 
     /**
@@ -73,25 +73,25 @@ namespace VeinHelper
     bool contains(Key t_key) const { return m_currentHandles.contains(t_key); }
 
 
-  private:
+private:
     /**
      * @brief returns an unused key with respect to recycled keys
      * @return a key that is not used in m_currentHandles
      */
     Key nextKey()
     {
-      Key retVal;
-      if(m_recycledHandles.isEmpty())
-      {
-        retVal = m_max;
-        m_max++;
-      }
-      else
-      {
-        retVal = m_recycledHandles.takeFirst();
-      }
+        Key retVal;
+        if(m_recycledHandles.isEmpty())
+        {
+            retVal = m_max;
+            m_max++;
+        }
+        else
+        {
+            retVal = m_recycledHandles.takeFirst();
+        }
 
-      return retVal;
+        return retVal;
     }
 
 
@@ -108,7 +108,7 @@ namespace VeinHelper
      * @note will only be incremented if no recycled keys are left
      */
     Key m_max;
-  };
+};
 }
 
 #endif // VH_HANDLE
