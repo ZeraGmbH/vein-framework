@@ -21,9 +21,7 @@ add_subdirectory(vf-component)
 add_subdirectory(vf-storage-hash)
 add_subdirectory(vf-test-helpers)
 
-if(NOT CMAKE_CROSSCOMPILING)
-    enable_testing()
-    add_subdirectory(tests)
-endif()
+enable_testing()
+add_subdirectory(tests)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
