@@ -2,7 +2,6 @@
 #define VEINHASH_H
 
 #include "globalIncludes.h"
-
 #include <ve_storagesystem.h>
 #include <ve_eventdata.h>
 #include <QHash>
@@ -22,18 +21,13 @@ class ComponentData;
 class EntityData;
 }
 
-/**
- * @brief Namespace for Vein Framework storage implementations
- */
-namespace VeinStorage
-{
+namespace VeinStorage {
 /**
    * @brief A QHash based VeinEvent::StorageSystem implementation
    */
 class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
 {
     Q_OBJECT
-
 public:
     explicit VeinHash(QObject *t_parent=nullptr);
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> t_origins);
