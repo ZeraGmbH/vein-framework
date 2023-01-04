@@ -15,13 +15,12 @@ include(GenerateExportHeader)
 
 find_package(Qt5 COMPONENTS Core CONFIG REQUIRED)
 
+enable_testing()
+
 add_subdirectory(vf-helpers)
 add_subdirectory(vf-event)
 add_subdirectory(vf-component)
 add_subdirectory(vf-storage-hash)
 add_subdirectory(vf-test-helpers)
-
-enable_testing()
-add_subdirectory(tests)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
