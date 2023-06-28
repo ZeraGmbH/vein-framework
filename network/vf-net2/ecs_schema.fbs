@@ -1,0 +1,18 @@
+namespace VeinFrameworkIDL;
+
+enum EventSubtype : int {
+    VC_NOTIFICATION = 0,
+    VC_TRANSACTION = 1
+}
+
+table ECSEvent {
+     command:EventSubtype;
+     dataType:int;
+     eventData:string;
+}
+
+table ECSEnvelope {
+    ecsEvents:[ECSEvent];
+}
+
+root_type ECSEnvelope;

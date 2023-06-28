@@ -13,7 +13,9 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 
-find_package(Qt5 COMPONENTS Core Test CONFIG REQUIRED)
+find_package(Qt5 COMPONENTS Core Network Test CONFIG REQUIRED)
+find_package(VfTcp REQUIRED)
+find_package(Flatbuffers REQUIRED)
 
 enable_testing()
 
@@ -38,5 +40,6 @@ install(EXPORT VeinFrameworkExport
     )
 
 add_subdirectory(framework)
+add_subdirectory(network)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
