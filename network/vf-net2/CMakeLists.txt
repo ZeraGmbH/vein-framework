@@ -31,7 +31,7 @@ target_link_libraries(VfNet2
     VfHelpers
     VfComponent
     VfEvent
-    VeinMeta::VfTcp
+    VfTcp
     )
 
 set_target_properties(VfNet2 PROPERTIES VERSION ${PROJECT_VERSION})
