@@ -13,9 +13,29 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 
-find_package(Qt5 COMPONENTS Core CONFIG REQUIRED)
+find_package(Qt5 COMPONENTS Core Test CONFIG REQUIRED)
 
 enable_testing()
+
+write_basic_package_version_file(
+    VeinFrameworkConfigVersion.cmake
+    VERSION ${PACKAGE_VERSION}
+    COMPATIBILITY SameMajorVersion
+    )
+
+configure_file(VeinFrameworkConfig.cmake.in VeinFrameworkConfig.cmake @ONLY)
+
+install(FILES
+    "${CMAKE_CURRENT_BINARY_DIR}/VeinFrameworkConfig.cmake"
+    "${CMAKE_CURRENT_BINARY_DIR}/VeinFrameworkConfigVersion.cmake"
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VeinFramework
+    )
+
+install(EXPORT VeinFrameworkExport
+    FILE VeinFrameworkTargets.cmake
+    NAMESPACE Zera::
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VeinFramework
+    )
 
 add_subdirectory(vf-helpers)
 add_subdirectory(vf-event)
