@@ -15,6 +15,8 @@ include(GenerateExportHeader)
 
 find_package(Qt5 COMPONENTS Core Network Test CONFIG REQUIRED)
 find_package(Flatbuffers REQUIRED)
+find_package(Protobuf REQUIRED)
+find_package(zeraprotobuf REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(Systemd REQUIRED libsystemd)
 
