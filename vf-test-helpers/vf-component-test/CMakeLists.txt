@@ -31,34 +31,15 @@ set_target_properties(VfComponentTest PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(VfComponentTest PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
 generate_export_header(VfComponentTest)
-
 install(FILES
     ${CMAKE_CURRENT_BINARY_DIR}/vfcomponenttest_export.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/VfComponentTest
     )
 
+export(TARGETS VfComponentTest FILE VeinFrameworkTargets.cmake)
 install(TARGETS VfComponentTest
-    EXPORT VfComponentTestExport
+    EXPORT VeinFrameworkExport
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-    )
-
-write_basic_package_version_file(
-    VfComponentTestConfigVersion.cmake
-    VERSION ${PACKAGE_VERSION}
-    COMPATIBILITY SameMajorVersion
-    )
-
-configure_file(VfComponentTestConfig.cmake.in VfComponentTestConfig.cmake @ONLY)
-
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/VfComponentTestConfig.cmake"
-    "${CMAKE_CURRENT_BINARY_DIR}/VfComponentTestConfigVersion.cmake"
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VfComponentTest
-    )
-
-install(EXPORT VfComponentTestExport
-    FILE VfComponentTestTargets.cmake
-    NAMESPACE VeinMeta::
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VfComponentTest
     )
 
 install(
