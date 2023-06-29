@@ -13,7 +13,7 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 
-find_package(Qt5 COMPONENTS Core Network Test CONFIG REQUIRED)
+find_package(Qt5 COMPONENTS Core Network Qml Test CONFIG REQUIRED)
 find_package(Flatbuffers REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -41,6 +41,7 @@ install(EXPORT VeinFrameworkExport
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/cmake/VeinFramework
     )
 
+add_subdirectory(client-libs)
 add_subdirectory(framework)
 add_subdirectory(network)
 
