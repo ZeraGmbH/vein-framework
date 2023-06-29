@@ -1,0 +1,34 @@
+package ProtobufMessage;
+
+message NetMessage {
+  message ScpiCommand {
+    required string Command = 1;
+    optional string Parameter = 2;
+  }
+  optional ScpiCommand scpi = 2;
+
+  message NetReply {
+    enum ReplyType {
+      ACK = 0;
+      NACK = 1;
+      ERROR = 2;
+      DEBUG = 3;
+      IDENT = 4;
+    }
+    required ReplyType RType = 1 [default = ACK];
+    optional string Body = 2;
+  }
+
+  message NetCmd {
+    enum CmdType {
+      RELEASE = 0;
+    }
+    required CmdType Cmd = 1 [default = RELEASE];
+  }
+
+  optional NetReply reply = 3;
+  optional bytes clientId = 4;
+  optional uint32 messageNr = 5;
+  optional NetCmd netcommand = 6;
+}
+
