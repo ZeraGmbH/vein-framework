@@ -23,7 +23,7 @@ target_link_libraries(xiqnet
     Qt5::Core
     Qt5::Network
     ${Protobuf_LIBRARIES}   
-    VeinMeta::zeraprotobuf
+    zeraprotobuf
     )
 
 set_target_properties(xiqnet PROPERTIES VERSION ${PROJECT_VERSION})
