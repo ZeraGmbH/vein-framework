@@ -18,7 +18,6 @@ target_link_libraries(VfQml
     VfHelpers
     VfEvent
     VfComponent 
-    VfNet2
     )
 
 target_include_directories(VfQml
