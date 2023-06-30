@@ -43,12 +43,7 @@ namespace VeinApiQml
     Q_PROPERTY(DataState state READ state NOTIFY sigStateChanged)
     Q_PROPERTY(QStringList remoteProcedures READ getRemoteProcedureList NOTIFY sigRemoteProceduresChanged)
 
-    /**
-     * @brief see inline comments
-     * @param t_cData
-     */
     void processComponentData(VeinComponent::ComponentData *t_cData);
-
     void processRemoteProcedureData(VeinComponent::RemoteProcedureData *t_rpcData);
 
     DataState state() const;
