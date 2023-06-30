@@ -44,5 +44,6 @@ install(EXPORT VeinFrameworkExport
 add_subdirectory(client-libs)
 add_subdirectory(framework)
 add_subdirectory(network)
+add_subdirectory(server-libs)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
