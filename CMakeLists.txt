@@ -39,6 +39,7 @@ function(SETUP_TESTS)
             PUBLIC
             Qt5::Test
             VfComponentTest
+            VfCpp
             )
     endforeach()
 endfunction()
