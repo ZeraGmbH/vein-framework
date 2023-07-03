@@ -7,7 +7,7 @@ class VfTestComponentChangeListener : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    void addComponentToListen(int entityId, QString componentName);
+    void addComponentFilter(int entityId, QString componentName);
     struct TComponentInfo
     {
         int entityId = -1;
@@ -17,9 +17,9 @@ public:
     QList<TComponentInfo> getComponentChangeList();
 private:
     bool processEvent(QEvent *t_event) override;
-    bool wasComponentInserted(int entityId, QString componentName);
+    bool matchesComponentFilter(int entityId, QString componentName);
 
-    QHash<int, QSet<QString>> m_hashComponentValuesListening;
+    QHash<int, QSet<QString>> m_componentFilter;
     QList<TComponentInfo> m_componentChangeList;
 };
 
