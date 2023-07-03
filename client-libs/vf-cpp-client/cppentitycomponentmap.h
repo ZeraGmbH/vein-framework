@@ -17,13 +17,25 @@ public:
         ECM_REMOVED = 2, /**< the entity has been removed from the remote end */
     };
     DataState state() const;
-    void setState(DataState t_dataState);
+    void setState(DataState dataState);
     void processComponentData(VeinComponent::ComponentData *cData);
+
+    int entityId() const;
+    bool hasComponent(const QString &componentName) const;
+    int propertyCount() const;
 
 signals:
     void sigSendEvent(QEvent *event);
     void sigEntityComplete(int entityId);
     void sigStateChanged(CppEntityComponentMap::DataState state);
+
+private:
+    void loadEntityData();
+
+    DataState m_state = DataState::ECM_PENDING;
+    const QVariantHash m_entityIntrospection;
+    QList<QString> m_pendingValues;
+    const int m_entityId;
 };
 
 typedef std::shared_ptr<CppEntityComponentMap> CppEntityComponentMapPtr;
