@@ -40,6 +40,8 @@ function(SETUP_TESTS)
             Qt5::Test
             VfComponentTest
             VfCpp
+            VfNet2
+            ModmanBase
             )
     endforeach()
 endfunction()

@@ -9,6 +9,8 @@ class test_vf_cpp_client : public QObject
 private slots:
     void init();
     void introspectionTest();
+private:
+    void feedEventLoop();
 };
 
 #endif // TEST_VF_CPP_CLIENT_H
