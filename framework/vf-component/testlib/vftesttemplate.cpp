@@ -4,7 +4,7 @@
 void VfTestTemplate::addEntityComponent(int entityId, QString componentName)
 {
     m_vfEntity->createEntityComponent(entityId, componentName);
-    m_vfListener->addComponentToListen(entityId, componentName);
+    m_vfListener->addComponentFilter(entityId, componentName);
     QCoreApplication::processEvents();
 }
 

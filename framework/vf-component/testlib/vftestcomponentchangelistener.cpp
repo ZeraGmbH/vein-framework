@@ -6,9 +6,9 @@
 
 using VeinComponent::ComponentData;
 
-void VfTestComponentChangeListener::addComponentToListen(int entityId, QString componentName)
+void VfTestComponentChangeListener::addComponentFilter(int entityId, QString componentName)
 {
-    m_hashComponentValuesListening[entityId].insert(componentName);
+    m_componentFilter[entityId].insert(componentName);
 }
 
 QList<VfTestComponentChangeListener::TComponentInfo> VfTestComponentChangeListener::getComponentChangeList()
@@ -24,10 +24,11 @@ bool VfTestComponentChangeListener::processEvent(QEvent *t_event)
             VeinEvent::EventData *evData = cmdEvent->eventData();
             if(evData->type() == ComponentData::dataType()) {
                 ComponentData *componentData = static_cast<ComponentData *>(evData);
+
                 if(componentData->eventCommand() == ComponentData::Command::CCMD_SET) {
                     int entityId = evData->entityId();
                     QString componentName = componentData->componentName();
-                    if(wasComponentInserted(entityId, componentName)) {
+                    if(matchesComponentFilter(entityId, componentName)) {
                         const QVariant &oldValue = componentData->oldValue();
                         const QVariant &newValue = componentData->newValue();
                         if(oldValue != newValue) {
@@ -45,8 +46,9 @@ bool VfTestComponentChangeListener::processEvent(QEvent *t_event)
     return false; // why is processEvent returning bool - it is ignored anyway?
 }
 
-bool VfTestComponentChangeListener::wasComponentInserted(int entityId, QString componentName)
+bool VfTestComponentChangeListener::matchesComponentFilter(int entityId, QString componentName)
 {
-    return m_hashComponentValuesListening.contains(entityId) &&
-            m_hashComponentValuesListening[entityId].contains(componentName);
+    return m_componentFilter.isEmpty() ||
+            (m_componentFilter.contains(entityId) &&
+            m_componentFilter[entityId].contains(componentName));
 }
