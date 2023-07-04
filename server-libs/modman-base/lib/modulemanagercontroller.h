@@ -75,7 +75,6 @@ private:
     static constexpr QLatin1String s_sessionsAvailableComponentName = modman_util::to_latin1("SessionsAvailable");
     static constexpr QLatin1String s_loggedComponentsComponentName = modman_util::to_latin1("LoggedComponents");
     static constexpr QLatin1String s_modulesPausedComponentName = modman_util::to_latin1("ModulesPaused");
-    static constexpr QLatin1String s_serverIpComponentName = modman_util::to_latin1("ServerAddressList");
 
 
     VeinEvent::StorageSystem *m_storageSystem = nullptr;

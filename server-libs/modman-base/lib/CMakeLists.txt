@@ -14,7 +14,6 @@ add_library(ModmanBase SHARED
 target_link_libraries(ModmanBase 
     PUBLIC
     Qt5::Core
-    Qt5::Network
     VfHelpers
     VfEvent
     VfComponent

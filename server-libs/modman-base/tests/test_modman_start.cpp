@@ -36,9 +36,8 @@ void test_modman_start::emptyModman()
     VfTestComponentAddListener::AddHash hash = vfListener.getComponentHash();
     QCOMPARE(hash.size(), 1);
     int entityId = 0;
-    QCOMPARE(hash[entityId].size(), 8);
+    QCOMPARE(hash[entityId].size(), 7);
     QCOMPARE(hash[entityId]["EntityName"], "_System");
-    QCOMPARE(hash[entityId].contains("ServerAddressList"), true);
     QCOMPARE(hash[entityId].contains("Session"), true);
     QCOMPARE(hash[entityId].contains("SessionsAvailable"), true);
     QCOMPARE(hash[entityId]["Entities"], QVariant());
