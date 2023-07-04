@@ -1,11 +1,8 @@
 #include "test_modman_start.h"
-#include "modulemanagercontroller.h"
+#include "veintestserver.h"
 #include "ve_eventhandler.h"
-#include "vf-cpp-entity.h"
 #include "vftestcomponentaddlistener.h"
 #include "vftestcomponentchangelistener.h"
-#include "vn_introspectionsystem.h"
-#include "vs_veinhash.h"
 #include <QAbstractEventDispatcher>
 #include <QTest>
 
@@ -13,23 +10,12 @@ QTEST_MAIN(test_modman_start)
 
 void test_modman_start::emptyModman()
 {
+
     VeinEvent::EventHandler vfEventHandler;
-    ModuleManagerController mmController;
-    VeinNet::IntrospectionSystem introspectionSystem;
-    VeinStorage::VeinHash storageSystem;
+    VeinTestServer vfTestServer(&vfEventHandler);
     VfTestComponentAddListener vfListener;
 
-    mmController.setStorage(&storageSystem);
-
-    QList<VeinEvent::EventSystem*> subSystems;
-    // do not reorder??
-    subSystems.append(&mmController);
-    subSystems.append(&introspectionSystem);
-    subSystems.append(&storageSystem);
-    subSystems.append(&vfListener);
-    vfEventHandler.setSubsystems(subSystems);
-
-    mmController.initOnce();
+    vfEventHandler.addSubsystem(&vfListener);
 
     feedEventLoop();
 
