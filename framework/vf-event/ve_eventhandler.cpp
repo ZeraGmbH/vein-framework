@@ -33,13 +33,10 @@ void EventHandler::setEventTerminationEnabled(bool t_terminationEnabled)
 
 void EventHandler::setSubsystems(QList<EventSystem *> t_subsystems)
 {
-    if(m_subsystems!=t_subsystems)
-    {
+    if(m_subsystems!=t_subsystems) {
         m_subsystems = t_subsystems;
-        for(EventSystem *tmpSystem : m_subsystems)
-        {
+        for(EventSystem *tmpSystem : qAsConst(m_subsystems))
             tmpSystem->attach(this);
-        }
         emit subsystemsChanged(m_subsystems);
     }
 }
