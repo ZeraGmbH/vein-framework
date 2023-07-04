@@ -16,24 +16,14 @@ EventHandler::EventHandler(QObject *t_parent) :
     vCDebug(VEIN_EVENT) << "Created event handler";
 }
 
-bool EventHandler::eventTerminationEnabled() const
-{
-    return m_eventTerminationEnabled;
-}
-
 QList<EventSystem *> EventHandler::subsystems() const
 {
     return m_subsystems;
 }
 
-void EventHandler::setEventTerminationEnabled(bool t_terminationEnabled)
-{
-    m_eventTerminationEnabled = t_terminationEnabled;
-}
-
 void EventHandler::setSubsystems(QList<EventSystem *> t_subsystems)
 {
-    if(m_subsystems!=t_subsystems) {
+    if(m_subsystems != t_subsystems) {
         m_subsystems = t_subsystems;
         for(EventSystem *tmpSystem : qAsConst(m_subsystems))
             tmpSystem->attach(this);
@@ -51,13 +41,11 @@ void EventHandler::addSubsystem(EventSystem *t_subsystem)
 
 void EventHandler::clearSubsystems()
 {
-    if(m_subsystems.isEmpty() == false)
-    {
+    if(m_subsystems.isEmpty() == false) {
         m_subsystems.clear();
         emit subsystemsChanged(m_subsystems);
     }
 }
-
 
 void EventHandler::customEvent(QEvent *t_event)
 {
@@ -68,14 +56,7 @@ void EventHandler::customEvent(QEvent *t_event)
      */
 
     for(int i=0; i < m_subsystems.count() && t_event->isAccepted()==false; ++i)
-    {
         m_subsystems.at(i)->processEvent(t_event);
-    }
-
-    if(m_eventTerminationEnabled)
-    {
-        t_event->accept();
-    }
 }
 
 void registerStreamOperators()
