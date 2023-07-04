@@ -42,6 +42,7 @@ function(SETUP_TESTS)
             VfCpp
             VfNet2
             ModmanBase
+            veinserver-testlib
             )
     endforeach()
 endfunction()
