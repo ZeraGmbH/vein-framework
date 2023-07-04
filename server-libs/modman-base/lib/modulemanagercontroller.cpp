@@ -7,9 +7,6 @@
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
 
-#include <QNetworkInterface>
-#include <QHostAddress>
-
 #include <QJsonArray>
 #include <QDateTime>
 
@@ -22,7 +19,6 @@ constexpr QLatin1String ModuleManagerController::s_sessionsAvailableComponentNam
 constexpr QLatin1String ModuleManagerController::s_notificationMessagesComponentName;
 constexpr QLatin1String ModuleManagerController::s_loggedComponentsComponentName;
 constexpr QLatin1String ModuleManagerController::s_modulesPausedComponentName;
-constexpr QLatin1String ModuleManagerController::s_serverIpComponentName;
 
 ModuleManagerController::ModuleManagerController(QObject *t_parent) :
     VeinEvent::EventSystem(t_parent)
@@ -194,12 +190,6 @@ void ModuleManagerController::initOnce()
 
         emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, systemData));
 
-        QVariantList ipAdressList;
-        for (const QHostAddress &address : QNetworkInterface::allAddresses()) {
-            if (address != QHostAddress(QHostAddress::LocalHost) && address != QHostAddress(QHostAddress::LocalHostIPv6))
-                ipAdressList.append(address.toString());
-        }
-
         QHash<QString, QVariant> componentData;
         componentData.insert(ModuleManagerController::s_entityNameComponentName, ModuleManagerController::s_entityName);
         componentData.insert(ModuleManagerController::s_entitiesComponentName, QVariant());
@@ -208,7 +198,6 @@ void ModuleManagerController::initOnce()
         componentData.insert(ModuleManagerController::s_notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
         componentData.insert(ModuleManagerController::s_loggedComponentsComponentName, QVariantMap());
         componentData.insert(ModuleManagerController::s_modulesPausedComponentName, QVariant(false));
-        componentData.insert(ModuleManagerController::s_serverIpComponentName, ipAdressList);
 
         VeinComponent::ComponentData *initialData=nullptr;
         for(const QString &compName : componentData.keys())
