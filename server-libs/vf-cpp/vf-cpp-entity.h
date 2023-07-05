@@ -14,7 +14,7 @@ class VfCppEntity : public VeinEvent::EventSystem
     Q_OBJECT
 public:
     typedef QSharedPointer<VfCppEntity> Ptr;
-    VfCppEntity(int p_entityId,QObject *p_parent=nullptr);
+    VfCppEntity(int entityId);
 
     bool hasComponent(const QString name);
     int getEntitiyId() const;
