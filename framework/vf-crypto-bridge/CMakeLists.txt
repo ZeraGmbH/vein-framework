@@ -24,6 +24,9 @@ if(${OpenSSL_FOUND})
     )
 endif()
 
+set_target_properties(VfCryptoBridge PROPERTIES VERSION ${PROJECT_VERSION})
+set_target_properties(VfCryptoBridge PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
+
 generate_export_header(VfCryptoBridge)
 
 install(FILES
