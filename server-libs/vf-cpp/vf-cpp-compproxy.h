@@ -5,7 +5,7 @@
 
 namespace VfCpp {
 
-// Type safe shared pinter wrapper of cVeinModuleComponent
+// Type safe shared pointer wrapper of cVeinModuleComponent
 template <class T> class VeinCompProxy{
 public:
     void* operator new(std::size_t size) = delete;
