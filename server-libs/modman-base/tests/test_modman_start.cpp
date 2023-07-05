@@ -36,6 +36,26 @@ void test_modman_start::emptyModman()
 
 void test_modman_start::modmanPlusOneEntity()
 {
+    VeinEvent::EventHandler vfEventHandler;
+
+    VeinTestServer vfTestServer(&vfEventHandler);
+
+    int entityId = 1;
+    VfCpp::VfCppEntity entity(entityId);
+    vfEventHandler.addSubsystem(&entity);
+    entity.initModule();
+    entity.createComponent("EntityName", "FooEntity", true);
+    entity.createComponent("Foo", "FooVal", false);
+
+    feedEventLoop();
+
+    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
+    QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, entityId);
+    QCOMPARE(entityComponents.size(), 2);
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents, "EntityName"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents, "EntityName").newValue, "FooEntity");
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents, "Foo"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents, "Foo").newValue, "FooVal");
 }
 
 void test_modman_start::feedEventLoop()
