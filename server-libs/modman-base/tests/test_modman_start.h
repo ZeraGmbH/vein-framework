@@ -8,6 +8,7 @@ class test_modman_start : public QObject
     Q_OBJECT
 private slots:
     void emptyModman();
+    void modmanPlusOneEntity();
 private:
     void feedEventLoop();
 };
