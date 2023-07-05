@@ -3,9 +3,8 @@
 
 using namespace VfCpp;
 
-VfCppEntity::VfCppEntity(int p_entityId,QObject *p_parent):
-    VeinEvent::EventSystem(p_parent),
-    m_entityId(p_entityId)
+VfCppEntity::VfCppEntity(int entityId):
+    m_entityId(entityId)
 {
 }
 
