@@ -17,7 +17,7 @@ void test_vfcomponent::cleanup()
 
 void test_vfcomponent::listenerEmpty()
 {
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 0);
+    QCOMPARE(m_vfListener->getComponentList().count(), 0);
 }
 
 void test_vfcomponent::detectDoubleEntityComponents()
@@ -30,7 +30,7 @@ void test_vfcomponent::oneChangeOneEntity()
 {
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 1);
+    QCOMPARE(m_vfListener->getComponentList().count(), 1);
 }
 
 void test_vfcomponent::twoChangesOneEntity()
@@ -38,7 +38,7 @@ void test_vfcomponent::twoChangesOneEntity()
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId, componentName, QVariant(2));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 2);
+    QCOMPARE(m_vfListener->getComponentList().count(), 2);
 }
 
 void test_vfcomponent::twoIdenticalChangesOneEntity()
@@ -46,7 +46,7 @@ void test_vfcomponent::twoIdenticalChangesOneEntity()
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 1);
+    QCOMPARE(m_vfListener->getComponentList().count(), 1);
 }
 
 void test_vfcomponent::oneChangeTwoEntities()
@@ -54,7 +54,7 @@ void test_vfcomponent::oneChangeTwoEntities()
     addEntityComponent(entityId+1, componentName);
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 1);
+    QCOMPARE(m_vfListener->getComponentList().count(), 1);
 }
 
 void test_vfcomponent::twoChangeTwoEntities()
@@ -63,7 +63,7 @@ void test_vfcomponent::twoChangeTwoEntities()
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, componentName, QVariant(1));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 2);
+    QCOMPARE(m_vfListener->getComponentList().count(), 2);
 }
 
 void test_vfcomponent::twoChangeTwoEntitiesDiffCompName()
@@ -72,7 +72,7 @@ void test_vfcomponent::twoChangeTwoEntitiesDiffCompName()
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, "bar", QVariant(1));
     QCoreApplication::processEvents();
-    QCOMPARE(m_vfListener->getComponentChangeList().count(), 2);
+    QCOMPARE(m_vfListener->getComponentList().count(), 2);
 }
 
 void test_vfcomponent::twoChangeTwoEntitiesCheckContents()
@@ -81,7 +81,7 @@ void test_vfcomponent::twoChangeTwoEntitiesCheckContents()
     m_vfComponentData->setValue(entityId, componentName, QVariant(1));
     m_vfComponentData->setValue(entityId+1, "bar", QVariant(2));
     QCoreApplication::processEvents();
-    QList<VfTestComponentSpy::TComponentInfo> list = m_vfListener->getComponentChangeList();
+    QList<VfTestComponentSpy::TComponentInfo> list = m_vfListener->getComponentList();
     QCOMPARE(list.count(), 2);
     QCOMPARE(list[0].componentName, componentName);
     QCOMPARE(list[0].entityId, entityId);

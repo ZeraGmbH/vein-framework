@@ -1,30 +1,23 @@
 #include "test_modman_start.h"
 #include "veintestserver.h"
 #include "ve_eventhandler.h"
-#include "vftestcomponentspy.h"
 #include "vftestcomponentspyfilter.h"
+#include "vf-cpp-entity.h"
 #include <QAbstractEventDispatcher>
 #include <QTest>
 
 QTEST_MAIN(test_modman_start)
 
-using VeinComponent::ComponentData;
-
 void test_modman_start::emptyModman()
 {
     VeinEvent::EventHandler vfEventHandler;
 
-    VfTestComponentSpy vfAddListener(ComponentData::Command::CCMD_ADD);
-    VfTestComponentSpy vfChangeListener(ComponentData::Command::CCMD_SET);
-    vfEventHandler.addSubsystem(&vfAddListener);
-    vfEventHandler.addSubsystem(&vfChangeListener);
-
     VeinTestServer vfTestServer(&vfEventHandler);
     feedEventLoop();
 
-    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfAddListener.getComponentChangeList();
-    int entityId = 0;
-    QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, entityId);
+    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
+    int systemEntityId = 0;
+    QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
     QCOMPARE(allComponents.size(), entityComponents.size());
 
     QCOMPARE(entityComponents.size(), 7);
@@ -38,7 +31,7 @@ void test_modman_start::emptyModman()
     QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents, "Error_Messages"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents, "LoggedComponents"));
 
-    QCOMPARE(vfChangeListener.getComponentChangeList().size(), 0);
+    QCOMPARE(vfTestServer.getComponentChangeList().size(), 0);
 }
 
 void test_modman_start::modmanPlusOneEntity()
