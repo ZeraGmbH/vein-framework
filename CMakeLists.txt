@@ -13,11 +13,16 @@ include(GNUInstallDirs)
 include(CMakePackageConfigHelpers)
 include(GenerateExportHeader)
 
+option(useOpenSsl "Using OpenSSL" ON)
+
 find_package(Qt5 COMPONENTS Core Network Qml Test CONFIG REQUIRED)
 find_package(Flatbuffers REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(PkgConfig REQUIRED)
 pkg_check_modules(Systemd REQUIRED libsystemd)
+if(useOpenSsl)
+	find_package(OpenSSL COMPONENTS SSL Crypto REQUIRED)
+endif()
 
 enable_testing()
 # Inspired by
