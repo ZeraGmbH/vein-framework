@@ -9,10 +9,6 @@ veinmoduleentity::veinmoduleentity(int p_entityId,QObject *p_parent):
 {
 }
 
-veinmoduleentity::~veinmoduleentity()
-{
-}
-
 bool veinmoduleentity::hasComponent(const QString name)
 {
     return m_componentList.contains(name);
@@ -25,16 +21,15 @@ cVeinModuleComponent::Ptr  veinmoduleentity::createComponent(QString p_name, QVa
         m_componentList[tmpPtr->getName()]=tmpPtr;
         return tmpPtr;
     }
-    else {
+    else
         qFatal("veinmoduleentity::createComponent: A component %s already exists", qPrintable(p_name));
-    }
 }
 
 
 cVeinModuleRpc::Ptr  veinmoduleentity::createRpc(QObject *p_object, QString p_funcName, QMap<QString, QString> p_parameter, bool p_threaded)
 {
     cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,this,p_object,p_funcName,p_parameter,p_threaded),&QObject::deleteLater);
-    m_rpcList[tmpPtr->rpcName()]=tmpPtr;
+    m_rpcList[tmpPtr->rpcName()] = tmpPtr;
     return tmpPtr;
 }
 
@@ -42,19 +37,12 @@ bool veinmoduleentity::processEvent(QEvent *t_event)
 {
     bool retVal = false;
     if(t_event->type()==VeinEvent::CommandEvent::eventType()) {
-        VeinEvent::CommandEvent *cEvent = nullptr;
-        VeinEvent::EventData *evData = nullptr;
-        cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
         Q_ASSERT(cEvent != nullptr);
-
-        evData = cEvent->eventData();
+        VeinEvent::EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
-
-        if(evData->entityId() == m_entityId) {
-            // does the actual handling if event is of the correct type and
-            // addresses this entity
+        if(evData->entityId() == m_entityId)
             retVal = processCommandEvent(cEvent);
-        }
     }
     return retVal;
 }
@@ -99,9 +87,8 @@ bool veinmoduleentity::processCommandEvent(VeinEvent::CommandEvent *p_cEvent)
         // managed by other entites
         else if(p_cEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) {
             if(m_watchList.contains(entityId)) {
-                if(m_watchList[entityId].contains(cName)) {
+                if(m_watchList[entityId].contains(cName))
                     emit sigWatchedComponentChanged(entityId,cName,cData->newValue());
-                }
             }
         }
     }
@@ -149,34 +136,4 @@ void veinmoduleentity::initModule()
     eData->setEntityId(m_entityId);
     VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
     emit sigSendEvent(tmpEvent);
-}
-
-QMap<QString, cVeinModuleRpc::Ptr> veinmoduleentity::getRpcList() const
-{
-    return m_rpcList;
-}
-
-QMap<int, QSet<QString> > veinmoduleentity::getWatchList() const
-{
-    return m_watchList;
-}
-
-void veinmoduleentity::setWatchList(const QMap<int, QSet<QString> > &watchList)
-{
-    m_watchList = watchList;
-}
-
-void veinmoduleentity::setRpcList(const QMap<QString, cVeinModuleRpc::Ptr> &value)
-{
-    m_rpcList = value;
-}
-
-QMap<QString, cVeinModuleComponent::Ptr> veinmoduleentity::getComponentList() const
-{
-    return m_componentList;
-}
-
-void veinmoduleentity::setComponentList(const QMap<QString, cVeinModuleComponent::Ptr> &value)
-{
-    m_componentList = value;
 }
