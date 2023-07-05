@@ -16,11 +16,11 @@ public:
         QVariant oldValue;
         QVariant newValue;
     };
-    QList<TComponentInfo> getComponentChangeList();
+    QList<TComponentInfo> getComponentList();
 private:
     bool processEvent(QEvent *t_event) override;
     VeinComponent::ComponentData::Command m_cmdToFilter;
-    QList<TComponentInfo> m_componentChangeList;
+    QList<TComponentInfo> m_componentList;
 };
 
 #endif // VFTESTCOMPONENTSPY_H

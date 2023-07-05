@@ -8,9 +8,9 @@ VfTestComponentSpy::VfTestComponentSpy(ComponentData::Command cmdToFilter) :
 {
 }
 
-QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpy::getComponentChangeList()
+QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpy::getComponentList()
 {
-    return m_componentChangeList;
+    return m_componentList;
 }
 
 bool VfTestComponentSpy::processEvent(QEvent *t_event)
@@ -29,7 +29,7 @@ bool VfTestComponentSpy::processEvent(QEvent *t_event)
                     info.componentName = componentName;
                     info.newValue = componentData->newValue();
                     info.oldValue = componentData->oldValue();
-                    m_componentChangeList.append(info);
+                    m_componentList.append(info);
                 }
             }
         }
