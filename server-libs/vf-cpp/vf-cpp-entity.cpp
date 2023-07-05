@@ -3,41 +3,41 @@
 
 using namespace VfCpp;
 
-veinmoduleentity::veinmoduleentity(int p_entityId,QObject *p_parent):
+VfCppEntity::VfCppEntity(int p_entityId,QObject *p_parent):
     VeinEvent::EventSystem(p_parent),
     m_entityId(p_entityId)
 {
 }
 
-bool veinmoduleentity::hasComponent(const QString name)
+bool VfCppEntity::hasComponent(const QString name)
 {
     return m_componentList.contains(name);
 }
 
-cVeinModuleComponent::Ptr  veinmoduleentity::createComponent(QString p_name, QVariant p_initval, bool p_readOnly)
+VfCppComponent::Ptr VfCppEntity::createComponent(QString p_name, QVariant p_initval, bool readOnly)
 {
     if(!hasComponent(p_name)) {
-        cVeinModuleComponent::Ptr tmpPtr=cVeinModuleComponent::Ptr(new cVeinModuleComponent(m_entityId,this,p_name,p_initval,p_readOnly), &QObject::deleteLater);
+        VfCppComponent::Ptr tmpPtr=VfCppComponent::Ptr(new VfCppComponent(m_entityId,this,p_name,p_initval,readOnly), &QObject::deleteLater);
         m_componentList[tmpPtr->getName()]=tmpPtr;
         return tmpPtr;
     }
     else
-        qFatal("veinmoduleentity::createComponent: A component %s already exists", qPrintable(p_name));
+        qFatal("VfCppEntity::createComponent: A component %s already exists", qPrintable(p_name));
 }
 
 
-cVeinModuleRpc::Ptr  veinmoduleentity::createRpc(QObject *p_object, QString p_funcName, QMap<QString, QString> p_parameter, bool p_threaded)
+cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
 {
-    cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,this,p_object,p_funcName,p_parameter,p_threaded),&QObject::deleteLater);
+    cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,this,object,funcName,parameter,thread),&QObject::deleteLater);
     m_rpcList[tmpPtr->rpcName()] = tmpPtr;
     return tmpPtr;
 }
 
-bool veinmoduleentity::processEvent(QEvent *t_event)
+bool VfCppEntity::processEvent(QEvent *event)
 {
     bool retVal = false;
-    if(t_event->type()==VeinEvent::CommandEvent::eventType()) {
-        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+    if(event->type()==VeinEvent::CommandEvent::eventType()) {
+        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
         VeinEvent::EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
@@ -47,45 +47,45 @@ bool veinmoduleentity::processEvent(QEvent *t_event)
     return retVal;
 }
 
-void veinmoduleentity::watchComponent(int p_EntityId, const QString &p_componentName)
+void VfCppEntity::watchComponent(int entityId, const QString &componentName)
 {
-    m_watchList[p_EntityId].insert(p_componentName);
+    m_watchList[entityId].insert(componentName);
 }
 
-bool veinmoduleentity::unWatchComponent(int p_EntityId, const QString &p_componentName)
+bool VfCppEntity::unWatchComponent(int entityId, const QString &componentName)
 {
     bool retVal=false;
-    if(m_watchList.contains(p_EntityId)) {
-        if(m_watchList[p_EntityId].contains(p_componentName)) {
-            m_watchList[p_EntityId].remove(p_componentName);
+    if(m_watchList.contains(entityId)) {
+        if(m_watchList[entityId].contains(componentName)) {
+            m_watchList[entityId].remove(componentName);
             retVal = true;
         }
     }
     return retVal;
 }
 
-bool veinmoduleentity::processCommandEvent(VeinEvent::CommandEvent *p_cEvent)
+bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     bool retVal = false;
     // handle components
-    if (p_cEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
+    if (cmdEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
         QString cName;
         int entityId;
-        VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (p_cEvent->eventData());
+        VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (cmdEvent->eventData());
         cName = cData->componentName();
         entityId = cData->entityId();
         // managed by this entity
-        if (p_cEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
+        if (cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
             if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
                 if(m_componentList.contains(cName) && entityId == m_entityId) {
                     m_componentList[cName]->setValueByEvent(cData->newValue());
                     retVal=true;
-                    p_cEvent->accept();
+                    cmdEvent->accept();
                 }
             }
         }
         // managed by other entites
-        else if(p_cEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) {
+        else if(cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) {
             if(m_watchList.contains(entityId)) {
                 if(m_watchList[entityId].contains(cName))
                     emit sigWatchedComponentChanged(entityId,cName,cData->newValue());
@@ -93,16 +93,16 @@ bool veinmoduleentity::processCommandEvent(VeinEvent::CommandEvent *p_cEvent)
         }
     }
     // handle rpcs
-    else if(p_cEvent->eventData()->type() == VeinComponent::RemoteProcedureData::dataType()) {
+    else if(cmdEvent->eventData()->type() == VeinComponent::RemoteProcedureData::dataType()) {
         VeinComponent::RemoteProcedureData *rpcData=nullptr;
-        rpcData = static_cast<VeinComponent::RemoteProcedureData *>(p_cEvent->eventData());
+        rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
         if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
             if(m_rpcList.contains(rpcData->procedureName())) {
                 retVal = true;
                 const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
                 Q_ASSERT(callId.isNull() == false);
-                m_rpcList[rpcData->procedureName()]->callFunction(callId,p_cEvent->peerId(),rpcData->invokationData());
-                p_cEvent->accept();
+                m_rpcList[rpcData->procedureName()]->callFunction(callId,cmdEvent->peerId(),rpcData->invokationData());
+                cmdEvent->accept();
             }
             else { //unknown procedure
                 retVal = true;
@@ -115,8 +115,8 @@ bool veinmoduleentity::processCommandEvent(VeinEvent::CommandEvent *p_cEvent)
                 eData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
                 eData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
                 VeinEvent::CommandEvent *errorEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-                errorEvent->setPeerId(p_cEvent->peerId());
-                p_cEvent->accept();
+                errorEvent->setPeerId(cmdEvent->peerId());
+                cmdEvent->accept();
                 emit sigSendEvent(errorEvent);
             }
         }
@@ -124,12 +124,12 @@ bool veinmoduleentity::processCommandEvent(VeinEvent::CommandEvent *p_cEvent)
     return retVal;
 }
 
-int veinmoduleentity::getEntitiyId() const
+int VfCppEntity::getEntitiyId() const
 {
     return m_entityId;
 }
 
-void veinmoduleentity::initModule()
+void VfCppEntity::initModule()
 {
     VeinComponent::EntityData *eData = new VeinComponent::EntityData();
     eData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);

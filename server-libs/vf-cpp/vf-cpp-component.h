@@ -16,13 +16,13 @@
 namespace VfCpp {
 
 // a vein-only extract of VfModuleComponent
-class cVeinModuleComponent: public QObject
+class VfCppComponent: public QObject
 {
     Q_OBJECT
 public:
-    typedef  QSharedPointer< cVeinModuleComponent > Ptr;
-    cVeinModuleComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly=false);
-    ~cVeinModuleComponent();
+    typedef  QSharedPointer< VfCppComponent > Ptr;
+    VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly=false);
+    ~VfCppComponent();
     void setValueByEvent(QVariant value);
     QVariant getValue();
     QString getName();
