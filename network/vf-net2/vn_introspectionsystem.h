@@ -27,8 +27,6 @@ namespace VeinNet
     explicit IntrospectionSystem(QObject *t_parent=nullptr);
     static const QString s_nameComponent;
 
-    VeinEvent::StorageSystem *storage() const;
-
     // EventSystem interface
   public:
     bool processEvent(QEvent *t_event) override;
