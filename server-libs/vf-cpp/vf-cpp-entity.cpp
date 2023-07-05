@@ -13,21 +13,32 @@ bool VfCppEntity::hasComponent(const QString name)
     return m_componentList.contains(name);
 }
 
-VfCppComponent::Ptr VfCppEntity::createComponent(QString p_name, QVariant p_initval, bool readOnly)
+VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval, bool readOnly)
 {
-    if(!hasComponent(p_name)) {
-        VfCppComponent::Ptr tmpPtr=VfCppComponent::Ptr(new VfCppComponent(m_entityId,this,p_name,p_initval,readOnly), &QObject::deleteLater);
-        m_componentList[tmpPtr->getName()]=tmpPtr;
+    if(!hasComponent(name)) {
+        VfCppComponent::Ptr tmpPtr = VfCppComponent::Ptr(new VfCppComponent(m_entityId,
+                                                                            this,
+                                                                            name,
+                                                                            initval,
+                                                                            readOnly),
+                                                         &QObject::deleteLater);
+        m_componentList[tmpPtr->getName()] = tmpPtr;
         return tmpPtr;
     }
     else
-        qFatal("VfCppEntity::createComponent: A component %s already exists", qPrintable(p_name));
+        qFatal("VfCppEntity::createComponent: A component %s already exists", qPrintable(name));
 }
 
 
 cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
 {
-    cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,this,object,funcName,parameter,thread),&QObject::deleteLater);
+    cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,
+                                                                        this,
+                                                                        object,
+                                                                        funcName,
+                                                                        parameter,
+                                                                        thread),
+                                                     &QObject::deleteLater);
     m_rpcList[tmpPtr->rpcName()] = tmpPtr;
     return tmpPtr;
 }
