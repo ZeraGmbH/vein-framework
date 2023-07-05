@@ -15,8 +15,6 @@ private slots:
     void oneChangeOneEntity();
     void twoChangesOneEntity();
     void twoIdenticalChangesOneEntity();
-    void ignoreUnlistenedComponent();
-    void ignoreUnlistenedEntity();
 
     void oneChangeTwoEntities();
     void twoChangeTwoEntities();

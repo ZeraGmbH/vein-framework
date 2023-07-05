@@ -4,15 +4,16 @@
 void VfTestTemplate::addEntityComponent(int entityId, QString componentName)
 {
     m_vfEntity->createEntityComponent(entityId, componentName);
-    m_vfListener->addComponentFilter(entityId, componentName);
     QCoreApplication::processEvents();
 }
+
+using VeinComponent::ComponentData;
 
 void VfTestTemplate::_init()
 {
     m_vfEntity = new VfTestEntityComponentCreator;
     m_vfComponentData = new VfTestComponentData;
-    m_vfListener = new VfTestComponentChangeListener;
+    m_vfListener = new VfTestComponentSpy(ComponentData::Command::CCMD_SET);
     m_vfEventHandler = new VeinEvent::EventHandler;
 
     m_vfEventHandler->addSubsystem(m_vfComponentData);

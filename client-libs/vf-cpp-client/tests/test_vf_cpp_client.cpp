@@ -2,8 +2,7 @@
 #include "modulemanagercontroller.h"
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
-#include "vftestcomponentaddlistener.h"
-#include "vftestcomponentchangelistener.h"
+#include "vftestcomponentspy.h"
 #include "vn_introspectionsystem.h"
 #include "vs_veinhash.h"
 #include <QAbstractEventDispatcher>

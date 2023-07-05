@@ -2,7 +2,7 @@
 #define VFTESTTEMPLATE_H
 
 #include "vftestentitycomponentcreator.h"
-#include "vftestcomponentchangelistener.h"
+#include "vftestcomponentspy.h"
 #include "vftestcomponentdata.h"
 #include <ve_eventhandler.h>
 
@@ -16,7 +16,7 @@ protected:
     VeinEvent::EventHandler* m_vfEventHandler;
     VfTestEntityComponentCreator* m_vfEntity;
     VfTestComponentData* m_vfComponentData;
-    VfTestComponentChangeListener* m_vfListener;
+    VfTestComponentSpy* m_vfListener;
 };
 
 #endif // VFTESTTEMPLATE_H

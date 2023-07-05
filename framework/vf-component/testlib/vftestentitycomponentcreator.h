@@ -1,7 +1,6 @@
 #ifndef VFTESTENTITYCOMPONENTCREATOR_H
 #define VFTESTENTITYCOMPONENTCREATOR_H
 
-#include "vftestcomponentchangelistener.h"
 #include "vftestcomponentdata.h"
 #include <ve_eventsystem.h>
 #include <QHash>
