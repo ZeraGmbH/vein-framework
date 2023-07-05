@@ -9,16 +9,16 @@
 
 namespace VfCpp {
 
-class veinmoduleentity : public VeinEvent::EventSystem
+class VfCppEntity : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    typedef QSharedPointer<veinmoduleentity> Ptr;
-    veinmoduleentity(int p_entityId,QObject *p_parent=nullptr);
+    typedef QSharedPointer<VfCppEntity> Ptr;
+    VfCppEntity(int p_entityId,QObject *p_parent=nullptr);
 
     bool hasComponent(const QString name);
     int getEntitiyId() const;
-    cVeinModuleComponent::Ptr createComponent(QString name, QVariant initval, bool p_readOnly=false);
+    VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly=false);
     /**
      * @brief createRpc creates a vein rpc
      * @param p_object: the object handling the rpc
@@ -29,18 +29,18 @@ public:
      * There is no reason to use the rpc handler object
      *
      */
-    cVeinModuleRpc::Ptr createRpc(QObject *p_object, QString p_funcName, QMap<QString,QString> p_parameter, bool p_thread=true);
-    void watchComponent(int p_EntityId, const QString &p_componentName);
-    bool unWatchComponent(int p_EntityId, const QString &p_componentName);
+    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread=true);
+    void watchComponent(int entityId, const QString &componentName);
+    bool unWatchComponent(int entityId, const QString &componentName);
 
 signals:
-    void sigWatchedComponentChanged(int p_entityId,QString p_componentName,QVariant p_value);
+    void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value);
 public slots:
     void initModule();
 private:
-    bool processEvent(QEvent *t_event) override;
-    bool processCommandEvent(VeinEvent::CommandEvent *p_cEvent);
-    QMap<QString,cVeinModuleComponent::Ptr> m_componentList;
+    bool processEvent(QEvent *event) override;
+    bool processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
+    QMap<QString,VfCppComponent::Ptr> m_componentList;
     QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
     QMap<int,QSet<QString>> m_watchList;
     int m_entityId;

@@ -6,7 +6,7 @@
 
 using namespace VfCpp;
 
-cVeinModuleComponent::cVeinModuleComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly) :
+VfCppComponent::VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly) :
     m_nEntityId(entityId),
     m_pEventSystem(eventsystem),
     m_sName(name),
@@ -16,28 +16,28 @@ cVeinModuleComponent::cVeinModuleComponent(int entityId, VeinEvent::EventSystem 
     sendNotification(VeinComponent::ComponentData::Command::CCMD_ADD);
 }
 
-cVeinModuleComponent::~cVeinModuleComponent()
+VfCppComponent::~VfCppComponent()
 {
     sendNotification(VeinComponent::ComponentData::Command::CCMD_REMOVE);
 }
 
-QVariant cVeinModuleComponent::getValue()
+QVariant VfCppComponent::getValue()
 {
     return m_vValue;
 }
 
-QString cVeinModuleComponent::getName()
+QString VfCppComponent::getName()
 {
     return m_sName;
 }
 
-void cVeinModuleComponent::setValue(QVariant value)
+void VfCppComponent::setValue(QVariant value)
 {
     m_vValue = value;
     sendNotification(VeinComponent::ComponentData::Command::CCMD_SET);
 }
 
-void cVeinModuleComponent::setError()
+void VfCppComponent::setError()
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(m_nEntityId);
@@ -59,7 +59,7 @@ void cVeinModuleComponent::setError()
     emit m_pEventSystem->sigSendEvent(cEvent);
 }
 
-void cVeinModuleComponent::setValueByEvent(QVariant value)
+void VfCppComponent::setValueByEvent(QVariant value)
 {
     if(value != getValue()) {
         if(!m_readOnly)
@@ -68,7 +68,7 @@ void cVeinModuleComponent::setValueByEvent(QVariant value)
     }
 }
 
-void cVeinModuleComponent::sendNotification(VeinComponent::ComponentData::Command vcmd)
+void VfCppComponent::sendNotification(VeinComponent::ComponentData::Command vcmd)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(m_nEntityId);

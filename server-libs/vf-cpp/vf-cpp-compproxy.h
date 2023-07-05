@@ -5,7 +5,7 @@
 
 namespace VfCpp {
 
-// Type safe shared pointer wrapper of cVeinModuleComponent
+// Type safe shared pointer wrapper of VfCppComponent
 template <class T> class VeinCompProxy{
 public:
     void* operator new(std::size_t size) = delete;
@@ -13,7 +13,7 @@ public:
         m_component(nullptr)
     {
     };
-    VeinCompProxy(cVeinModuleComponent::Ptr obj) :
+    VeinCompProxy(VfCppComponent::Ptr obj) :
         m_component(obj)
     {
     };
@@ -39,7 +39,7 @@ public:
             setValue(other);
         return *this;
     };
-    VeinCompProxy<T>& operator=(cVeinModuleComponent::Ptr other) {
+    VeinCompProxy<T>& operator=(VfCppComponent::Ptr other) {
         m_component = other;
         return *this;
     };
@@ -47,7 +47,7 @@ public:
         return val == value();
     };
 private:
-    cVeinModuleComponent::Ptr m_component;
+    VfCppComponent::Ptr m_component;
 };
 
 }
