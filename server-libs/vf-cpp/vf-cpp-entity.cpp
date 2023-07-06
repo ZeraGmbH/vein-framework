@@ -20,8 +20,7 @@ VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval,
                                                                             this,
                                                                             name,
                                                                             initval,
-                                                                            readOnly),
-                                                         &QObject::deleteLater);
+                                                                            readOnly));
         m_componentList[tmpPtr->getName()] = tmpPtr;
         return tmpPtr;
     }
