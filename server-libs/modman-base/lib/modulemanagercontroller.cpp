@@ -122,17 +122,13 @@ bool ModuleManagerController::processEvent(QEvent *t_event)
     return retVal;
 }
 
-
-
-
-
-void ModuleManagerController::initializeEntity(const QString &t_sessionPath, const QStringList &t_sessionList)
+void ModuleManagerController::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
 {
     if(m_storageSystem!=nullptr)
     {
         m_sessionReady=true;
-        m_currentSession=t_sessionPath;
-        m_availableSessions=t_sessionList;
+        m_currentSession=sessionPath;
+        m_availableSessions=sessionList;
 
         VeinComponent::ComponentData *initData=nullptr;
         VeinEvent::CommandEvent *initEvent = nullptr;

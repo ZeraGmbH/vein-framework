@@ -36,3 +36,15 @@ QList<VfTestComponentSpy::TComponentInfo> VeinTestServer::getComponentChangeList
 {
     return m_vfComponentChangeSpy.getComponentList();
 }
+
+void VeinTestServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
+{
+    m_mmController.initializeEntity(sessionPath, sessionList);
+}
+
+void VeinTestServer::resetLists()
+{
+    m_vfEntityAddSpy.reset();
+    m_vfComponentAddSpy.reset();
+    m_vfComponentChangeSpy.reset();
+}

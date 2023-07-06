@@ -10,6 +10,7 @@ class VfTestEntitySpy : public VeinEvent::EventSystem
 public:
     VfTestEntitySpy(VeinComponent::EntityData::Command cmdToFilter);
     QList<int> getEntityList() const;
+    void reset();
 private:
     bool processEvent(QEvent *event) override;
     VeinComponent::EntityData::Command m_cmdToFilter;

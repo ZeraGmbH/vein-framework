@@ -13,6 +13,11 @@ QList<int> VfTestEntitySpy::getEntityList() const
     return m_entityList;
 }
 
+void VfTestEntitySpy::reset()
+{
+    m_entityList.clear();
+}
+
 bool VfTestEntitySpy::processEvent(QEvent *event)
 {
     if(event->type() == VeinEvent::CommandEvent::eventType()) {

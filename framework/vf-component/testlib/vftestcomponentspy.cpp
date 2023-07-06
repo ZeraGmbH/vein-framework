@@ -13,6 +13,11 @@ QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpy::getComponentList()
     return m_componentList;
 }
 
+void VfTestComponentSpy::reset()
+{
+    m_componentList.clear();
+}
+
 bool VfTestComponentSpy::processEvent(QEvent *event)
 {
     if(event->type() == VeinEvent::CommandEvent::eventType()) {
