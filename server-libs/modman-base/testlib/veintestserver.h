@@ -15,6 +15,8 @@ public:
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
+    void simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList);
+    void resetLists();
 private:
     VeinEvent::EventHandler* m_vfEventHandler;
     VfTestEntitySpy m_vfEntityAddSpy;

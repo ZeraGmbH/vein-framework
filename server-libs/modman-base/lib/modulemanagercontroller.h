@@ -48,7 +48,7 @@ public slots:
    * @param t_sessionPath
    * @param t_sessionList
    */
-    void initializeEntity(const QString &t_sessionPath, const QStringList &t_sessionList);
+    void initializeEntity(const QString &sessionPath, const QStringList &sessionList);
     /**
    * @brief sends add events for the entity and all components
    */
