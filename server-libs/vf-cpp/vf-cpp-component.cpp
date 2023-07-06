@@ -13,9 +13,6 @@ VfCppComponent::VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem
     m_vValue(initval),
     m_readOnly(readOnly)
 {
-    connect(m_pEventSystem, &QObject::destroyed, this, [&]{
-        m_EventSystemDied = true;
-    });
     sendNotification(VeinComponent::ComponentData::Command::CCMD_ADD);
 }
 
@@ -73,8 +70,6 @@ void VfCppComponent::setValueByEvent(QVariant value)
 
 void VfCppComponent::sendNotification(VeinComponent::ComponentData::Command vcmd)
 {
-    if(m_EventSystemDied)
-        return;
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(m_nEntityId);
     cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);

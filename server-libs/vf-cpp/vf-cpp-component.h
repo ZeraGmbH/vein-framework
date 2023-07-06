@@ -39,7 +39,6 @@ protected:
     QString m_sName;
     QVariant m_vValue;
     bool m_readOnly;
-    bool m_EventSystemDied = false;
 protected:
     void sendNotification(VeinComponent::ComponentData::Command vcmd);
 };
