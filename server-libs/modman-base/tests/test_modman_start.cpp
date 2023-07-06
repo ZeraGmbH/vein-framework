@@ -1,6 +1,7 @@
 #include "test_modman_start.h"
 #include "veintestserver.h"
 #include "ve_eventhandler.h"
+#include "vftestentityspyfilter.h"
 #include "vftestcomponentspyfilter.h"
 #include "vf-cpp-entity.h"
 #include <QAbstractEventDispatcher>
@@ -15,8 +16,12 @@ void test_modman_start::emptyModman()
     VeinTestServer vfTestServer(&vfEventHandler);
     feedEventLoop();
 
-    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
     int systemEntityId = 0;
+    QList<int> entities = vfTestServer.getEntityAddList();
+    QCOMPARE(entities.size(), 1);
+    QCOMPARE(VfTestEntitySpyFilter::first(entities, systemEntityId), systemEntityId);
+
+    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
     QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
     QCOMPARE(allComponents.size(), entityComponents.size());
 
@@ -48,6 +53,10 @@ void test_modman_start::modmanPlusOneEntity()
     entity.createComponent("Foo", "FooVal", false);
 
     feedEventLoop();
+
+    QList<int> entities = vfTestServer.getEntityAddList();
+    QCOMPARE(entities.size(), 2);
+    QCOMPARE(VfTestEntitySpyFilter::first(entities, entityId), entityId);
 
     QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
     QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, entityId);

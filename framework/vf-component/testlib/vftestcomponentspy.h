@@ -16,9 +16,9 @@ public:
         QVariant oldValue;
         QVariant newValue;
     };
-    QList<TComponentInfo> getComponentList();
+    QList<TComponentInfo> getComponentList() const;
 private:
-    bool processEvent(QEvent *t_event) override;
+    bool processEvent(QEvent *event) override;
     VeinComponent::ComponentData::Command m_cmdToFilter;
     QList<TComponentInfo> m_componentList;
 };

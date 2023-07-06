@@ -8,15 +8,15 @@ VfTestComponentSpy::VfTestComponentSpy(ComponentData::Command cmdToFilter) :
 {
 }
 
-QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpy::getComponentList()
+QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpy::getComponentList() const
 {
     return m_componentList;
 }
 
-bool VfTestComponentSpy::processEvent(QEvent *t_event)
+bool VfTestComponentSpy::processEvent(QEvent *event)
 {
-    if(t_event->type() == VeinEvent::CommandEvent::eventType()) {
-        VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+    if(event->type() == VeinEvent::CommandEvent::eventType()) {
+        VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
         if(cmdEvent != nullptr) {
             VeinEvent::EventData *evData = cmdEvent->eventData();
             if(evData->type() == ComponentData::dataType()) {
