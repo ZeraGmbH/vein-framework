@@ -68,6 +68,52 @@ void test_modman_start::modmanPlusOneEntity()
     QCOMPARE(VfTestComponentSpyFilter::first(entityComponents, "Foo").newValue, "FooVal");
 }
 
+void test_modman_start::modmanPlusTwoEntities()
+{
+    VeinEvent::EventHandler vfEventHandler;
+    VeinTestServer vfTestServer(&vfEventHandler);
+
+    int entityId1 = 1;
+    VfCpp::VfCppEntity entity1(entityId1);
+    vfEventHandler.addSubsystem(&entity1);
+    entity1.initModule();
+    entity1.createComponent("EntityName", "FooEntity", true);
+    entity1.createComponent("Foo", "FooVal", false);
+    int entityId2 = 2;
+    VfCpp::VfCppEntity entity2(entityId2);
+    vfEventHandler.addSubsystem(&entity2);
+    entity2.initModule();
+    entity2.createComponent("EntityName", "BarEntity", true);
+    entity2.createComponent("Bar", "BarVal", false);
+    entity2.createComponent("Baz", "BazVal", false);
+    feedEventLoop();
+
+    QList<int> entities = vfTestServer.getEntityAddList();
+    QCOMPARE(entities.size(), 3);
+    QCOMPARE(VfTestEntitySpyFilter::first(entities, entityId1), entityId1);
+    QCOMPARE(VfTestEntitySpyFilter::first(entities, entityId2), entityId2);
+
+    QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
+    QList<VfTestComponentSpy::TComponentInfo> systemComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
+    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once ModuleManagerController::initializeEntity is called
+
+    QList<VfTestComponentSpy::TComponentInfo> entityComponents1 = VfTestComponentSpyFilter::filter(allComponents, entityId1);
+    QCOMPARE(entityComponents1.size(), 2);
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents1, "EntityName"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents1, "EntityName").newValue, "FooEntity");
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents1, "Foo"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents1, "Foo").newValue, "FooVal");
+
+    QList<VfTestComponentSpy::TComponentInfo> entityComponents2 = VfTestComponentSpyFilter::filter(allComponents, entityId2);
+    QCOMPARE(entityComponents2.size(), 3);
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents2, "EntityName"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents2, "EntityName").newValue, "BarEntity");
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents2, "Bar"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents2, "Bar").newValue, "BarVal");
+    QVERIFY(VfTestComponentSpyFilter::hasOne(entityComponents2, "Baz"));
+    QCOMPARE(VfTestComponentSpyFilter::first(entityComponents2, "Baz").newValue, "BazVal");
+}
+
 void test_modman_start::modmanPlusOneEntityModulesLoaded()
 {
     VeinEvent::EventHandler vfEventHandler;
