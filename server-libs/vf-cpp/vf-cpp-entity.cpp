@@ -42,18 +42,16 @@ cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QM
     return tmpPtr;
 }
 
-bool VfCppEntity::processEvent(QEvent *event)
+void VfCppEntity::processEvent(QEvent *event)
 {
-    bool retVal = false;
     if(event->type()==VeinEvent::CommandEvent::eventType()) {
         VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
         VeinEvent::EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
         if(evData->entityId() == m_entityId)
-            retVal = processCommandEvent(cEvent);
+            processCommandEvent(cEvent);
     }
-    return retVal;
 }
 
 void VfCppEntity::watchComponent(int entityId, const QString &componentName)
@@ -73,9 +71,8 @@ bool VfCppEntity::unWatchComponent(int entityId, const QString &componentName)
     return retVal;
 }
 
-bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    bool retVal = false;
     // handle components
     if (cmdEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
         QString cName;
@@ -88,7 +85,6 @@ bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
             if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
                 if(m_componentList.contains(cName) && entityId == m_entityId) {
                     m_componentList[cName]->setValueByEvent(cData->newValue());
-                    retVal=true;
                     cmdEvent->accept();
                 }
             }
@@ -107,14 +103,12 @@ bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
         rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
         if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
             if(m_rpcList.contains(rpcData->procedureName())) {
-                retVal = true;
                 const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
                 Q_ASSERT(callId.isNull() == false);
                 m_rpcList[rpcData->procedureName()]->callFunction(callId,cmdEvent->peerId(),rpcData->invokationData());
                 cmdEvent->accept();
             }
             else { //unknown procedure
-                retVal = true;
                 qWarning() << "No remote procedure with entityId:" << m_entityId << "name:" << rpcData->procedureName();
                 VF_ASSERT(false, QStringC(QString("No remote procedure with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName())));
                 VeinComponent::ErrorData *eData = new VeinComponent::ErrorData();
@@ -130,7 +124,6 @@ bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
             }
         }
     }
-    return retVal;
 }
 
 void VfCppEntity::initModule()

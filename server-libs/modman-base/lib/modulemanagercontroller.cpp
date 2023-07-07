@@ -40,11 +40,8 @@ void ModuleManagerController::setStorage(VeinEvent::StorageSystem *t_storageSyst
     m_storageSystem = t_storageSystem;
 }
 
-bool ModuleManagerController::processEvent(QEvent *t_event)
+void ModuleManagerController::processEvent(QEvent *t_event)
 {
-    bool retVal = false;
-
-
     if(t_event->type() == VeinEvent::CommandEvent::eventType())
     {
         bool validated=false;
@@ -113,13 +110,11 @@ bool ModuleManagerController::processEvent(QEvent *t_event)
         if(validated == true)
         {
             ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
-            retVal = true;
             cEvent->setEventSubtype(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION);
             cEvent->eventData()->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL); //the validated answer is authored from the system that runs the validator (aka. this system)
             cEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL); //inform all users (may or may not result in network messages)
         }
     }
-    return retVal;
 }
 
 void ModuleManagerController::initializeEntity(const QString &sessionPath, const QStringList &sessionList)

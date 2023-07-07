@@ -94,7 +94,7 @@ namespace VeinNet
 
     // EventSystem interface
   public:
-    bool processEvent(QEvent *t_event) override;
+    void processEvent(QEvent *t_event) override;
 
   private:
     /**

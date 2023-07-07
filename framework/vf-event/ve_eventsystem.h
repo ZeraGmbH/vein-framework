@@ -27,9 +27,8 @@ public:
      * @brief Processes the given event
      * @param t_event
      * @note If the event is accepted it counts as consumed and will not be processed further
-     * @return true if the event was processed
      */
-    virtual bool processEvent(QEvent *t_event)=0;
+    virtual void processEvent(QEvent *t_event)=0;
 
     /**
      * @brief Connects the sigSendEvent signal with the EventHandler

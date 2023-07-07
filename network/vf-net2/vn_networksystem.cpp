@@ -276,10 +276,9 @@ namespace VeinNet
     d_ptr->m_operationMode = t_operationMode;
   }
 
-  bool NetworkSystem::processEvent(QEvent *t_event)
+  void NetworkSystem::processEvent(QEvent *t_event)
   {
     Q_ASSERT(t_event != nullptr);
-    bool retVal = false;
     VeinEvent::EventData *evData = nullptr;
 
     if(t_event->type() == ProtocolEvent::getEventType()) //incoming messages
@@ -290,7 +289,6 @@ namespace VeinNet
 
       //      if(pEvent->eventOrigin() == ProtocolEvent::CO_FOREIGN) //< this is checked differently in processProtoEvent
       //      {
-      retVal = true;
       d_ptr->processProtoEvent(pEvent);
       //      }
     }
@@ -302,7 +300,6 @@ namespace VeinNet
         {
           vCDebug(VEIN_NET_VERBOSE) << "Debug mode is enabled, dropped event:" << t_event;
           t_event->accept();
-          retVal = true;
           break;
         }
         case VeinNet::NetworkSystem::VNOM_PASS_THROUGH:
@@ -320,16 +317,11 @@ namespace VeinNet
           {
             QByteArray flatBuffer = d_ptr->prepareEnvelope(cEvent);
             QList<QUuid> protoReceivers;
-
             if(cEvent->peerId().isNull() == false)
             {
               protoReceivers = QList<QUuid>() << cEvent->peerId();
             }
-
             d_ptr->sendNetworkEvent(protoReceivers, flatBuffer);
-
-
-            retVal = true;
           }
           break;
         }
@@ -358,7 +350,6 @@ namespace VeinNet
             if(isDiscarded) //the current event is addressed to this system so do not send it over the network
             {
               cEvent->setAccepted(true);
-              retVal = true;
             }
             else if(d_ptr->m_subscriptions.contains(evData->entityId()))
             {
@@ -369,7 +360,6 @@ namespace VeinNet
                 QByteArray flatBuffer = d_ptr->prepareEnvelope(cEvent);
                 vCDebug(VEIN_NET_VERBOSE) << "Processing command event:" << cEvent << "type:" << static_cast<qint8>(cEvent->eventSubtype());// << "new event:" << protoEvent;
                 d_ptr->sendNetworkEvent(protoReceivers, flatBuffer);
-                retVal = true;
               }
             }
           }
@@ -383,9 +373,7 @@ namespace VeinNet
       sEvent=static_cast<NetworkStatusEvent *>(t_event);
       Q_ASSERT(sEvent != nullptr);
 
-      retVal = true;
       d_ptr->handleNetworkStatusEvent(sEvent);
     }
-    return retVal;
   }
 }

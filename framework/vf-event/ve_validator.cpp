@@ -11,11 +11,8 @@ namespace VeinEvent
   {
   }
 
-  bool Validator::processEvent(QEvent *t_event)
+  void Validator::processEvent(QEvent *t_event)
   {
-    bool retVal = false;
-
-
     if(t_event->type() == CommandEvent::eventType())
     {
       CommandEvent *cEvent = nullptr;
@@ -30,7 +27,6 @@ namespace VeinEvent
       {
         case CommandEvent::EventSubtype::TRANSACTION:
         {
-          retVal = true;
           cEvent->setEventSubtype(CommandEvent::EventSubtype::NOTIFICATION);
           evData->setEventOrigin(EventData::EventOrigin::EO_LOCAL); //the validated answer is authored from the system that runs the validator (aka. this system)
           evData->setEventTarget(EventData::EventTarget::ET_ALL); //inform all users (may or may not result in network messages)
@@ -42,6 +38,5 @@ namespace VeinEvent
           break;
       }
     }
-    return retVal;
   }
 } // namespace VeinEvent

@@ -10,7 +10,7 @@ public:
     void setValue(int entityId, QString componentName, QVariant newValue);
     QVariant getValue(int entityId, QString componentName) const;
 private:
-    bool processEvent(QEvent *t_event) override;
+    void processEvent(QEvent *t_event) override;
     void notifyValueChange(int entityId, QString componentName, QVariant newValue);
 
     QHash<int, QHash<QString, QVariant>> m_valueHash;

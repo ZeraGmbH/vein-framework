@@ -14,7 +14,7 @@ public:
 private:
     void createEntity(int entityId);
     void createComponent(int entityId, QString componentName, QVariant initialValue);
-    bool processEvent(QEvent *) override;
+    void processEvent(QEvent *) override;
 
     QHash<int, QSet<QString>> m_entityComponentsCreated;
 };

@@ -18,7 +18,7 @@ void VfTestEntitySpy::reset()
     m_entityList.clear();
 }
 
-bool VfTestEntitySpy::processEvent(QEvent *event)
+void VfTestEntitySpy::processEvent(QEvent *event)
 {
     if(event->type() == VeinEvent::CommandEvent::eventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
@@ -33,5 +33,4 @@ bool VfTestEntitySpy::processEvent(QEvent *event)
             }
         }
     }
-    return false; // why is processEvent returning bool - it is ignored anyway?
 }

@@ -147,11 +147,9 @@ namespace VeinNet
     emit sigSendEvent(sEvent);
   }
 
-  bool TcpSystem::processEvent(QEvent *t_event)
+  void TcpSystem::processEvent(QEvent *t_event)
   {
     Q_ASSERT(t_event != nullptr);
-
-    bool retVal = false;
     if(t_event->type()==ProtocolEvent::getEventType())
     {
       ProtocolEvent *pEvent=nullptr;
@@ -186,6 +184,5 @@ namespace VeinNet
         }
       }
     }
-    return retVal;
   }
 }

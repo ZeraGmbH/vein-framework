@@ -19,7 +19,7 @@ public:
     QList<TComponentInfo> getComponentList() const;
     void reset();
 private:
-    bool processEvent(QEvent *event) override;
+    void processEvent(QEvent *event) override;
     VeinComponent::ComponentData::Command m_cmdToFilter;
     QList<TComponentInfo> m_componentList;
 };
