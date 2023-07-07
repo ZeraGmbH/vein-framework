@@ -22,6 +22,24 @@ VeinTestServer::VeinTestServer(VeinEvent::EventHandler *eventHandler) :
     m_mmController.initOnce();
 }
 
+void VeinTestServer::addEntity(int entityId, QString entityName)
+{
+    if(m_entities.find(entityId) != m_entities.end()) {
+        qFatal("Entity ID %i already inserted!", entityId);
+    }
+    m_entities[entityId] = std::make_unique<VfCpp::VfCppEntity>(entityId);
+    m_vfEventHandler->addSubsystem(m_entities[entityId].get());
+    m_entities[entityId]->initModule();
+    m_entities[entityId]->createComponent("EntityName", entityName, true);
+}
+
+void VeinTestServer::addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly)
+{
+    if(m_entities.find(entityId) == m_entities.end())
+        qFatal("Entity with ID %i was not added by addEntity!", entityId);
+    m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
+}
+
 QList<int> VeinTestServer::getEntityAddList() const
 {
     return m_vfEntityAddSpy.getEntityList();

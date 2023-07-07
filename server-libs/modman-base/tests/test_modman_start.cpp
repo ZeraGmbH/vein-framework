@@ -3,7 +3,6 @@
 #include "ve_eventhandler.h"
 #include "vftestentityspyfilter.h"
 #include "vftestcomponentspyfilter.h"
-#include "vf-cpp-entity.h"
 #include <QAbstractEventDispatcher>
 #include <QTest>
 
@@ -45,11 +44,8 @@ void test_modman_start::modmanPlusOneEntity()
     VeinTestServer vfTestServer(&vfEventHandler);
 
     int entityId = 1;
-    VfCpp::VfCppEntity entity(entityId);
-    vfEventHandler.addSubsystem(&entity);
-    entity.initModule();
-    entity.createComponent("EntityName", "FooEntity", true);
-    entity.createComponent("Foo", "FooVal", false);
+    vfTestServer.addEntity(entityId, "FooEntity");
+    vfTestServer.addComponent(entityId, "Foo", "FooVal", false);
     feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
@@ -74,18 +70,12 @@ void test_modman_start::modmanPlusTwoEntities()
     VeinTestServer vfTestServer(&vfEventHandler);
 
     int entityId1 = 1;
-    VfCpp::VfCppEntity entity1(entityId1);
-    vfEventHandler.addSubsystem(&entity1);
-    entity1.initModule();
-    entity1.createComponent("EntityName", "FooEntity", true);
-    entity1.createComponent("Foo", "FooVal", false);
+    vfTestServer.addEntity(entityId1, "FooEntity");
+    vfTestServer.addComponent(entityId1, "Foo", "FooVal", false);
     int entityId2 = 2;
-    VfCpp::VfCppEntity entity2(entityId2);
-    vfEventHandler.addSubsystem(&entity2);
-    entity2.initModule();
-    entity2.createComponent("EntityName", "BarEntity", true);
-    entity2.createComponent("Bar", "BarVal", false);
-    entity2.createComponent("Baz", "BazVal", false);
+    vfTestServer.addEntity(entityId2, "BarEntity");
+    vfTestServer.addComponent(entityId2, "Bar", "BarVal", false);
+    vfTestServer.addComponent(entityId2, "Baz", "BazVal", false);
     feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
@@ -120,10 +110,8 @@ void test_modman_start::modmanPlusOneEntityModulesLoaded()
     VeinTestServer vfTestServer(&vfEventHandler);
 
     int entityId = 1;
-    VfCpp::VfCppEntity entity(entityId);
-    vfEventHandler.addSubsystem(&entity);
-    entity.initModule();
-    entity.createComponent("EntityName", "FooEntity", true);
+    vfTestServer.addEntity(entityId, "FooEntity");
+    vfTestServer.addComponent(entityId, "Foo", "FooVal", false);
     feedEventLoop();
 
     vfTestServer.resetLists();
