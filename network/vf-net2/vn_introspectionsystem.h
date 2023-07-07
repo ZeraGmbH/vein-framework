@@ -21,7 +21,7 @@ public:
     explicit IntrospectionSystem(QObject *parent=nullptr);
     static const QString s_nameComponent;
 
-    bool processEvent(QEvent *event) override;
+    void processEvent(QEvent *event) override;
 private:
     QJsonObject getJsonIntrospection(int entityId) const;
     QHash<int, EntityIntrospection*> m_introspectionData;

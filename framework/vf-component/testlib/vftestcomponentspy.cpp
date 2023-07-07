@@ -18,7 +18,7 @@ void VfTestComponentSpy::reset()
     m_componentList.clear();
 }
 
-bool VfTestComponentSpy::processEvent(QEvent *event)
+void VfTestComponentSpy::processEvent(QEvent *event)
 {
     if(event->type() == VeinEvent::CommandEvent::eventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
@@ -39,5 +39,4 @@ bool VfTestComponentSpy::processEvent(QEvent *event)
             }
         }
     }
-    return false; // why is processEvent returning bool - it is ignored anyway?
 }

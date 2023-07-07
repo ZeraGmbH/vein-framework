@@ -66,7 +66,7 @@ public:
     /**
      * @todo set up a queue for sent transactional VeinEvent::CommandEvent and compare against notifications / errors
      */
-    bool processEvent(QEvent *t_event) override;
+    void processEvent(QEvent *t_event) override;
 
 signals:
     void sigStateChanged(ConnectionState t_state);

@@ -18,9 +18,8 @@ QVariant VfTestComponentData::getValue(int entityId, QString componentName) cons
     return m_valueHash[entityId][componentName];
 }
 
-bool VfTestComponentData::processEvent(QEvent *)
+void VfTestComponentData::processEvent(QEvent *)
 {
-    return false;
 }
 
 void VfTestComponentData::notifyValueChange(int entityId, QString componentName, QVariant newValue)

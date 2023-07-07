@@ -32,8 +32,8 @@ signals:
 public slots:
     void initModule();
 private:
-    bool processEvent(QEvent *event) override;
-    bool processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
+    void processEvent(QEvent *event) override;
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
     QMap<QString,VfCppComponent::Ptr> m_componentList;
     QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
     QMap<int,QSet<QString>> m_watchList;

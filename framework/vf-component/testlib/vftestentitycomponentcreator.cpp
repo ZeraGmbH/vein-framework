@@ -35,7 +35,6 @@ void VfTestEntityComponentCreator::createComponent(int entityId, QString compone
     emit sigSendEvent(event);
 }
 
-bool VfTestEntityComponentCreator::processEvent(QEvent *)
+void VfTestEntityComponentCreator::processEvent(QEvent *)
 {
-    return false;
 }

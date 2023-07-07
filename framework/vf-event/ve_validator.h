@@ -19,15 +19,7 @@ class VFEVENT_EXPORT Validator : public EventSystem
     Q_OBJECT
 public:
     explicit Validator(QObject *t_parent = nullptr);
-
-    // EventSystem interface
-public:
-    bool processEvent(QEvent *t_event) override;
-
-signals:
-
-public slots:
-
+    void processEvent(QEvent *t_event) override;
 };
 
 } // namespace VeinEvent

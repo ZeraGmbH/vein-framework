@@ -12,7 +12,7 @@ public:
     QList<int> getEntityList() const;
     void reset();
 private:
-    bool processEvent(QEvent *event) override;
+    void processEvent(QEvent *event) override;
     VeinComponent::EntityData::Command m_cmdToFilter;
     QList<int> m_entityList;
 };

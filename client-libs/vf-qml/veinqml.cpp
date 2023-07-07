@@ -126,9 +126,8 @@ void VeinQml::entityUnsubscribeById(int t_entityId)
     vCDebug(VEIN_API_QML_VERBOSE) << "Subscription removed for entity:" << t_entityId << "new subscriptionCount:" << subscriptionCount;
 }
 
-bool VeinQml::processEvent(QEvent *t_event)
+void VeinQml::processEvent(QEvent *t_event)
 {
-    bool retVal = false;
     if(t_event->type()==CommandEvent::eventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(t_event);
         Q_ASSERT(cEvent != nullptr);
@@ -142,7 +141,6 @@ bool VeinQml::processEvent(QEvent *t_event)
             {
                 ComponentData *cData = static_cast<ComponentData *>(evData);
                 Q_ASSERT(cData != nullptr);
-                retVal = true;
                 if(m_entities.contains(cData->entityId())) /// @note component data is only processed after the introspection has been processed
                     m_entities.value(cData->entityId())->processComponentData(cData);
                 break;
@@ -150,7 +148,6 @@ bool VeinQml::processEvent(QEvent *t_event)
             case EntityData::dataType():
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
-                retVal = true;
                 int entityId =eData->entityId();
                 switch(eData->eventCommand())
                 {
@@ -187,7 +184,6 @@ bool VeinQml::processEvent(QEvent *t_event)
             case IntrospectionData::dataType():
             {
                 IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
-                retVal = true;
                 int entityId = iData->entityId();
                 vCDebug(VEIN_API_QML_VERBOSE) << "Received introspection data for entity:" << entityId;
                 if(m_entities.contains(entityId) == false) {
@@ -203,7 +199,6 @@ bool VeinQml::processEvent(QEvent *t_event)
             {
                 RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(evData);
                 Q_ASSERT(rpcData != nullptr);
-                retVal = true;
                 if(m_entities.contains(rpcData->entityId())) /// @note component data is only processed after the introspection has been processed
                     m_entities.value(rpcData->entityId())->processRemoteProcedureData(rpcData);
                 break;
@@ -213,7 +208,6 @@ bool VeinQml::processEvent(QEvent *t_event)
             }
         }
     }
-    return retVal;
 }
 
 void VeinQml::onEntityLoaded(int t_entityId)

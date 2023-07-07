@@ -37,10 +37,9 @@ IntrospectionSystem::IntrospectionSystem(QObject *parent) :
 
 const QString IntrospectionSystem::s_nameComponent = QLatin1String("EntityName");
 
-bool IntrospectionSystem::processEvent(QEvent *event)
+void IntrospectionSystem::processEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
-    bool retVal = false;
     if(event->type() == CommandEvent::eventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
@@ -83,8 +82,6 @@ bool IntrospectionSystem::processEvent(QEvent *event)
                         vCDebug(VEIN_NET_INTRO_VERBOSE) << "Sending introspection event:" << newEvent;
 
                         emit sigSendEvent(newEvent);
-
-                        retVal = true;
                     }
                     else {
                         QString tmpErrorString = tr("No introspection available for requested entity, entity id: %1").arg(eData->entityId());
@@ -147,8 +144,6 @@ bool IntrospectionSystem::processEvent(QEvent *event)
             }
         }
     }
-
-    return retVal;
 }
 
 QJsonObject IntrospectionSystem::getJsonIntrospection(int entityId) const

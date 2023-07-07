@@ -51,10 +51,8 @@ VeinHash::~VeinHash()
 }
 
 
-bool VeinHash::processEvent(QEvent *t_event)
+void VeinHash::processEvent(QEvent *t_event)
 {
-    bool retVal = false;
-
     if(t_event->type()==CommandEvent::eventType())
     {
         CommandEvent *cEvent = nullptr;
@@ -83,7 +81,7 @@ bool VeinHash::processEvent(QEvent *t_event)
                 else
                 {
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing component data from event" << cEvent;
-                    retVal = processComponentData(cData);
+                    processComponentData(cData);
                 }
                 break;
             }
@@ -94,7 +92,7 @@ bool VeinHash::processEvent(QEvent *t_event)
                 Q_ASSERT(eData != nullptr);
 
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing entity data from event" << cEvent;
-                retVal = processEntityData(eData);
+                processEntityData(eData);
                 break;
             }
             default:
@@ -102,8 +100,6 @@ bool VeinHash::processEvent(QEvent *t_event)
             }
         }
     }
-
-    return retVal;
 }
 
 StorageSystem::StorageType VeinHash::getStorageType() const
