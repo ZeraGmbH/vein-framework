@@ -133,11 +133,6 @@ bool VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
     return retVal;
 }
 
-int VfCppEntity::getEntitiyId() const
-{
-    return m_entityId;
-}
-
 void VfCppEntity::initModule()
 {
     VeinComponent::EntityData *eData = new VeinComponent::EntityData();
