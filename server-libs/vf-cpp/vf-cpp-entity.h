@@ -1,11 +1,10 @@
+#ifndef VFCPPENTITY_H
+#define VFCPPENTITY_H
 
-#pragma once
-
-#include <QList>
-#include <QMap>
+#include "vf-cpp-component.h"
+#include "vf-cpp-rpc.h"
 #include <ve_eventsystem.h>
-#include <vf-cpp-component.h>
-#include <vf-cpp-rpc.h>
+#include <QMap>
 
 namespace VfCpp {
 
@@ -13,11 +12,8 @@ class VfCppEntity : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    typedef QSharedPointer<VfCppEntity> Ptr;
     VfCppEntity(int entityId);
-
     bool hasComponent(const QString name);
-    int getEntitiyId() const;
     VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly=false);
     /**
      * @brief createRpc creates a vein rpc
@@ -27,12 +23,10 @@ public:
      * @return the rpc handler
      *
      * There is no reason to use the rpc handler object
-     *
      */
     cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread=true);
     void watchComponent(int entityId, const QString &componentName);
     bool unWatchComponent(int entityId, const QString &componentName);
-
 signals:
     void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value);
 public slots:
@@ -44,7 +38,8 @@ private:
     QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
     QMap<int,QSet<QString>> m_watchList;
     int m_entityId;
-public:
 };
 
 }
+
+#endif //VFCPPENTITY_H
