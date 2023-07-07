@@ -14,15 +14,15 @@ class QQmlPropertyMap;
 
 namespace VeinApiQml
 {
-  class EntityComponentMap;
-  /**
+class EntityComponentMap;
+/**
    * @brief QML binding to interoperate with entity/component data via VeinApiQml::EntityComponentMap
    */
-  class VFQML_EXPORT VeinQml : public VeinEvent::EventSystem
-  {
+class VFQML_EXPORT VeinQml : public VeinEvent::EventSystem
+{
     Q_OBJECT
 
-  public:
+public:
     /**
      * @brief VeinQml
      * @param t_parent
@@ -33,10 +33,10 @@ namespace VeinApiQml
     ~VeinQml();
 
     enum class ConnectionState : int {
-      VQ_IDLE = 0, /**< the system has been created and is not yet ready */
-      VQ_LOADED = 1, /**< the required entities are set and their introspection data has been fetched */
-      VQ_DISCONNECTED = 2, /**< the host or the client has closed the connection */
-      VQ_ERROR = 3 /**< error state, e.g. a required entity is not available on the server */
+        VQ_IDLE = 0, /**< the system has been created and is not yet ready */
+        VQ_LOADED = 1, /**< the required entities are set and their introspection data has been fetched */
+        VQ_DISCONNECTED = 2, /**< the host or the client has closed the connection */
+        VQ_ERROR = 3 /**< error state, e.g. a required entity is not available on the server */
     };
     Q_ENUMS(ConnectionState)
 
@@ -62,13 +62,13 @@ namespace VeinApiQml
     Q_INVOKABLE void entityUnsubscribeById(int t_entityId);
 
     // EventSystem interface
-  public:
+public:
     /**
      * @todo set up a queue for sent transactional VeinEvent::CommandEvent and compare against notifications / errors
      */
     bool processEvent(QEvent *t_event) override;
 
-  signals:
+signals:
     void sigStateChanged(ConnectionState t_state);
 
     /**
@@ -78,14 +78,14 @@ namespace VeinApiQml
      */
     void sigEntityAvailable(QString t_entityName);
 
-  private slots:
+private slots:
     /**
      * @brief checks the required entities and transits in the VQ_LOADED state when all are resolved
      * @param t_entityId
      */
     void onEntityLoaded(int t_entityId);
 
-  private:
+private:
     /**
      * @brief Searches the list of entities for the given name
      * @param t_entityName
@@ -122,6 +122,6 @@ namespace VeinApiQml
      * @note do not delete from c++
      */
     static VeinQml *s_staticInstance;
-  };
+};
 }
 #endif // VEINQML_H
