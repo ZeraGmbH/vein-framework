@@ -37,12 +37,6 @@ namespace VeinTcp
     void setPeerId(QUuid t_peerId);
 
     /**
-   * @brief Allows access to the QTcpSocket
-   * @return QTcpSocket used by this instance
-   */
-    QTcpSocket *getTcpSocket() const;
-
-    /**
      * @brief Forwards QTcpSocket->errorString();
      * @return Error string
      */

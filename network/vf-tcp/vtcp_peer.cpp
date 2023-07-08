@@ -66,11 +66,6 @@ void TcpPeer::setPeerId(QUuid t_peerId)
     d_ptr->m_peerId = t_peerId;
 }
 
-QTcpSocket *TcpPeer::getTcpSocket() const
-{
-    return d_ptr->m_tcpSock;
-}
-
 QString TcpPeer::getErrorString() const
 {
     return d_ptr->m_tcpSock->errorString();
