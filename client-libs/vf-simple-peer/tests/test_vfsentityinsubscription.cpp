@@ -28,6 +28,23 @@ void test_vfsentityinsubscription::intropectSystemEntitySignalReceived()
     QCOMPARE(spy.count(), 1);
 }
 
+void test_vfsentityinsubscription::trySubscribeOnNonExistantEntity()
+{
+    VeinEvent::EventHandler eventHandler;
+    VeinTestServer testServer(&eventHandler);
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    feedEventLoop();
+
+    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(42);
+    cmdEventHandlerSystem.addItem(entityToSubscribe);
+    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
+    entityToSubscribe->sendSubscrption();
+    feedEventLoop();
+
+    QCOMPARE(spy.count(), 1);
+}
+
 void test_vfsentityinsubscription::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
