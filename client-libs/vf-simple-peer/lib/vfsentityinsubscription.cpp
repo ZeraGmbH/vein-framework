@@ -2,6 +2,8 @@
 #include "vcmp_entitydata.h"
 #include "vcmp_errordata.h"
 #include <vcmp_introspectiondata.h>
+#include <QJsonObject>
+#include <QJsonArray>
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -27,6 +29,21 @@ void VfsEntityInSubscription::sendSubscrption()
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
+QStringList VfsEntityInSubscription::getComponentNames()
+{
+    return m_componentNames;
+}
+
+void VfsEntityInSubscription::parseIntrospectionData(EventData *evData)
+{
+    IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
+    QJsonObject jsonObject = iData->jsonData();
+    QJsonArray componentsArray = jsonObject["components"].toArray();
+    m_componentNames.clear();
+    for(auto entry : componentsArray)
+        m_componentNames.append(entry.toString());
+}
+
 void VfsEntityInSubscription::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
@@ -34,6 +51,7 @@ void VfsEntityInSubscription::processCommandEvent(VeinEvent::CommandEvent *cmdEv
         Q_ASSERT(evData != nullptr);
         switch(evData->type()) {
             case IntrospectionData::dataType():
+                parseIntrospectionData(evData);
                 emit sigSubscribed(true, m_entityId);
                 break;
             case ErrorData::dataType():
