@@ -1,5 +1,6 @@
 #include "vfsentityinsubscription.h"
 #include "vcmp_entitydata.h"
+#include "vcmp_errordata.h"
 #include <vcmp_introspectiondata.h>
 
 using namespace VeinEvent;
@@ -31,8 +32,14 @@ void VfsEntityInSubscription::processCommandEvent(VeinEvent::CommandEvent *cmdEv
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
         EventData *evData = cmdEvent->eventData();
         Q_ASSERT(evData != nullptr);
-        if(evData->type() == IntrospectionData::dataType())
-            emit sigSubscribed(true, m_entityId);
+        switch(evData->type()) {
+            case IntrospectionData::dataType():
+                emit sigSubscribed(true, m_entityId);
+                break;
+            case ErrorData::dataType():
+                emit sigSubscribed(false, m_entityId);
+                break;
+        }
     }
 }
 

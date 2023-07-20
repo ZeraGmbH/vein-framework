@@ -8,7 +8,7 @@ class test_vfsentityinsubscription : public QObject
     Q_OBJECT
 private slots:
     void intropectSystemEntitySignalReceived();
-
+    void trySubscribeOnNonExistantEntity();
 private:
     void feedEventLoop();
 };
