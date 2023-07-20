@@ -46,6 +46,7 @@ function(SETUP_TESTS)
             VfComponentTest
             VfCpp
             VfCppClient
+            VfSimplePeer
             VfNet2
             ModmanBase
             veinserver-testlib
