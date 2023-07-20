@@ -10,11 +10,13 @@ public:
     static std::shared_ptr<VfsEntityInSubscription> create(int entityId);
     VfsEntityInSubscription(int entityId);
     void sendSubscrption();
-    // get subscription data
+    QStringList getComponentNames();
 signals:
     void sigSubscribed(bool ok, int entityId);
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void parseIntrospectionData(VeinEvent::EventData *evData);
+    QStringList m_componentNames;
 };
 
 typedef std::shared_ptr<VfsEntityInSubscription> VfsEntityInSubscriptionPtr;
