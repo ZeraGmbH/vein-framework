@@ -45,7 +45,6 @@ function(SETUP_TESTS)
             Qt5::Test
             VfComponentTest
             VfCpp
-            VfCppClient
             VfSimplePeer
             VfNet2
             ModmanBase
