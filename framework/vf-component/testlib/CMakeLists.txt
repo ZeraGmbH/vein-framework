@@ -14,7 +14,6 @@ add_library(VfComponentTest SHARED
 target_link_libraries(VfComponentTest
     PUBLIC
     Qt5::Core
-    VfHelpers
     VfComponent
     VfEvent
     VfStorageHash

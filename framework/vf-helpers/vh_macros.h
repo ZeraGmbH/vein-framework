@@ -1,7 +1,6 @@
 #ifndef VH_MACROS_H
 #define VH_MACROS_H
 
-#include "vfhelpers_export.h"
 #include <functional>
 #include <QVariantMap>
 #include <QLatin1String>

@@ -15,7 +15,6 @@ target_link_libraries(VfSimplePeer
     PUBLIC
     Qt5::Core
     Qt5::Qml
-    VfHelpers
     VfEvent
     VfComponent
     VfNet2
