@@ -3,7 +3,8 @@
 
 #include <vfcommandeventhandleritem.h>
 #include <QEvent>
-#include <unordered_map>
+#include <QHash>
+#include <set>
 
 class VfCommandEventHandler
 {
@@ -14,7 +15,7 @@ public:
     void processEvent(QEvent *event);
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
 private:
-    std::unordered_map<int, VfCommandEventHandlerItemPtr> m_items;
+    QHash<int, std::set<VfCommandEventHandlerItemPtr>> m_items;
 };
 
 #endif // VFCOMMANDEVENTHANDLER_H
