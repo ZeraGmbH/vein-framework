@@ -18,15 +18,6 @@ target_link_libraries(VfHelpers
     Qt5::Core
     )
 
-set_target_properties(VfHelpers PROPERTIES VERSION ${PROJECT_VERSION})
-set_target_properties(VfHelpers PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
-
-generate_export_header(VfHelpers)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/vfhelpers_export.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/VfHelpers
-    )
-
 export(TARGETS VfHelpers FILE VeinFrameworkTargets.cmake)
 install(TARGETS VfHelpers
     EXPORT VeinFrameworkExport

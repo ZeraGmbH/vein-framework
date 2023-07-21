@@ -3,7 +3,6 @@
 
 #include "globalIncludes.h"
 #include <ve_eventsystem.h>
-#include <vh_handlemanager.h>
 #include <QAbstractSocket>
 #include <QUuid>
 

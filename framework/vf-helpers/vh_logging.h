@@ -1,7 +1,6 @@
 #ifndef VH_LOGGING
 #define VH_LOGGING
 
-#include "vfhelpers_export.h"
 #include <QLoggingCategory>
 
 #ifdef VF_NO_DEBUG
