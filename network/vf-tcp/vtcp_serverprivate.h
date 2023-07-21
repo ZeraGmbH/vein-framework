@@ -2,16 +2,18 @@
 #define VEIN_TCP_SERVERPRIVATE_H
 
 #include <QList>
+#include <QTcpServer>
 
 namespace VeinTcp
 {
   class TcpPeer;
   class TcpServer;
 
-  class TcpServerPrivate
+  class TcpServerPrivate : public QTcpServer
   {
     TcpServerPrivate(TcpServer *t_public);
     ~TcpServerPrivate();
+    void incomingConnection(qintptr t_socketDescriptor) override;
 
     QList<TcpPeer*> m_clients;
     TcpServer *q_ptr = nullptr;
