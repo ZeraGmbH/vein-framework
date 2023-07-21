@@ -3,52 +3,37 @@
 
 #include "globalIncludes.h"
 #include <ve_eventsystem.h>
-
 #include <vh_handlemanager.h>
-
 #include <QAbstractSocket>
 #include <QUuid>
 
-
 namespace VeinTcp
 {
-  class TcpPeer;
-  class TcpServer;
-}
-
-namespace google
-{
-  namespace protobuf
-  {
-    class Message;
-  }
+class TcpPeer;
+class TcpServer;
 }
 
 namespace VeinNet
 {
-  /**
+/**
    * @brief TCP wire protocol implementation for protobuf::VeinProtocol data
    *
    * Handles ProtocolEvents, it interfaces libxiqnet to send messages over the network
    * @todo needs something like interexchangable strategy objects that allow error recovery depending on the application needs
    */
-  class VFNET2_EXPORT TcpSystem : public VeinEvent::EventSystem
-  {
+class VFNET2_EXPORT TcpSystem : public VeinEvent::EventSystem
+{
     Q_OBJECT
-
-  public:
+public:
     explicit TcpSystem(QObject *t_parent = nullptr);
     virtual ~TcpSystem();
-
-  signals:
+signals:
     //client part
     void sigConnnectionEstablished(QUuid t_connectionId);
-
     //server part
     void sigClientConnected(QUuid t_connectionId);
     void sigClientDisconnected(QUuid t_connectionId);
-
-  public slots:
+public slots:
     /**
      * @brief listens on QHostAddress::Any with port t_port
      * @param t_port: Port number
@@ -93,10 +78,10 @@ namespace VeinNet
     void onSocketError(VeinTcp::TcpPeer *t_peer, QAbstractSocket::SocketError t_socketError);
 
     // EventSystem interface
-  public:
+public:
     void processEvent(QEvent *t_event) override;
 
-  private:
+private:
     /**
      * @brief List of clients waiting for approval
      */
@@ -111,6 +96,6 @@ namespace VeinNet
      * @brief The server instance
      */
     VeinTcp::TcpServer *m_server = nullptr;
-  };
+};
 }
 #endif // VN_TCPSYSTEM_H
