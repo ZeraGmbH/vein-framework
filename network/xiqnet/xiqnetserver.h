@@ -3,9 +3,7 @@
 
 #include "xiqnet_global.h"
 #include "xiqnet_export.h"
-
 #include <QTcpServer>
-
 #include <QList>
 
 class XiQNetServerPrivate;
@@ -18,31 +16,17 @@ class XIQNET_EXPORT XiQNetServer : public QTcpServer
 public:
     explicit XiQNetServer(QObject *t_parent = nullptr);
     virtual ~XiQNetServer();
-
     QList<XiQNetPeer*> getClientList() const;
-
-    /**
-   * @brief Incoming connections use the default XiQNetWrapper for messaging
-   * @param t_wrapper
-   */
     void setDefaultWrapper(XiQNetWrapper *t_wrapper);
-
 signals:
     void sigClientConnected(XiQNetPeer *t_peer);
-
 public slots:
     void startServer(quint16 t_port, bool t_systemdSocket=true);
 
-protected slots:
-    /**
-     * @brief For reference housekeeping
-     */
+private slots:
     void clientDisconnectedSRV();
-
-protected:
-    void incomingConnection(qintptr t_socketDescriptor) override;
-
 private:
+    void incomingConnection(qintptr t_socketDescriptor) override;
     XiQNetServerPrivate *d_ptr = nullptr;
 };
 
