@@ -44,19 +44,24 @@ void VfsEntityInSubscription::parseIntrospectionData(EventData *evData)
         m_componentNames.append(entry.toString());
 }
 
+void VfsEntityInSubscription::finishSubscription(bool ok)
+{
+    emit sigSubscribed(ok, m_entityId);
+}
+
 void VfsEntityInSubscription::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
         EventData *evData = cmdEvent->eventData();
         Q_ASSERT(evData != nullptr);
         switch(evData->type()) {
-            case IntrospectionData::dataType():
-                parseIntrospectionData(evData);
-                emit sigSubscribed(true, m_entityId);
-                break;
-            case ErrorData::dataType():
-                emit sigSubscribed(false, m_entityId);
-                break;
+        case IntrospectionData::dataType():
+            parseIntrospectionData(evData);
+            finishSubscription(true);
+            break;
+        case ErrorData::dataType():
+            finishSubscription(false);
+            break;
         }
     }
 }
