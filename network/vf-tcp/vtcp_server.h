@@ -10,9 +10,6 @@ namespace VeinTcp
 class TcpServerPrivate;
 class TcpPeer;
 
-/**
- * @brief Custom QTcpServer based implementation of a TCP server
- */
 class VFTCP_EXPORT TcpServer : public QObject
 {
     Q_OBJECT
@@ -25,10 +22,8 @@ signals:
     void sigClientConnected(TcpPeer *t_peer);
 public slots:
     bool startServer(quint16 t_port, bool t_systemdSocket=true);
-protected slots:
-    /**
-     * @brief For reference housekeeping
-     */
+
+private slots:
     void clientDisconnectedSRV(TcpPeer *t_peer);
 private:
     void incomingConnection(qintptr t_socketDescriptor);
