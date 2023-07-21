@@ -23,12 +23,6 @@ QList<TcpPeer *> TcpServer::getClientList() const
     return d_ptr->m_clients;
 }
 
-void TcpServer::broadcastMessage(QByteArray t_message) const
-{
-    for(TcpPeer *tmpClient : d_ptr->m_clients)
-        tmpClient->sendMessage(t_message);
-}
-
 bool TcpServer::startServer(quint16 t_port, bool t_systemdSocket)
 {
     bool retVal = false;
