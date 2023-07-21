@@ -36,12 +36,6 @@ signals:
 
 public slots:
   /**
-   * @brief Sends the message to all peers of this server
-   * @param t_message
-   */
-  void broadcastMessage(const google::protobuf::Message &t_message) const;
-
-  /**
    * @brief Convenient function for QTcpServer::listen()
    * @note Prints out the server port to the debug message handler
    * @param t_port: Port number

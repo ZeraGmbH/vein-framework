@@ -24,13 +24,6 @@ public:
 signals:
     void sigClientConnected(TcpPeer *t_peer);
 public slots:
-    void broadcastMessage(QByteArray t_message) const;
-    /**
-     * @brief Convenient function for QTcpServer::listen()
-     * @note Prints out the server port to the debug message handler
-     * @param t_port: Port number
-     * @param t_systemdSocket: true: use systemd socket
-     */
     bool startServer(quint16 t_port, bool t_systemdSocket=true);
 protected slots:
     /**

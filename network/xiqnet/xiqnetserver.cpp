@@ -29,14 +29,6 @@ void XiQNetServer::setDefaultWrapper(XiQNetWrapper *t_wrapper)
   d_ptr->m_defaultWrapper = t_wrapper;
 }
 
-void XiQNetServer::broadcastMessage(const google::protobuf::Message &t_message) const
-{
-  for(XiQNetPeer *tmpClient : d_ptr->m_clients)
-  {
-    tmpClient->sendMessage(t_message);
-  }
-}
-
 void XiQNetServer::startServer(quint16 t_port, bool t_systemdSocket)
 {
 
