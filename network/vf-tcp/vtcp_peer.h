@@ -13,36 +13,28 @@ QT_END_NAMESPACE
 
 namespace VeinTcp
 {
-  class TcpPeerPrivate;
-
-
-  /**
+class TcpPeerPrivate;
+/**
  * @brief Custom QTcpSocket based implementation of a TCP network peer
  */
-  class VFTCP_EXPORT TcpPeer : public QObject
-  {
+class VFTCP_EXPORT TcpPeer : public QObject
+{
     Q_OBJECT
-  public:
+public:
     explicit TcpPeer(QObject *t_parent = nullptr);
     explicit TcpPeer(qintptr t_socketDescriptor, QObject *t_parent = nullptr);
-
     ~TcpPeer();
 
     QString getIpAddress() const;
     quint16 getPort() const;
     bool isConnected() const;
 
-
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
 
-    /**
-     * @brief Forwards QTcpSocket->errorString();
-     * @return Error string
-     */
     QString getErrorString() const;
 
-  signals:
+signals:
     /**
      * @brief Emitted if successful connected
      * @param t_sender the connected peer
@@ -66,7 +58,7 @@ namespace VeinTcp
      */
     void sigSocketError(TcpPeer *t_sender, QAbstractSocket::SocketError t_socketError);
 
-  public slots:
+public slots:
     /**
    * @brief Transmits the message
    * @param t_message
@@ -85,15 +77,15 @@ namespace VeinTcp
    */
     void stopConnection();
 
-  protected slots:
+protected slots:
     void onReadyRead();
 
-  private:
+private:
     /**
    * @brief PIMPL pointer
    */
     TcpPeerPrivate *d_ptr = nullptr;
-  };
+};
 }
 
 #endif // VEIN_TCP_PEER_H

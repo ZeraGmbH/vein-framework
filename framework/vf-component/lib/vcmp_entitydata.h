@@ -7,20 +7,19 @@
 
 namespace VeinComponent
 {
-  /**
+/**
    * @brief Command object (see GoF Command pattern) for entity data
    */
-  class VFCOMPONENT_EXPORT EntityData : public VeinEvent::EventData
-  {
-  public:
+class VFCOMPONENT_EXPORT EntityData : public VeinEvent::EventData
+{
+public:
     enum class Command : qint8 {
-      ECMD_INVALID = -1, /**< default */
-      ECMD_ADD = 0, /**< adds a new entity */
-      ECMD_REMOVE = 1, /**< removes the entity */
-      ECMD_SUBSCRIBE = 2, /**< starts async notifications */
-      ECMD_UNSUBSCRIBE = 3 /**< stops async notifications */
+        ECMD_INVALID = -1, /**< default */
+        ECMD_ADD = 0, /**< adds a new entity */
+        ECMD_REMOVE = 1, /**< removes the entity */
+        ECMD_SUBSCRIBE = 2, /**< starts async notifications */
+        ECMD_UNSUBSCRIBE = 3 /**< stops async notifications */
     };
-
     explicit EntityData();
 
     /**
@@ -32,19 +31,16 @@ namespace VeinComponent
     void setCommand(Command t_eDataCommand);
     Command eventCommand() const;
 
-
     // EventData interface
-  public:
+public:
     bool isValid() const override;
     int type() const override { return VCMP_ENTITYDATA_DATATYPE; }
     QByteArray serialize() const override;
     void deserialize(const QByteArray &t_data) override;
 
-
-
-  private:
+private:
     Command m_command = Command::ECMD_INVALID;
-  };
+};
 
 } // namespace VeinEvent
 
