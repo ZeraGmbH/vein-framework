@@ -21,7 +21,7 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, this, [this](QAbstractSocket::SocketError t_socketError){ emit sigSocketError(this, t_socketError); });
 
-    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::stopConnection);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::closeConnection);
     if(d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor) == false) {
         emit sigSocketError(this, d_ptr->m_tcpSock->error());
         qFatal("[vein-tcp] Error setting clients socket descriptor");
@@ -89,12 +89,12 @@ void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, this, [this](QAbstractSocket::SocketError t_socketError){ emit sigSocketError(this, t_socketError); });
-    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::stopConnection);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::closeConnection);
     d_ptr->m_tcpSock->connectToHost(t_ipAddress, t_port);
     d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-void TcpPeer::stopConnection()
+void TcpPeer::closeConnection()
 {
     Q_ASSERT(d_ptr->m_tcpSock);
 

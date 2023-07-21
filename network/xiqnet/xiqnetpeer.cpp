@@ -21,7 +21,7 @@ XiQNetPeer::XiQNetPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::sigConnectionClosed);
     connect(d_ptr->m_tcpSock, SIGNAL(error(QAbstractSocket::SocketError)), this, SIGNAL(sigSocketError(QAbstractSocket::SocketError)));
 
-    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::stopConnection);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::closeConnection);
     if(!d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor)) {
         emit sigSocketError(d_ptr->m_tcpSock->error());
         qFatal("[xiqnet-qt] Error setting clients socket descriptor");
@@ -105,12 +105,12 @@ void XiQNetPeer::startConnection(QString t_ipAddress, quint16 t_port)
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &XiQNetPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::sigConnectionClosed);
     connect(d_ptr->m_tcpSock, SIGNAL(error(QAbstractSocket::SocketError)), this, SIGNAL(sigSocketError(QAbstractSocket::SocketError)));
-    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::stopConnection);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::closeConnection);
     d_ptr->m_tcpSock->connectToHost(t_ipAddress, t_port);
     d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-void XiQNetPeer::stopConnection()
+void XiQNetPeer::closeConnection()
 {
     Q_ASSERT(d_ptr->m_tcpSock);
 
