@@ -1,6 +1,7 @@
 #ifndef VFSENTITYINSUBSCRIPTION_H
 #define VFSENTITYINSUBSCRIPTION_H
 
+#include "vfcommandeventhandler.h"
 #include "vfcommandeventhandleritem.h"
 
 class VfsEntityInSubscription : public QObject, public VfCommandEventHandlerItem
@@ -16,6 +17,7 @@ signals:
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void parseIntrospectionData(VeinEvent::EventData *evData);
+    void finishSubscription(bool ok);
     QStringList m_componentNames;
 };
 

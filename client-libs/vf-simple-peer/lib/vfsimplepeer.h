@@ -27,7 +27,7 @@ private:
     void processCommandEvent(int entityId, VeinEvent::CommandEvent *cmdEvent);
 
     QMap<int/*entityId*/, VfsEntityInSubscriptionPtr> m_entitiesInSubsription;
-    std::map<int/*entityId*/, VfsEntitySubscribed> m_entitiesSubsribed;
+    //std::map<int/*entityId*/, VfsEntitySubscribed> m_entitiesSubsribed;
     struct TransactionData
     {
         int entityId;

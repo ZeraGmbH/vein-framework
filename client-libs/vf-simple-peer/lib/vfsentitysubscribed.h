@@ -1,24 +1,27 @@
 #ifndef VFSENTITYSUBSCRIBED_H
 #define VFSENTITYSUBSCRIBED_H
 
-#include <QObject>
+#include "vfcommandeventhandleritem.h"
 #include <memory>
 
-class VfsEntitySubscribed : public QObject
+class VfsEntitySubscribed : public QObject, public VfCommandEventHandlerItem
 {
     Q_OBJECT
 public:
-    VfsEntitySubscribed(int entityId);
-    void getComponent(int transactionId, int entityId, QString componentName);
-    void setComponent(int transactionId, int entityId, QString componentName, QVariant value);
-signals:
-    void sigGetFinish(int transactionId, bool ok, QVariant value);
-    void sigSetFinish(int transactionId, bool ok);
+    static std::shared_ptr<VfsEntitySubscribed> create(int entityId, QStringList componentNames);
+    VfsEntitySubscribed(int entityId, QStringList componentNames);
 
+    void getComponent(QString componentName);
+    void setComponent(QString componentName, QVariant value);
+signals:
+    void sigEntityDeleted(int entityId);
+    void sigGetFinish(int entityId, QString componentName, bool ok, QVariant value);
+    void sigSetFinish(int entityId, QString componentName, bool ok);
 private:
-    int m_entityId;
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    QStringList m_componentNames;
 };
 
-typedef std::unique_ptr<VfsEntitySubscribed> VfEntitySubscribedPtr;
+typedef std::shared_ptr<VfsEntitySubscribed> VfsEntitySubscribedPtr;
 
 #endif // VFSENTITYSUBSCRIBED_H

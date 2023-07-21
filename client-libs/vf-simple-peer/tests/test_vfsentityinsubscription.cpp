@@ -9,7 +9,7 @@
 
 QTEST_MAIN(test_vfsentityinsubscription)
 
-static constexpr int systemEnitityId = 0;
+static constexpr int systemEntityId = 0;
 static constexpr int noneExistentEnitityId = 42;
 
 void test_vfsentityinsubscription::intropectSystemEntitySignalReceived()
@@ -22,7 +22,7 @@ void test_vfsentityinsubscription::intropectSystemEntitySignalReceived()
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEnitityId);
+    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
     entityToSubscribe->sendSubscrption();
@@ -56,7 +56,7 @@ void test_vfsentityinsubscription::introspectComponentNames()
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEnitityId);
+    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
     entityToSubscribe->sendSubscrption();
