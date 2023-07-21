@@ -1,16 +1,10 @@
-file(GLOB SOURCES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
-    )
-
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     )
 
-add_library(VfHelpers SHARED
-    ${SOURCES}
+add_library(VfHelpers STATIC
     ${HEADER}
     )
-
 
 target_include_directories(VfHelpers 
     PUBLIC
