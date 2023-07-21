@@ -39,16 +39,6 @@ TcpPeer::~TcpPeer()
     d_ptr=0;
 }
 
-QString TcpPeer::getIpAddress() const
-{
-    return d_ptr->m_tcpSock->peerAddress().toString();
-}
-
-quint16 TcpPeer::getPort() const
-{
-    return d_ptr->m_tcpSock->peerPort();
-}
-
 bool TcpPeer::isConnected() const
 {
     return d_ptr->m_tcpSock && (d_ptr->m_tcpSock->state()==QTcpSocket::ConnectedState || d_ptr->m_tcpSock->state()==QTcpSocket::BoundState);

@@ -5,7 +5,6 @@
 #include <QString>
 #include <QAbstractSocket>
 
-
 namespace VeinTcp
 {
 class TcpPeerPrivate;
@@ -17,10 +16,6 @@ public:
     explicit TcpPeer(QObject *t_parent = nullptr);
     explicit TcpPeer(qintptr t_socketDescriptor, QObject *t_parent = nullptr);
     ~TcpPeer();
-
-    QString getIpAddress() const;
-    quint16 getPort() const;
-    bool isConnected() const;
 
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
@@ -34,11 +29,12 @@ signals:
 public slots:
     void sendMessage(QByteArray t_message) const;
     void startConnection(QString t_ipAddress, quint16 t_port);
-    void closeConnection();
 
 private slots:
     void onReadyRead();
+    void closeConnection();
 private:
+    bool isConnected() const;
     TcpPeerPrivate *d_ptr = nullptr;
 };
 }

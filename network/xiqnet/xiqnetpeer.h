@@ -26,9 +26,8 @@ public:
 
     // This is lazy crap
     QTcpSocket *getTcpSocket() const;
-
     // This makes the difference to vf-tcp: protobuf en/decoding is in here / vf-tcp
-    // handles opaque QByteArray - see further google below
+    // handles opaque QByteArray - see further 'google' below
     XiQNetWrapper *getWrapper() const;
     void setWrapper(XiQNetWrapper *value);
 
@@ -41,10 +40,10 @@ signals:
 public slots:
     void sendMessage(const google::protobuf::Message &t_message) const;
     void startConnection(QString t_ipAddress, quint16 t_port);
-    void closeConnection();
 
 private slots:
     void onReadyRead();
+    void closeConnection();
 private:
     XiQNetPeerPrivate *d_ptr = nullptr;
 };
