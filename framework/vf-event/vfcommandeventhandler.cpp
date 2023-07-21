@@ -5,22 +5,14 @@ using namespace VeinEvent;
 
 void VfCommandEventHandler::addItem(VfCommandEventHandlerItemPtr item)
 {
-    int entityId = item->getEntityId();
-    Q_ASSERT(!containsItem(entityId));
-    m_items[entityId] = item;
+    std::set<VfCommandEventHandlerItemPtr> &items = m_items[item->getEntityId()];
+    items.insert(item);
 }
 
 void VfCommandEventHandler::removeItem(VfCommandEventHandlerItemPtr item)
 {
-    int entityId = item->getEntityId();
-    Q_ASSERT(containsItem(entityId));
-    m_items.erase(entityId);
-}
-
-bool VfCommandEventHandler::containsItem(int entityId)
-{
-    std::unordered_map<int, VfCommandEventHandlerItemPtr>::const_iterator iter = m_items.find(entityId);
-    return iter != m_items.end();
+    std::set<VfCommandEventHandlerItemPtr> &items = m_items[item->getEntityId()];
+    items.erase(item);
 }
 
 void VfCommandEventHandler::processEvent(QEvent *event)
@@ -39,6 +31,8 @@ void VfCommandEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEven
     VeinEvent::EventData *eventData = cmdEvent->eventData();
     Q_ASSERT(eventData != nullptr);
     int entityId = eventData->entityId();
-    if(containsItem(entityId))
-        m_items[entityId]->processCommandEvent(cmdEvent);
+    if(m_items.contains(entityId)) {
+        for(auto item : m_items[entityId])
+            item->processCommandEvent(cmdEvent);
+    }
 }
