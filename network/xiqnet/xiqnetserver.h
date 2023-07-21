@@ -14,53 +14,36 @@ class XiQNetWrapper;
 
 class XIQNET_EXPORT XiQNetServer : public QTcpServer
 {
-  Q_OBJECT
+    Q_OBJECT
 public:
-  explicit XiQNetServer(QObject *t_parent = nullptr);
-  virtual ~XiQNetServer();
+    explicit XiQNetServer(QObject *t_parent = nullptr);
+    virtual ~XiQNetServer();
 
-  QList<XiQNetPeer*> getClientList() const;
+    QList<XiQNetPeer*> getClientList() const;
 
-  /**
+    /**
    * @brief Incoming connections use the default XiQNetWrapper for messaging
    * @param t_wrapper
    */
-  void setDefaultWrapper(XiQNetWrapper *t_wrapper);
+    void setDefaultWrapper(XiQNetWrapper *t_wrapper);
 
 signals:
-  /**
-   * @brief A new client connected
-   * @param t_peer
-   */
-  void sigClientConnected(XiQNetPeer *t_peer);
+    void sigClientConnected(XiQNetPeer *t_peer);
 
 public slots:
-  /**
-   * @brief Convenient function for QTcpServer::listen()
-   * @note Prints out the server port to the debug message handler
-   * @param t_port: Port number
-   * @param t_systemdSocket: true: use systemd socket
-   */
-  void startServer(quint16 t_port, bool t_systemdSocket=true);
+    void startServer(quint16 t_port, bool t_systemdSocket=true);
 
 protected slots:
-  /**
-   * @brief For reference housekeeping
-   */
-  void clientDisconnectedSRV();
+    /**
+     * @brief For reference housekeeping
+     */
+    void clientDisconnectedSRV();
 
 protected:
-  /**
-   * @brief Override of QTcpServer function
-   * @param t_socketDescriptor
-   */
-  void incomingConnection(qintptr t_socketDescriptor) override;
+    void incomingConnection(qintptr t_socketDescriptor) override;
 
 private:
-  /**
-   * @brief PIMPL pointer
-   */
-  XiQNetServerPrivate *d_ptr = nullptr;
+    XiQNetServerPrivate *d_ptr = nullptr;
 };
 
 #endif // H2012_xiqnet_SERVER_H
