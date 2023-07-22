@@ -53,7 +53,7 @@ bool TcpServerWorker::startServer(quint16 port, bool systemdSocket)
             }
         }
     }
-    if(isListening() == false) {
+    if(!isListening()) {
         if(listen(QHostAddress::Any, port)) {
             retVal = true;
             qDebug()<<"[vein-tcp] Server Started on port:" << port;
