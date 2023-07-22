@@ -1,4 +1,4 @@
-#include "vtcp_peerprivate.h"
+#include "vtcp_peerworker.h"
 #include "vtcp_peer.h"
 #include <QDataStream>
 #include <QTcpSocket>
@@ -6,24 +6,24 @@
 namespace VeinTcp
 {
 
-TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer) :
     q_ptr(publicPeer)
 {
 }
 
-TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer, qintptr socketDescriptor) :
     q_ptr(publicPeer)
 {
     m_tcpSock = new QTcpSocket();
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
-    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
+    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerWorker::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
         m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
         q_ptr, [this](QAbstractSocket::SocketError socketError) {
             emit q_ptr->emit sigSocketError(q_ptr, socketError);
         });
-    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
+    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerWorker::closeConnection);
     if(m_tcpSock->setSocketDescriptor(socketDescriptor) == false) {
         emit q_ptr->sigSocketError(q_ptr, m_tcpSock->error());
         qFatal("[vein-tcp] Error setting clients socket descriptor");
@@ -31,7 +31,7 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
     m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-TcpPeerPrivate::~TcpPeerPrivate()
+TcpPeerWorker::~TcpPeerWorker()
 {
     // From the Qt manual QAbstractSocket::disconnected(): "Warning: If you need to delete
     // the sender() of this signal in a slot connected to it, use the deleteLater() function."
@@ -40,36 +40,36 @@ TcpPeerPrivate::~TcpPeerPrivate()
     m_tcpSock = nullptr;
 }
 
-void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
+void TcpPeerWorker::startConnection(QString ipAddress, quint16 port)
 {
     //the tcp socket must not exist at this point
     Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
     m_tcpSock = new QTcpSocket(q_ptr);
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
-    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
+    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerWorker::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
         m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
         q_ptr, [this](QAbstractSocket::SocketError t_socketError){
             emit q_ptr->sigSocketError(q_ptr, t_socketError);
         });
-    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
+    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerWorker::closeConnection);
     m_tcpSock->connectToHost(ipAddress, port);
     m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-bool TcpPeerPrivate::isConnected() const
+bool TcpPeerWorker::isConnected() const
 {
     return m_tcpSock &&
            (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
 }
 
-QString TcpPeerPrivate::getErrorString() const
+QString TcpPeerWorker::getErrorString() const
 {
     return m_tcpSock->errorString();
 }
 
-QByteArray TcpPeerPrivate::readArray() const
+QByteArray TcpPeerWorker::readArray() const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
     QDataStream in(m_tcpSock);
@@ -88,7 +88,7 @@ QByteArray TcpPeerPrivate::readArray() const
 
 }
 
-void TcpPeerPrivate::sendArray(const QByteArray &byteArray) const
+void TcpPeerWorker::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
 
@@ -100,7 +100,7 @@ void TcpPeerPrivate::sendArray(const QByteArray &byteArray) const
         qWarning() << "[vein-tcp] Write failed for client:" << q_ptr->getPeerId();
 }
 
-void TcpPeerPrivate::onReadyRead()
+void TcpPeerWorker::onReadyRead()
 {
     QByteArray newMessage;
     newMessage = readArray();
@@ -110,7 +110,7 @@ void TcpPeerPrivate::onReadyRead()
     }
 }
 
-void TcpPeerPrivate::closeConnection()
+void TcpPeerWorker::closeConnection()
 {
     Q_ASSERT(m_tcpSock);
     m_tcpSock->close();
