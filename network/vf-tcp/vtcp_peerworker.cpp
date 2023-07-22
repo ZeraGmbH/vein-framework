@@ -90,6 +90,7 @@ QByteArray TcpPeerWorker::readArray() const
 
 void TcpPeerWorker::sendArray(const QByteArray &byteArray) const
 {
+    Q_ASSERT_X(isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
 
     QDataStream out(m_tcpSock);

@@ -40,7 +40,6 @@ QString TcpPeer::getErrorString() const
 
 void TcpPeer::sendMessage(QByteArray t_message) const
 {
-    Q_ASSERT_X(m_worker->isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
     m_worker->sendArray(t_message);
 }
 
