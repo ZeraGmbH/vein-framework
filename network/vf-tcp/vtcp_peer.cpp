@@ -60,7 +60,7 @@ void TcpPeer::setPeerId(QUuid t_peerId)
 
 QString TcpPeer::getErrorString() const
 {
-    return d_ptr->m_tcpSock->errorString();
+    return d_ptr->getErrorString();
 }
 
 void TcpPeer::sendMessage(QByteArray t_message) const

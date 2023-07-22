@@ -36,6 +36,11 @@ bool TcpPeerPrivate::isConnected() const
            (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
 }
 
+QString TcpPeerPrivate::getErrorString() const
+{
+    return m_tcpSock->errorString();
+}
+
 QByteArray TcpPeerPrivate::readArray() const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
