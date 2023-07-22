@@ -12,6 +12,7 @@ class TcpPeerPrivate
 {
 private:
     explicit TcpPeerPrivate(TcpPeer *t_publicPeer);
+    bool isConnected() const;
     QByteArray readArray() const;
     void sendArray(const QByteArray &t_byteArray) const;
 

@@ -39,11 +39,6 @@ TcpPeer::~TcpPeer()
     d_ptr=0;
 }
 
-bool TcpPeer::isConnected() const
-{
-    return d_ptr->m_tcpSock && (d_ptr->m_tcpSock->state()==QTcpSocket::ConnectedState || d_ptr->m_tcpSock->state()==QTcpSocket::BoundState);
-}
-
 QUuid TcpPeer::getPeerId() const
 {
     return d_ptr->m_peerId;
@@ -63,7 +58,7 @@ QString TcpPeer::getErrorString() const
 
 void TcpPeer::sendMessage(QByteArray t_message) const
 {
-    Q_ASSERT_X(isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    Q_ASSERT_X(d_ptr->isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
 
     d_ptr->sendArray(t_message);
 }

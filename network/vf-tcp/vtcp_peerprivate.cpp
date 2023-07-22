@@ -9,6 +9,12 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer) :  q_ptr(t_publicPeer)
 {
 }
 
+bool TcpPeerPrivate::isConnected() const
+{
+    return m_tcpSock &&
+           (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
+}
+
 QByteArray TcpPeerPrivate::readArray() const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
