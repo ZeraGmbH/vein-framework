@@ -2,6 +2,7 @@
 #define VEIN_TCP_SERVERPRIVATE_H
 
 #include "vtcp_peer.h"
+#include "vtcp_serverworkerinterface.h"
 #include <QList>
 #include <QTcpServer>
 
@@ -9,13 +10,14 @@ namespace VeinTcp
 {
 class TcpServer;
 
-class TcpServerWorker : public QTcpServer
+class TcpServerWorker : public QTcpServer, public TcpServerWorkerInterface
 {
     Q_OBJECT
 public:
     TcpServerWorker(TcpServer *server);
     ~TcpServerWorker();
-    bool startServer(quint16 port, bool systemdSocket);
+    bool startServer(quint16 port, bool systemdSocket) override;
+    bool isListenActive() override;
 private slots:
     void clientDisconnectedSRV(TcpPeer *peer);
 private:
