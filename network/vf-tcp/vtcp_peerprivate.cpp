@@ -1,4 +1,5 @@
 #include "vtcp_peerprivate.h"
+#include "vtcp_peer.h"
 #include <QDataStream>
 #include <QTcpSocket>
 
@@ -28,7 +29,7 @@ QByteArray TcpPeerPrivate::readArray() const
         return retVal;
     else { //need to wait for more data
         if(in.status() == QDataStream::ReadCorruptData)
-            qWarning() << "[vein-tcp] Received corrupt data from client:" << m_peerId;
+            qWarning() << "[vein-tcp] Received corrupt data from client:" << q_ptr->getPeerId();
         return QByteArray();
     }
 
@@ -43,6 +44,6 @@ void TcpPeerPrivate::sendArray(const QByteArray &t_byteArray) const
     out << t_byteArray;
 
     if(out.status() == QDataStream::WriteFailed)
-        qWarning() << "[vein-tcp] Write failed for client:" << m_peerId;
+        qWarning() << "[vein-tcp] Write failed for client:" << q_ptr->getPeerId();
 }
 }
