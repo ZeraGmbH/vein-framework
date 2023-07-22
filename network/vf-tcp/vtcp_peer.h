@@ -8,7 +8,7 @@
 
 namespace VeinTcp
 {
-class TcpPeerPrivate;
+class TcpPeerWorker;
 
 class VFTCP_EXPORT TcpPeer : public QObject
 {
@@ -33,7 +33,7 @@ public slots:
 
 private:
     QUuid m_peerId;
-    TcpPeerPrivate *d_ptr = nullptr;
+    TcpPeerWorker *d_ptr = nullptr;
 };
 }
 

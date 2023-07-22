@@ -1,19 +1,20 @@
 #ifndef VEIN_TCP_PEERPRIVATE_H
 #define VEIN_TCP_PEERPRIVATE_H
 
+#include "vtcp_peerworkerinterface.h"
 #include <QTcpSocket>
 
 namespace VeinTcp
 {
 class TcpPeer;
 
-class TcpPeerPrivate : public QObject
+class TcpPeerWorker : public TcpPeerWorkerInterface
 {
     Q_OBJECT
 public:
-    TcpPeerPrivate(TcpPeer *publicPeer);
-    TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor);
-    virtual ~TcpPeerPrivate();
+    TcpPeerWorker(TcpPeer *publicPeer);
+    TcpPeerWorker(TcpPeer *publicPeer, qintptr socketDescriptor);
+    virtual ~TcpPeerWorker();
     void startConnection(QString ipAddress, quint16 port);
     bool isConnected() const;
     QString getErrorString() const;

@@ -1,5 +1,5 @@
 #include "vtcp_peer.h"
-#include "vtcp_peerprivate.h"
+#include "vtcp_peerworker.h"
 #include <QTcpSocket>
 #include <QHostAddress>
 
@@ -7,13 +7,13 @@ namespace VeinTcp
 {
 TcpPeer::TcpPeer(QObject *t_parent) :
     QObject(t_parent),
-    d_ptr(new TcpPeerPrivate(this))
+    d_ptr(new TcpPeerWorker(this))
 {
 }
 
 TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
-    d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
+    d_ptr(new TcpPeerWorker(this, t_socketDescriptor))
 {
 }
 
