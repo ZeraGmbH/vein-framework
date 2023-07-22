@@ -5,13 +5,8 @@ namespace VeinTcp
 {
 TcpServer::TcpServer(QObject *parent) :
     QObject(parent),
-    m_serverWorker(new TcpServerWorker(this))
+    m_serverWorker(std::make_unique<TcpServerWorker>(this))
 {
-}
-
-TcpServer::~TcpServer()
-{
-    delete m_serverWorker;
 }
 
 bool TcpServer::startServer(quint16 port, bool systemdSocket)
