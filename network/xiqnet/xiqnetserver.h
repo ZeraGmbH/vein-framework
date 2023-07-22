@@ -16,7 +16,6 @@ class XIQNET_EXPORT XiQNetServer : public QTcpServer
 public:
     explicit XiQNetServer(QObject *t_parent = nullptr);
     virtual ~XiQNetServer();
-    QList<XiQNetPeer*> getClientList() const;
     void setDefaultWrapper(XiQNetWrapper *t_wrapper);
 signals:
     void sigClientConnected(XiQNetPeer *t_peer);

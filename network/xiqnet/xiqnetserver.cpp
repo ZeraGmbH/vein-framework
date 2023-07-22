@@ -15,11 +15,6 @@ XiQNetServer::~XiQNetServer()
     delete d_ptr;
 }
 
-QList<XiQNetPeer *> XiQNetServer::getClientList() const
-{
-    return d_ptr->m_clients;
-}
-
 void XiQNetServer::setDefaultWrapper(XiQNetWrapper *t_wrapper)
 {
     Q_ASSERT(t_wrapper != nullptr);
