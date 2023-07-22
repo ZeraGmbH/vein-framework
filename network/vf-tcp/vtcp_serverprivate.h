@@ -6,20 +6,21 @@
 
 namespace VeinTcp
 {
-  class TcpPeer;
-  class TcpServer;
+class TcpPeer;
+class TcpServer;
 
-  class TcpServerPrivate : public QTcpServer
-  {
+class TcpServerPrivate : public QTcpServer
+{
+public:
     TcpServerPrivate(TcpServer *server);
     ~TcpServerPrivate();
-    void incomingConnection(qintptr socketDescriptor) override;
     bool startServer(quint16 port, bool systemdSocket);
-
+private:
+    void incomingConnection(qintptr socketDescriptor) override;
     QList<TcpPeer*> m_clients;
     TcpServer *q_ptr = nullptr;
 
     friend class TcpServer;
-  };
+};
 }
 #endif // VEIN_TCP_SERVERPRIVATE_H
