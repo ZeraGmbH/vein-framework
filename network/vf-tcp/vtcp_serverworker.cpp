@@ -63,4 +63,9 @@ bool TcpServerWorker::startServer(quint16 port, bool systemdSocket)
     }
     return retVal;
 }
+
+bool TcpServerWorker::isListenActive()
+{
+    return isListening();
+}
 }

@@ -2,10 +2,10 @@
 #define VEIN_TCP_PEER_H
 
 #include "vftcp_export.h"
+#include "vtcp_peerworkerinterface.h"
 #include <QString>
 #include <QAbstractSocket>
 #include <QUuid>
-#include "vtcp_peerworkerinterface.h"
 
 namespace VeinTcp
 {

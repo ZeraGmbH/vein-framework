@@ -21,6 +21,6 @@ bool TcpServer::startServer(quint16 port, bool systemdSocket)
 
 bool TcpServer::isListening() const
 {
-    return m_serverWorker->isListening();
+    return m_serverWorker->isListenActive();
 }
 }

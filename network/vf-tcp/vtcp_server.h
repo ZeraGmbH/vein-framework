@@ -3,12 +3,11 @@
 
 #include "vftcp_export.h"
 #include "vtcp_peer.h"
+#include "vtcp_serverworkerinterface.h"
 #include <QObject>
 
 namespace VeinTcp
 {
-class TcpServerWorker;
-
 class VFTCP_EXPORT TcpServer : public QObject
 {
     Q_OBJECT
@@ -22,8 +21,7 @@ signals:
     void sigClientConnected(TcpPeer *t_peer);
 
 private:
-    friend class TcpServerWorker;
-    TcpServerWorker *m_serverWorker = nullptr;
+    TcpServerWorkerInterface *m_serverWorker = nullptr;
 };
 }
 #endif // VEIN_TCP_SERVER_H
