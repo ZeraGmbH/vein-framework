@@ -1,5 +1,6 @@
 #include "vtcp_workerfactorymethods.h"
 #include "vtcp_peerworker.h"
+#include "vtcp_serverworker.h"
 
 namespace VeinTcp
 {
@@ -12,6 +13,11 @@ std::function<TcpPeerWorkerInterfacePtr(TcpPeer *, qintptr)> TcpWorkerFactoryMet
     return std::make_unique<TcpPeerWorker>(peer, socketDescriptor, TcpPeerWorker::secret());
 };
 
+std::function<TcpServerWorkerInterfacePtr(TcpServer *)> TcpWorkerFactoryMethods::m_createFunctionServer = [](TcpServer *server) {
+    return std::make_unique<TcpServerWorker>(server, TcpServerWorker::secret());
+};
+
+
 TcpPeerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpPeerWorker(TcpPeer *peer)
 {
     return m_createFunctionPeer(peer);
@@ -20,6 +26,11 @@ TcpPeerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpPeerWorker(TcpPeer *
 TcpPeerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor)
 {
     return m_createFunctionPeerDescriptor(peer, socketDescriptor);
+}
+
+TcpServerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpServerWorker(TcpServer *server)
+{
+    return m_createFunctionServer(server);
 }
 
 }

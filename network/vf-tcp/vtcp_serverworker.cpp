@@ -5,7 +5,7 @@
 
 namespace VeinTcp
 {
-TcpServerWorker::TcpServerWorker(TcpServer *server) :
+TcpServerWorker::TcpServerWorker(TcpServer *server, secret) :
     m_server(server)
 {
 }
