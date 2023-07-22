@@ -12,8 +12,13 @@ namespace VeinTcp
 class TcpServerWorker : public QTcpServer, public TcpServerWorkerInterface
 {
     Q_OBJECT
+private:
+    // Just our friend TcpWorkerFactoryMethods can create us (by make_unique) - see
+    // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
+    struct secret { explicit secret() = default; };
+    friend class TcpWorkerFactoryMethods;
 public:
-    TcpServerWorker(TcpServer *server);
+    TcpServerWorker(TcpServer *server, secret);
     ~TcpServerWorker();
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
