@@ -9,6 +9,7 @@ namespace VeinTcp
 class TcpServerWorkerInterface
 {
 public:
+    virtual ~TcpServerWorkerInterface() = default;
     virtual bool startServer(quint16 port, bool systemdSocket) = 0;
     virtual bool isListenActive() = 0;
 };

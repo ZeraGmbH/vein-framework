@@ -10,6 +10,7 @@ class TcpPeerWorkerInterface : public QObject
 {
     Q_OBJECT
 public:
+    virtual ~TcpPeerWorkerInterface() = default;
     virtual void startConnection(QString ipAddress, quint16 port) = 0;
     virtual QString getErrorString() const = 0;
     virtual void sendArray(const QByteArray &byteArray) const = 0;
