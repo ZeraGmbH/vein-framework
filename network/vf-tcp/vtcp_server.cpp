@@ -1,27 +1,26 @@
 #include "vtcp_server.h"
-#include "vtcp_serverprivate.h"
-#include "vtcp_peer.h"
+#include "vtcp_serverworker.h"
 
 namespace VeinTcp
 {
 TcpServer::TcpServer(QObject *parent) :
     QObject(parent),
-    d_ptr(new TcpServerPrivate(this))
+    m_serverWorker(new TcpServerWorker(this))
 {
 }
 
 TcpServer::~TcpServer()
 {
-    delete d_ptr;
+    delete m_serverWorker;
 }
 
 bool TcpServer::startServer(quint16 port, bool systemdSocket)
 {
-    return d_ptr->startServer(port, systemdSocket);
+    return m_serverWorker->startServer(port, systemdSocket);
 }
 
 bool TcpServer::isListening() const
 {
-    return d_ptr->isListening();
+    return m_serverWorker->isListening();
 }
 }
