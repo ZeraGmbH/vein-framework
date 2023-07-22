@@ -14,6 +14,7 @@ namespace VeinTcp
     TcpServerPrivate(TcpServer *server);
     ~TcpServerPrivate();
     void incomingConnection(qintptr socketDescriptor) override;
+    bool startServer(quint16 port, bool systemdSocket);
 
     QList<TcpPeer*> m_clients;
     TcpServer *q_ptr = nullptr;
