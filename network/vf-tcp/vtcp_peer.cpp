@@ -15,12 +15,6 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
     d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
 {
-    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        d_ptr->m_tcpSock, &QTcpSocket::error,
-        this, [this](QAbstractSocket::SocketError t_socketError) {
-            emit sigSocketError(this, t_socketError);
-        });
-
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::closeConnection);
     if(d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor) == false) {
         emit sigSocketError(this, d_ptr->m_tcpSock->error());
@@ -32,12 +26,6 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
 void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 {
     d_ptr->startConnection(t_ipAddress, t_port);
-
-    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        d_ptr->m_tcpSock, &QTcpSocket::error,
-        this, [this](QAbstractSocket::SocketError t_socketError){
-            emit sigSocketError(this, t_socketError);
-        });
 
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::closeConnection);
     d_ptr->m_tcpSock->connectToHost(t_ipAddress, t_port);
