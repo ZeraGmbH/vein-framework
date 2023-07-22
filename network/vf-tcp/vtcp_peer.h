@@ -34,7 +34,6 @@ private slots:
     void onReadyRead();
     void closeConnection();
 private:
-    bool isConnected() const;
     TcpPeerPrivate *d_ptr = nullptr;
 };
 }
