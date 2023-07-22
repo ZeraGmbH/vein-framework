@@ -24,7 +24,20 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
             emit q_ptr->emit sigSocketError(q_ptr, socketError);
         });
     connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
+    if(m_tcpSock->setSocketDescriptor(socketDescriptor) == false) {
+        emit q_ptr->sigSocketError(q_ptr, m_tcpSock->error());
+        qFatal("[vein-tcp] Error setting clients socket descriptor");
+    }
+    m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
+}
 
+TcpPeerPrivate::~TcpPeerPrivate()
+{
+    // From the Qt manual QAbstractSocket::disconnected(): "Warning: If you need to delete
+    // the sender() of this signal in a slot connected to it, use the deleteLater() function."
+    // The destructor will be called in such a case so delete the QTcpSocket with deleteLater()
+    m_tcpSock->deleteLater();
+    m_tcpSock = nullptr;
 }
 
 void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
@@ -41,7 +54,8 @@ void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
             emit q_ptr->sigSocketError(q_ptr, t_socketError);
         });
     connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
-
+    m_tcpSock->connectToHost(ipAddress, port);
+    m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
 bool TcpPeerPrivate::isConnected() const

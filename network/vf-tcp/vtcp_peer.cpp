@@ -15,29 +15,17 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
     d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
 {
-    if(d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor) == false) {
-        emit sigSocketError(this, d_ptr->m_tcpSock->error());
-        qFatal("[vein-tcp] Error setting clients socket descriptor");
-    }
-    d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
 void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 {
     d_ptr->startConnection(t_ipAddress, t_port);
-
-    d_ptr->m_tcpSock->connectToHost(t_ipAddress, t_port);
-    d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
 TcpPeer::~TcpPeer()
 {
-    //From the Qt manual QAbstractSocket::disconnected(): "Warning: If you need to delete the sender() of this signal in a slot connected to it, use the deleteLater() function."
-    //The destructor will be called in such a case so delete the QTcpSocket with deleteLater()
-    d_ptr->m_tcpSock->deleteLater();
-    d_ptr->m_tcpSock=0;
     delete d_ptr;
-    d_ptr=0;
+    d_ptr = nullptr;
 }
 
 QUuid TcpPeer::getPeerId() const
@@ -48,7 +36,6 @@ QUuid TcpPeer::getPeerId() const
 void TcpPeer::setPeerId(QUuid t_peerId)
 {
     Q_ASSERT(t_peerId.isNull() == false);
-
     m_peerId = t_peerId;
 }
 
