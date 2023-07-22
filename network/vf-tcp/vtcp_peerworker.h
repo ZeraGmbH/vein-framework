@@ -28,6 +28,7 @@ private slots:
     void onReadyRead();
     void closeConnection();
 private:
+    void prepareSocket();
     bool isConnected() const;
     QByteArray readArray() const;
     QTcpSocket *m_tcpSock = nullptr;
