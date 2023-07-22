@@ -5,11 +5,10 @@
 #include <QString>
 #include <QAbstractSocket>
 #include <QUuid>
+#include "vtcp_peerworkerinterface.h"
 
 namespace VeinTcp
 {
-class TcpPeerWorker;
-
 class VFTCP_EXPORT TcpPeer : public QObject
 {
     Q_OBJECT
@@ -33,7 +32,7 @@ public slots:
 
 private:
     QUuid m_peerId;
-    TcpPeerWorker *d_ptr = nullptr;
+    TcpPeerWorkerInterface *m_worker = nullptr;
 };
 }
 
