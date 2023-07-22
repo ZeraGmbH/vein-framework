@@ -6,12 +6,12 @@
 namespace VeinTcp
 {
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer, secret) :
     q_ptr(publicPeer)
 {
 }
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer, qintptr socketDescriptor) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *publicPeer, qintptr socketDescriptor, secret) :
     q_ptr(publicPeer)
 {
     m_tcpSock = new QTcpSocket();
