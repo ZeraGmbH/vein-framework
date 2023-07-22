@@ -15,6 +15,7 @@ public:
     TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor);
     void startConnection(QString ipAddress, quint16 port);
     bool isConnected() const;
+    QString getErrorString() const;
 
 private slots:
     void onReadyRead();
