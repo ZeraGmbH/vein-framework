@@ -18,7 +18,18 @@ TcpServerPrivate::~TcpServerPrivate()
 
 void TcpServerPrivate::incomingConnection(qintptr socketDescriptor)
 {
-    q_ptr->incomingConnection(socketDescriptor);
+    qDebug()<<"[vein-tcp] Client connected";
+    TcpPeer *client = new TcpPeer(socketDescriptor, this); //deleted in TcpServer::clientDisconnectedSRV
+    m_clients.append(client);
+    connect(client, &TcpPeer::sigConnectionClosed, this, &TcpServerPrivate::clientDisconnectedSRV);
+    emit q_ptr->sigClientConnected(client);
+}
+
+void TcpServerPrivate::clientDisconnectedSRV(TcpPeer *peer)
+{
+    m_clients.removeAll(peer);
+    ///@note use deletelater to execute other signal slot connections connected to the TcpPeer::sigConnectionClosed signal
+    peer->deleteLater();
 }
 
 bool TcpServerPrivate::startServer(quint16 port, bool systemdSocket)

@@ -11,6 +11,7 @@ class TcpServer;
 
 class TcpServerPrivate : public QTcpServer
 {
+    Q_OBJECT
 public:
     TcpServerPrivate(TcpServer *server);
     ~TcpServerPrivate();
@@ -19,6 +20,8 @@ private:
     void incomingConnection(qintptr socketDescriptor) override;
     QList<TcpPeer*> m_clients;
     TcpServer *q_ptr = nullptr;
+private slots:
+    void clientDisconnectedSRV(TcpPeer *peer);
 
     friend class TcpServer;
 };
