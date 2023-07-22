@@ -20,42 +20,37 @@ TcpPeerWorker::~TcpPeerWorker()
     m_tcpSock = nullptr;
 }
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret) :
-    m_peer(peer)
+void VeinTcp::TcpPeerWorker::prepareSocket()
 {
-    m_tcpSock = new QTcpSocket();
     connect(m_tcpSock, &QTcpSocket::connected, m_peer, [this](){ emit m_peer->sigConnectionEstablished(m_peer); });
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerWorker::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, m_peer, [this](){ emit m_peer->sigConnectionClosed(m_peer); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
         m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
         m_peer, [this](QAbstractSocket::SocketError socketError) {
-            emit m_peer->emit sigSocketError(m_peer, socketError);
+            emit m_peer->sigSocketError(m_peer, socketError);
         });
     connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerWorker::closeConnection);
+    m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
+}
+
+TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret) :
+    m_peer(peer)
+{
+    m_tcpSock = new QTcpSocket();
+    prepareSocket();
     if(m_tcpSock->setSocketDescriptor(socketDescriptor) == false) {
         emit m_peer->sigSocketError(m_peer, m_tcpSock->error());
         qFatal("[vein-tcp] Error setting clients socket descriptor");
     }
-    m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
 void TcpPeerWorker::startConnection(QString ipAddress, quint16 port)
 {
-    //the tcp socket must not exist at this point
     Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
     m_tcpSock = new QTcpSocket(m_peer);
-    connect(m_tcpSock, &QTcpSocket::connected, m_peer, [this](){ emit m_peer->sigConnectionEstablished(m_peer); });
-    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerWorker::onReadyRead);
-    connect(m_tcpSock, &QTcpSocket::disconnected, m_peer, [this](){ emit m_peer->sigConnectionClosed(m_peer); });
-    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
-        m_peer, [this](QAbstractSocket::SocketError t_socketError){
-            emit m_peer->sigSocketError(m_peer, t_socketError);
-        });
-    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerWorker::closeConnection);
+    prepareSocket();
     m_tcpSock->connectToHost(ipAddress, port);
-    m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
 bool TcpPeerWorker::isConnected() const
@@ -78,7 +73,7 @@ QByteArray TcpPeerWorker::readArray() const
     QByteArray retVal;
     in >> retVal;
 
-    if(in.commitTransaction() == true)
+    if(in.commitTransaction())
         return retVal;
     else { //need to wait for more data
         if(in.status() == QDataStream::ReadCorruptData)
