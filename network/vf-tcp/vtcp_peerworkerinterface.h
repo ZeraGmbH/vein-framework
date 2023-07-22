@@ -2,6 +2,7 @@
 #define VTCP_PEERWORKERINTERFACE_H
 
 #include <QObject>
+#include <memory>
 
 namespace VeinTcp
 {
@@ -14,6 +15,8 @@ public:
     virtual QString getErrorString() const = 0;
     virtual void sendArray(const QByteArray &byteArray) const = 0;
 };
+
+typedef std::unique_ptr<TcpPeerWorkerInterface> TcpPeerWorkerInterfacePtr;
 
 }
 

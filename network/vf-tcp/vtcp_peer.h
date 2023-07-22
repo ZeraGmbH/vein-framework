@@ -15,7 +15,6 @@ class VFTCP_EXPORT TcpPeer : public QObject
 public:
     explicit TcpPeer(QObject *t_parent = nullptr);
     explicit TcpPeer(qintptr t_socketDescriptor, QObject *t_parent = nullptr);
-    ~TcpPeer();
 
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
@@ -32,7 +31,7 @@ public slots:
 
 private:
     QUuid m_peerId;
-    TcpPeerWorkerInterface *m_worker = nullptr;
+    TcpPeerWorkerInterfacePtr m_worker;
 };
 }
 
