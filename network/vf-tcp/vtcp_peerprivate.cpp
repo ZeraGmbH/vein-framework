@@ -16,6 +16,8 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
 {
     m_tcpSock = new QTcpSocket();
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
+    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
+
 }
 
 void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
@@ -24,6 +26,7 @@ void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
     Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
     m_tcpSock = new QTcpSocket(q_ptr);
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
+    connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
 
 }
 
@@ -63,4 +66,16 @@ void TcpPeerPrivate::sendArray(const QByteArray &byteArray) const
     if(out.status() == QDataStream::WriteFailed)
         qWarning() << "[vein-tcp] Write failed for client:" << q_ptr->getPeerId();
 }
+
+void TcpPeerPrivate::onReadyRead()
+{
+    QByteArray newMessage;
+    newMessage = readArray();
+    while(!newMessage.isNull())
+    {
+        emit q_ptr->sigMessageReceived(q_ptr, newMessage);
+        newMessage = readArray();
+    }
+}
+
 }

@@ -15,7 +15,6 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
     d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
 {
-    connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, this, [this](QAbstractSocket::SocketError t_socketError){ emit sigSocketError(this, t_socketError); });
 
@@ -30,7 +29,6 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
 void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 {
     d_ptr->startConnection(t_ipAddress, t_port);
-    connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, this, [this](QAbstractSocket::SocketError t_socketError){ emit sigSocketError(this, t_socketError); });
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeer::closeConnection);
@@ -77,17 +75,5 @@ void TcpPeer::closeConnection()
 
     d_ptr->m_tcpSock->close();
     //qDebug() << "disconnected";
-}
-
-void TcpPeer::onReadyRead()
-{
-    QByteArray newMessage;
-    newMessage = d_ptr->readArray();
-    while(!newMessage.isNull())
-    {
-        //qDebug() << "[vein-tcp] Message received: "<<newMessage.toBase64();
-        emit sigMessageReceived(this, newMessage);
-        newMessage = d_ptr->readArray();
-    }
 }
 }

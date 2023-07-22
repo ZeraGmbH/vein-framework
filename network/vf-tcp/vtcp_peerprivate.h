@@ -10,11 +10,15 @@ class TcpPeer;
 class TcpPeerPrivate : public QObject
 {
     Q_OBJECT
-private:
+public:
     TcpPeerPrivate(TcpPeer *publicPeer);
     TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor);
     void startConnection(QString ipAddress, quint16 port);
     bool isConnected() const;
+
+private slots:
+    void onReadyRead();
+private:
     QByteArray readArray() const;
     void sendArray(const QByteArray &byteArray) const;
 
