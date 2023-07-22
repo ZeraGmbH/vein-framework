@@ -19,9 +19,9 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        m_tcpSock, &QTcpSocket::error,
+        m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
         q_ptr, [this](QAbstractSocket::SocketError socketError) {
-            q_ptr->emit sigSocketError(q_ptr, socketError);
+            emit q_ptr->emit sigSocketError(q_ptr, socketError);
         });
 
 }
@@ -35,7 +35,7 @@ void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
     connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        m_tcpSock, &QTcpSocket::error,
+        m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
         q_ptr, [this](QAbstractSocket::SocketError t_socketError){
             emit q_ptr->sigSocketError(q_ptr, t_socketError);
         });
