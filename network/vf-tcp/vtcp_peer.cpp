@@ -41,14 +41,14 @@ TcpPeer::~TcpPeer()
 
 QUuid TcpPeer::getPeerId() const
 {
-    return d_ptr->m_peerId;
+    return m_peerId;
 }
 
 void TcpPeer::setPeerId(QUuid t_peerId)
 {
     Q_ASSERT(t_peerId.isNull() == false);
 
-    d_ptr->m_peerId = t_peerId;
+    m_peerId = t_peerId;
 }
 
 QString TcpPeer::getErrorString() const

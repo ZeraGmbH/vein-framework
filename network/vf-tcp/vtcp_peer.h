@@ -4,6 +4,7 @@
 #include "vftcp_export.h"
 #include <QString>
 #include <QAbstractSocket>
+#include <QUuid>
 
 namespace VeinTcp
 {
@@ -34,6 +35,7 @@ private slots:
     void onReadyRead();
     void closeConnection();
 private:
+    QUuid m_peerId;
     TcpPeerPrivate *d_ptr = nullptr;
 };
 }
