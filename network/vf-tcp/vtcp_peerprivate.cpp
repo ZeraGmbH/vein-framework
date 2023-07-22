@@ -6,7 +6,13 @@
 namespace VeinTcp
 {
 
-TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer) :  q_ptr(t_publicPeer)
+TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer) :
+    q_ptr(t_publicPeer)
+{
+}
+
+TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer, qintptr t_socketDescriptor) :
+    q_ptr(t_publicPeer)
 {
 }
 

@@ -13,7 +13,7 @@ TcpPeer::TcpPeer(QObject *t_parent) :
 
 TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
-    d_ptr(new TcpPeerPrivate(this))
+    d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
 {
     d_ptr->m_tcpSock = new QTcpSocket();
     connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, [this](){ emit sigConnectionEstablished(this); });
