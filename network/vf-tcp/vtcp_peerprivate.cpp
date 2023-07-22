@@ -14,6 +14,15 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer) :
 TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
     q_ptr(publicPeer)
 {
+    m_tcpSock = new QTcpSocket();
+}
+
+void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
+{
+    //the tcp socket must not exist at this point
+    Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
+    m_tcpSock = new QTcpSocket(q_ptr);
+
 }
 
 bool TcpPeerPrivate::isConnected() const
