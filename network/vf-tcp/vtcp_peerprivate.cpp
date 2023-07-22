@@ -17,6 +17,7 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
     m_tcpSock = new QTcpSocket();
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
+    connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
 
 }
 
@@ -27,6 +28,7 @@ void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
     m_tcpSock = new QTcpSocket(q_ptr);
     connect(m_tcpSock, &QTcpSocket::connected, q_ptr, [this](){ emit q_ptr->sigConnectionEstablished(q_ptr); });
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerPrivate::onReadyRead);
+    connect(m_tcpSock, &QTcpSocket::disconnected, q_ptr, [this](){ emit q_ptr->sigConnectionClosed(q_ptr); });
 
 }
 
