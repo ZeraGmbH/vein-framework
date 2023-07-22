@@ -4,7 +4,7 @@
 
 namespace VeinTcp
 {
-TcpServerPrivate::TcpServerPrivate(TcpServer *t_public) : q_ptr(t_public)
+TcpServerPrivate::TcpServerPrivate(TcpServer *server) : q_ptr(server)
 {
 }
 
@@ -15,8 +15,8 @@ TcpServerPrivate::~TcpServerPrivate()
     m_clients.clear();
 }
 
-void TcpServerPrivate::incomingConnection(qintptr t_socketDescriptor)
+void TcpServerPrivate::incomingConnection(qintptr socketDescriptor)
 {
-    q_ptr->incomingConnection(t_socketDescriptor);
+    q_ptr->incomingConnection(socketDescriptor);
 }
 }
