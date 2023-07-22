@@ -7,25 +7,25 @@ namespace VeinTcp
 {
 TcpPeer::TcpPeer(QObject *t_parent) :
     QObject(t_parent),
-    d_ptr(new TcpPeerWorker(this))
+    m_worker(new TcpPeerWorker(this))
 {
 }
 
 TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
-    d_ptr(new TcpPeerWorker(this, t_socketDescriptor))
+    m_worker(new TcpPeerWorker(this, t_socketDescriptor))
 {
 }
 
 void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 {
-    d_ptr->startConnection(t_ipAddress, t_port);
+    m_worker->startConnection(t_ipAddress, t_port);
 }
 
 TcpPeer::~TcpPeer()
 {
-    delete d_ptr;
-    d_ptr = nullptr;
+    delete m_worker;
+    m_worker = nullptr;
 }
 
 QUuid TcpPeer::getPeerId() const
@@ -41,13 +41,13 @@ void TcpPeer::setPeerId(QUuid t_peerId)
 
 QString TcpPeer::getErrorString() const
 {
-    return d_ptr->getErrorString();
+    return m_worker->getErrorString();
 }
 
 void TcpPeer::sendMessage(QByteArray t_message) const
 {
-    Q_ASSERT_X(d_ptr->isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
-    d_ptr->sendArray(t_message);
+    Q_ASSERT_X(m_worker->isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    m_worker->sendArray(t_message);
 }
 
 }
