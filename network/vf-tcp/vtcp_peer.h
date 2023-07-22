@@ -31,8 +31,6 @@ public slots:
     void sendMessage(QByteArray t_message) const;
     void startConnection(QString t_ipAddress, quint16 t_port);
 
-private slots:
-    void closeConnection();
 private:
     QUuid m_peerId;
     TcpPeerPrivate *d_ptr = nullptr;

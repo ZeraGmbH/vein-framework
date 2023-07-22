@@ -19,6 +19,7 @@ public:
 
 private slots:
     void onReadyRead();
+    void closeConnection();
 private:
     QByteArray readArray() const;
     void sendArray(const QByteArray &byteArray) const;
