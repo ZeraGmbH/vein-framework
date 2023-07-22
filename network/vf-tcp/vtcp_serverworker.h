@@ -1,29 +1,27 @@
 #ifndef VEIN_TCP_SERVERPRIVATE_H
 #define VEIN_TCP_SERVERPRIVATE_H
 
+#include "vtcp_peer.h"
 #include <QList>
 #include <QTcpServer>
 
 namespace VeinTcp
 {
-class TcpPeer;
 class TcpServer;
 
-class TcpServerPrivate : public QTcpServer
+class TcpServerWorker : public QTcpServer
 {
     Q_OBJECT
 public:
-    TcpServerPrivate(TcpServer *server);
-    ~TcpServerPrivate();
+    TcpServerWorker(TcpServer *server);
+    ~TcpServerWorker();
     bool startServer(quint16 port, bool systemdSocket);
+private slots:
+    void clientDisconnectedSRV(TcpPeer *peer);
 private:
     void incomingConnection(qintptr socketDescriptor) override;
     QList<TcpPeer*> m_clients;
-    TcpServer *q_ptr = nullptr;
-private slots:
-    void clientDisconnectedSRV(TcpPeer *peer);
-
-    friend class TcpServer;
+    TcpServer *m_server = nullptr;
 };
 }
 #endif // VEIN_TCP_SERVERPRIVATE_H

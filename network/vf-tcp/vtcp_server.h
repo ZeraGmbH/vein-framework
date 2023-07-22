@@ -7,7 +7,7 @@
 
 namespace VeinTcp
 {
-class TcpServerPrivate;
+class TcpServerWorker;
 
 class VFTCP_EXPORT TcpServer : public QObject
 {
@@ -22,8 +22,8 @@ signals:
     void sigClientConnected(TcpPeer *t_peer);
 
 private:
-    friend class TcpServerPrivate;
-    TcpServerPrivate *d_ptr = nullptr;
+    friend class TcpServerWorker;
+    TcpServerWorker *m_serverWorker = nullptr;
 };
 }
 #endif // VEIN_TCP_SERVER_H
