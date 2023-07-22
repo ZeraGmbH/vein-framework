@@ -5,13 +5,14 @@
 
 namespace VeinTcp
 {
-TcpServerWorker::TcpServerWorker(TcpServer *server) : m_server(server)
+TcpServerWorker::TcpServerWorker(TcpServer *server) :
+    m_server(server)
 {
 }
 
 TcpServerWorker::~TcpServerWorker()
 {
-    for(TcpPeer *tmpClient : m_clients)
+    for(TcpPeer *tmpClient : qAsConst(m_clients))
         tmpClient->deleteLater();
     m_clients.clear();
 }
