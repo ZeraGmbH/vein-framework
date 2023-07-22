@@ -15,7 +15,6 @@ TcpPeer::TcpPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     QObject(t_parent),
     d_ptr(new TcpPeerPrivate(this, t_socketDescriptor))
 {
-    d_ptr->m_tcpSock = new QTcpSocket();
     connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, [this](){ emit sigConnectionEstablished(this); });
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
@@ -59,17 +58,12 @@ QString TcpPeer::getErrorString() const
 void TcpPeer::sendMessage(QByteArray t_message) const
 {
     Q_ASSERT_X(d_ptr->isConnected(), __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
-
     d_ptr->sendArray(t_message);
 }
 
 void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 {
-    //the tcp socket must not exist at this point
-    Q_ASSERT_X(d_ptr->m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
-
-    d_ptr->m_tcpSock= new QTcpSocket(this);
-
+    d_ptr->startConnection(t_ipAddress, t_port);
     connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, [this](){ emit sigConnectionEstablished(this); });
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this](){ emit sigConnectionClosed(this); });
