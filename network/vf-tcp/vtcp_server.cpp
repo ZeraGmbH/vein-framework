@@ -15,11 +15,6 @@ TcpServer::~TcpServer()
     delete d_ptr;
 }
 
-QList<TcpPeer *> TcpServer::getClientList() const
-{
-    return d_ptr->m_clients;
-}
-
 bool TcpServer::startServer(quint16 port, bool systemdSocket)
 {
     return d_ptr->startServer(port, systemdSocket);

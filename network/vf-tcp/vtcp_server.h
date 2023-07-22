@@ -16,7 +16,6 @@ class VFTCP_EXPORT TcpServer : public QObject
 public:
     explicit TcpServer(QObject *parent = nullptr);
     virtual ~TcpServer();
-    QList<TcpPeer*> getClientList() const;
     bool isListening() const;
 signals:
     void sigClientConnected(TcpPeer *t_peer);
