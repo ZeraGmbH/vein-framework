@@ -2,13 +2,12 @@
 #define VEIN_TCP_SERVER_H
 
 #include "vftcp_export.h"
+#include "vtcp_peer.h"
 #include <QObject>
-#include <QList>
 
 namespace VeinTcp
 {
 class TcpServerPrivate;
-class TcpPeer;
 
 class VFTCP_EXPORT TcpServer : public QObject
 {
@@ -17,15 +16,12 @@ public:
     explicit TcpServer(QObject *parent = nullptr);
     virtual ~TcpServer();
     bool isListening() const;
-signals:
-    void sigClientConnected(TcpPeer *t_peer);
 public slots:
     bool startServer(quint16 port, bool systemdSocket = true);
+signals:
+    void sigClientConnected(TcpPeer *t_peer);
 
-private slots:
-    void clientDisconnectedSRV(TcpPeer *peer);
 private:
-    void incomingConnection(qintptr socketDescriptor);
     friend class TcpServerPrivate;
     TcpServerPrivate *d_ptr = nullptr;
 };
