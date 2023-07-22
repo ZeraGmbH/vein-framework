@@ -23,6 +23,7 @@ TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
         q_ptr, [this](QAbstractSocket::SocketError socketError) {
             emit q_ptr->emit sigSocketError(q_ptr, socketError);
         });
+    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
 
 }
 
@@ -39,6 +40,7 @@ void TcpPeerPrivate::startConnection(QString ipAddress, quint16 port)
         q_ptr, [this](QAbstractSocket::SocketError t_socketError){
             emit q_ptr->sigSocketError(q_ptr, t_socketError);
         });
+    connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerPrivate::closeConnection);
 
 }
 
@@ -88,11 +90,16 @@ void TcpPeerPrivate::onReadyRead()
 {
     QByteArray newMessage;
     newMessage = readArray();
-    while(!newMessage.isNull())
-    {
+    while(!newMessage.isNull()) {
         emit q_ptr->sigMessageReceived(q_ptr, newMessage);
         newMessage = readArray();
     }
+}
+
+void TcpPeerPrivate::closeConnection()
+{
+    Q_ASSERT(m_tcpSock);
+    m_tcpSock->close();
 }
 
 }
