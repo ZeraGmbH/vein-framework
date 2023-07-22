@@ -6,13 +6,13 @@
 namespace VeinTcp
 {
 
-TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer) :
-    q_ptr(t_publicPeer)
+TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer) :
+    q_ptr(publicPeer)
 {
 }
 
-TcpPeerPrivate::TcpPeerPrivate(TcpPeer *t_publicPeer, qintptr t_socketDescriptor) :
-    q_ptr(t_publicPeer)
+TcpPeerPrivate::TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor) :
+    q_ptr(publicPeer)
 {
 }
 
@@ -41,13 +41,13 @@ QByteArray TcpPeerPrivate::readArray() const
 
 }
 
-void TcpPeerPrivate::sendArray(const QByteArray &t_byteArray) const
+void TcpPeerPrivate::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());
 
     QDataStream out(m_tcpSock);
     out.setVersion(QDataStream::Qt_5_7);
-    out << t_byteArray;
+    out << byteArray;
 
     if(out.status() == QDataStream::WriteFailed)
         qWarning() << "[vein-tcp] Write failed for client:" << q_ptr->getPeerId();

@@ -10,11 +10,11 @@ class TcpPeer;
 class TcpPeerPrivate
 {
 private:
-    TcpPeerPrivate(TcpPeer *t_publicPeer);
-    TcpPeerPrivate(TcpPeer *t_publicPeer, qintptr t_socketDescriptor);
+    TcpPeerPrivate(TcpPeer *publicPeer);
+    TcpPeerPrivate(TcpPeer *publicPeer, qintptr socketDescriptor);
     bool isConnected() const;
     QByteArray readArray() const;
-    void sendArray(const QByteArray &t_byteArray) const;
+    void sendArray(const QByteArray &byteArray) const;
 
     QTcpSocket *m_tcpSock = nullptr;
     TcpPeer *q_ptr = nullptr;
