@@ -32,7 +32,6 @@ public slots:
     void startConnection(QString t_ipAddress, quint16 t_port);
 
 private slots:
-    void onReadyRead();
     void closeConnection();
 private:
     QUuid m_peerId;
