@@ -125,7 +125,7 @@ void TcpSystem::onSocketError(VeinTcp::TcpPeer *t_peer, QAbstractSocket::SocketE
     Q_ASSERT(t_peer != nullptr);
     NetworkStatusEvent *sEvent = new NetworkStatusEvent(NetworkStatusEvent::NetworkStatus::NSE_SOCKET_ERROR, t_peer->getPeerId());
     sEvent->setError(t_socketError);
-    qCCritical(VEIN_NET_TCP) << "Connection error on network with id:" << t_peer->getPeerId() << "error:" << t_peer->getErrorString() << "sent NetworkStatusEvent:" << sEvent;
+    qCCritical(VEIN_NET_TCP) << "Connection error on network with id:" << t_peer->getPeerId() << "error:" << t_socketError << "sent NetworkStatusEvent:" << sEvent;
     emit sigSendEvent(sEvent);
 }
 

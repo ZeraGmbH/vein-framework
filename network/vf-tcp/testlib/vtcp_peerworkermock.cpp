@@ -24,10 +24,6 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
     }
 }
 
-QString TcpPeerWorkerMock::getErrorString() const
-{
-}
-
 void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");

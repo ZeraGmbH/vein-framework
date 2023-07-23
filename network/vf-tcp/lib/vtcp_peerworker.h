@@ -21,7 +21,6 @@ public:
     TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);
     virtual ~TcpPeerWorker();
     void startConnection(QString ipAddress, quint16 port) override;
-    QString getErrorString() const override;
     void sendArray(const QByteArray &byteArray) const override;
 
 private slots:

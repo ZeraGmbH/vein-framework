@@ -30,8 +30,6 @@ public:
     // handles opaque QByteArray - see further 'google' below
     XiQNetWrapper *getWrapper() const;
     void setWrapper(XiQNetWrapper *value);
-
-    QString getErrorString() const;
 signals:
     void sigConnectionEstablished();
     void sigConnectionClosed();

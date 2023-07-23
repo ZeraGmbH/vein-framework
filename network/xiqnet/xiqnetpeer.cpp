@@ -81,11 +81,6 @@ void XiQNetPeer::setWrapper(XiQNetWrapper *value)
     d_ptr->m_wrapper = value;
 }
 
-QString XiQNetPeer::getErrorString() const
-{
-    return d_ptr->m_tcpSock->errorString();
-}
-
 void XiQNetPeer::sendMessage(const google::protobuf::Message &t_message) const
 {
     Q_ASSERT_X(isConnected(), __PRETTY_FUNCTION__, "[xiqnet-qt] Trying to send data to disconnected host.");
