@@ -50,7 +50,7 @@ void test_networkmock::failPeerSendNoServerMock()
     clientPeer.sendMessage("foo");*/
 }
 
-void test_networkmock::failPeerNotLocalhost()
+void test_networkmock::failPeerNotLocalhostMock()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
     VeinTcp::TcpPeer clientPeer;
