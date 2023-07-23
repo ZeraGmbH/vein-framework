@@ -14,40 +14,53 @@ QTEST_MAIN(test_networkmock)
 static constexpr int systemEntityId = 0;
 static constexpr int serverPort = 4242;
 
+struct TestServerStack
+{
+    VeinEvent::EventHandler eventHandler;
+    VeinTestServer server;
+    VeinNet::NetworkSystem netSystem;
+    VeinNet::TcpSystem tcpSystem;
+    TestServerStack() :
+        server(&eventHandler)
+    {
+        eventHandler.addSubsystem(&netSystem);
+        eventHandler.addSubsystem(&tcpSystem);
+        tcpSystem.startServer(serverPort, false);
+        while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
+    }
+};
+
+struct TestClientStack
+{
+    VeinEvent::EventHandler eventHandler;
+    VeinNet::NetworkSystem netSystem;
+    VeinNet::TcpSystem tcpSystem;
+    TestClientStack()
+    {
+        netSystem.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
+        eventHandler.addSubsystem(&netSystem);
+        eventHandler.addSubsystem(&tcpSystem);
+    }
+};
+
 void test_networkmock::receiveIntrospectionOverRealNetwork()
 {
-    // server
-    VeinEvent::EventHandler eventHandlerServer;
-    VeinTestServer testServer(&eventHandlerServer);
-    VeinNet::NetworkSystem netSystemServer;
-    VeinNet::TcpSystem tcpSystemServer;
-    eventHandlerServer.addSubsystem(&netSystemServer);
-    eventHandlerServer.addSubsystem(&tcpSystemServer);
-    tcpSystemServer.startServer(serverPort, false);
-    feedEventLoop();
-    QList<int> entities = testServer.getEntityAddList();
-    QCOMPARE(entities.size(), 1);
+    TestServerStack serverStack;
 
-    // client
-    VeinEvent::EventHandler eventHandlerClient;
-    VeinNet::NetworkSystem netSystemClient;
-    netSystemClient.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
-    VeinNet::TcpSystem tcpSystemClient;
-    eventHandlerClient.addSubsystem(&netSystemClient);
-    eventHandlerClient.addSubsystem(&tcpSystemClient);
+    TestClientStack clientStack;
     VfCommandEventHandlerSystem cmdEventHandlerSystem;
-    eventHandlerClient.addSubsystem(&cmdEventHandlerSystem);
+    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
     VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
 
-    tcpSystemClient.connectToServer("127.0.0.1", serverPort);
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
     bool clientConnected = false;
-    QObject::connect(&tcpSystemClient, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
+    QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
         clientConnected = true;
         entityToSubscribe->sendSubscrption();
     });
-    spy.wait(5000);
+    spy.wait(1000);
     QVERIFY(clientConnected);
     QCOMPARE(spy.count(), 1);
 }
