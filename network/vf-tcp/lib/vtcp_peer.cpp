@@ -24,13 +24,12 @@ void TcpPeer::startConnection(QString t_ipAddress, quint16 t_port)
 
 QUuid TcpPeer::getPeerId() const
 {
-    return m_peerId;
+    return m_worker->getPeerId();
 }
 
 void TcpPeer::setPeerId(QUuid t_peerId)
 {
-    Q_ASSERT(t_peerId.isNull() == false);
-    m_peerId = t_peerId;
+    m_worker->setPeerId(t_peerId);
 }
 
 QString TcpPeer::getErrorString() const
