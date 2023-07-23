@@ -30,7 +30,6 @@ public slots:
     void startConnection(QString t_ipAddress, quint16 t_port);
 
 private:
-    QUuid m_peerId;
     TcpPeerWorkerInterfacePtr m_worker;
 };
 }
