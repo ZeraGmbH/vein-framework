@@ -17,8 +17,12 @@ public:
     static TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor);
     static TcpServerWorkerInterfacePtr createTcpServerWorker(TcpServer *server);
 protected:
+    static std::function<TcpPeerWorkerInterfacePtr(TcpPeer *)> getCreateFunctionPeer();
+    static std::function<TcpPeerWorkerInterfacePtr(TcpPeer *, qintptr)> getCreateFunctionPeerWithDescriptor();
+    static std::function<TcpServerWorkerInterfacePtr(TcpServer *)> getCreateFunctionServer();
+
     static std::function<TcpPeerWorkerInterfacePtr(TcpPeer *)> m_createFunctionPeer;
-    static std::function<TcpPeerWorkerInterfacePtr(TcpPeer *, qintptr)> m_createFunctionPeerDescriptor;
+    static std::function<TcpPeerWorkerInterfacePtr(TcpPeer *, qintptr)> m_createFunctionPeerWithDescriptor;
     static std::function<TcpServerWorkerInterfacePtr(TcpServer *)> m_createFunctionServer;
 };
 
