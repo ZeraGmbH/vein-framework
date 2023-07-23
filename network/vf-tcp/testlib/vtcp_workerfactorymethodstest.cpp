@@ -16,11 +16,17 @@ void TcpWorkerFactoryMethodsTest::enableProduction()
 void TcpWorkerFactoryMethodsTest::enableMock()
 {
     m_createFunctionPeer =
-        [](TcpPeer *peer) { return std::make_unique<TcpPeerWorkerMock>(peer, TcpPeerWorkerMock::secret()); };
+        [](TcpPeer *peer) {
+            return std::make_unique<TcpPeerWorkerMock>(peer, TcpPeerWorkerMock::secret());
+        };
     m_createFunctionPeerWithDescriptor =
-        [](TcpPeer *peer, qintptr socketDescriptor) { return std::make_unique<TcpPeerWorkerMock>(peer, socketDescriptor, TcpPeerWorkerMock::secret()); };
+        [](TcpPeer *peer, qintptr socketDescriptor) {
+            return std::make_unique<TcpPeerWorkerMock>(peer, socketDescriptor, TcpPeerWorkerMock::secret());
+        };
     m_createFunctionServer =
-        [](TcpServer *server) { return std::make_unique<TcpServerWorkerMock>(server, TcpServerWorkerMock::secret()); };
+        [](TcpServer *server) {
+            return std::make_unique<TcpServerWorkerMock>(server, TcpServerWorkerMock::secret());
+        };
 }
 
 }
