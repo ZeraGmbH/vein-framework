@@ -11,6 +11,7 @@ private slots:
     // before starting on network mock. In case we are done
     // and this test turns fragile, it can be removed
     void receiveIntrospectionOverRealNetwork();
+    void receiveIntrospectionOverMockNetwork();
 private:
     void feedEventLoop();
 };

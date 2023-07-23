@@ -65,6 +65,11 @@ void test_networkmock::receiveIntrospectionOverRealNetwork()
     QCOMPARE(spy.count(), 1);
 }
 
+void test_networkmock::receiveIntrospectionOverMockNetwork()
+{
+
+}
+
 void test_networkmock::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));

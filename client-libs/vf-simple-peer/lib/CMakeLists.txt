@@ -18,6 +18,7 @@ target_link_libraries(VfSimplePeer
     VfEvent
     VfComponent
     VfNet2
+    VfConvenientCode
     )
 
 target_include_directories(VfSimplePeer
