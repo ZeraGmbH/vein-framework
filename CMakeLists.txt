@@ -75,6 +75,7 @@ install(EXPORT VeinFrameworkExport
     )
 
 add_subdirectory(client-libs)
+add_subdirectory(convenient-code)
 add_subdirectory(framework)
 add_subdirectory(network)
 add_subdirectory(server-libs)
