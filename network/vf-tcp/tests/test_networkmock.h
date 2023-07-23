@@ -18,6 +18,9 @@ private slots:
     void notStartedServerIsNotListeningMock();
     void startedServerIsListeningReal();
     void startedServerIsListeningMock();
+
+    void clientConnectToServerReal();
+    void clientConnectToServerMock();
 private:
     void feedEventLoop();
 };
