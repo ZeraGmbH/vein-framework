@@ -21,6 +21,7 @@ public:
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
 private:
+    bool m_bListening = false;
     QList<TcpPeer*> m_clients;
     TcpServer *m_server = nullptr;
 };

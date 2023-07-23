@@ -13,10 +13,13 @@ TcpServerWorkerMock::TcpServerWorkerMock(TcpServer *server, secret) :
 
 bool TcpServerWorkerMock::startServer(quint16 port, bool systemdSocket)
 {
+    m_bListening = true;
+    return true;
 }
 
 bool TcpServerWorkerMock::isListenActive()
 {
+    return m_bListening;
 }
 
 }

@@ -2,6 +2,7 @@
 #define VEIN_TCP_PEERWORKERMOCK_H
 
 #include "vtcp_peerworkerinterface.h"
+#include <QAbstractSocket>
 
 namespace VeinTcp
 {
@@ -21,9 +22,13 @@ public:
     void startConnection(QString ipAddress, quint16 port) override;
     QString getErrorString() const override;
     void sendArray(const QByteArray &byteArray) const override;
-
+private slots:
+    void emitSigSocketError(QAbstractSocket::SocketError error);
+    void doEmitSigSocketError(int error);
+    void emitSigConnectionEstablished();
 private:
     TcpPeer *m_peer = nullptr;
+    bool m_connectionEstablished = false;
 };
 }
 #endif // VEIN_TCP_PEERWORKERMOCK_H
