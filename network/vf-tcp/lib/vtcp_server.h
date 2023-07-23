@@ -17,7 +17,7 @@ public:
 public slots:
     bool startServer(quint16 port, bool systemdSocket = true);
 signals:
-    void sigClientConnected(TcpPeer *t_peer);
+    void sigClientConnected(TcpPeer *peer);
 
 private:
     TcpServerWorkerInterfacePtr m_serverWorker;
