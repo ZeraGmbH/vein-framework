@@ -18,8 +18,6 @@ public:
 
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
-
-    QString getErrorString() const;
 signals:
     void sigConnectionEstablished(TcpPeer *t_sender);
     void sigConnectionClosed(TcpPeer *t_sender);

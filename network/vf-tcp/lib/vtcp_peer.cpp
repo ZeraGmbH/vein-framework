@@ -32,11 +32,6 @@ void TcpPeer::setPeerId(QUuid t_peerId)
     m_worker->setPeerId(t_peerId);
 }
 
-QString TcpPeer::getErrorString() const
-{
-    return m_worker->getErrorString();
-}
-
 void TcpPeer::sendMessage(QByteArray t_message) const
 {
     m_worker->sendArray(t_message);

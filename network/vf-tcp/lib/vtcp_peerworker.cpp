@@ -59,11 +59,6 @@ bool TcpPeerWorker::isConnected() const
            (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
 }
 
-QString TcpPeerWorker::getErrorString() const
-{
-    return m_tcpSock->errorString();
-}
-
 QByteArray TcpPeerWorker::readArray() const
 {
     Q_ASSERT(m_tcpSock != nullptr && m_tcpSock->isOpen());

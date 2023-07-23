@@ -20,7 +20,6 @@ public:
     TcpPeerWorkerMock(TcpPeer *peer, secret);
     TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret);
     void startConnection(QString ipAddress, quint16 port) override;
-    QString getErrorString() const override;
     void sendArray(const QByteArray &byteArray) const override;
 private slots:
     void emitSigSocketError(QAbstractSocket::SocketError error);

@@ -18,7 +18,6 @@ public:
         Q_ASSERT(!peerId.isNull());
         m_peerId = peerId;
     }
-    virtual QString getErrorString() const = 0;
     virtual void sendArray(const QByteArray &byteArray) const = 0;
 private:
     QUuid m_peerId;
