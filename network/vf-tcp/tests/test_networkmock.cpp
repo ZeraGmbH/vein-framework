@@ -5,6 +5,7 @@
 #include "ve_eventhandler.h"
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
+#include "vtcp_workerfactorymethodstest.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -45,6 +46,7 @@ struct TestClientStack
 
 void test_networkmock::receiveIntrospectionOverRealNetwork()
 {
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
     TestServerStack serverStack;
 
     TestClientStack clientStack;
