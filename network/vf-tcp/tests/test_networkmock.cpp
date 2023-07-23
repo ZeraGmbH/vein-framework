@@ -92,6 +92,40 @@ void test_networkmock::startedServerIsListeningMock()
     QCOMPARE(server.isListening(), true);
 }
 
+void test_networkmock::clientConnectToServerReal()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+    QSignalSpy spy(&server, &VeinTcp::TcpServer::sigClientConnected);
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.startConnection("localhost", serverPort);
+    VeinTcp::TcpPeer* peerReceived = nullptr;
+    connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer){
+        peerReceived = peer;
+    });
+    spy.wait(1000);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(peerReceived->getPeerId(), clientPeer.getPeerId());
+}
+
+void test_networkmock::clientConnectToServerMock()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+    QSignalSpy spy(&server, &VeinTcp::TcpServer::sigClientConnected);
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.startConnection("localhost", serverPort);
+    VeinTcp::TcpPeer* peerReceived = nullptr;
+    connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer){
+        peerReceived = peer;
+    });
+    feedEventLoop();
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(peerReceived->getPeerId(), clientPeer.getPeerId());
+}
+
 
 void test_networkmock::feedEventLoop()
 {
