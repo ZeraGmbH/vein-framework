@@ -21,9 +21,9 @@ public:
     ~TcpServerWorkerMock();
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
-    // for peer
+    // for mock peer
     static TcpServerWorkerMock* getServerMock(quint16 port);
-    void emitSigClientConnected();
+    TcpPeer *emitSigClientConnected();
 private slots:
     void doEmitSigClientConnected(VeinTcp::TcpPeer* peer);
 private:

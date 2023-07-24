@@ -10,9 +10,12 @@ TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, secret) :
 {
 }
 
+// server created
 TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret) :
-    m_peer(peer)
+    m_peer(peer),
+    m_connectionEstablished(true)
 {
+    Q_UNUSED(socketDescriptor)
 }
 
 void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
@@ -24,7 +27,7 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
         if(!serverMock)
             emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
         else {
-            serverMock->emitSigClientConnected();
+            m_serverPeer = serverMock->emitSigClientConnected();
             emitSigConnectionEstablished();
         }
     }
@@ -33,6 +36,10 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
 void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    if(m_serverPeer) {
+        TcpPeerWorkerMock* const_this = const_cast<TcpPeerWorkerMock*>(this);
+        const_this->emitMessageReceived(m_serverPeer, byteArray);
+    }
 }
 
 void TcpPeerWorkerMock::emitSigSocketError(QAbstractSocket::SocketError error)
@@ -61,5 +68,18 @@ void TcpPeerWorkerMock::doEmitSigConnectionEstablished()
     emit m_peer->sigConnectionEstablished(m_peer);
 }
 
+void TcpPeerWorkerMock::emitMessageReceived(TcpPeer *peer, QByteArray message)
+{
+    QMetaObject::invokeMethod(this,
+                              "doEmitMessageReceived",
+                              Qt::QueuedConnection,
+                              Q_ARG(VeinTcp::TcpPeer*, peer),
+                              Q_ARG(QByteArray, message));
+}
+
+void TcpPeerWorkerMock::doEmitMessageReceived(TcpPeer *peer, QByteArray message)
+{
+    emit peer->sigMessageReceived(peer, message);
+}
 
 }
