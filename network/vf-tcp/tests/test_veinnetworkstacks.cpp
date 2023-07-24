@@ -55,13 +55,13 @@ void test_veinnetworkstacks::receiveIntrospectionOverRealNetwork()
     VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
 
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
     bool clientConnected = false;
     QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
         clientConnected = true;
         entityToSubscribe->sendSubscrption();
     });
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
     spy.wait(1000);
     QVERIFY(clientConnected);
     QCOMPARE(spy.count(), 1);
