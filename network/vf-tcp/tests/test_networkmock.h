@@ -9,13 +9,16 @@ class test_networkmock : public QObject
 private slots:
     void failPeerConnectNoServerReal();
     void failPeerConnectNoServerMock();
+
     void failPeerSendNoServerReal();
     void failPeerSendNoServerMock();
+
     // Mock specific: Mocks simulate local severs only so deny others
     void failPeerNotLocalhostMock();
 
     void notStartedServerIsNotListeningReal();
     void notStartedServerIsNotListeningMock();
+
     void startedServerIsListeningReal();
     void startedServerIsListeningMock();
 
@@ -24,6 +27,9 @@ private slots:
 
     void failTwoServersSamePortReal();
     void failTwoServersSamePortMock();
+
+    void clientConnectEstablishedReal();
+    void clientConnectEstablishedMock();
 
 private:
     void feedEventLoop();
