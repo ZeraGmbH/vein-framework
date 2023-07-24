@@ -126,6 +126,24 @@ void test_networkmock::clientConnectToServerMock()
     QCOMPARE(peerReceived->getPeerId(), clientPeer.getPeerId());
 }
 
+void test_networkmock::failTwoServersSamePortReal()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpServer server1;
+    QCOMPARE(server1.startServer(serverPort, false), true);
+    VeinTcp::TcpServer server2;
+    QCOMPARE(server2.startServer(serverPort, false), false);
+}
+
+void test_networkmock::failTwoServersSamePortMock()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpServer server1;
+    QCOMPARE(server1.startServer(serverPort, false), true);
+    VeinTcp::TcpServer server2;
+    QCOMPARE(server2.startServer(serverPort, false), false);
+}
+
 
 void test_networkmock::feedEventLoop()
 {
