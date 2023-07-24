@@ -1,5 +1,6 @@
 #include "vtcp_peerworkermock.h"
 #include "vtcp_peer.h"
+#include "vtcp_serverworkermock.h"
 
 namespace VeinTcp
 {
@@ -19,8 +20,11 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
     if(ipAddress != "localhost" && ipAddress != "127.0.0.1")
         emitSigSocketError(QAbstractSocket::HostNotFoundError);
     else {
-        // TBD
-        emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
+        TcpServerWorkerMock *serverMock = TcpServerWorkerMock::getServerMock(port);
+        if(!serverMock)
+            emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
+        else
+            serverMock->emitSigClientConnected(m_peer);
     }
 }
 
