@@ -26,7 +26,6 @@ bool TcpServerWorkerMock::startServer(quint16 port, bool systemdSocket)
         m_serverMocks[port] = this;
         return true;
     }
-    // we don't know yet how the production code handles this
     return false;
 }
 

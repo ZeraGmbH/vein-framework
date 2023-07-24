@@ -21,6 +21,10 @@ private slots:
 
     void clientConnectToServerReal();
     void clientConnectToServerMock();
+
+    void failTwoServersSamePortReal();
+    void failTwoServersSamePortMock();
+
 private:
     void feedEventLoop();
 };
