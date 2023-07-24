@@ -23,7 +23,7 @@ public:
     bool isListenActive() override;
     // for peer
     static TcpServerWorkerMock* getServerMock(quint16 port);
-    void emitSigClientConnected(VeinTcp::TcpPeer* peer);
+    void emitSigClientConnected();
 private slots:
     void doEmitSigClientConnected(VeinTcp::TcpPeer* peer);
 private:

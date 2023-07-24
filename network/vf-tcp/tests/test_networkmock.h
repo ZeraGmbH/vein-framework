@@ -22,17 +22,15 @@ private slots:
     void startedServerIsListeningReal();
     void startedServerIsListeningMock();
 
-    void clientConnectToServerReal();
-    void clientConnectToServerMock();
+    // we did not get this from reading the code - how stupid we are :(
+    void clientConnectServerSideVeryImportantReal();
+    void clientConnectServerSideVeryImportantMock();
 
     void failTwoServersSamePortReal();
     void failTwoServersSamePortMock();
 
-    void clientConnectEstablishedReal();
-    void clientConnectEstablishedMock();
-
-private:
-    void feedEventLoop();
+    void clientConnectClientSideEstablishedReal();
+    void clientConnectClientSideEstablishedMock();
 };
 
 #endif // TEST_NETWORKMOCK_H
