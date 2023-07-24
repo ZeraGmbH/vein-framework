@@ -189,7 +189,86 @@ void test_networkmock::clientConnectClientSideEstablishedMock()
     connect(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
         establishedPeer = peer;
     });
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(clientPeer.getPeerId(), establishedPeer->getPeerId());
     QCOMPARE(&clientPeer, establishedPeer);
+}
+
+void test_networkmock::talkBidirectionalReal()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.setPeerId(QUuid::createUuid());
+    clientPeer.startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    QSignalSpy spy(&server, &VeinTcp::TcpServer::sigClientConnected);
+    VeinTcp::TcpPeer* serverPeer = nullptr;
+    connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer) {
+        serverPeer = peer;
+    });
+    QVERIFY(spy.wait(1000));
+
+    // server -> client
+    // check event loop fired: connect after start
+    QSignalSpy spyServerSend(&clientPeer, &VeinTcp::TcpPeer::sigMessageReceived);
+    serverPeer->sendMessage("ServerSend");
+    QVERIFY(spyServerSend.wait(1000));
+    QCOMPARE(spyServerSend.count(), 1);
+    // Again unexpected!!!
+    QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
+    QCOMPARE(spyServerSend[0][1], "ServerSend");
+
+    // client -> server
+    // check event loop fired: connect after start
+    QSignalSpy spyClientSend(serverPeer, &VeinTcp::TcpPeer::sigMessageReceived);
+    clientPeer.sendMessage("ClientSend");
+    QVERIFY(spyClientSend.wait(1000));
+    QCOMPARE(spyClientSend.count(), 1);
+    // Again unexpected!!!
+    QCOMPARE(spyClientSend[0][0].value<VeinTcp::TcpPeer*>(), serverPeer);
+    QCOMPARE(spyClientSend[0][1], "ClientSend");
+}
+
+void test_networkmock::talkBidirectionalMock()
+{
+/*    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.setPeerId(QUuid::createUuid());
+    clientPeer.startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    QSignalSpy spy(&server, &VeinTcp::TcpServer::sigClientConnected);
+    VeinTcp::TcpPeer* serverPeer = nullptr;
+    connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer) {
+        serverPeer = peer;
+    });
+    QVERIFY(spy.wait(1000));
+
+    // server -> client
+    // check event loop fired: connect after start
+    QSignalSpy spyServerSend(&clientPeer, &VeinTcp::TcpPeer::sigMessageReceived);
+    serverPeer->sendMessage("ServerSend");
+    QVERIFY(spyServerSend.wait(1000));
+    QCOMPARE(spyServerSend.count(), 1);
+    // Again unexpected!!!
+    QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
+    QCOMPARE(spyServerSend[0][1], "ServerSend");
+
+    // client -> server
+    // check event loop fired: connect after start
+    QSignalSpy spyClientSend(serverPeer, &VeinTcp::TcpPeer::sigMessageReceived);
+    clientPeer.sendMessage("ClientSend");
+    QVERIFY(spyClientSend.wait(1000));
+    QCOMPARE(spyClientSend.count(), 1);
+    // Again unexpected!!!
+    QCOMPARE(spyClientSend[0][0].value<VeinTcp::TcpPeer*>(), serverPeer);
+    QCOMPARE(spyClientSend[0][1], "ClientSend");*/
+}
+
+void test_networkmock::cleanup()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
 }

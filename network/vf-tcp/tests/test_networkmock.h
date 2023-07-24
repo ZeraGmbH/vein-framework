@@ -31,6 +31,13 @@ private slots:
 
     void clientConnectClientSideEstablishedReal();
     void clientConnectClientSideEstablishedMock();
+
+    // By 'sender' pointer the emitter of signal is meant not the client
+    void talkBidirectionalReal();
+    void talkBidirectionalMock();
+
+    // Back to default after each
+    void cleanup();
 };
 
 #endif // TEST_NETWORKMOCK_H

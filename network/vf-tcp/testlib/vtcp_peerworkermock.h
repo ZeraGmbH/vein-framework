@@ -24,10 +24,15 @@ public:
 private slots:
     void emitSigSocketError(QAbstractSocket::SocketError error);
     void doEmitSigSocketError(int error);
+
     void emitSigConnectionEstablished();
     void doEmitSigConnectionEstablished();
+
+    void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void doEmitMessageReceived(VeinTcp::TcpPeer* peer, QByteArray message);
 private:
     TcpPeer *m_peer = nullptr;
+    VeinTcp::TcpPeer* m_serverPeer = nullptr;
     bool m_connectionEstablished = false;
 };
 }

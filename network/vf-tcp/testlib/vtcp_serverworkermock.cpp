@@ -42,13 +42,14 @@ TcpServerWorkerMock *TcpServerWorkerMock::getServerMock(quint16 port)
     return server;
 }
 
-void TcpServerWorkerMock::emitSigClientConnected()
+VeinTcp::TcpPeer* TcpServerWorkerMock::emitSigClientConnected()
 {
-    VeinTcp::TcpPeer* serverPeer = new VeinTcp::TcpPeer;
+    VeinTcp::TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(0));
     QMetaObject::invokeMethod(this,
                               "doEmitSigClientConnected",
                               Qt::QueuedConnection,
                               Q_ARG(VeinTcp::TcpPeer*, serverPeer));
+    return serverPeer;
 }
 
 void TcpServerWorkerMock::doEmitSigClientConnected(TcpPeer *peer)
