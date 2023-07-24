@@ -23,8 +23,10 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
         TcpServerWorkerMock *serverMock = TcpServerWorkerMock::getServerMock(port);
         if(!serverMock)
             emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
-        else
+        else {
             serverMock->emitSigClientConnected(m_peer);
+            emitSigConnectionEstablished();
+        }
     }
 }
 
@@ -47,6 +49,13 @@ void TcpPeerWorkerMock::doEmitSigSocketError(int error)
 }
 
 void TcpPeerWorkerMock::emitSigConnectionEstablished()
+{
+    QMetaObject::invokeMethod(this,
+                              "doEmitSigConnectionEstablished",
+                              Qt::QueuedConnection);
+}
+
+void TcpPeerWorkerMock::doEmitSigConnectionEstablished()
 {
     m_connectionEstablished = true;
     emit m_peer->sigConnectionEstablished(m_peer);

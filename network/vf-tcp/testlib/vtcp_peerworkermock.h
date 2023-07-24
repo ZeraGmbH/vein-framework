@@ -25,6 +25,7 @@ private slots:
     void emitSigSocketError(QAbstractSocket::SocketError error);
     void doEmitSigSocketError(int error);
     void emitSigConnectionEstablished();
+    void doEmitSigConnectionEstablished();
 private:
     TcpPeer *m_peer = nullptr;
     bool m_connectionEstablished = false;
