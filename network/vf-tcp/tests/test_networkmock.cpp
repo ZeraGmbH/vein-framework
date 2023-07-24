@@ -18,7 +18,7 @@ void test_networkmock::failPeerConnectNoServerReal()
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][1], QVariant(QAbstractSocket::ConnectionRefusedError));
 }
@@ -30,7 +30,7 @@ void test_networkmock::failPeerConnectNoServerMock()
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][1], QVariant(QAbstractSocket::ConnectionRefusedError));
 }
@@ -58,7 +58,7 @@ void test_networkmock::failPeerNotLocalhostMock()
     clientPeer.startConnection("192.168.1.1", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][1], QVariant(QAbstractSocket::HostNotFoundError));
 }
@@ -108,7 +108,7 @@ void test_networkmock::clientConnectServerSideVeryImportantReal()
     connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer){
         serverPeer = peer;
     });
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 1);
     QVERIFY(&clientPeer != serverPeer);
     // server peer has no uuid (odd - seems upon higher layers)
@@ -129,7 +129,7 @@ void test_networkmock::clientConnectServerSideVeryImportantMock()
     connect(&server, &VeinTcp::TcpServer::sigClientConnected, this, [&](VeinTcp::TcpPeer *peer){
         serverPeer = peer;
     });
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(spy.count(), 1);
     QVERIFY(&clientPeer != serverPeer);
     // server peer has no uuid (odd - seems upon higher layers)
@@ -169,7 +169,7 @@ void test_networkmock::clientConnectClientSideEstablishedReal()
     connect(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
         establishedPeer = peer;
     });
-    spy.wait(1000);
+    QVERIFY(spy.wait(1000));
     QCOMPARE(clientPeer.getPeerId(), establishedPeer->getPeerId());
     QCOMPARE(&clientPeer, establishedPeer);
 }
