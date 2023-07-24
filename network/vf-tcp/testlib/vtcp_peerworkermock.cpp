@@ -24,7 +24,7 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
         if(!serverMock)
             emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
         else {
-            serverMock->emitSigClientConnected(m_peer);
+            serverMock->emitSigClientConnected();
             emitSigConnectionEstablished();
         }
     }
