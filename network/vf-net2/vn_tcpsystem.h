@@ -30,6 +30,7 @@ public slots:
     bool startServer(quint16 t_port, bool t_systemdSocket=true);
     void connectToServer(const QString &t_host, quint16 t_port);
 
+private slots:
     /**
      * @brief adds the client to the waiting auth list and sends auth message
      * @param t_networkPeer
