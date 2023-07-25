@@ -6,6 +6,8 @@
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
+#include "testserverstack.h"
+#include "testclientstack.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -15,39 +17,10 @@ QTEST_MAIN(test_veinnetworkstacks)
 static constexpr int systemEntityId = 0;
 static constexpr int serverPort = 4242;
 
-struct TestServerStack
-{
-    VeinEvent::EventHandler eventHandler;
-    VeinTestServer server;
-    VeinNet::NetworkSystem netSystem;
-    VeinNet::TcpSystem tcpSystem;
-    TestServerStack() :
-        server(&eventHandler)
-    {
-        eventHandler.addSubsystem(&netSystem);
-        eventHandler.addSubsystem(&tcpSystem);
-        tcpSystem.startServer(serverPort, false);
-        while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
-    }
-};
-
-struct TestClientStack
-{
-    VeinEvent::EventHandler eventHandler;
-    VeinNet::NetworkSystem netSystem;
-    VeinNet::TcpSystem tcpSystem;
-    TestClientStack()
-    {
-        netSystem.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
-        eventHandler.addSubsystem(&netSystem);
-        eventHandler.addSubsystem(&tcpSystem);
-    }
-};
-
 void test_veinnetworkstacks::receiveIntrospection()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestServerStack serverStack;
+    TestServerStack serverStack(serverPort);
 
     TestClientStack clientStack;
     VfCommandEventHandlerSystem cmdEventHandlerSystem;
