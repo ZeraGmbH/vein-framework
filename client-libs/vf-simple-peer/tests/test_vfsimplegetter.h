@@ -1,9 +1,9 @@
-#ifndef TEST_VFSENTITYSUBSCRIBED_H
-#define TEST_VFSENTITYSUBSCRIBED_H
+#ifndef TEST_VFSIMPLEGETTER_H
+#define TEST_VFSIMPLEGETTER_H
 
 #include <QObject>
 
-class test_vfsentitysubscribed : public QObject
+class test_vfsimplegetter : public QObject
 {
     Q_OBJECT
 private slots:
@@ -19,4 +19,4 @@ private:
     void feedEventLoop();
 };
 
-#endif // TEST_VFSENTITYSUBSCRIBED_H
+#endif // TEST_VFSIMPLEGETTER_H

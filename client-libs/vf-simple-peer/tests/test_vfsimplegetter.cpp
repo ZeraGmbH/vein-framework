@@ -1,8 +1,8 @@
-#include "test_vfsentitysubscribed.h"
+#include "test_vfsimplegetter.h"
 #include "veintestserver.h"
 #include "vfcommandeventhandlersystem.h"
 #include "vfsentityinsubscription.h"
-#include "vfsentitysubscribed.h"
+#include "vfsimplegetter.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -10,9 +10,9 @@
 static constexpr int systemEntityId = 0;
 static constexpr int testEntityId = 1;
 
-QTEST_MAIN(test_vfsentitysubscribed)
+QTEST_MAIN(test_vfsimplegetter)
 
-void test_vfsentitysubscribed::checkErrorSignalFromUnsubscribedEntityInvalidComponent()
+void test_vfsimplegetter::checkErrorSignalFromUnsubscribedEntityInvalidComponent()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -22,9 +22,9 @@ void test_vfsentitysubscribed::checkErrorSignalFromUnsubscribedEntityInvalidComp
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfsEntitySubscribedPtr unsubscribedEntity = VfsEntitySubscribed::create(testEntityId, QStringList() << "foo");
+    VfSimpleGetterPtr unsubscribedEntity = VfSimpleGetter::create(testEntityId, QStringList() << "foo");
     cmdEventHandlerSystem.addItem(unsubscribedEntity);
-    QSignalSpy spy(unsubscribedEntity.get(), &VfsEntitySubscribed::sigGetFinish);
+    QSignalSpy spy(unsubscribedEntity.get(), &VfSimpleGetter::sigGetFinish);
     unsubscribedEntity->getComponent("foo");
     feedEventLoop();
 
@@ -46,9 +46,9 @@ void test_vfsentitysubscribed::checkErrorSignalFromUnsubscribedEntityInvalidComp
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfsEntitySubscribedPtr unsubscribedEntity = VfsEntitySubscribed::create(systemEntityId, QStringList() << "EntityName");
+    VfSimpleGetterPtr unsubscribedEntity = VfSimpleGetter::create(systemEntityId, QStringList() << "EntityName");
     cmdEventHandlerSystem.addItem(unsubscribedEntity);
-    QSignalSpy spy(unsubscribedEntity.get(), &VfsEntitySubscribed::sigGetFinish);
+    QSignalSpy spy(unsubscribedEntity.get(), &VfSimpleGetter::sigGetFinish);
     unsubscribedEntity->getComponent("EntityName");
     feedEventLoop();
 
@@ -60,7 +60,7 @@ void test_vfsentitysubscribed::checkErrorSignalFromUnsubscribedEntityInvalidComp
     QCOMPARE(arguments.at(3), QVariant());
 }*/
 
-void test_vfsentitysubscribed::checkOkSignalFromSubscribedEntityValidComponent()
+void test_vfsimplegetter::checkOkSignalFromSubscribedEntityValidComponent()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -76,9 +76,9 @@ void test_vfsentitysubscribed::checkOkSignalFromSubscribedEntityValidComponent()
     feedEventLoop();
     QStringList componentNames = entityToSubscribe->getComponentNames();
 
-    VfsEntitySubscribedPtr subscribedEntity = VfsEntitySubscribed::create(systemEntityId, componentNames);
+    VfSimpleGetterPtr subscribedEntity = VfSimpleGetter::create(systemEntityId, componentNames);
     cmdEventHandlerSystem.addItem(subscribedEntity);
-    QSignalSpy spy(subscribedEntity.get(), &VfsEntitySubscribed::sigGetFinish);
+    QSignalSpy spy(subscribedEntity.get(), &VfSimpleGetter::sigGetFinish);
     subscribedEntity->getComponent("EntityName");
     feedEventLoop();
 
@@ -89,12 +89,12 @@ void test_vfsentitysubscribed::checkOkSignalFromSubscribedEntityValidComponent()
     QCOMPARE(arguments.at(2).toBool(), true);
 }
 
-void test_vfsentitysubscribed::getValidComponent()
+void test_vfsimplegetter::getValidComponent()
 {
 
 }
 
-void test_vfsentitysubscribed::feedEventLoop()
+void test_vfsimplegetter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }
