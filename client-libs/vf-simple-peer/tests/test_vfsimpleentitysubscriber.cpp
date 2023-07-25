@@ -1,18 +1,18 @@
-#include "test_vfsentityinsubscription.h"
+#include "test_vfsimpleentitysubscriber.h"
 #include "vfcommandeventhandlersystem.h"
-#include "vfsentityinsubscription.h"
+#include "vfsimpleentitysubscriber.h"
 #include "veintestserver.h"
 #include "ve_eventhandler.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_vfsentityinsubscription)
+QTEST_MAIN(test_vfsimpleentitysubscriber)
 
 static constexpr int systemEntityId = 0;
 static constexpr int noneExistentEnitityId = 42;
 
-void test_vfsentityinsubscription::intropectSystemEntitySignalReceived()
+void test_vfsimpleentitysubscriber::intropectSystemEntitySignalReceived()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -22,16 +22,16 @@ void test_vfsentityinsubscription::intropectSystemEntitySignalReceived()
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
+    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
-    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
+    QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscrption();
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
 }
 
-void test_vfsentityinsubscription::trySubscribeOnNonExistantEntity()
+void test_vfsimpleentitysubscriber::trySubscribeOnNonExistantEntity()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -39,16 +39,16 @@ void test_vfsentityinsubscription::trySubscribeOnNonExistantEntity()
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(noneExistentEnitityId);
+    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(noneExistentEnitityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
-    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
+    QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscrption();
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
 }
 
-void test_vfsentityinsubscription::introspectComponentNames()
+void test_vfsimpleentitysubscriber::introspectComponentNames()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -56,9 +56,9 @@ void test_vfsentityinsubscription::introspectComponentNames()
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
+    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
-    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
+    QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscrption();
     feedEventLoop();
 
@@ -74,7 +74,7 @@ void test_vfsentityinsubscription::introspectComponentNames()
 
 }
 
-void test_vfsentityinsubscription::feedEventLoop()
+void test_vfsimpleentitysubscriber::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

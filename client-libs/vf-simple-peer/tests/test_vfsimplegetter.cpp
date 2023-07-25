@@ -1,7 +1,7 @@
 #include "test_vfsimplegetter.h"
 #include "veintestserver.h"
 #include "vfcommandeventhandlersystem.h"
-#include "vfsentityinsubscription.h"
+#include "vfsimpleentitysubscriber.h"
 #include "vfsimplegetter.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
@@ -70,7 +70,7 @@ void test_vfsimplegetter::checkOkSignalFromSubscribedEntityValidComponent()
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
+    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     entityToSubscribe->sendSubscrption();
     feedEventLoop();

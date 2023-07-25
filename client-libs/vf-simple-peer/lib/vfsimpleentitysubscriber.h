@@ -1,15 +1,15 @@
-#ifndef VFSENTITYINSUBSCRIPTION_H
-#define VFSENTITYINSUBSCRIPTION_H
+#ifndef VFSIMPLEENTITYSUBSCRIBER_H
+#define VFSIMPLEENTITYSUBSCRIBER_H
 
 #include "vfcommandeventhandler.h"
 #include "vfcommandeventhandleritem.h"
 
-class VfsEntityInSubscription : public QObject, public VfCommandEventHandlerItem
+class VfSimpleEntitySubscriber : public QObject, public VfCommandEventHandlerItem
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfsEntityInSubscription> create(int entityId);
-    VfsEntityInSubscription(int entityId);
+    static std::shared_ptr<VfSimpleEntitySubscriber> create(int entityId);
+    VfSimpleEntitySubscriber(int entityId);
     void sendSubscrption();
     QStringList getComponentNames();
 signals:
@@ -21,6 +21,6 @@ private:
     QStringList m_componentNames;
 };
 
-typedef std::shared_ptr<VfsEntityInSubscription> VfsEntityInSubscriptionPtr;
+typedef std::shared_ptr<VfSimpleEntitySubscriber> VfSimpleEntitySubscriberPtr;
 
-#endif // VFSENTITYINSUBSCRIPTION_H
+#endif // VFSIMPLEENTITYSUBSCRIBER_H

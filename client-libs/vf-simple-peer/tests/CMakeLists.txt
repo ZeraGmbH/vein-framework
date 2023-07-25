@@ -1,4 +1,4 @@
 SETUP_TESTS(
-    test_vfsentityinsubscription
+    test_vfsimpleentitysubscriber
     test_vfsimplegetter
     )
