@@ -17,7 +17,7 @@ VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
 {
 }
 
-void VfSimpleGetter::getComponent()
+void VfSimpleGetter::startGetComponent()
 {
     ComponentData *cData = new ComponentData();
     cData->setEntityId(m_entityId);

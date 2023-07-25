@@ -13,7 +13,7 @@ class VfSimplePeer : public VeinEvent::EventSystem
 public:
     VfSimplePeer();
     static int getNextTransactionId();
-    void getComponent(int transactionId, int entityId, QString componentName);
+    void startGetComponent(int transactionId, int entityId, QString componentName);
     void setComponent(int transactionId, int entityId, QString componentName, QVariant value);
     //void getEntityIdFromName(QString entityName);
 signals:
