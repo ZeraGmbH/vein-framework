@@ -46,7 +46,7 @@ struct TestClientStack
 
 void test_veinnetworkstacks::receiveIntrospectionOverRealNetwork()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     TestServerStack serverStack;
 
     TestClientStack clientStack;
