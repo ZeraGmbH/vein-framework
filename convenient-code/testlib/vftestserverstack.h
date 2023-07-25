@@ -1,17 +1,17 @@
-#ifndef TESTSERVERSTACK_H
-#define TESTSERVERSTACK_H
+#ifndef VFTESTSERVERSTACK_H
+#define VFTESTSERVERSTACK_H
 
 #include "veintestserver.h"
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 
-struct TestServerStack
+struct VfTestServerStack
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer server;
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
-    TestServerStack(int serverPort);
+    VfTestServerStack(int serverPort);
 };
 
-#endif // TESTSERVERSTACK_H
+#endif // VFTESTSERVERSTACK_H

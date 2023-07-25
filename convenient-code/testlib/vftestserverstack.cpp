@@ -1,8 +1,8 @@
-#include "testserverstack.h"
+#include "vftestserverstack.h"
 #include <QCoreApplication>
 #include <QAbstractEventDispatcher>
 
-TestServerStack::TestServerStack(int serverPort) :
+VfTestServerStack::VfTestServerStack(int serverPort) :
     server(&eventHandler)
 {
     eventHandler.addSubsystem(&netSystem);
