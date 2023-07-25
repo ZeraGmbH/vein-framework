@@ -8,13 +8,8 @@ class test_vfsimplegetter : public QObject
     Q_OBJECT
 private slots:
     void checkErrorSignalFromUnsubscribedEntityInvalidComponent();
-    // storage responses without subscription
-    //void checkErrorSignalFromUnsubscribedEntityValidComponent();
-    void checkOkSignalFromSubscribedEntityValidComponent();
-
-
-
-    void getValidComponent();
+    void checkGetFromUnsubscribedEntityValidComponent();
+    void checkGetFromUnsubscribedEntityValidComponentNetwork();
 private:
     void feedEventLoop();
 };
