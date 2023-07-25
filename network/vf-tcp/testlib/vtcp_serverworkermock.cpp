@@ -34,7 +34,7 @@ bool TcpServerWorkerMock::isListenActive()
     return m_portListening != 0;
 }
 
-TcpServerWorkerMock *TcpServerWorkerMock::getServerMock(quint16 port)
+TcpServerWorkerMock* TcpServerWorkerMock::getServerMock(quint16 port)
 {
     TcpServerWorkerMock *server = nullptr;
     if(m_serverMocks.contains(port))
@@ -42,9 +42,9 @@ TcpServerWorkerMock *TcpServerWorkerMock::getServerMock(quint16 port)
     return server;
 }
 
-VeinTcp::TcpPeer* TcpServerWorkerMock::emitSigClientConnected()
+TcpPeer* TcpServerWorkerMock::emitSigClientConnected(TcpPeer* clientPeer)
 {
-    VeinTcp::TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(0));
+    TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(clientPeer));
     QMetaObject::invokeMethod(this,
                               "doEmitSigClientConnected",
                               Qt::QueuedConnection,
