@@ -13,7 +13,7 @@ static constexpr int serverPort = 4242;
 
 void test_networkmock::failPeerConnectNoServerReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpPeer clientPeer;
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
@@ -25,7 +25,7 @@ void test_networkmock::failPeerConnectNoServerReal()
 
 void test_networkmock::failPeerConnectNoServerMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpPeer clientPeer;
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
@@ -38,7 +38,7 @@ void test_networkmock::failPeerConnectNoServerMock()
 void test_networkmock::failPeerSendNoServerReal()
 {
     // fails with assertion
-    /*VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    /*VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpPeer clientPeer;
     clientPeer.sendMessage("foo");*/
 }
@@ -46,14 +46,14 @@ void test_networkmock::failPeerSendNoServerReal()
 void test_networkmock::failPeerSendNoServerMock()
 {
     // fails with assertion
-    /*VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    /*VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpPeer clientPeer;
     clientPeer.sendMessage("foo");*/
 }
 
 void test_networkmock::failPeerNotLocalhostMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpPeer clientPeer;
     clientPeer.startConnection("192.168.1.1", serverPort);
     // check event loop fired: connect after start
@@ -65,21 +65,21 @@ void test_networkmock::failPeerNotLocalhostMock()
 
 void test_networkmock::notStartedServerIsNotListeningReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server;
     QCOMPARE(server.isListening(), false);
 }
 
 void test_networkmock::notStartedServerIsNotListeningMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server;
     QCOMPARE(server.isListening(), false);
 }
 
 void test_networkmock::startedServerIsListeningReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     // Immediate no event loop!?
@@ -88,7 +88,7 @@ void test_networkmock::startedServerIsListeningReal()
 
 void test_networkmock::startedServerIsListeningMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     QCOMPARE(server.isListening(), true);
@@ -96,7 +96,7 @@ void test_networkmock::startedServerIsListeningMock()
 
 void test_networkmock::clientConnectServerSideVeryImportantReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer;
@@ -117,7 +117,7 @@ void test_networkmock::clientConnectServerSideVeryImportantReal()
 
 void test_networkmock::clientConnectServerSideVeryImportantMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer;
@@ -138,7 +138,7 @@ void test_networkmock::clientConnectServerSideVeryImportantMock()
 
 void test_networkmock::failTwoServersSamePortReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server1;
     QCOMPARE(server1.startServer(serverPort, false), true);
     VeinTcp::TcpServer server2;
@@ -147,7 +147,7 @@ void test_networkmock::failTwoServersSamePortReal()
 
 void test_networkmock::failTwoServersSamePortMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server1;
     QCOMPARE(server1.startServer(serverPort, false), true);
     VeinTcp::TcpServer server2;
@@ -156,7 +156,7 @@ void test_networkmock::failTwoServersSamePortMock()
 
 void test_networkmock::clientConnectClientSideEstablishedReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
 
@@ -176,7 +176,7 @@ void test_networkmock::clientConnectClientSideEstablishedReal()
 
 void test_networkmock::clientConnectClientSideEstablishedMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
 
@@ -196,7 +196,7 @@ void test_networkmock::clientConnectClientSideEstablishedMock()
 
 void test_networkmock::talkBidirectionalReal()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer;
@@ -234,7 +234,7 @@ void test_networkmock::talkBidirectionalReal()
 
 void test_networkmock::talkBidirectionalMock()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMock();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VeinTcp::TcpServer server;
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer;
@@ -271,5 +271,5 @@ void test_networkmock::talkBidirectionalMock()
 
 void test_networkmock::cleanup()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableProduction();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
 }

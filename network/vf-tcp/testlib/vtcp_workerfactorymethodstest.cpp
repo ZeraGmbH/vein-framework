@@ -6,14 +6,14 @@
 namespace VeinTcp
 {
 
-void TcpWorkerFactoryMethodsTest::enableProduction()
+void TcpWorkerFactoryMethodsTest::enableRealNetwork()
 {
     m_createFunctionPeer = getCreateFunctionPeer();
     m_createFunctionPeerWithDescriptor = getCreateFunctionPeerWithDescriptor();
     m_createFunctionServer = getCreateFunctionServer();
 }
 
-void TcpWorkerFactoryMethodsTest::enableMock()
+void TcpWorkerFactoryMethodsTest::enableMockNetwork()
 {
     m_createFunctionPeer =
         [](TcpPeer *peer) {

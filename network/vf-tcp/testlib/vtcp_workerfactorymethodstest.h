@@ -9,8 +9,8 @@ namespace VeinTcp
 class TcpWorkerFactoryMethodsTest : public TcpWorkerFactoryMethods
 {
 public:
-    static void enableProduction();
-    static void enableMock();
+    static void enableRealNetwork();
+    static void enableMockNetwork();
 };
 
 }
