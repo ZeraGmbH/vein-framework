@@ -6,8 +6,8 @@
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include "testserverstack.h"
-#include "testclientstack.h"
+#include "vftestserverstack.h"
+#include "vftestclientstack.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -20,9 +20,9 @@ static constexpr int serverPort = 4242;
 void test_veinnetworkstacks::receiveIntrospection()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestServerStack serverStack(serverPort);
+    VfTestServerStack serverStack(serverPort);
 
-    TestClientStack clientStack;
+    VfTestClientStack clientStack;
     VfCommandEventHandlerSystem cmdEventHandlerSystem;
     clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
     VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
