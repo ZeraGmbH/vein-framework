@@ -1,6 +1,7 @@
 #ifndef TEST_VFSIMPLEGETTER_H
 #define TEST_VFSIMPLEGETTER_H
 
+#include "vfcommandeventhandlersystem.h"
 #include <QObject>
 
 class test_vfsimplegetter : public QObject
@@ -9,8 +10,10 @@ class test_vfsimplegetter : public QObject
 private slots:
     void checkErrorSignalFromUnsubscribedEntityInvalidComponent();
     void checkGetFromUnsubscribedEntityValidComponent();
-    void checkGetFromUnsubscribedEntityValidComponentNetwork();
+    void noGetFromUnsubscribedEntityValidComponentNetwork();
+    void okGetFromSubscribedEntityValidComponentNetwork();
 private:
+    void subsribeSystemEntity(VfCommandEventHandlerSystem *cmdEventHandlerSystem);
     void feedEventLoop();
 };
 
