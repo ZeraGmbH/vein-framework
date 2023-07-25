@@ -13,6 +13,7 @@ private slots:
     void noGetFromUnsubscribedEntityValidComponentNet();
     void getFromSubscribedEntityValidComponentNet();
     void getFromSubscribedEntityInvalidComponentNet();
+    void getTwoDifferentComponent();
 private:
     void subsribeSystemEntity(VfCommandEventHandlerSystem *cmdEventHandlerSystem);
     void feedEventLoop();
