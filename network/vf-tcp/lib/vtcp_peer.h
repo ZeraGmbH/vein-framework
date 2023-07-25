@@ -13,19 +13,19 @@ class VFTCP_EXPORT TcpPeer : public QObject
 {
     Q_OBJECT
 public:
-    explicit TcpPeer(QObject *t_parent = nullptr);
-    explicit TcpPeer(qintptr t_socketDescriptor, QObject *t_parent = nullptr);
+    explicit TcpPeer(QObject *parent = nullptr);
+    explicit TcpPeer(qintptr socketDescriptor, QObject *parent = nullptr);
 
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
 signals:
-    void sigConnectionEstablished(TcpPeer *t_sender);
-    void sigConnectionClosed(TcpPeer *t_sender);
-    void sigMessageReceived(TcpPeer *t_sender, QByteArray t_message);
-    void sigSocketError(TcpPeer *t_sender, QAbstractSocket::SocketError t_socketError);
+    void sigConnectionEstablished(VeinTcp::TcpPeer *thisPeer);
+    void sigConnectionClosed(VeinTcp::TcpPeer *thisPeer);
+    void sigMessageReceived(VeinTcp::TcpPeer *thisPeer, QByteArray message);
+    void sigSocketError(VeinTcp::TcpPeer *thisPeer, QAbstractSocket::SocketError socketError);
 public slots:
-    void sendMessage(QByteArray t_message) const;
-    void startConnection(QString t_ipAddress, quint16 t_port);
+    void sendMessage(QByteArray message) const;
+    void startConnection(QString ipAddress, quint16 port);
 
 private:
     TcpPeerWorkerInterfacePtr m_worker;
