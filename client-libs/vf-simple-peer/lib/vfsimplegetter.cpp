@@ -6,25 +6,25 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QStringList componentNames)
+std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QString componentName)
 {
-    return std::make_shared<VfSimpleGetter>(entityId, componentNames);
+    return std::make_shared<VfSimpleGetter>(entityId, componentName);
 }
 
-VfSimpleGetter::VfSimpleGetter(int entityId, QStringList componentNames) :
+VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
     VfCommandEventHandlerItem(entityId),
-    m_componentNames(componentNames)
+    m_componentName(componentName)
 {
 }
 
-void VfSimpleGetter::getComponent(QString componentName)
+void VfSimpleGetter::getComponent()
 {
     ComponentData *cData = new ComponentData();
     cData->setEntityId(m_entityId);
     cData->setCommand(ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-    cData->setComponentName(componentName);
+    cData->setComponentName(m_componentName);
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
     emit m_eventSystem->sigSendEvent(cEvent);
 }
