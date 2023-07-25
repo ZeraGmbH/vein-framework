@@ -8,11 +8,12 @@ class VfSimpleGetter : public QObject, public VfCommandEventHandlerItem
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfSimpleGetter> create(int entityId, QString componentName);
+    static std::unique_ptr<VfSimpleGetter> create(int entityId, QString componentName);
     VfSimpleGetter(int entityId, QString componentName);
     void startGetComponent();
+    QString getComponentName();
 signals:
-    void sigGetFinish(int entityId, QString componentName, bool ok, QVariant value);
+    void sigGetFinish(bool ok, QVariant value);
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     QString m_componentName;

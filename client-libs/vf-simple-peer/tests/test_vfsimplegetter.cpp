@@ -33,10 +33,8 @@ void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
-    QCOMPARE(arguments.at(0).toInt(), testEntityId);
-    QCOMPARE(arguments.at(1).toString(), "foo");
-    QCOMPARE(arguments.at(2).toBool(), false);
-    QCOMPARE(arguments.at(3), QVariant());
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1), QVariant());
 }
 
 void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
@@ -57,10 +55,8 @@ void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
-    QCOMPARE(arguments.at(0).toInt(), systemEntityId);
-    QCOMPARE(arguments.at(1).toString(), "EntityName");
-    QCOMPARE(arguments.at(2).toBool(), true);
-    QCOMPARE(arguments.at(3), QVariant("_System"));
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
 void test_vfsimplegetter::subsribeSystemEntity(VfCommandEventHandlerSystem* cmdEventHandlerSystem)
@@ -112,10 +108,8 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
 
     QCOMPARE(getterSpy.count(), 1);
     QList<QVariant> arguments = getterSpy[0];
-    QCOMPARE(arguments.at(0).toInt(), systemEntityId);
-    QCOMPARE(arguments.at(1).toString(), "EntityName");
-    QCOMPARE(arguments.at(2).toBool(), true);
-    QCOMPARE(arguments.at(3), QVariant("_System"));
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
 void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
@@ -140,10 +134,8 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
 
     QCOMPARE(getterSpy.count(), 1);
     QList<QVariant> arguments = getterSpy[0];
-    QCOMPARE(arguments.at(0).toInt(), systemEntityId);
-    QCOMPARE(arguments.at(1).toString(), "foo");
-    QCOMPARE(arguments.at(2).toBool(), false);
-    QCOMPARE(arguments.at(3), QVariant());
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1), QVariant());
 }
 
 void test_vfsimplegetter::feedEventLoop()
