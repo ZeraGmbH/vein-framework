@@ -15,7 +15,7 @@ static constexpr int serverPort = 4242;
 
 QTEST_MAIN(test_vfsimplegetter)
 
-void test_vfsimplegetter::checkErrorSignalFromUnsubscribedEntityInvalidComponent()
+void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -39,7 +39,7 @@ void test_vfsimplegetter::checkErrorSignalFromUnsubscribedEntityInvalidComponent
     QCOMPARE(arguments.at(3), QVariant());
 }
 
-void test_vfsimplegetter::checkGetFromUnsubscribedEntityValidComponent()
+void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
 {
     VeinEvent::EventHandler eventHandler;
     VeinTestServer testServer(&eventHandler);
@@ -70,7 +70,7 @@ void test_vfsimplegetter::subsribeSystemEntity(VfCommandEventHandlerSystem* cmdE
     entityToSubscribe->sendSubscrption();
 }
 
-void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNetwork()
+void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -90,7 +90,7 @@ void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNetwork()
     QCOMPARE(getterSpy.count(), 0);
 }
 
-void test_vfsimplegetter::okGetFromSubscribedEntityValidComponentNetwork()
+void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);

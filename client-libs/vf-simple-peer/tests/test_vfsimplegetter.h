@@ -8,10 +8,10 @@ class test_vfsimplegetter : public QObject
 {
     Q_OBJECT
 private slots:
-    void checkErrorSignalFromUnsubscribedEntityInvalidComponent();
-    void checkGetFromUnsubscribedEntityValidComponent();
-    void noGetFromUnsubscribedEntityValidComponentNetwork();
-    void okGetFromSubscribedEntityValidComponentNetwork();
+    void errorSignalFromUnsubscribedEntityInvalidComponentNoNet();
+    void getFromUnsubscribedEntityValidComponentNoNet();
+    void noGetFromUnsubscribedEntityValidComponentNet();
+    void getFromSubscribedEntityValidComponentNet();
 private:
     void subsribeSystemEntity(VfCommandEventHandlerSystem *cmdEventHandlerSystem);
     void feedEventLoop();
