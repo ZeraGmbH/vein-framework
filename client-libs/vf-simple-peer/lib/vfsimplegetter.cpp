@@ -29,11 +29,6 @@ void VfSimpleGetter::startGetComponent()
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
-QString VfSimpleGetter::getComponentName()
-{
-    return m_componentName;
-}
-
 void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
@@ -42,8 +37,7 @@ void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
         EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
         ComponentData *cData = static_cast<ComponentData *>(evData);
-        if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH) {
+        if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH && cData->componentName() == m_componentName)
             emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
-        }
     }
 }

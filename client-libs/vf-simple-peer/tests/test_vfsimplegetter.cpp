@@ -138,6 +138,39 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
     QCOMPARE(arguments.at(1), QVariant());
 }
 
+void test_vfsimplegetter::getTwoDifferentComponent()
+{
+    // just server / no subscription
+    VeinEvent::EventHandler eventHandler;
+    VeinTestServer server(&eventHandler);
+    server.simulAllModulesLoaded("fooPath", QStringList() << "fooPath");
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    feedEventLoop();
+
+    VfSimpleGetterPtr getter1 = VfSimpleGetter::create(systemEntityId, "EntityName");
+    cmdEventHandlerSystem.addItem(getter1);
+    QSignalSpy getterSpy1(getter1.get(), &VfSimpleGetter::sigGetFinish);
+
+    VfSimpleGetterPtr getter2 = VfSimpleGetter::create(systemEntityId, "Session");
+    cmdEventHandlerSystem.addItem(getter2);
+    QSignalSpy getterSpy2(getter2.get(), &VfSimpleGetter::sigGetFinish);
+
+    getter1->startGetComponent();
+    getter2->startGetComponent();
+    feedEventLoop();
+
+    QCOMPARE(getterSpy1.count(), 1);
+    QList<QVariant> arguments1 = getterSpy1[0];
+    QCOMPARE(arguments1.at(0).toBool(), true);
+    QCOMPARE(arguments1.at(1), QVariant("_System"));
+
+    QCOMPARE(getterSpy2.count(), 1);
+    QList<QVariant> arguments2 = getterSpy2[0];
+    QCOMPARE(arguments2.at(0).toBool(), true);
+    QCOMPARE(arguments2.at(1), QVariant("fooPath"));
+}
+
 void test_vfsimplegetter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
