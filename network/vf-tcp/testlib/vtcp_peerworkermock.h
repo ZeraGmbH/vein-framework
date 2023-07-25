@@ -2,6 +2,7 @@
 #define VEIN_TCP_PEERWORKERMOCK_H
 
 #include "vtcp_peerworkerinterface.h"
+#include "vtcp_serverworkermock.h"
 #include <QAbstractSocket>
 
 namespace VeinTcp
@@ -32,7 +33,9 @@ private slots:
     void doEmitMessageReceived(VeinTcp::TcpPeer* peer, QByteArray message);
 private:
     TcpPeer *m_peer = nullptr;
-    VeinTcp::TcpPeer* m_serverPeer = nullptr;
+    bool m_bAmClientPeer;
+    TcpPeer* m_serverPeer = nullptr;
+    TcpPeer* m_clientPeer = nullptr;
     bool m_connectionEstablished = false;
 };
 }
