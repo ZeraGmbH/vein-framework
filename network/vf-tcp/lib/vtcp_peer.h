@@ -20,7 +20,7 @@ public:
     void setPeerId(QUuid t_peerId);
 signals:
     void sigConnectionEstablished(VeinTcp::TcpPeer *thisPeer);
-    void sigConnectionClosed(VeinTcp::TcpPeer *thisPeer);
+    void sigConnectionClosed(VeinTcp::TcpPeer *thisPeer); // not supported by mock yet
     void sigMessageReceived(VeinTcp::TcpPeer *thisPeer, QByteArray message);
     void sigSocketError(VeinTcp::TcpPeer *thisPeer, QAbstractSocket::SocketError socketError);
 public slots:
