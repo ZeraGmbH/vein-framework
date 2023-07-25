@@ -118,6 +118,34 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
     QCOMPARE(arguments.at(3), QVariant("_System"));
 }
 
+void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VfTestServerStack serverStack(serverPort);
+
+    VfTestClientStack clientStack;
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    feedEventLoop();
+
+    subsribeSystemEntity(&cmdEventHandlerSystem);
+    feedEventLoop();
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "foo");
+    cmdEventHandlerSystem.addItem(getter);
+    QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    getter->startGetComponent();
+    feedEventLoop();
+
+    QCOMPARE(getterSpy.count(), 1);
+    QList<QVariant> arguments = getterSpy[0];
+    QCOMPARE(arguments.at(0).toInt(), systemEntityId);
+    QCOMPARE(arguments.at(1).toString(), "foo");
+    QCOMPARE(arguments.at(2).toBool(), false);
+    QCOMPARE(arguments.at(3), QVariant());
+}
+
 void test_vfsimplegetter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
