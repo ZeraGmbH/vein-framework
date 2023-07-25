@@ -12,6 +12,7 @@ private slots:
     void getFromUnsubscribedEntityValidComponentNoNet();
     void noGetFromUnsubscribedEntityValidComponentNet();
     void getFromSubscribedEntityValidComponentNet();
+    void getFromSubscribedEntityInvalidComponentNet();
 private:
     void subsribeSystemEntity(VfCommandEventHandlerSystem *cmdEventHandlerSystem);
     void feedEventLoop();
