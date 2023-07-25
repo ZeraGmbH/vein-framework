@@ -1,4 +1,4 @@
-#include "vfsentitysubscribed.h"
+#include "vfsimplegetter.h"
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 #include "vcmp_errordata.h"
@@ -6,18 +6,18 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-std::shared_ptr<VfsEntitySubscribed> VfsEntitySubscribed::create(int entityId, QStringList componentNames)
+std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QStringList componentNames)
 {
-    return std::make_shared<VfsEntitySubscribed>(entityId, componentNames);
+    return std::make_shared<VfSimpleGetter>(entityId, componentNames);
 }
 
-VfsEntitySubscribed::VfsEntitySubscribed(int entityId, QStringList componentNames) :
+VfSimpleGetter::VfSimpleGetter(int entityId, QStringList componentNames) :
     VfCommandEventHandlerItem(entityId),
     m_componentNames(componentNames)
 {
 }
 
-void VfsEntitySubscribed::getComponent(QString componentName)
+void VfSimpleGetter::getComponent(QString componentName)
 {
     ComponentData *cData = new ComponentData();
     cData->setEntityId(m_entityId);
@@ -29,12 +29,7 @@ void VfsEntitySubscribed::getComponent(QString componentName)
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
-void VfsEntitySubscribed::setComponent(QString componentName, QVariant value)
-{
-
-}
-
-void VfsEntitySubscribed::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(cmdEvent);

@@ -2,7 +2,7 @@
 #define VFSIMPLEPEER_H
 
 #include "vfsentityinsubscription.h"
-#include "vfsentitysubscribed.h"
+#include "vfsimplegetter.h"
 #include "ve_eventsystem.h"
 #include "ve_commandevent.h"
 #include <map>
@@ -27,7 +27,7 @@ private:
     void processCommandEvent(int entityId, VeinEvent::CommandEvent *cmdEvent);
 
     QMap<int/*entityId*/, VfsEntityInSubscriptionPtr> m_entitiesInSubsription;
-    //std::map<int/*entityId*/, VfsEntitySubscribed> m_entitiesSubsribed;
+    //std::map<int/*entityId*/, VfSimpleGetter> m_entitiesSubsribed;
     struct TransactionData
     {
         int entityId;
