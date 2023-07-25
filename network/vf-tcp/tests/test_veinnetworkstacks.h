@@ -10,8 +10,7 @@ private slots:
     // We need this to learn howto set up a working syssytem
     // before starting on network mock. In case we are done
     // and this test turns fragile, it can be removed
-    void receiveIntrospectionOverRealNetwork();
-    void receiveIntrospectionOverMockNetwork();
+    void receiveIntrospection();
 private:
     void feedEventLoop();
 };
