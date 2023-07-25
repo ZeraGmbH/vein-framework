@@ -44,9 +44,9 @@ struct TestClientStack
     }
 };
 
-void test_veinnetworkstacks::receiveIntrospectionOverRealNetwork()
+void test_veinnetworkstacks::receiveIntrospection()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestServerStack serverStack;
 
     TestClientStack clientStack;
@@ -66,10 +66,6 @@ void test_veinnetworkstacks::receiveIntrospectionOverRealNetwork()
     spy.wait(1000);
     QVERIFY(clientConnected);
     QCOMPARE(spy.count(), 1);
-}
-
-void test_veinnetworkstacks::receiveIntrospectionOverMockNetwork()
-{
 }
 
 void test_veinnetworkstacks::feedEventLoop()
