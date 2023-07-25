@@ -1,4 +1,4 @@
-#include "vfsentityinsubscription.h"
+#include "vfsimpleentitysubscriber.h"
 #include "vcmp_entitydata.h"
 #include "vcmp_errordata.h"
 #include <vcmp_introspectiondata.h>
@@ -8,17 +8,17 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-std::shared_ptr<VfsEntityInSubscription> VfsEntityInSubscription::create(int entityId)
+std::shared_ptr<VfSimpleEntitySubscriber> VfSimpleEntitySubscriber::create(int entityId)
 {
-    return std::make_shared<VfsEntityInSubscription>(entityId);
+    return std::make_shared<VfSimpleEntitySubscriber>(entityId);
 }
 
-VfsEntityInSubscription::VfsEntityInSubscription(int entityId) :
+VfSimpleEntitySubscriber::VfSimpleEntitySubscriber(int entityId) :
     VfCommandEventHandlerItem(entityId)
 {
 }
 
-void VfsEntityInSubscription::sendSubscrption()
+void VfSimpleEntitySubscriber::sendSubscrption()
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
@@ -29,12 +29,12 @@ void VfsEntityInSubscription::sendSubscrption()
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
-QStringList VfsEntityInSubscription::getComponentNames()
+QStringList VfSimpleEntitySubscriber::getComponentNames()
 {
     return m_componentNames;
 }
 
-void VfsEntityInSubscription::parseIntrospectionData(EventData *evData)
+void VfSimpleEntitySubscriber::parseIntrospectionData(EventData *evData)
 {
     IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
     QJsonObject jsonObject = iData->jsonData();
@@ -44,12 +44,12 @@ void VfsEntityInSubscription::parseIntrospectionData(EventData *evData)
         m_componentNames.append(entry.toString());
 }
 
-void VfsEntityInSubscription::finishSubscription(bool ok)
+void VfSimpleEntitySubscriber::finishSubscription(bool ok)
 {
     emit sigSubscribed(ok, m_entityId);
 }
 
-void VfsEntityInSubscription::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfSimpleEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
         EventData *evData = cmdEvent->eventData();

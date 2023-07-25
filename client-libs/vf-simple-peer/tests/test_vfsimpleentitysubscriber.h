@@ -1,9 +1,9 @@
-#ifndef TEST_VFSENTITYINSUBSCRIPTION_H
-#define TEST_VFSENTITYINSUBSCRIPTION_H
+#ifndef TEST_VFSIMPLEENTITYSUBSCRIBER_H
+#define TEST_VFSIMPLEENTITYSUBSCRIBER_H
 
 #include <QObject>
 
-class test_vfsentityinsubscription : public QObject
+class test_vfsimpleentitysubscriber : public QObject
 {
     Q_OBJECT
 private slots:
@@ -14,4 +14,4 @@ private:
     void feedEventLoop();
 };
 
-#endif // TEST_VFSENTITYINSUBSCRIPTION_H
+#endif // TEST_VFSIMPLEENTITYSUBSCRIBER_H

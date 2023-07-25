@@ -1,6 +1,6 @@
 #include "test_veinnetworkstacks.h"
 #include "vfcommandeventhandlersystem.h"
-#include "vfsentityinsubscription.h"
+#include "vfsimpleentitysubscriber.h"
 #include "veintestserver.h"
 #include "ve_eventhandler.h"
 #include "vn_networksystem.h"
@@ -52,11 +52,11 @@ void test_veinnetworkstacks::receiveIntrospection()
     TestClientStack clientStack;
     VfCommandEventHandlerSystem cmdEventHandlerSystem;
     clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    VfsEntityInSubscriptionPtr entityToSubscribe = VfsEntityInSubscription::create(systemEntityId);
+    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
 
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    QSignalSpy spy(entityToSubscribe.get(), &VfsEntityInSubscription::sigSubscribed);
+    QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
     bool clientConnected = false;
     // check event loop fired: connect after connect
     QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
