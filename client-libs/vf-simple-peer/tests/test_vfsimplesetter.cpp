@@ -64,6 +64,8 @@ void test_vfsimplesetter::setToInvalidEntity()
 {
 /*    ServerNoNet server;
     feedEventLoop();
+    QList<int> entities = testServer.getEntityAddList();
+    QCOMPARE(entities.size(), 1);
 
     VfSimpleSetterPtr setter = VfSimpleSetter::create(invalidId, "foo");
     server.cmdEventHandlerSystem.addItem(setter);
