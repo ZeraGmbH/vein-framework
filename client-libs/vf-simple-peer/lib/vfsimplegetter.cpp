@@ -6,9 +6,9 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-std::unique_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QString componentName)
+std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QString componentName)
 {
-    return std::make_unique<VfSimpleGetter>(entityId, componentName);
+    return std::make_shared<VfSimpleGetter>(entityId, componentName);
 }
 
 VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
