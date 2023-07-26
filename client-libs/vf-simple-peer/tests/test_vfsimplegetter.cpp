@@ -1,7 +1,7 @@
 #include "test_vfsimplegetter.h"
+#include "vfsimplegetter.h"
 #include "veintestserver.h"
 #include "vfsimpleentitysubscriber.h"
-#include "vfsimplegetter.h"
 #include "vftestclientstack.h"
 #include "vftestserverstack.h"
 #include "vtcp_workerfactorymethodstest.h"
