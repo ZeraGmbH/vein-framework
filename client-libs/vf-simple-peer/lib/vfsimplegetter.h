@@ -8,7 +8,7 @@ class VfSimpleGetter : public QObject, public VfCommandEventHandlerItem
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<VfSimpleGetter> create(int entityId, QString componentName);
+    static std::shared_ptr<VfSimpleGetter> create(int entityId, QString componentName);
     VfSimpleGetter(int entityId, QString componentName);
     void startGetComponent();
 signals:
