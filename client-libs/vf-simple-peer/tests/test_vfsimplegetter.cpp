@@ -9,24 +9,33 @@
 #include <QSignalSpy>
 #include <QTest>
 
+QTEST_MAIN(test_vfsimplegetter)
+
 static constexpr int systemEntityId = 0;
 static constexpr int testEntityId = 1;
 static constexpr int serverPort = 4242;
 
-QTEST_MAIN(test_vfsimplegetter)
+struct ServerNoNet
+{
+    VeinEvent::EventHandler eventHandler;
+    VeinTestServer server;
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    ServerNoNet() :
+        server(&eventHandler)
+    {
+        eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    }
+};
 
 void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet()
 {
-    VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    ServerNoNet server;
     feedEventLoop();
-    QList<int> entities = testServer.getEntityAddList();
+    QList<int> entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
     VfSimpleGetterPtr getter = VfSimpleGetter::create(testEntityId, "foo");
-    cmdEventHandlerSystem.addItem(getter);
+    server.cmdEventHandlerSystem.addItem(getter);
     QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -39,16 +48,11 @@ void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet
 
 void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
 {
-    VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    ServerNoNet server;
     feedEventLoop();
-    QList<int> entities = testServer.getEntityAddList();
-    QCOMPARE(entities.size(), 1);
 
     VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "EntityName");
-    cmdEventHandlerSystem.addItem(getter);
+    server.cmdEventHandlerSystem.addItem(getter);
     QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
