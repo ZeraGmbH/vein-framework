@@ -32,7 +32,7 @@ void test_veinnetworkstacks::receiveIntrospection()
     // check event loop fired: connect after connect
     QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
         clientConnected = true;
-        entityToSubscribe->sendSubscrption();
+        entityToSubscribe->sendSubscription();
     });
     spy.wait(1000);
     QVERIFY(clientConnected);

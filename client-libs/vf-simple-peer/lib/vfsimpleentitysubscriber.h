@@ -9,7 +9,7 @@ class VfSimpleEntitySubscriber : public QObject, public VfCommandEventHandlerIte
 public:
     static std::shared_ptr<VfSimpleEntitySubscriber> create(int entityId);
     VfSimpleEntitySubscriber(int entityId);
-    void sendSubscrption();
+    void sendSubscription();
     QStringList getComponentNames();
 signals:
     void sigSubscribed(bool ok, int entityId);
