@@ -25,7 +25,7 @@ void test_vfsimpleentitysubscriber::intropectSystemEntitySignalReceived()
     VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
-    entityToSubscribe->sendSubscrption();
+    entityToSubscribe->sendSubscription();
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
@@ -42,7 +42,7 @@ void test_vfsimpleentitysubscriber::trySubscribeOnNonExistantEntity()
     VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(noneExistentEnitityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
-    entityToSubscribe->sendSubscrption();
+    entityToSubscribe->sendSubscription();
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
@@ -59,7 +59,7 @@ void test_vfsimpleentitysubscriber::introspectComponentNames()
     VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfSimpleEntitySubscriber::sigSubscribed);
-    entityToSubscribe->sendSubscrption();
+    entityToSubscribe->sendSubscription();
     feedEventLoop();
 
     QStringList componentNames = entityToSubscribe->getComponentNames();

@@ -18,7 +18,7 @@ VfSimpleEntitySubscriber::VfSimpleEntitySubscriber(int entityId) :
 {
 }
 
-void VfSimpleEntitySubscriber::sendSubscrption()
+void VfSimpleEntitySubscriber::sendSubscription()
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
