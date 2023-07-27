@@ -10,6 +10,7 @@ private slots:
     void setInvalidIsEvil();
     void setEqualEmitsOk();
     void setToInvalidEntity();
+    void setvalidEntityNet();
 private:
     void feedEventLoop();
 };

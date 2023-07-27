@@ -13,4 +13,5 @@ void VfTestClientStack::subscribeEntityId(int entityId, VfCommandEventHandlerSys
     VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(entityId);
     cmdEventHandlerSystem->addItem(entityToSubscribe);
     entityToSubscribe->sendSubscrption();
+    cmdEventHandlerSystem->removeItem(entityToSubscribe);
 }
