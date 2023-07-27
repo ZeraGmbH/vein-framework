@@ -1,7 +1,6 @@
 #ifndef VFSIMPLEENTITYSUBSCRIBER_H
 #define VFSIMPLEENTITYSUBSCRIBER_H
 
-#include "vfcommandeventhandler.h"
 #include "vfcommandeventhandleritem.h"
 
 class VfSimpleEntitySubscriber : public QObject, public VfCommandEventHandlerItem

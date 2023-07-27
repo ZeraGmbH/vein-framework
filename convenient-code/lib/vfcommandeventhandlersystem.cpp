@@ -1,5 +1,10 @@
 #include "vfcommandeventhandlersystem.h"
 
+VfCommandEventHandlerSystem::VfCommandEventHandlerSystem(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter) :
+    m_commandEventHandler(eventSubtypeFilter)
+{
+}
+
 void VfCommandEventHandlerSystem::addItem(VfCommandEventHandlerItemPtr item)
 {
     item->setEventSystem(this);

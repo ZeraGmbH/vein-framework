@@ -7,6 +7,7 @@
 class VfCommandEventHandlerSystem : public VeinEvent::EventSystem
 {
 public:
+    VfCommandEventHandlerSystem(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter = VeinEvent::CommandEvent::EventSubtype::NOTIFICATION);
     void addItem(VfCommandEventHandlerItemPtr item);
     void removeItem(VfCommandEventHandlerItemPtr item);
 private:

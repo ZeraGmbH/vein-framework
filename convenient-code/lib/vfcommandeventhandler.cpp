@@ -3,6 +3,11 @@
 
 using namespace VeinEvent;
 
+VfCommandEventHandler::VfCommandEventHandler(CommandEvent::EventSubtype eventSubtypeFilter) :
+    m_eventSubtypeFilter(eventSubtypeFilter)
+{
+}
+
 void VfCommandEventHandler::addItem(VfCommandEventHandlerItemPtr item)
 {
     std::set<VfCommandEventHandlerItemPtr> &items = m_items[item->getEntityId()];
@@ -20,19 +25,20 @@ void VfCommandEventHandler::processEvent(QEvent *event)
     if(event->type() == CommandEvent::eventType()) {
         CommandEvent *cmdEvent = static_cast<CommandEvent *>(event);
         Q_ASSERT(cmdEvent != nullptr);
-        VeinEvent::EventData *eventData = cmdEvent->eventData();
-        Q_ASSERT(eventData != nullptr);
         processCommandEvent(cmdEvent);
     }
 }
 
 void VfCommandEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    VeinEvent::EventData *eventData = cmdEvent->eventData();
-    Q_ASSERT(eventData != nullptr);
-    int entityId = eventData->entityId();
-    if(m_items.contains(entityId)) {
-        for(auto item : m_items[entityId])
-            item->processCommandEvent(cmdEvent);
+    if(cmdEvent->eventSubtype() == m_eventSubtypeFilter) {
+        VeinEvent::EventData *eventData = cmdEvent->eventData();
+        Q_ASSERT(eventData != nullptr);
+        int entityId = eventData->entityId();
+        auto iter = m_items.constFind(entityId);
+        if(iter != m_items.constEnd()) {
+            for(auto item : iter.value())
+                item->processCommandEvent(cmdEvent);
+        }
     }
 }
