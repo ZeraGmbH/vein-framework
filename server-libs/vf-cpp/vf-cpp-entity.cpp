@@ -42,6 +42,15 @@ cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QM
     return tmpPtr;
 }
 
+void VfCppEntity::initModule()
+{
+    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
+    eData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
+    eData->setEntityId(m_entityId);
+    VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
+    emit sigSendEvent(tmpEvent);
+}
+
 void VfCppEntity::processEvent(QEvent *event)
 {
     if(event->type()==VeinEvent::CommandEvent::eventType()) {
@@ -61,7 +70,7 @@ void VfCppEntity::watchComponent(int entityId, const QString &componentName)
 
 bool VfCppEntity::unWatchComponent(int entityId, const QString &componentName)
 {
-    bool retVal=false;
+    bool retVal = false;
     if(m_watchList.contains(entityId)) {
         if(m_watchList[entityId].contains(componentName)) {
             m_watchList[entityId].remove(componentName);
@@ -75,11 +84,9 @@ void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     // handle components
     if (cmdEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
-        QString cName;
-        int entityId;
         VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (cmdEvent->eventData());
-        cName = cData->componentName();
-        entityId = cData->entityId();
+        QString cName = cData->componentName();
+        int entityId = cData->entityId();
         // managed by this entity
         if (cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
             if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
@@ -99,8 +106,7 @@ void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
     }
     // handle rpcs
     else if(cmdEvent->eventData()->type() == VeinComponent::RemoteProcedureData::dataType()) {
-        VeinComponent::RemoteProcedureData *rpcData=nullptr;
-        rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
+        VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
         if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
             if(m_rpcList.contains(rpcData->procedureName())) {
                 const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
@@ -124,13 +130,4 @@ void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
             }
         }
     }
-}
-
-void VfCppEntity::initModule()
-{
-    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
-    eData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
-    eData->setEntityId(m_entityId);
-    VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-    emit sigSendEvent(tmpEvent);
 }
