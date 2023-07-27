@@ -16,6 +16,8 @@ target_link_libraries(VfConvenientCodeTest
     Qt5::Core
     VfEvent
     VfTcp
+    VfConvenientCode
+    VfSimplePeer
     veinserver-testlib
     )
 
