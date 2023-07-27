@@ -42,77 +42,56 @@ void ModuleManagerController::setStorage(VeinEvent::StorageSystem *t_storageSyst
 
 void ModuleManagerController::processEvent(QEvent *t_event)
 {
-    if(t_event->type() == VeinEvent::CommandEvent::eventType())
-    {
-        bool validated=false;
-        VeinEvent::CommandEvent *cEvent = nullptr;
-        cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+    if(t_event->type() == VeinEvent::CommandEvent::eventType()) {
+        bool validated = false;
+        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
         Q_ASSERT(cEvent != nullptr);
-        if(cEvent->eventSubtype() != VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) //we do not need to process notifications
-        {
-            if(cEvent->eventData()->type() == VeinComponent::IntrospectionData::dataType()) //introspection requests are always valid
-            {
+        if(cEvent->eventSubtype() != VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) { // we do not need to process notifications
+            if(cEvent->eventData()->type() == VeinComponent::IntrospectionData::dataType()) // introspection requests are always valid
                 validated = true;
-            }
-            else if(cEvent->eventData()->type() == VeinComponent::EntityData::dataType()) //validate subscription requests
+            else if(cEvent->eventData()->type() == VeinComponent::EntityData::dataType()) // validate subscription requests
             {
-                VeinComponent::EntityData *eData=nullptr;
-                eData = static_cast<VeinComponent::EntityData *>(cEvent->eventData());
+                VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(cEvent->eventData());
                 Q_ASSERT(eData != nullptr);
                 if(eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_SUBSCRIBE
-                        || eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_UNSUBSCRIBE) /// @todo maybe add roles/views later
-                {
+                        || eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_UNSUBSCRIBE) { /// @todo maybe add roles/views later
                     validated = true;
                 }
             }
-            else if(cEvent->eventData()->type() == VeinComponent::ComponentData::dataType())
-            {
-                VeinComponent::ComponentData *cData=nullptr;
-                cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
+            else if(cEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
+                VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
                 Q_ASSERT(cData != nullptr);
-
-                //validate fetch requests
+                // validate fetch requests
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) /// @todo maybe add roles/views later
-                {
                     validated = true;
-                }
-                else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET && //validate set event for _System.Session
-                        cData->entityId() == s_entityId)
-                {
-                    if(cData->componentName() == ModuleManagerController::s_sessionComponentName)
-                    {
-                        m_currentSession=cData->newValue().toString();
-                        if(m_sessionReady == true)
-                        {
+                else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET && // validate set event for _System.Session
+                        cData->entityId() == s_entityId) {
+                    if(cData->componentName() == ModuleManagerController::s_sessionComponentName) {
+                        m_currentSession = cData->newValue().toString();
+                        if(m_sessionReady == true) {
                             emit sigChangeSession(cData->newValue().toString());
                             m_sessionReady = false;
                         }
                         t_event->accept();
                     }
-                    else if(cData->componentName() == ModuleManagerController::s_notificationMessagesComponentName)
-                    {
+                    else if(cData->componentName() == ModuleManagerController::s_notificationMessagesComponentName) {
                         handleNotificationMessage(cData->newValue().toJsonObject());
                         t_event->accept();
                     }
                     else if(cData->componentName() == ModuleManagerController::s_loggedComponentsComponentName)
-                    {
-                        validated=true;
-                    }
-                    else if(cData->componentName() == ModuleManagerController::s_modulesPausedComponentName)
-                    {
-                        validated=true;
+                        validated = true;
+                    else if(cData->componentName() == ModuleManagerController::s_modulesPausedComponentName) {
+                        validated = true;
                         setModulesPaused(cData->newValue().toBool());
                     }
                 }
             }
         }
-
-        if(validated == true)
-        {
+        if(validated) {
             ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
             cEvent->setEventSubtype(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION);
-            cEvent->eventData()->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL); //the validated answer is authored from the system that runs the validator (aka. this system)
-            cEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL); //inform all users (may or may not result in network messages)
+            cEvent->eventData()->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL); // the validated answer is authored from the system that runs the validator (aka. this system)
+            cEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL); // inform all users (may or may not result in network messages)
         }
     }
 }
