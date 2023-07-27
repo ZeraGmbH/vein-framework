@@ -1,7 +1,6 @@
 #include "test_vfsimplegetter.h"
 #include "vfsimplegetter.h"
 #include "veintestserver.h"
-#include "vfsimpleentitysubscriber.h"
 #include "vftestclientstack.h"
 #include "vftestserverstack.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -63,13 +62,6 @@ void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
     QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
-void test_vfsimplegetter::subsribeSystemEntity(VfCommandEventHandlerSystem* cmdEventHandlerSystem)
-{
-    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(systemEntityId);
-    cmdEventHandlerSystem->addItem(entityToSubscribe);
-    entityToSubscribe->sendSubscrption();
-}
-
 void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
@@ -101,7 +93,7 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    subsribeSystemEntity(&cmdEventHandlerSystem);
+    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
 
     VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "EntityName");
@@ -127,7 +119,7 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    subsribeSystemEntity(&cmdEventHandlerSystem);
+    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
 
     VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "foo");

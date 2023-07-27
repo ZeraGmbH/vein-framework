@@ -1,7 +1,10 @@
 #include "test_vfsimplesetter.h"
+#include "vfsimpleentitysubscriber.h"
 #include "vfsimplesetter.h"
-#include "vfcommandeventhandlersystem.h"
 #include "veintestserver.h"
+#include "vftestclientstack.h"
+#include "vftestserverstack.h"
+#include "vtcp_workerfactorymethodstest.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -10,6 +13,7 @@ QTEST_MAIN(test_vfsimplesetter)
 
 static constexpr int systemEntityId = 0;
 static constexpr int invalidId = 1;
+static constexpr int testId = 2;
 static constexpr int serverPort = 4242;
 
 struct ServerNoNet
@@ -62,25 +66,60 @@ void test_vfsimplesetter::setEqualEmitsOk()
 
 void test_vfsimplesetter::setToInvalidEntity()
 {
-/*    ServerNoNet server;
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VfTestServerStack serverStack(serverPort);
+
+    VfTestClientStack clientStack;
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
-    QList<int> entities = testServer.getEntityAddList();
-    QCOMPARE(entities.size(), 1);
+
+    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
+    feedEventLoop();
 
     VfSimpleSetterPtr setter = VfSimpleSetter::create(invalidId, "foo");
-    server.cmdEventHandlerSystem.addItem(setter);
-    // check event loop fired: connect after start
+    cmdEventHandlerSystem.addItem(setter);
+    QSignalSpy setterSpy(setter.get(), &VfSimpleSetter::sigSetFinish);
     setter->startSetComponent("foo", "bar");
-    QSignalSpy spy(setter.get(), &VfSimpleSetter::sigSetFinish);
     feedEventLoop();
 
-    QCOMPARE(spy.count(), 1);
-    QList<QVariant> arguments = spy[0];
-    QCOMPARE(arguments.at(0).toBool(), false);
-    QCOMPARE(arguments.at(1), QVariant());*/
+    // Nothing takes care!!!
+    QCOMPARE(setterSpy.count(), 0);
+}
+
+void test_vfsimplesetter::setvalidEntityNet()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VfTestServerStack serverStack(serverPort);
+    VfTestClientStack clientStack;
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    feedEventLoop();
+
+    VfCpp::VfCppEntity serverAdditionalEntity(testId);
+    serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
+    serverAdditionalEntity.initModule();
+    serverAdditionalEntity.createComponent("foo", 42);
+    feedEventLoop();
+
+    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntityId(testId, &cmdEventHandlerSystem);
+    feedEventLoop();
+
+    VfSimpleSetterPtr setter = VfSimpleSetter::create(testId, "foo");
+    cmdEventHandlerSystem.addItem(setter);
+    QSignalSpy setterSpy(setter.get(), &VfSimpleSetter::sigSetFinish);
+    setter->startSetComponent(42, 0);
+    feedEventLoop();
+
+    QCOMPARE(setterSpy.count(), 1);
 }
 
 void test_vfsimplesetter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }
+
