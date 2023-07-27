@@ -29,6 +29,7 @@ signals:
 private:
     void processEvent(QEvent *event) override;
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
+    void handleUnknownRpc(VeinEvent::CommandEvent *cmdEvent);
     QMap<QString,VfCppComponent::Ptr> m_componentList;
     QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
     QMap<int,QSet<QString>> m_watchList;
