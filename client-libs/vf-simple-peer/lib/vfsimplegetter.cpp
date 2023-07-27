@@ -1,7 +1,6 @@
 #include "vfsimplegetter.h"
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
-#include "vcmp_errordata.h"
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -31,13 +30,11 @@ void VfSimpleGetter::startGetComponent()
 
 void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
-        CommandEvent *cEvent = static_cast<CommandEvent *>(cmdEvent);
-        Q_ASSERT(cEvent != nullptr);
-        EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-        ComponentData *cData = static_cast<ComponentData *>(evData);
-        if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH && cData->componentName() == m_componentName)
-            emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
-    }
+    CommandEvent *cEvent = static_cast<CommandEvent *>(cmdEvent);
+    Q_ASSERT(cEvent != nullptr);
+    EventData *evData = cEvent->eventData();
+    Q_ASSERT(evData != nullptr);
+    ComponentData *cData = static_cast<ComponentData *>(evData);
+    if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH && cData->componentName() == m_componentName)
+        emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
 }

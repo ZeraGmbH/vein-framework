@@ -45,16 +45,14 @@ void VfSimpleSetter::startSetComponent(QVariant oldValue, QVariant newValue)
 
 void VfSimpleSetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
-        EventData *evData = cmdEvent->eventData();
-        switch(evData->type()) {
-        case ComponentData::dataType():
-            doEmitSigSetFinish(true);
-            break;
-        case ErrorData::dataType():
-            doEmitSigSetFinish(false);
-            break;
-        }
+    EventData *evData = cmdEvent->eventData();
+    switch(evData->type()) {
+    case ComponentData::dataType():
+        doEmitSigSetFinish(true);
+        break;
+    case ErrorData::dataType():
+        doEmitSigSetFinish(false);
+        break;
     }
 }
 

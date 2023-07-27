@@ -51,18 +51,16 @@ void VfSimpleEntitySubscriber::finishSubscription(bool ok)
 
 void VfSimpleEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    if(cmdEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
-        EventData *evData = cmdEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-        switch(evData->type()) {
-        case IntrospectionData::dataType():
-            parseIntrospectionData(evData);
-            finishSubscription(true);
-            break;
-        case ErrorData::dataType():
-            finishSubscription(false);
-            break;
-        }
+    EventData *evData = cmdEvent->eventData();
+    Q_ASSERT(evData != nullptr);
+    switch(evData->type()) {
+    case IntrospectionData::dataType():
+        parseIntrospectionData(evData);
+        finishSubscription(true);
+        break;
+    case ErrorData::dataType():
+        finishSubscription(false);
+        break;
     }
 }
 
