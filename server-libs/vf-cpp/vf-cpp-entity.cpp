@@ -114,20 +114,25 @@ void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
                 m_rpcList[rpcData->procedureName()]->callFunction(callId,cmdEvent->peerId(),rpcData->invokationData());
                 cmdEvent->accept();
             }
-            else { //unknown procedure
-                qWarning() << "No remote procedure with entityId:" << m_entityId << "name:" << rpcData->procedureName();
-                VF_ASSERT(false, QStringC(QString("No remote procedure with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName())));
-                VeinComponent::ErrorData *eData = new VeinComponent::ErrorData();
-                eData->setEntityId(m_entityId);
-                eData->setErrorDescription(QString("No remote procedure with name: %1").arg(rpcData->procedureName()));
-                eData->setOriginalData(rpcData);
-                eData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-                eData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-                VeinEvent::CommandEvent *errorEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-                errorEvent->setPeerId(cmdEvent->peerId());
-                cmdEvent->accept();
-                emit sigSendEvent(errorEvent);
-            }
+            else
+                handleUnknownRpc(cmdEvent);
         }
     }
+}
+
+void VfCppEntity::handleUnknownRpc(VeinEvent::CommandEvent *cmdEvent)
+{
+    VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
+    qWarning() << "No remote procedure with entityId:" << m_entityId << "name:" << rpcData->procedureName();
+    VF_ASSERT(false, QStringC(QString("No remote procedure with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName())));
+    VeinComponent::ErrorData *eData = new VeinComponent::ErrorData();
+    eData->setEntityId(m_entityId);
+    eData->setErrorDescription(QString("No remote procedure with name: %1").arg(rpcData->procedureName()));
+    eData->setOriginalData(rpcData);
+    eData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    eData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    VeinEvent::CommandEvent *errorEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
+    errorEvent->setPeerId(cmdEvent->peerId());
+    cmdEvent->accept();
+    emit sigSendEvent(errorEvent);
 }
