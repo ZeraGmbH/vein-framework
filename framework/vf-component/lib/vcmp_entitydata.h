@@ -7,9 +7,7 @@
 
 namespace VeinComponent
 {
-/**
-   * @brief Command object (see GoF Command pattern) for entity data
-   */
+// Entity QEvent payload
 class VFCOMPONENT_EXPORT EntityData : public VeinEvent::EventData
 {
 public:
@@ -22,22 +20,14 @@ public:
     };
     explicit EntityData();
 
-    /**
-     * @brief The dataType is a unique identifier for this type of EventData
-     * @return
-     */
-    constexpr static int dataType() { return VCMP_ENTITYDATA_DATATYPE; }
-
     void setCommand(Command t_eDataCommand);
     Command eventCommand() const;
 
-    // EventData interface
-public:
+    constexpr static int dataType() { return VCMP_ENTITYDATA_DATATYPE; }
     bool isValid() const override;
     int type() const override { return VCMP_ENTITYDATA_DATATYPE; }
     QByteArray serialize() const override;
     void deserialize(const QByteArray &t_data) override;
-
 private:
     Command m_command = Command::ECMD_INVALID;
 };

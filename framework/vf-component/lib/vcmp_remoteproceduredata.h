@@ -3,23 +3,22 @@
 
 #include "vfcomponent_export.h"
 #include "globalIncludes.h"
-
 #include <ve_eventdata.h>
 
 namespace VeinComponent
 {
-  class VFCOMPONENT_EXPORT RemoteProcedureData : public VeinEvent::EventData
-  {
-  public:
+// RPC QEvent payload
+class VFCOMPONENT_EXPORT RemoteProcedureData : public VeinEvent::EventData
+{
+public:
     enum class Command : qint8 {
-      RPCMD_INVALID = -1, /**< default */
-      RPCMD_CALL = 0, /**< the call to the remote procedure */
-      RPCMD_REGISTER = 1, /**< start introspection for the remote procedure */
-      RPCMD_RESULT = 2, /**< result of a remote procedure call */
-      RPCMD_PROGRESS = 3, /**< contains progress information and/or partial (streamed) result data */
-      RPCMD_CANCELLATION = 4 /**< currently unused */
+        RPCMD_INVALID = -1, /**< default */
+        RPCMD_CALL = 0, /**< the call to the remote procedure */
+        RPCMD_REGISTER = 1, /**< start introspection for the remote procedure */
+        RPCMD_RESULT = 2, /**< result of a remote procedure call */
+        RPCMD_PROGRESS = 3, /**< contains progress information and/or partial (streamed) result data */
+        RPCMD_CANCELLATION = 4 /**< currently unused */
     };
-
 
     /**
      * @brief used to unambiguously store a client scope unique identifier of an invokation
@@ -51,27 +50,20 @@ namespace VeinComponent
     QVariantMap invokationData() const;
     void setInvokationData(QVariantMap t_invokationData);
 
-    /**
-     * @brief The dataType is a unique identifier for this type of EventData
-     * @return
-     */
     static constexpr int dataType() { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }
-
-    // EventData interface
-  public:
     int type() const override { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }
     bool isValid() const override;
     QByteArray serialize() const override;
     void deserialize(const QByteArray &t_data) override;
 
-  private:
+private:
     Command m_command = Command::RPCMD_INVALID;
     QString m_procedureName;
     /**
      * @brief contains parameters for Command::RPCMD_CALL and also contains the result data for Command::RPCMD_RESULT
      */
     QVariantMap m_invokationData;
-  };
+};
 } // namespace VeinComponent
 
 #endif // VEINCOMPONENT_REMOTEPROCEDURECALL_H
