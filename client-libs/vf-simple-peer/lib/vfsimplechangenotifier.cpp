@@ -8,7 +8,7 @@ std::shared_ptr<VfSimpleChangeNotifier> VfSimpleChangeNotifier::create(int entit
 }
 
 VfSimpleChangeNotifier::VfSimpleChangeNotifier(int entityId, QString componentName) :
-    VfCommandEventHandlerComponentItem(entityId, componentName)
+    VfCmdEventItemComponent(entityId, componentName)
 {
 }
 

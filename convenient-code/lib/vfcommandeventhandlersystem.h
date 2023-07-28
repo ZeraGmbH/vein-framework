@@ -8,8 +8,8 @@ class VfCommandEventHandlerSystem : public VeinEvent::EventSystem
 {
 public:
     VfCommandEventHandlerSystem(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter = VeinEvent::CommandEvent::EventSubtype::NOTIFICATION);
-    void addItem(VfCommandEventHandlerItemPtr item);
-    void removeItem(VfCommandEventHandlerItemPtr item);
+    void addItem(VfCmdEventItemPtr item);
+    void removeItem(VfCmdEventItemPtr item);
 private:
     void processEvent(QEvent *event) override;
     VfCommandEventHandler m_commandEventHandler;

@@ -95,7 +95,6 @@ void test_vfsimplechangenotifier::inClientServerStack()
     CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
     QCoreApplication::instance()->postEvent(&clientStack.eventHandler, commandEvent);
 
-
     feedEventLoop();
     QCOMPARE(spy.count(), 1);
     QVariant notifierVal = changeNotifier->getValue();

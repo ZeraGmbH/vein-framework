@@ -8,15 +8,15 @@ VfCommandEventHandler::VfCommandEventHandler(CommandEvent::EventSubtype eventSub
 {
 }
 
-void VfCommandEventHandler::addItem(VfCommandEventHandlerItemPtr item)
+void VfCommandEventHandler::addItem(VfCmdEventItemPtr item)
 {
-    std::set<VfCommandEventHandlerItemPtr> &items = m_items[item->getEntityId()];
+    std::set<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
     items.insert(item);
 }
 
-void VfCommandEventHandler::removeItem(VfCommandEventHandlerItemPtr item)
+void VfCommandEventHandler::removeItem(VfCmdEventItemPtr item)
 {
-    std::set<VfCommandEventHandlerItemPtr> &items = m_items[item->getEntityId()];
+    std::set<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
     items.erase(item);
 }
 

@@ -1,10 +1,10 @@
 #ifndef VFSIMPLESETTER_H
 #define VFSIMPLESETTER_H
 
-#include "vfcommandeventhandleritem.h"
+#include "vfcmdeventitem.h"
 #include <QObject>
 
-class VfSimpleSetter : public QObject, public VfCommandEventHandlerItem
+class VfSimpleSetter : public QObject, public VfCmdEventItem
 {
     Q_OBJECT
 public:

@@ -5,13 +5,13 @@ VfCommandEventHandlerSystem::VfCommandEventHandlerSystem(VeinEvent::CommandEvent
 {
 }
 
-void VfCommandEventHandlerSystem::addItem(VfCommandEventHandlerItemPtr item)
+void VfCommandEventHandlerSystem::addItem(VfCmdEventItemPtr item)
 {
     item->setEventSystem(this);
     m_commandEventHandler.addItem(item);
 }
 
-void VfCommandEventHandlerSystem::removeItem(VfCommandEventHandlerItemPtr item)
+void VfCommandEventHandlerSystem::removeItem(VfCmdEventItemPtr item)
 {
     m_commandEventHandler.removeItem(item);
 }

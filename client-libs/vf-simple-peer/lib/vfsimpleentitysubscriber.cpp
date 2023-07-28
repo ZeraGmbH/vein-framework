@@ -14,7 +14,7 @@ std::shared_ptr<VfSimpleEntitySubscriber> VfSimpleEntitySubscriber::create(int e
 }
 
 VfSimpleEntitySubscriber::VfSimpleEntitySubscriber(int entityId) :
-    VfCommandEventHandlerItem(entityId)
+    VfCmdEventItem(entityId)
 {
 }
 

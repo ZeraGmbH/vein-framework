@@ -1,7 +1,7 @@
-#include "vfcommandeventhandlercomponentitem.h"
+#include "vfcmdeventitemcomponent.h"
 
-VfCommandEventHandlerComponentItem::VfCommandEventHandlerComponentItem(int entityId, QString componentName) :
-    VfCommandEventHandlerItem(entityId),
+VfCmdEventItemComponent::VfCmdEventItemComponent(int entityId, QString componentName) :
+    VfCmdEventItem(entityId),
     m_componentName(componentName)
 {
 }
@@ -9,7 +9,7 @@ VfCommandEventHandlerComponentItem::VfCommandEventHandlerComponentItem(int entit
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfCommandEventHandlerComponentItem::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfCmdEventItemComponent::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     Q_ASSERT(evData != nullptr);
