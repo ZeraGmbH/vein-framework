@@ -22,8 +22,10 @@ static constexpr int serverPort = 4242;
 void test_vfsimplechangenotifier::ignoreOtherCommandsThanSet()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(testEntityId, componentName);
-    commandEventHandler.addItem(changeNotifier);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    commandEventHandler.addItem(entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    entityItem->addItem(changeNotifier);
 
     ComponentData* cData1 = new ComponentData(testEntityId, ComponentData::Command::CCMD_ADD);
     cData1->setComponentName(componentName);
@@ -47,8 +49,10 @@ void test_vfsimplechangenotifier::ignoreOtherCommandsThanSet()
 void test_vfsimplechangenotifier::notifySet()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(testEntityId, componentName);
-    commandEventHandler.addItem(changeNotifier);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    commandEventHandler.addItem(entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    entityItem->addItem(changeNotifier);
 
     ComponentData* cData = new ComponentData(testEntityId, ComponentData::Command::CCMD_SET);
     cData->setComponentName(componentName);
@@ -62,6 +66,7 @@ void test_vfsimplechangenotifier::notifySet()
 
 void test_vfsimplechangenotifier::inClientServerStack()
 {
+    // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
     VfTestClientStack clientStack;
@@ -77,15 +82,18 @@ void test_vfsimplechangenotifier::inClientServerStack()
     serverAdditionalEntity.createComponent(componentName, 42);
     feedEventLoop();
 
+    // client
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     clientStack.subscribeEntityId(testEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(testEntityId, componentName);
-    cmdEventHandlerSystem.addItem(changeNotifier);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    cmdEventHandlerSystem.addItem(entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    entityItem->addItem(changeNotifier);
     QSignalSpy spy(changeNotifier.get(), &VfSimpleChangeNotifier::sigValueChanged);
 
-    // Send set event manually
+    // Send set event manually to reduce dependencies
     ComponentData* cData = new ComponentData(testEntityId, ComponentData::Command::CCMD_SET);
     cData->setComponentName(componentName);
     cData->setOldValue(42);

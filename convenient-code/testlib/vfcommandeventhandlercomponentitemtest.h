@@ -8,8 +8,8 @@ class VfCommandEventHandlerComponentItemTest : public QObject, public VfCmdEvent
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfCommandEventHandlerComponentItemTest> create(int entityId, QString componentName);
-    VfCommandEventHandlerComponentItemTest(int entityId, QString componentName);
+    static std::shared_ptr<VfCommandEventHandlerComponentItemTest> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfCommandEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem);
 signals:
     void sigCommandEvenProcessed();
 private:

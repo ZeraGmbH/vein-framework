@@ -33,8 +33,11 @@ void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet
     QList<int> entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfSimpleGetterPtr getter = VfSimpleGetter::create(testEntityId, "foo");
-    server.cmdEventHandlerSystem.addItem(getter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    server.cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create("foo", entityItem);
+    entityItem->addItem(getter);
     QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -50,8 +53,11 @@ void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
     ServerNoNet server;
     feedEventLoop();
 
-    VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "EntityName");
-    server.cmdEventHandlerSystem.addItem(getter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    server.cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    entityItem->addItem(getter);
     QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -73,8 +79,11 @@ void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNet()
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "EntityName");
-    cmdEventHandlerSystem.addItem(getter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    entityItem->addItem(getter);
     QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -96,8 +105,11 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "EntityName");
-    cmdEventHandlerSystem.addItem(getter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    entityItem->addItem(getter);
     QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -122,8 +134,11 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfSimpleGetterPtr getter = VfSimpleGetter::create(systemEntityId, "foo");
-    cmdEventHandlerSystem.addItem(getter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter = VfSimpleGetter::create("foo", entityItem);
+    entityItem->addItem(getter);
     QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
@@ -144,12 +159,15 @@ void test_vfsimplegetter::getTwoDifferentComponent()
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfSimpleGetterPtr getter1 = VfSimpleGetter::create(systemEntityId, "EntityName");
-    cmdEventHandlerSystem.addItem(getter1);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfSimpleGetterPtr getter1 = VfSimpleGetter::create("EntityName", entityItem);
+    entityItem->addItem(getter1);
     QSignalSpy getterSpy1(getter1.get(), &VfSimpleGetter::sigGetFinish);
 
-    VfSimpleGetterPtr getter2 = VfSimpleGetter::create(systemEntityId, "Session");
-    cmdEventHandlerSystem.addItem(getter2);
+    VfSimpleGetterPtr getter2 = VfSimpleGetter::create("Session", entityItem);
+    entityItem->addItem(getter2);
     QSignalSpy getterSpy2(getter2.get(), &VfSimpleGetter::sigGetFinish);
 
     getter1->startGetComponent();

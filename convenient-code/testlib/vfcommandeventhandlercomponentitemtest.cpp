@@ -1,12 +1,12 @@
 #include "vfcommandeventhandlercomponentitemtest.h"
 
-std::shared_ptr<VfCommandEventHandlerComponentItemTest> VfCommandEventHandlerComponentItemTest::create(int entityId, QString componentName)
+std::shared_ptr<VfCommandEventHandlerComponentItemTest> VfCommandEventHandlerComponentItemTest::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
 {
-    return std::make_shared<VfCommandEventHandlerComponentItemTest>(entityId, componentName);
+    return std::make_shared<VfCommandEventHandlerComponentItemTest>(componentName, entityItem);
 }
 
-VfCommandEventHandlerComponentItemTest::VfCommandEventHandlerComponentItemTest(int entityId, QString componentName) :
-    VfCmdEventItemComponent{entityId, componentName}
+VfCommandEventHandlerComponentItemTest::VfCommandEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+    VfCmdEventItemComponent{componentName, entityItem}
 {
 }
 

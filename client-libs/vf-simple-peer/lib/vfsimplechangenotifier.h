@@ -8,8 +8,8 @@ class VfSimpleChangeNotifier : public QObject, public VfCmdEventItemComponent
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfSimpleChangeNotifier> create(int entityId, QString componentName);
-    VfSimpleChangeNotifier(int entityId, QString componentName);
+    static std::shared_ptr<VfSimpleChangeNotifier> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfSimpleChangeNotifier(QString componentName, VfCmdEventItemEntityPtr entityItem);
     const QVariant &getValue() const;
 signals:
     void sigValueChanged();

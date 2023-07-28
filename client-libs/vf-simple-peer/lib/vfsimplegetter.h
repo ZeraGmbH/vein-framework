@@ -8,8 +8,8 @@ class VfSimpleGetter : public QObject, public VfCmdEventItemComponent
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfSimpleGetter> create(int entityId, QString componentName);
-    VfSimpleGetter(int entityId, QString componentName);
+    static std::shared_ptr<VfSimpleGetter> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfSimpleGetter(QString componentName, VfCmdEventItemEntityPtr entityItem);
     void startGetComponent();
 signals:
     void sigGetFinish(bool ok, QVariant value);
