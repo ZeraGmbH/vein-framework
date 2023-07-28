@@ -18,7 +18,7 @@ VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
 void VfSimpleGetter::startGetComponent()
 {
     ComponentData *cData = new ComponentData();
-    cData->setEntityId(m_entityId);
+    cData->setEntityId(getEntityId());
     cData->setCommand(ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);

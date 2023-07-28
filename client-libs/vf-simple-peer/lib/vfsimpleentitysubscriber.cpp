@@ -22,7 +22,7 @@ void VfSimpleEntitySubscriber::sendSubscription()
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
-    eData->setEntityId(m_entityId);
+    eData->setEntityId(getEntityId());
     eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
     eData->setEventTarget(EntityData::EventTarget::ET_ALL);
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
@@ -46,7 +46,7 @@ void VfSimpleEntitySubscriber::parseIntrospectionData(EventData *evData)
 
 void VfSimpleEntitySubscriber::finishSubscription(bool ok)
 {
-    emit sigSubscribed(ok, m_entityId);
+    emit sigSubscribed(ok, getEntityId());
 }
 
 void VfSimpleEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)

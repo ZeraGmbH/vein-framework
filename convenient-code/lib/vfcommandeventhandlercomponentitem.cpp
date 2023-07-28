@@ -12,9 +12,7 @@ using namespace VeinComponent;
 
 void VfCommandEventHandlerComponentItem::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    EventData *evData = cmdEvent->eventData();
-    Q_ASSERT(evData != nullptr);
-    ComponentData *cData = static_cast<ComponentData *>(evData);
+    ComponentData *cData = static_cast<ComponentData *>(cmdEvent->eventData());
     Q_ASSERT(cData != nullptr);
     if(cData->componentName() == m_componentName)
         processComponentCommandEvent(cmdEvent);
