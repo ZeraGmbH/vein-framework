@@ -1,14 +1,14 @@
-#ifndef VFCOMMANDEVENTHANDLERITEM_H
-#define VFCOMMANDEVENTHANDLERITEM_H
+#ifndef VFCMDEVENTITEM_H
+#define VFCMDEVENTITEM_H
 
 #include "ve_eventsystem.h"
 #include "ve_commandevent.h"
 #include <memory>
 
-class VfCommandEventHandlerItem
+class VfCmdEventItem
 {
 public:
-    VfCommandEventHandlerItem(int entityId);
+    VfCmdEventItem(int entityId);
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
 protected:
     VeinEvent::EventSystem* m_eventSystem = nullptr;
@@ -19,6 +19,6 @@ private:
     const int m_entityId;
 };
 
-typedef std::shared_ptr<VfCommandEventHandlerItem> VfCommandEventHandlerItemPtr;
+typedef std::shared_ptr<VfCmdEventItem> VfCmdEventItemPtr;
 
-#endif // VFCOMMANDEVENTHANDLERITEM_H
+#endif // VFCMDEVENTITEM_H

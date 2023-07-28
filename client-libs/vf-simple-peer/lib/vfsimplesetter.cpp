@@ -9,7 +9,7 @@ std::shared_ptr<VfSimpleSetter> VfSimpleSetter::create(int entityId, QString com
 }
 
 VfSimpleSetter::VfSimpleSetter(int entityId, QString componentName) :
-    VfCommandEventHandlerItem(entityId),
+    VfCmdEventItem(entityId),
     m_componentName(componentName)
 {
 }

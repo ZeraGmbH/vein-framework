@@ -1,10 +1,10 @@
 #ifndef VFSIMPLECHANGENOTIFIER_H
 #define VFSIMPLECHANGENOTIFIER_H
 
-#include <vfcommandeventhandlercomponentitem.h>
+#include <vfcmdeventitemcomponent.h>
 #include <memory>
 
-class VfSimpleChangeNotifier : public QObject, public VfCommandEventHandlerComponentItem
+class VfSimpleChangeNotifier : public QObject, public VfCmdEventItemComponent
 {
     Q_OBJECT
 public:

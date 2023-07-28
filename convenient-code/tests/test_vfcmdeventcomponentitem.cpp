@@ -1,11 +1,11 @@
-#include "test_componentitem.h"
+#include "test_vfcmdeventcomponentitem.h"
 #include "vfcommandeventhandler.h"
 #include "vfcommandeventhandlercomponentitemtest.h"
 #include <vcmp_componentdata.h>
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_componentitem)
+QTEST_MAIN(test_vfcmdeventcomponentitem)
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -14,7 +14,7 @@ static constexpr int dummyEntitiy = 0;
 static const char* componentName1 = "foo";
 static const char* componentName2 = "bar";
 
-void test_componentitem::ignoreOtherComponent()
+void test_vfcmdeventcomponentitem::ignoreOtherComponent()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCommandEventHandlerComponentItemTestPtr testItem = VfCommandEventHandlerComponentItemTest::create(dummyEntitiy, componentName1);
@@ -30,7 +30,7 @@ void test_componentitem::ignoreOtherComponent()
     delete commandNotify;
 }
 
-void test_componentitem::acceptSameComponent()
+void test_vfcmdeventcomponentitem::acceptSameComponent()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCommandEventHandlerComponentItemTestPtr testItem = VfCommandEventHandlerComponentItemTest::create(dummyEntitiy, componentName1);

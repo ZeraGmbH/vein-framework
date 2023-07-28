@@ -11,7 +11,7 @@ std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QString com
 }
 
 VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
-    VfCommandEventHandlerComponentItem(entityId, componentName)
+    VfCmdEventItemComponent(entityId, componentName)
 {
 }
 
