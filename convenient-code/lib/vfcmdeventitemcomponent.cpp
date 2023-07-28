@@ -1,8 +1,8 @@
 #include "vfcmdeventitemcomponent.h"
 
-VfCmdEventItemComponent::VfCmdEventItemComponent(int entityId, QString componentName) :
-    VfCmdEventItem(entityId),
-    m_componentName(componentName)
+VfCmdEventItemComponent::VfCmdEventItemComponent(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+    m_componentName(componentName),
+    m_entityItem(entityItem)
 {
 }
 
@@ -11,17 +11,12 @@ const QString &VfCmdEventItemComponent::getComponentName() const
     return m_componentName;
 }
 
-using namespace VeinEvent;
-using namespace VeinComponent;
-
-void VfCmdEventItemComponent::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+VfCmdEventItemEntityPtr VfCmdEventItemComponent::getEntityItem() const
 {
-    EventData *evData = cmdEvent->eventData();
-    Q_ASSERT(evData != nullptr);
-    if(evData->type() == ComponentData::dataType()) {
-        ComponentData *cData = static_cast<ComponentData *>(evData);
-        Q_ASSERT(cData != nullptr);
-        if(cData->componentName() == m_componentName)
-            processComponentEventData(cData);
-    }
+    return m_entityItem;
+}
+
+VeinEvent::EventSystem *VfCmdEventItemComponent::getEvenSystem() const
+{
+    return m_entityItem->getEvenSystem();
 }

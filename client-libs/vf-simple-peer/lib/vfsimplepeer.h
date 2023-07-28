@@ -2,7 +2,6 @@
 #define VFSIMPLEPEER_H
 
 #include "vfsimpleentitysubscriber.h"
-#include "vfsimplegetter.h"
 #include "ve_eventsystem.h"
 #include "ve_commandevent.h"
 #include <map>
