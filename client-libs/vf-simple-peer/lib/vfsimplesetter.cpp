@@ -39,7 +39,7 @@ void VfSimpleSetter::startSetComponent(QVariant oldValue, QVariant newValue)
         cData->setOldValue(oldValue);
 
         CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-        emit m_eventSystem->sigSendEvent(cEvent);
+        emit getEvenSystem()->sigSendEvent(cEvent);
     }
 }
 

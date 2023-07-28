@@ -6,6 +6,11 @@ VfCmdEventItemComponent::VfCmdEventItemComponent(int entityId, QString component
 {
 }
 
+const QString &VfCmdEventItemComponent::getComponentName() const
+{
+    return m_componentName;
+}
+
 using namespace VeinEvent;
 using namespace VeinComponent;
 
