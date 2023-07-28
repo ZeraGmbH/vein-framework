@@ -2,11 +2,10 @@
 #include <QCoreApplication>
 #include <QAbstractEventDispatcher>
 
-VfTestServerStack::VfTestServerStack(int serverPort) :
+VfTestServerStack::VfTestServerStack(int serverPort, bool systemdScok) :
     server(&eventHandler)
 {
     eventHandler.addSubsystem(&netSystem);
     eventHandler.addSubsystem(&tcpSystem);
-    tcpSystem.startServer(serverPort, false);
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
+    tcpSystem.startServer(serverPort, systemdScok);
 }
