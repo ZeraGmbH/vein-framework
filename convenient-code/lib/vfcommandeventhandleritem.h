@@ -9,13 +9,13 @@ class VfCommandEventHandlerItem
 {
 public:
     VfCommandEventHandlerItem(int entityId);
-    int getEntityId();
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
 protected:
     VeinEvent::EventSystem* m_eventSystem = nullptr;
     const int m_entityId;
 private:
     friend class VfCommandEventHandler;
+    int getEntityId();
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
 };
 

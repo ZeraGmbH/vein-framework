@@ -5,12 +5,12 @@ VfCommandEventHandlerItem::VfCommandEventHandlerItem(int entityId) :
 {
 }
 
-int VfCommandEventHandlerItem::getEntityId()
-{
-    return m_entityId;
-}
-
 void VfCommandEventHandlerItem::setEventSystem(VeinEvent::EventSystem *eventSystem)
 {
     m_eventSystem = eventSystem;
+}
+
+int VfCommandEventHandlerItem::getEntityId()
+{
+    return m_entityId;
 }

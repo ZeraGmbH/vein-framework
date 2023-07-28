@@ -1,10 +1,10 @@
 #ifndef VFSIMPLEGETTER_H
 #define VFSIMPLEGETTER_H
 
-#include "vfcommandeventhandleritem.h"
+#include <vfcommandeventhandlercomponentitem.h>
 #include <memory>
 
-class VfSimpleGetter : public QObject, public VfCommandEventHandlerItem
+class VfSimpleGetter : public QObject, public VfCommandEventHandlerComponentItem
 {
     Q_OBJECT
 public:
@@ -14,8 +14,7 @@ public:
 signals:
     void sigGetFinish(bool ok, QVariant value);
 private:
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
-    QString m_componentName;
+    void processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
 };
 
 typedef std::shared_ptr<VfSimpleGetter> VfSimpleGetterPtr;
