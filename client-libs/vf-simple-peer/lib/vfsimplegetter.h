@@ -14,7 +14,7 @@ public:
 signals:
     void sigGetFinish(bool ok, QVariant value);
 private:
-    void processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processComponentEventData(const VeinComponent::ComponentData *cData) override;
 };
 
 typedef std::shared_ptr<VfSimpleGetter> VfSimpleGetterPtr;

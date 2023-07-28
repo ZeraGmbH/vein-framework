@@ -27,12 +27,8 @@ void VfSimpleGetter::startGetComponent()
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
-void VfSimpleGetter::processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfSimpleGetter::processComponentEventData(const ComponentData *cData)
 {
-    EventData *evData = cmdEvent->eventData();
-    Q_ASSERT(evData != nullptr);
-    ComponentData *cData = static_cast<ComponentData *>(evData);
-    Q_ASSERT(cData != nullptr);
     if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH)
         emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
 }

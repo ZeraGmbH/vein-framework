@@ -10,8 +10,8 @@ VfCommandEventHandlerComponentItemTest::VfCommandEventHandlerComponentItemTest(i
 {
 }
 
-void VfCommandEventHandlerComponentItemTest::processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfCommandEventHandlerComponentItemTest::processComponentEventData(const VeinComponent::ComponentData *cData)
 {
-    Q_UNUSED(cmdEvent)
+    Q_UNUSED(cData)
     emit sigCommandEvenProcessed();
 }

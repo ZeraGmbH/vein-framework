@@ -13,7 +13,7 @@ public:
 signals:
     void sigCommandEvenProcessed();
 private:
-    void processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processComponentEventData(const VeinComponent::ComponentData *cData) override;
 };
 
 typedef std::shared_ptr<VfCommandEventHandlerComponentItemTest> VfCommandEventHandlerComponentItemTestPtr;

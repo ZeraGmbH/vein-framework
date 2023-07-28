@@ -2,6 +2,7 @@
 #define VFCOMMANDEVENTHANDLERCOMPONENTITEM_H
 
 #include "vfcommandeventhandleritem.h"
+#include "vcmp_componentdata.h"
 
 class VfCommandEventHandlerComponentItem : public VfCommandEventHandlerItem
 {
@@ -11,7 +12,7 @@ protected:
     QString m_componentName;
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
-    virtual void processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
+    virtual void processComponentEventData(const VeinComponent::ComponentData *cData) = 0;
 };
 
 #endif // VFCOMMANDEVENTHANDLERCOMPONENTITEM_H
