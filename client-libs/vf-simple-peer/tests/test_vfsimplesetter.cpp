@@ -1,5 +1,4 @@
 #include "test_vfsimplesetter.h"
-#include "vfsimpleentitysubscriber.h"
 #include "vfsimplesetter.h"
 #include "veintestserver.h"
 #include "vftestclientstack.h"
