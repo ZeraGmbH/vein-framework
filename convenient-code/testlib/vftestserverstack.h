@@ -11,7 +11,7 @@ struct VfTestServerStack
     VeinTestServer server;
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
-    VfTestServerStack(int serverPort);
+    VfTestServerStack(int serverPort, bool systemdScok = false);
 };
 
 #endif // VFTESTSERVERSTACK_H
