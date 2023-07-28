@@ -12,8 +12,8 @@ public:
     int getEntityId();
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
 protected:
-    int m_entityId;
     VeinEvent::EventSystem* m_eventSystem = nullptr;
+    const int m_entityId;
 private:
     friend class VfCommandEventHandler;
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
