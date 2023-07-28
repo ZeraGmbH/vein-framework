@@ -10,7 +10,7 @@ void VfCommandEventHandlerItem::setEventSystem(VeinEvent::EventSystem *eventSyst
     m_eventSystem = eventSystem;
 }
 
-int VfCommandEventHandlerItem::getEntityId()
+int VfCommandEventHandlerItem::getEntityId() const
 {
     return m_entityId;
 }

@@ -25,7 +25,7 @@ void VfSimpleSetter::startSetComponent(QVariant oldValue, QVariant newValue)
         emitSigSetFinish(true);
     else {
         ComponentData *cData = new ComponentData();
-        cData->setEntityId(m_entityId);
+        cData->setEntityId(getEntityId());
         cData->setCommand(ComponentData::Command::CCMD_SET);
         cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
         cData->setEventTarget(ComponentData::EventTarget::ET_ALL);

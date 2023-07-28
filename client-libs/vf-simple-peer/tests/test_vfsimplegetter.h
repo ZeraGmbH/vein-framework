@@ -1,7 +1,6 @@
 #ifndef TEST_VFSIMPLEGETTER_H
 #define TEST_VFSIMPLEGETTER_H
 
-#include "vfcommandeventhandlersystem.h"
 #include <QObject>
 
 class test_vfsimplegetter : public QObject

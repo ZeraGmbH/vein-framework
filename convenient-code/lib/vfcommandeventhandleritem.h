@@ -12,11 +12,11 @@ public:
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
 protected:
     VeinEvent::EventSystem* m_eventSystem = nullptr;
-    const int m_entityId;
+    int getEntityId() const;
 private:
     friend class VfCommandEventHandler;
-    int getEntityId();
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
+    const int m_entityId;
 };
 
 typedef std::shared_ptr<VfCommandEventHandlerItem> VfCommandEventHandlerItemPtr;
