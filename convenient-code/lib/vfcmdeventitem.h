@@ -9,14 +9,13 @@ class VfCmdEventItem
 {
 public:
     VfCmdEventItem(int entityId);
+    VeinEvent::EventSystem* getEvenSystem() const;
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
-protected:
-    VeinEvent::EventSystem* m_eventSystem = nullptr;
     int getEntityId() const;
-private:
-    friend class VfCommandEventHandler;
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
+private:
     const int m_entityId;
+    VeinEvent::EventSystem* m_eventSystem = nullptr;
 };
 
 typedef std::shared_ptr<VfCmdEventItem> VfCmdEventItemPtr;
