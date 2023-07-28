@@ -30,11 +30,10 @@ void VfSimpleGetter::startGetComponent()
 
 void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
-    CommandEvent *cEvent = static_cast<CommandEvent *>(cmdEvent);
-    Q_ASSERT(cEvent != nullptr);
-    EventData *evData = cEvent->eventData();
+    EventData *evData = cmdEvent->eventData();
     Q_ASSERT(evData != nullptr);
     ComponentData *cData = static_cast<ComponentData *>(evData);
+    Q_ASSERT(cData != nullptr);
     if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH && cData->componentName() == m_componentName)
         emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
 }
