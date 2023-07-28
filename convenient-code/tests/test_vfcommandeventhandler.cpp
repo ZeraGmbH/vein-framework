@@ -18,15 +18,15 @@ void test_vfcommandeventhandler::notificationFilter()
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
     commandEventHandler.addItem(testItem);
 
-    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *commandNotify = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, new ComponentData(dummyEntitiy));
+    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(commandNotify);
     commandEventHandler.processCommandEvent(commandNotify);
     QCOMPARE(spyNotify.count(), 2);
     delete commandNotify;
 
-    QSignalSpy spyTransaction(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *commandTransaction = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, new ComponentData(dummyEntitiy));
+    QSignalSpy spyTransaction(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(commandTransaction);
     commandEventHandler.processCommandEvent(commandTransaction);
     QCOMPARE(spyTransaction.count(), 0);
@@ -39,15 +39,15 @@ void test_vfcommandeventhandler::transactionFilter()
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
     commandEventHandler.addItem(testItem);
 
-    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *commandNotify = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, new ComponentData(dummyEntitiy));
+    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(commandNotify);
     commandEventHandler.processCommandEvent(commandNotify);
     QCOMPARE(spyNotify.count(), 0);
     delete commandNotify;
 
-    QSignalSpy spyTransaction(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *commandTransaction = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, new ComponentData(dummyEntitiy));
+    QSignalSpy spyTransaction(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(commandTransaction);
     commandEventHandler.processCommandEvent(commandTransaction);
     QCOMPARE(spyTransaction.count(), 2);
@@ -61,15 +61,15 @@ void test_vfcommandeventhandler::multipleEntities()
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
     commandEventHandler.addItem(testItem);
 
-    QSignalSpy spy1(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *command1= new CommandEvent(eventSubtype, new ComponentData(dummyEntitiy));
+    QSignalSpy spy1(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(command1);
     commandEventHandler.processCommandEvent(command1);
     QCOMPARE(spy1.count(), 2);
     delete command1;
 
-    QSignalSpy spy2(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *command2 = new CommandEvent(eventSubtype, new ComponentData(dummyEntitiy+1));
+    QSignalSpy spy2(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(command2);
     commandEventHandler.processCommandEvent(command2);
     QCOMPARE(spy2.count(), 0);
@@ -85,15 +85,15 @@ void test_vfcommandeventhandler::multipleItems()
     VfCommandEventHandlerItemTestPtr testItem2 = VfCommandEventHandlerItemTest::create(dummyEntitiy);
     commandEventHandler.addItem(testItem2);
 
-    QSignalSpy spy1(testItem1.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *command1= new CommandEvent(eventSubtype, new ComponentData(dummyEntitiy));
+    QSignalSpy spy1(testItem1.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(command1);
     commandEventHandler.processCommandEvent(command1);
     QCOMPARE(spy1.count(), 2);
     delete command1;
 
-    QSignalSpy spy2(testItem2.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     CommandEvent *command2 = new CommandEvent(eventSubtype, new ComponentData(dummyEntitiy));
+    QSignalSpy spy2(testItem2.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(command2);
     commandEventHandler.processCommandEvent(command2);
     QCOMPARE(spy2.count(), 2);
@@ -107,8 +107,8 @@ void test_vfcommandeventhandler::unknownEventType()
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
     commandEventHandler.addItem(testItem);
 
-    QSignalSpy spy(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     QEvent *unknownEvent = new QEvent(QEvent::ActionAdded);
+    QSignalSpy spy(testItem.get(), &VfCommandEventHandlerItemTest::sigCommandEvenProcessed);
     commandEventHandler.processEvent(unknownEvent);
     QCOMPARE(spy.count(), 0);
     delete unknownEvent;
