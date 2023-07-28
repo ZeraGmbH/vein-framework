@@ -11,8 +11,7 @@ std::shared_ptr<VfSimpleGetter> VfSimpleGetter::create(int entityId, QString com
 }
 
 VfSimpleGetter::VfSimpleGetter(int entityId, QString componentName) :
-    VfCommandEventHandlerItem(entityId),
-    m_componentName(componentName)
+    VfCommandEventHandlerComponentItem(entityId, componentName)
 {
 }
 
@@ -28,12 +27,12 @@ void VfSimpleGetter::startGetComponent()
     emit m_eventSystem->sigSendEvent(cEvent);
 }
 
-void VfSimpleGetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfSimpleGetter::processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     Q_ASSERT(evData != nullptr);
     ComponentData *cData = static_cast<ComponentData *>(evData);
     Q_ASSERT(cData != nullptr);
-    if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH && cData->componentName() == m_componentName)
+    if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH)
         emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
 }

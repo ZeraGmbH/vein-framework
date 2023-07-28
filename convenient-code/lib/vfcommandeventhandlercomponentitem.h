@@ -7,10 +7,11 @@ class VfCommandEventHandlerComponentItem : public VfCommandEventHandlerItem
 {
 public:
     VfCommandEventHandlerComponentItem(int entityId, QString componentName);
+protected:
+    QString m_componentName;
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     virtual void processComponentCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
-    QString m_componentName;
 };
 
 #endif // VFCOMMANDEVENTHANDLERCOMPONENTITEM_H
