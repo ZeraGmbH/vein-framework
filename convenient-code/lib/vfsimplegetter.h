@@ -4,6 +4,8 @@
 #include <vfcmdeventitemcomponent.h>
 #include <memory>
 
+// * Client getter
+// * Servers have VfStorageHash
 class VfSimpleGetter : public QObject, public VfCmdEventItemComponent
 {
     Q_OBJECT
