@@ -1,5 +1,5 @@
-#include "test_vfsimplechangenotifier.h"
-#include "vfsimplechangenotifier.h"
+#include "test_component_change_notifier.h"
+#include "vfcomponentchangenotifier.h"
 #include "vfcommandeventhandler.h"
 #include "vftestserverstack.h"
 #include "vftestclientstack.h"
@@ -9,7 +9,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_vfsimplechangenotifier)
+QTEST_MAIN(test_component_change_notifier)
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -19,19 +19,19 @@ static constexpr int testEntityId = 1;
 static const char* componentName = "foo";
 static constexpr int serverPort = 4242;
 
-void test_vfsimplechangenotifier::ignoreOtherCommandsThanSet()
+void test_component_change_notifier::ignoreOtherCommandsThanSet()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     commandEventHandler.addItem(entityItem);
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
 
     ComponentData* cData1 = new ComponentData(testEntityId, ComponentData::Command::CCMD_ADD);
     cData1->setComponentName(componentName);
     CommandEvent *commandEvent1 = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData1);
-
-    QSignalSpy spy1(changeNotifier.get(), &VfSimpleChangeNotifier::sigValueChanged);
+    
+    QSignalSpy spy1(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
     commandEventHandler.processEvent(commandEvent1);
     QCOMPARE(spy1.count(), 0);
     delete commandEvent1;
@@ -39,32 +39,32 @@ void test_vfsimplechangenotifier::ignoreOtherCommandsThanSet()
     ComponentData* cData2 = new ComponentData(testEntityId, ComponentData::Command::CCMD_FETCH);
     cData2->setComponentName(componentName);
     CommandEvent *commandEvent2 = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData2);
-
-    QSignalSpy spy2(changeNotifier.get(), &VfSimpleChangeNotifier::sigValueChanged);
+    
+    QSignalSpy spy2(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
     commandEventHandler.processEvent(commandEvent2);
     QCOMPARE(spy2.count(), 0);
     delete commandEvent2;
 }
 
-void test_vfsimplechangenotifier::notifySet()
+void test_component_change_notifier::notifySet()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     commandEventHandler.addItem(entityItem);
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
 
     ComponentData* cData = new ComponentData(testEntityId, ComponentData::Command::CCMD_SET);
     cData->setComponentName(componentName);
     CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
-
-    QSignalSpy spy(changeNotifier.get(), &VfSimpleChangeNotifier::sigValueChanged);
+    
+    QSignalSpy spy(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
     commandEventHandler.processEvent(commandEvent);
     QCOMPARE(spy.count(), 1);
     delete commandEvent;
 }
 
-void test_vfsimplechangenotifier::inClientServerStack()
+void test_component_change_notifier::inClientServerStack()
 {
     // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
@@ -89,9 +89,9 @@ void test_vfsimplechangenotifier::inClientServerStack()
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
-    VfSimpleChangeNotifierPtr changeNotifier = VfSimpleChangeNotifier::create(componentName, entityItem);
+    VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
-    QSignalSpy spy(changeNotifier.get(), &VfSimpleChangeNotifier::sigValueChanged);
+    QSignalSpy spy(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
 
     // Send set event manually to reduce dependencies
     ComponentData* cData = new ComponentData(testEntityId, ComponentData::Command::CCMD_SET);
@@ -109,7 +109,7 @@ void test_vfsimplechangenotifier::inClientServerStack()
     QCOMPARE(notifierVal, QVariant(44));
 }
 
-void test_vfsimplechangenotifier::feedEventLoop()
+void test_component_change_notifier::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

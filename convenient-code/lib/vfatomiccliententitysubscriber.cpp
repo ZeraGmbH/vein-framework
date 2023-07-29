@@ -1,4 +1,4 @@
-#include "vfsimpleentitysubscriber.h"
+#include "vfatomiccliententitysubscriber.h"
 #include "vcmp_entitydata.h"
 #include "vcmp_errordata.h"
 #include <vcmp_introspectiondata.h>
@@ -8,17 +8,17 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-std::shared_ptr<VfSimpleEntitySubscriber> VfSimpleEntitySubscriber::create(int entityId)
+std::shared_ptr<VfAtomicClientEntitySubscriber> VfAtomicClientEntitySubscriber::create(int entityId)
 {
-    return std::make_shared<VfSimpleEntitySubscriber>(entityId);
+    return std::make_shared<VfAtomicClientEntitySubscriber>(entityId);
 }
 
-VfSimpleEntitySubscriber::VfSimpleEntitySubscriber(int entityId) :
+VfAtomicClientEntitySubscriber::VfAtomicClientEntitySubscriber(int entityId) :
     VfCmdEventItem(entityId)
 {
 }
 
-void VfSimpleEntitySubscriber::sendSubscription()
+void VfAtomicClientEntitySubscriber::sendSubscription()
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
@@ -29,12 +29,12 @@ void VfSimpleEntitySubscriber::sendSubscription()
     emit getEvenSystem()->sigSendEvent(cEvent);
 }
 
-QStringList VfSimpleEntitySubscriber::getComponentNames()
+QStringList VfAtomicClientEntitySubscriber::getComponentNames()
 {
     return m_componentNames;
 }
 
-void VfSimpleEntitySubscriber::parseIntrospectionData(EventData *evData)
+void VfAtomicClientEntitySubscriber::parseIntrospectionData(EventData *evData)
 {
     IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
     QJsonObject jsonObject = iData->jsonData();
@@ -44,12 +44,12 @@ void VfSimpleEntitySubscriber::parseIntrospectionData(EventData *evData)
         m_componentNames.append(entry.toString());
 }
 
-void VfSimpleEntitySubscriber::finishSubscription(bool ok)
+void VfAtomicClientEntitySubscriber::finishSubscription(bool ok)
 {
     emit sigSubscribed(ok, getEntityId());
 }
 
-void VfSimpleEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfAtomicClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     Q_ASSERT(evData != nullptr);

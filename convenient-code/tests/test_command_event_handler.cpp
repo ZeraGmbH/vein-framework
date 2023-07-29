@@ -1,18 +1,18 @@
-#include "test_vfcommandeventhandler.h"
+#include "test_command_event_handler.h"
 #include "vfcommandeventhandler.h"
 #include "vfcommandeventhandleritemtest.h"
 #include <vcmp_componentdata.h>
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_vfcommandeventhandler)
+QTEST_MAIN(test_command_event_handler)
 
 using namespace VeinEvent;
 using namespace VeinComponent;
 
 static constexpr int dummyEntitiy = 0;
 
-void test_vfcommandeventhandler::notificationFilter()
+void test_command_event_handler::notificationFilter()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
@@ -33,7 +33,7 @@ void test_vfcommandeventhandler::notificationFilter()
     delete commandTransaction;
 }
 
-void test_vfcommandeventhandler::transactionFilter()
+void test_command_event_handler::transactionFilter()
 {
     VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::TRANSACTION);
     VfCommandEventHandlerItemTestPtr testItem = VfCommandEventHandlerItemTest::create(dummyEntitiy);
@@ -54,7 +54,7 @@ void test_vfcommandeventhandler::transactionFilter()
     delete commandTransaction;
 }
 
-void test_vfcommandeventhandler::multipleEntities()
+void test_command_event_handler::multipleEntities()
 {
     constexpr CommandEvent::EventSubtype eventSubtype = CommandEvent::EventSubtype::NOTIFICATION;
     VfCommandEventHandler commandEventHandler(eventSubtype);
@@ -76,7 +76,7 @@ void test_vfcommandeventhandler::multipleEntities()
     delete command2;
 }
 
-void test_vfcommandeventhandler::multipleItems()
+void test_command_event_handler::multipleItems()
 {
     constexpr CommandEvent::EventSubtype eventSubtype = CommandEvent::EventSubtype::NOTIFICATION;
     VfCommandEventHandler commandEventHandler(eventSubtype);
@@ -100,7 +100,7 @@ void test_vfcommandeventhandler::multipleItems()
     delete command2;
 }
 
-void test_vfcommandeventhandler::unknownEventType()
+void test_command_event_handler::unknownEventType()
 {
     constexpr CommandEvent::EventSubtype eventSubtype = CommandEvent::EventSubtype::NOTIFICATION;
     VfCommandEventHandler commandEventHandler(eventSubtype);

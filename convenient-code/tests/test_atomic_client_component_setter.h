@@ -1,9 +1,9 @@
-#ifndef TEST_VFSIMPLESETTER_H
-#define TEST_VFSIMPLESETTER_H
+#ifndef TEST_ATOMIC_CLIENT_COMPONENT_SETTER_H
+#define TEST_ATOMIC_CLIENT_COMPONENT_SETTER_H
 
 #include <QObject>
 
-class test_vfsimplesetter : public QObject
+class test_atomic_client_component_setter : public QObject
 {
     Q_OBJECT
 private slots:
@@ -15,4 +15,4 @@ private:
     void feedEventLoop();
 };
 
-#endif // TEST_VFSIMPLESETTER_H
+#endif // TEST_ATOMIC_CLIENT_COMPONENT_SETTER_H

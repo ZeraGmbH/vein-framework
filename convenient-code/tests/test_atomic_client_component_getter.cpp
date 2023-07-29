@@ -1,5 +1,5 @@
-#include "test_vfsimplegetter.h"
-#include "vfsimplegetter.h"
+#include "test_atomic_client_component_getter.h"
+#include "vfatomicclientcomponentgetter.h"
 #include "veintestserver.h"
 #include "vftestclientstack.h"
 #include "vftestserverstack.h"
@@ -8,7 +8,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_vfsimplegetter)
+QTEST_MAIN(test_atomic_client_component_getter)
 
 static constexpr int systemEntityId = 0;
 static constexpr int testEntityId = 1;
@@ -26,7 +26,7 @@ struct ServerNoNet
     }
 };
 
-void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet()
+void test_atomic_client_component_getter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet()
 {
     ServerNoNet server;
     feedEventLoop();
@@ -35,10 +35,10 @@ void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter = VfSimpleGetter::create("foo", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter = VfAtomicClientComponentGetter::create("foo", entityItem);
     entityItem->addItem(getter);
-    QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy spy(getter.get(), &VfAtomicClientComponentGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
 
@@ -48,17 +48,17 @@ void test_vfsimplegetter::errorSignalFromUnsubscribedEntityInvalidComponentNoNet
     QCOMPARE(arguments.at(1), QVariant());
 }
 
-void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
+void test_atomic_client_component_getter::getFromUnsubscribedEntityValidComponentNoNet()
 {
     ServerNoNet server;
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter = VfAtomicClientComponentGetter::create("EntityName", entityItem);
     entityItem->addItem(getter);
-    QSignalSpy spy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy spy(getter.get(), &VfAtomicClientComponentGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
 
@@ -68,7 +68,7 @@ void test_vfsimplegetter::getFromUnsubscribedEntityValidComponentNoNet()
     QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
-void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNet()
+void test_atomic_client_component_getter::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -81,17 +81,17 @@ void test_vfsimplegetter::noGetFromUnsubscribedEntityValidComponentNet()
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter = VfAtomicClientComponentGetter::create("EntityName", entityItem);
     entityItem->addItem(getter);
-    QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy getterSpy(getter.get(), &VfAtomicClientComponentGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
 
     QCOMPARE(getterSpy.count(), 0);
 }
 
-void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
+void test_atomic_client_component_getter::getFromSubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -107,10 +107,10 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter = VfSimpleGetter::create("EntityName", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter = VfAtomicClientComponentGetter::create("EntityName", entityItem);
     entityItem->addItem(getter);
-    QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy getterSpy(getter.get(), &VfAtomicClientComponentGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
 
@@ -120,7 +120,7 @@ void test_vfsimplegetter::getFromSubscribedEntityValidComponentNet()
     QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
-void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
+void test_atomic_client_component_getter::getFromSubscribedEntityInvalidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -136,10 +136,10 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter = VfSimpleGetter::create("foo", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter = VfAtomicClientComponentGetter::create("foo", entityItem);
     entityItem->addItem(getter);
-    QSignalSpy getterSpy(getter.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy getterSpy(getter.get(), &VfAtomicClientComponentGetter::sigGetFinish);
     getter->startGetComponent();
     feedEventLoop();
 
@@ -149,7 +149,7 @@ void test_vfsimplegetter::getFromSubscribedEntityInvalidComponentNet()
     QCOMPARE(arguments.at(1), QVariant());
 }
 
-void test_vfsimplegetter::getTwoDifferentComponent()
+void test_atomic_client_component_getter::getTwoDifferentComponent()
 {
     // just server / no subscription
     VeinEvent::EventHandler eventHandler;
@@ -161,14 +161,14 @@ void test_vfsimplegetter::getTwoDifferentComponent()
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
-
-    VfSimpleGetterPtr getter1 = VfSimpleGetter::create("EntityName", entityItem);
+    
+    VfAtomicClientComponentGetterPtr getter1 = VfAtomicClientComponentGetter::create("EntityName", entityItem);
     entityItem->addItem(getter1);
-    QSignalSpy getterSpy1(getter1.get(), &VfSimpleGetter::sigGetFinish);
-
-    VfSimpleGetterPtr getter2 = VfSimpleGetter::create("Session", entityItem);
+    QSignalSpy getterSpy1(getter1.get(), &VfAtomicClientComponentGetter::sigGetFinish);
+    
+    VfAtomicClientComponentGetterPtr getter2 = VfAtomicClientComponentGetter::create("Session", entityItem);
     entityItem->addItem(getter2);
-    QSignalSpy getterSpy2(getter2.get(), &VfSimpleGetter::sigGetFinish);
+    QSignalSpy getterSpy2(getter2.get(), &VfAtomicClientComponentGetter::sigGetFinish);
 
     getter1->startGetComponent();
     getter2->startGetComponent();
@@ -185,7 +185,7 @@ void test_vfsimplegetter::getTwoDifferentComponent()
     QCOMPARE(arguments2.at(1), QVariant("fooPath"));
 }
 
-void test_vfsimplegetter::feedEventLoop()
+void test_atomic_client_component_getter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

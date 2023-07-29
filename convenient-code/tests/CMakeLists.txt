@@ -1,8 +1,8 @@
 SETUP_TESTS(
-    test_vfcommandeventhandler
-    test_vfcmdeventitementity
-    test_vfsimplechangenotifier
-    test_vfsimpleentitysubscriber
-    test_vfsimplegetter
-    test_vfsimplesetter
+    test_atomic_client_entity_subscriber
+    test_atomic_client_component_getter
+    test_atomic_client_component_setter
+    test_cmd_event_item_entity
+    test_command_event_handler
+    test_component_change_notifier
 )
