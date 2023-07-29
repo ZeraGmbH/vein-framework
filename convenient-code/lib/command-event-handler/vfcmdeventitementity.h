@@ -2,7 +2,7 @@
 #define VFCMDEVENTITEMENTITY_H
 
 #include "vfcmdeventitem.h"
-#include <set>
+#include "containersafedeletewhileloop.h"
 
 class VfCmdEventItemComponent;
 typedef std::shared_ptr<VfCmdEventItemComponent> VfCmdEventItemComponentPtr;
@@ -16,7 +16,7 @@ public:
     void removeItem(VfCmdEventItemComponentPtr item);
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
-    QHash<QString, std::set<VfCmdEventItemComponentPtr>> m_componentItems;
+    QHash<QString, ContainerSafeDeleteWhileLoop<VfCmdEventItemComponentPtr>> m_componentItems;
 };
 
 typedef std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntityPtr;
