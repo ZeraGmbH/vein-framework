@@ -10,6 +10,7 @@ private slots:
     void intropectSystemEntitySignalReceived();
     void trySubscribeOnNonExistantEntity();
     void introspectComponentNames();
+    void invalidIntrospectionData();
 private:
     void feedEventLoop();
 };

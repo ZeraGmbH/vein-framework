@@ -1,4 +1,5 @@
 #include "test_atomic_client_entity_subscriber.h"
+#include "vcmp_introspectiondata.h"
 #include "vfatomiccliententitysubscriber.h"
 #include "vfcommandeventhandlersystem.h"
 #include "veintestserver.h"
@@ -29,6 +30,9 @@ void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceived()
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1).toBool(), systemEntityId);
 }
 
 void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntity()
@@ -72,6 +76,29 @@ void test_atomic_client_entity_subscriber::introspectComponentNames()
     QVERIFY(componentNames.contains("Error_Messages"));
     QVERIFY(componentNames.contains("LoggedComponents"));
 
+}
+
+using namespace VeinEvent;
+using namespace VeinComponent;
+
+void test_atomic_client_entity_subscriber::invalidIntrospectionData()
+{
+    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(systemEntityId);
+
+    IntrospectionData *iData = new IntrospectionData();
+    iData->setEntityId(systemEntityId);
+    QJsonObject dummyJsonData;
+    iData->setJsonData(dummyJsonData);
+
+    CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, iData);
+    QSignalSpy spy(entityToSubscribe.get(), &VfAtomicClientEntitySubscriber::sigSubscribed);
+    entityToSubscribe->processCommandEvent(cEvent);
+    delete cEvent;
+
+    QCOMPARE(spy.count(), 1);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1).toBool(), systemEntityId);
 }
 
 void test_atomic_client_entity_subscriber::feedEventLoop()
