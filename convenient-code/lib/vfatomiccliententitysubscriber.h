@@ -11,10 +11,10 @@ public:
     VfAtomicClientEntitySubscriber(int entityId);
     void sendSubscription();
     QStringList getComponentNames();
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
 signals:
     void sigSubscribed(bool ok, int entityId);
 private:
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void parseIntrospectionData(VeinEvent::EventData *evData);
     void finishSubscription(bool ok);
     QStringList m_componentNames;

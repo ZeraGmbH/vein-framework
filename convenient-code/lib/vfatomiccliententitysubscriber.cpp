@@ -56,11 +56,10 @@ void VfAtomicClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent
     switch(evData->type()) {
     case IntrospectionData::dataType():
         parseIntrospectionData(evData);
-        finishSubscription(true);
+        finishSubscription(evData->isValid());
         break;
     case ErrorData::dataType():
         finishSubscription(false);
         break;
     }
 }
-
