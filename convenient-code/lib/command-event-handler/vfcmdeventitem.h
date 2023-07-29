@@ -5,6 +5,7 @@
 #include "ve_commandevent.h"
 #include <memory>
 
+// Base item handled by VfCommandEventHandler
 class VfCmdEventItem
 {
 public:

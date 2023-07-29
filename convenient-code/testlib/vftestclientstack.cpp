@@ -1,5 +1,5 @@
 #include "vftestclientstack.h"
-#include "vfsimpleentitysubscriber.h"
+#include "vfatomiccliententitysubscriber.h"
 
 VfTestClientStack::VfTestClientStack()
 {
@@ -10,7 +10,7 @@ VfTestClientStack::VfTestClientStack()
 
 void VfTestClientStack::subscribeEntityId(int entityId, VfCommandEventHandlerSystem *cmdEventHandlerSystem)
 {
-    VfSimpleEntitySubscriberPtr entityToSubscribe = VfSimpleEntitySubscriber::create(entityId);
+    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(entityId);
     cmdEventHandlerSystem->addItem(entityToSubscribe);
     entityToSubscribe->sendSubscription();
     cmdEventHandlerSystem->removeItem(entityToSubscribe);

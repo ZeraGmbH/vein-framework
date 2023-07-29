@@ -1,9 +1,9 @@
-#ifndef TEST_VFSIMPLECHANGENOTIFIER_H
-#define TEST_VFSIMPLECHANGENOTIFIER_H
+#ifndef TEST_COMPONENT_CHANGE_NOTIFIER_H
+#define TEST_COMPONENT_CHANGE_NOTIFIER_H
 
 #include <QObject>
 
-class test_vfsimplechangenotifier : public QObject
+class test_component_change_notifier : public QObject
 {
     Q_OBJECT
 private slots:
@@ -14,4 +14,4 @@ private:
     static void feedEventLoop();
 };
 
-#endif // TEST_VFSIMPLECHANGENOTIFIER_H
+#endif // TEST_COMPONENT_CHANGE_NOTIFIER_H

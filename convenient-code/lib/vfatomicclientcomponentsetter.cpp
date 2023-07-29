@@ -1,14 +1,14 @@
-#include "vfsimplesetter.h"
+#include "vfatomicclientcomponentsetter.h"
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 #include "vcmp_errordata.h"
 
-std::shared_ptr<VfSimpleSetter> VfSimpleSetter::create(int entityId, QString componentName)
+std::shared_ptr<VfAtomicClientComponentSetter> VfAtomicClientComponentSetter::create(int entityId, QString componentName)
 {
-    return std::make_shared<VfSimpleSetter>(entityId, componentName);
+    return std::make_shared<VfAtomicClientComponentSetter>(entityId, componentName);
 }
 
-VfSimpleSetter::VfSimpleSetter(int entityId, QString componentName) :
+VfAtomicClientComponentSetter::VfAtomicClientComponentSetter(int entityId, QString componentName) :
     VfCmdEventItem(entityId),
     m_componentName(componentName)
 {
@@ -17,7 +17,7 @@ VfSimpleSetter::VfSimpleSetter(int entityId, QString componentName) :
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfSimpleSetter::startSetComponent(QVariant oldValue, QVariant newValue)
+void VfAtomicClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newValue)
 {
     if(!newValue.isValid())
         emitSigSetFinish(false);
@@ -43,7 +43,7 @@ void VfSimpleSetter::startSetComponent(QVariant oldValue, QVariant newValue)
     }
 }
 
-void VfSimpleSetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfAtomicClientComponentSetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     switch(evData->type()) {
@@ -56,7 +56,7 @@ void VfSimpleSetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
     }
 }
 
-void VfSimpleSetter::emitSigSetFinish(bool ok)
+void VfAtomicClientComponentSetter::emitSigSetFinish(bool ok)
 {
     QMetaObject::invokeMethod(this,
                               "doEmitSigSetFinish",
@@ -65,7 +65,7 @@ void VfSimpleSetter::emitSigSetFinish(bool ok)
 
 }
 
-void VfSimpleSetter::doEmitSigSetFinish(bool ok)
+void VfAtomicClientComponentSetter::doEmitSigSetFinish(bool ok)
 {
     emit sigSetFinish(ok);
 }

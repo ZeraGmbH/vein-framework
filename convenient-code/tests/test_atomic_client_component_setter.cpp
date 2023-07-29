@@ -1,5 +1,5 @@
-#include "test_vfsimplesetter.h"
-#include "vfsimplesetter.h"
+#include "test_atomic_client_component_setter.h"
+#include "vfatomicclientcomponentsetter.h"
 #include "veintestserver.h"
 #include "vftestclientstack.h"
 #include "vftestserverstack.h"
@@ -8,7 +8,7 @@
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_vfsimplesetter)
+QTEST_MAIN(test_atomic_client_component_setter)
 
 static constexpr int systemEntityId = 0;
 static constexpr int invalidId = 1;
@@ -27,17 +27,17 @@ struct ServerNoNet
     }
 };
 
-void test_vfsimplesetter::setInvalidIsEvil()
+void test_atomic_client_component_setter::setInvalidIsEvil()
 {
     ServerNoNet server;
     feedEventLoop();
-
-    VfSimpleSetterPtr setter = VfSimpleSetter::create(systemEntityId, "foo");
+    
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(systemEntityId, "foo");
     server.cmdEventHandlerSystem.addItem(setter);
 
     setter->startSetComponent(QVariant(), QVariant());
     // check event loop fired: connect after start
-    QSignalSpy spy(setter.get(), &VfSimpleSetter::sigSetFinish);
+    QSignalSpy spy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
@@ -45,17 +45,17 @@ void test_vfsimplesetter::setInvalidIsEvil()
     QCOMPARE(arguments.at(0).toBool(), false);
 }
 
-void test_vfsimplesetter::setEqualEmitsOk()
+void test_atomic_client_component_setter::setEqualEmitsOk()
 {
     ServerNoNet server;
     feedEventLoop();
-
-    VfSimpleSetterPtr setter = VfSimpleSetter::create(systemEntityId, "foo");
+    
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(systemEntityId, "foo");
     server.cmdEventHandlerSystem.addItem(setter);
 
     setter->startSetComponent("foo", "foo");
     // check event loop fired: connect after start
-    QSignalSpy spy(setter.get(), &VfSimpleSetter::sigSetFinish);
+    QSignalSpy spy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
@@ -63,7 +63,7 @@ void test_vfsimplesetter::setEqualEmitsOk()
     QCOMPARE(arguments.at(0).toBool(), true);
 }
 
-void test_vfsimplesetter::setToInvalidEntity()
+void test_atomic_client_component_setter::setToInvalidEntity()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -76,10 +76,10 @@ void test_vfsimplesetter::setToInvalidEntity()
 
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
-
-    VfSimpleSetterPtr setter = VfSimpleSetter::create(invalidId, "foo");
+    
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(invalidId, "foo");
     cmdEventHandlerSystem.addItem(setter);
-    QSignalSpy setterSpy(setter.get(), &VfSimpleSetter::sigSetFinish);
+    QSignalSpy setterSpy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     setter->startSetComponent("foo", "bar");
     feedEventLoop();
 
@@ -87,7 +87,7 @@ void test_vfsimplesetter::setToInvalidEntity()
     QCOMPARE(setterSpy.count(), 0);
 }
 
-void test_vfsimplesetter::setvalidEntityNet()
+void test_atomic_client_component_setter::setvalidEntityNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
@@ -107,17 +107,17 @@ void test_vfsimplesetter::setvalidEntityNet()
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     clientStack.subscribeEntityId(testId, &cmdEventHandlerSystem);
     feedEventLoop();
-
-    VfSimpleSetterPtr setter = VfSimpleSetter::create(testId, "foo");
+    
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(testId, "foo");
     cmdEventHandlerSystem.addItem(setter);
-    QSignalSpy setterSpy(setter.get(), &VfSimpleSetter::sigSetFinish);
+    QSignalSpy setterSpy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     setter->startSetComponent(42, 0);
     feedEventLoop();
 
     QCOMPARE(setterSpy.count(), 1);
 }
 
-void test_vfsimplesetter::feedEventLoop()
+void test_atomic_client_component_setter::feedEventLoop()
 {
     while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

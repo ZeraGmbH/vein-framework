@@ -1,9 +1,9 @@
-#ifndef TEST_VFCMDEVENTITEMENTITY_H
-#define TEST_VFCMDEVENTITEMENTITY_H
+#ifndef TEST_CMD_EVENT_ITEM_ENTITY_H
+#define TEST_CMD_EVENT_ITEM_ENTITY_H
 
 #include <QObject>
 
-class test_vfcmdeventitementity : public QObject
+class test_cmd_event_item_entity : public QObject
 {
     Q_OBJECT
 private slots:
@@ -12,4 +12,4 @@ private slots:
     void sameComponentNamesOnDifferentEntities();
 };
 
-#endif // TEST_VFCMDEVENTITEMENTITY_H
+#endif // TEST_CMD_EVENT_ITEM_ENTITY_H

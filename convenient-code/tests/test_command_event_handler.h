@@ -1,9 +1,9 @@
-#ifndef TEST_VFCOMMANDEVENTHANDLER_H
-#define TEST_VFCOMMANDEVENTHANDLER_H
+#ifndef TEST_COMMAND_EVENT_HANDLER_H
+#define TEST_COMMAND_EVENT_HANDLER_H
 
 #include <QObject>
 
-class test_vfcommandeventhandler : public QObject
+class test_command_event_handler : public QObject
 {
     Q_OBJECT
 private slots:
@@ -14,4 +14,4 @@ private slots:
     void unknownEventType();
 };
 
-#endif // TEST_VFCOMMANDEVENTHANDLER_H
+#endif // TEST_COMMAND_EVENT_HANDLER_H
