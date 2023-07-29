@@ -16,8 +16,6 @@ signals:
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void emitSigSetFinish(bool ok);
-private slots:
-    void doEmitSigSetFinish(bool ok);
 private:
     QString m_componentName;
 };

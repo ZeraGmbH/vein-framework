@@ -51,15 +51,11 @@ void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
 
 void TcpPeerWorkerMock::emitSigSocketError(QAbstractSocket::SocketError error)
 {
-    QMetaObject::invokeMethod(this,
-                              "doEmitSigSocketError",
+    QMetaObject::invokeMethod(m_peer,
+                              "sigSocketError",
                               Qt::QueuedConnection,
-                              Q_ARG(int, error));
-}
-
-void TcpPeerWorkerMock::doEmitSigSocketError(int error)
-{
-    emit m_peer->sigSocketError(m_peer, static_cast<QAbstractSocket::SocketError>(error));
+                              Q_ARG(VeinTcp::TcpPeer*, m_peer),
+                              Q_ARG(QAbstractSocket::SocketError, error));
 }
 
 // client only
@@ -78,15 +74,10 @@ void TcpPeerWorkerMock::doEmitSigConnectionEstablished()
 // client & server
 void TcpPeerWorkerMock::emitMessageReceived(TcpPeer *peer, QByteArray message)
 {
-    QMetaObject::invokeMethod(this,
-                              "doEmitMessageReceived",
+    QMetaObject::invokeMethod(peer,
+                              "sigMessageReceived",
                               Qt::QueuedConnection,
                               Q_ARG(VeinTcp::TcpPeer*, peer),
                               Q_ARG(QByteArray, message));
 }
-void TcpPeerWorkerMock::doEmitMessageReceived(TcpPeer *peer, QByteArray message)
-{
-    emit peer->sigMessageReceived(peer, message);
-}
-
 }

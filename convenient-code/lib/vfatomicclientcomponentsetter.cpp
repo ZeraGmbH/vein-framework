@@ -48,10 +48,10 @@ void VfAtomicClientComponentSetter::processCommandEvent(VeinEvent::CommandEvent 
     EventData *evData = cmdEvent->eventData();
     switch(evData->type()) {
     case ComponentData::dataType():
-        doEmitSigSetFinish(true);
+        emitSigSetFinish(true);
         break;
     case ErrorData::dataType():
-        doEmitSigSetFinish(false);
+        emitSigSetFinish(false);
         break;
     }
 }
@@ -59,13 +59,8 @@ void VfAtomicClientComponentSetter::processCommandEvent(VeinEvent::CommandEvent 
 void VfAtomicClientComponentSetter::emitSigSetFinish(bool ok)
 {
     QMetaObject::invokeMethod(this,
-                              "doEmitSigSetFinish",
+                              "sigSetFinish",
                               Qt::QueuedConnection,
                               Q_ARG(bool, ok));
 
-}
-
-void VfAtomicClientComponentSetter::doEmitSigSetFinish(bool ok)
-{
-    emit sigSetFinish(ok);
 }

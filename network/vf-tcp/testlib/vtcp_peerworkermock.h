@@ -23,15 +23,11 @@ public:
     void startConnection(QString ipAddress, quint16 port) override;
     void sendArray(const QByteArray &byteArray) const override;
 private slots:
-    void emitSigSocketError(QAbstractSocket::SocketError error);
-    void doEmitSigSocketError(int error);
-
-    void emitSigConnectionEstablished();
     void doEmitSigConnectionEstablished();
-
-    void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
-    void doEmitMessageReceived(VeinTcp::TcpPeer* peer, QByteArray message);
 private:
+    void emitSigConnectionEstablished();
+    void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void emitSigSocketError(QAbstractSocket::SocketError error);
     TcpPeer *m_peer = nullptr;
     bool m_bAmClientPeer;
     TcpPeer* m_serverPeer = nullptr;
