@@ -45,7 +45,6 @@ function(SETUP_TESTS)
             Qt5::Test
             VfComponentTest
             VfCpp
-            VfSimplePeer
             VfNet2
             VfTcpTest
             VfConvenientCodeTest

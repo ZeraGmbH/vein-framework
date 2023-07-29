@@ -17,7 +17,6 @@ target_link_libraries(VfConvenientCodeTest
     VfEvent
     VfTcp
     VfConvenientCode
-    VfSimplePeer
     veinserver-testlib
     )
 
