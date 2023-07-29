@@ -1,4 +1,5 @@
 SETUP_TESTS(
+    test_container_safe_delete_while_loop
     test_atomic_client_entity_subscriber
     test_atomic_client_component_getter
     test_atomic_client_component_setter
