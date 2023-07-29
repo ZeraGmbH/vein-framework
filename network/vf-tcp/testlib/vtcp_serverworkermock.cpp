@@ -45,16 +45,11 @@ TcpServerWorkerMock* TcpServerWorkerMock::getServerMock(quint16 port)
 TcpPeer* TcpServerWorkerMock::emitSigClientConnected(TcpPeer* clientPeer)
 {
     TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(clientPeer));
-    QMetaObject::invokeMethod(this,
-                              "doEmitSigClientConnected",
+    QMetaObject::invokeMethod(m_server,
+                              "sigClientConnected",
                               Qt::QueuedConnection,
                               Q_ARG(VeinTcp::TcpPeer*, serverPeer));
     return serverPeer;
-}
-
-void TcpServerWorkerMock::doEmitSigClientConnected(TcpPeer *peer)
-{
-    emit m_server->sigClientConnected(peer);
 }
 
 }

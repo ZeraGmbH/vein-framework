@@ -24,8 +24,6 @@ public:
     // for mock peer
     static TcpServerWorkerMock* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);
-private slots:
-    void doEmitSigClientConnected(VeinTcp::TcpPeer* peer);
 private:
     quint16 m_portListening = 0;
     QList<TcpPeer*> m_clients;
