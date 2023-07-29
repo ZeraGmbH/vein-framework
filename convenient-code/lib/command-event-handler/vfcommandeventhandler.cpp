@@ -10,14 +10,14 @@ VfCommandEventHandler::VfCommandEventHandler(CommandEvent::EventSubtype eventSub
 
 void VfCommandEventHandler::addItem(VfCmdEventItemPtr item)
 {
-    std::set<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
-    items.insert(item);
+    ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
+    items.addElem(item);
 }
 
 void VfCommandEventHandler::removeItem(VfCmdEventItemPtr item)
 {
-    std::set<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
-    items.erase(item);
+    ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
+    items.removeElem(item);
 }
 
 void VfCommandEventHandler::processEvent(QEvent *event)
@@ -35,9 +35,9 @@ void VfCommandEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEven
         VeinEvent::EventData *eventData = cmdEvent->eventData();
         Q_ASSERT(eventData != nullptr);
         int entityId = eventData->entityId();
-        auto iter = m_items.constFind(entityId);
-        if(iter != m_items.constEnd()) {
-            for(auto item : iter.value())
+        auto iter = m_items.find(entityId);
+        if(iter != m_items.end()) {
+            for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())
                 item->processCommandEvent(cmdEvent);
         }
     }

@@ -13,12 +13,12 @@ VfCmdEventItemEntity::VfCmdEventItemEntity(int entityId) :
 
 void VfCmdEventItemEntity::addItem(VfCmdEventItemComponentPtr item)
 {
-    m_componentItems[item->getComponentName()].insert(item);
+    m_componentItems[item->getComponentName()].addElem(item);
 }
 
 void VfCmdEventItemEntity::removeItem(VfCmdEventItemComponentPtr item)
 {
-    m_componentItems[item->getComponentName()].erase(item);
+    m_componentItems[item->getComponentName()].removeElem(item);
 }
 
 using namespace VeinEvent;
@@ -32,9 +32,9 @@ void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent
         ComponentData *cData = static_cast<ComponentData *>(evData);
         Q_ASSERT(cData != nullptr);
         const QString &componentName = cData->componentName();
-        auto iter = m_componentItems.constFind(componentName);
-        if(iter != m_componentItems.constEnd()) {
-            for(auto item : iter.value())
+        auto iter = m_componentItems.find(componentName);
+        if(iter != m_componentItems.end()) {
+            for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())
                 item->processComponentEventData(cData);
         }
     }
