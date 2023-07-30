@@ -27,7 +27,7 @@ void VfAtomicClientComponentSetter::startSetComponent(QVariant oldValue, QVarian
         cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         cData->setComponentName(getComponentName());
 
-        // The following magic was stopen from vf-qml
+        // The following magic was stolen from vf-qml
         if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
             cData->setNewValue(newValue.toList());
         else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
