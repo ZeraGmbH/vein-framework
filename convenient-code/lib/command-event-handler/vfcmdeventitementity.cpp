@@ -28,12 +28,11 @@ void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent
 {
     EventData *evData = cmdEvent->eventData();
     if(evData->type() == ComponentData::dataType()) {
-        ComponentData *cData = static_cast<ComponentData *>(evData);
-        const QString &componentName = cData->componentName();
-        auto iter = m_componentItems.find(componentName);
+        ComponentData *componentData = static_cast<ComponentData *>(evData);
+        auto iter = m_componentItems.find(componentData->componentName());
         if(iter != m_componentItems.end()) {
-            for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())
-                item->processComponentEventData(cData);
+            for(VfCmdEventItemComponentPtr item = iter.value().getFirst(); item!=nullptr; item=iter.value().getNext())
+                item->processComponentEventData(componentData);
         }
     }
 }
@@ -41,12 +40,11 @@ void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent
 void VfCmdEventItemEntity::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
 {
     if(originalEventData->type() == ComponentData::dataType()) {
-        ComponentData *cData = static_cast<ComponentData *>(originalEventData);
-        const QString &componentName = cData->componentName();
-        auto iter = m_componentItems.find(componentName);
+        ComponentData *componentData = static_cast<ComponentData *>(originalEventData);
+        auto iter = m_componentItems.find(componentData->componentName());
         if(iter != m_componentItems.end()) {
-            for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())
-                item->processComponentEventData(cData);
+            for(VfCmdEventItemComponentPtr item = iter.value().getFirst(); item!=nullptr; item=iter.value().getNext())
+                item->processComponentEventData(componentData);
         }
     }
 }

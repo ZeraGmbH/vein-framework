@@ -2,9 +2,6 @@
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 
-using namespace VeinEvent;
-using namespace VeinComponent;
-
 std::shared_ptr<VfAtomicClientComponentGetter> VfAtomicClientComponentGetter::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
 {
     return std::make_shared<VfAtomicClientComponentGetter>(componentName, entityItem);
@@ -14,6 +11,9 @@ VfAtomicClientComponentGetter::VfAtomicClientComponentGetter(QString componentNa
     VfCmdEventItemComponent(componentName, entityItem)
 {
 }
+
+using namespace VeinEvent;
+using namespace VeinComponent;
 
 void VfAtomicClientComponentGetter::startGetComponent()
 {
