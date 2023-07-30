@@ -12,7 +12,7 @@ public:
     VfCommandEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem);
 
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
-    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
+    void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigCommandEvenProcessed();
 private:

@@ -49,7 +49,7 @@ void VfAtomicClientComponentSetter::processComponentEventData(const VeinComponen
         emitSigSetFinish(true);
 }
 
-void VfAtomicClientComponentSetter::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+void VfAtomicClientComponentSetter::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
     if(originalComponentData->eventCommand() == ComponentData::Command::CCMD_SET)
         emitSigSetFinish(false);

@@ -13,7 +13,7 @@ public:
 
     const QVariant &getValue() const;
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
-    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
+    void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigValueChanged();
 private:

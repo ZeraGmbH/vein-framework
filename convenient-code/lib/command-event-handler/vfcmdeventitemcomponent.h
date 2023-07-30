@@ -13,7 +13,7 @@ public:
     VfCmdEventItemEntityPtr getEntityItem() const;
     VeinEvent::EventSystem* getEvenSystem() const;
     virtual void processComponentEventData(const VeinComponent::ComponentData *componentData) = 0;
-    virtual void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) = 0;
+    virtual void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) = 0;
 private:
     const QString m_componentName;
     VfCmdEventItemEntityPtr m_entityItem;

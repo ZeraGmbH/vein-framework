@@ -16,7 +16,7 @@ void VfCommandEventHandlerComponentItemTest::processComponentEventData(const Vei
     emit sigCommandEvenProcessed();
 }
 
-void VfCommandEventHandlerComponentItemTest::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+void VfCommandEventHandlerComponentItemTest::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
     Q_UNUSED(originalComponentData)
 }
