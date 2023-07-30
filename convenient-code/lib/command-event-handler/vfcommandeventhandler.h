@@ -11,13 +11,13 @@ class VfCommandEventHandler
 {
 public:
     VfCommandEventHandler(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter = VeinEvent::CommandEvent::EventSubtype::NOTIFICATION);
+
     // Interface for VfCommandEventHandlerSystem
     void addItem(VfCmdEventItemPtr item);
     void removeItem(VfCmdEventItemPtr item);
     void processEvent(QEvent *event);
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
-
 private:
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
     void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, CommandEventHandlerContainerType>::iterator iter);
     QHash<int, CommandEventHandlerContainerType> m_items;
     const VeinEvent::CommandEvent::EventSubtype m_eventSubtypeFilter;

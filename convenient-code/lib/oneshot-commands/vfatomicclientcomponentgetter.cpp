@@ -17,9 +17,7 @@ VfAtomicClientComponentGetter::VfAtomicClientComponentGetter(QString componentNa
 
 void VfAtomicClientComponentGetter::startGetComponent()
 {
-    ComponentData *cData = new ComponentData();
-    cData->setEntityId(getEntityItem()->getEntityId());
-    cData->setCommand(ComponentData::Command::CCMD_FETCH);
+    ComponentData *cData = new ComponentData(getEntityItem()->getEntityId(), ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
     cData->setComponentName(getComponentName());

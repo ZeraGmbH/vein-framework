@@ -22,12 +22,11 @@ void VfAtomicClientComponentSetter::startSetComponent(QVariant oldValue, QVarian
     else if(oldValue == newValue)
         emitSigSetFinish(true);
     else {
-        ComponentData *cData = new ComponentData();
-        cData->setEntityId(getEntityItem()->getEntityId());
-        cData->setCommand(ComponentData::Command::CCMD_SET);
+        ComponentData *cData = new ComponentData(getEntityItem()->getEntityId(), ComponentData::Command::CCMD_SET);
         cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
         cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         cData->setComponentName(getComponentName());
+
         // The following magic was stopen from vf-qml
         if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
             cData->setNewValue(newValue.toList());

@@ -10,12 +10,14 @@ public:
     void addItem(ItemType item) {
         m_items.insert(item);
     }
+
     void removeItem(ItemType item) {
         if(!m_inIteration)
             m_items.erase(item);
         else
             m_itemsToDeleteOnIterEnd.insert(item);
     }
+
     ItemType getFirst() {
         m_iterActualItem = m_items.begin();
         if(notEnd()) {
@@ -24,6 +26,7 @@ public:
         }
         return {};
     }
+
     ItemType getNext() {
         if(notEnd()) {
             m_iterActualItem++;

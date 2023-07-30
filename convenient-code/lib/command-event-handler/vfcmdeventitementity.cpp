@@ -27,7 +27,6 @@ using namespace VeinComponent;
 void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
-    Q_ASSERT(evData != nullptr);
     if(evData->type() == ComponentData::dataType()) {
         ComponentData *cData = static_cast<ComponentData *>(evData);
         const QString &componentName = cData->componentName();
@@ -50,5 +49,4 @@ void VfCmdEventItemEntity::processErrorCommandEventData(VeinEvent::EventData *or
                 item->processComponentEventData(cData);
         }
     }
-
 }
