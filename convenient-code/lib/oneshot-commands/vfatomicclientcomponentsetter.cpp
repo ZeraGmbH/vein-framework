@@ -1,16 +1,14 @@
 #include "vfatomicclientcomponentsetter.h"
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
-#include "vcmp_errordata.h"
 
-std::shared_ptr<VfAtomicClientComponentSetter> VfAtomicClientComponentSetter::create(int entityId, QString componentName)
+std::shared_ptr<VfAtomicClientComponentSetter> VfAtomicClientComponentSetter::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
 {
-    return std::make_shared<VfAtomicClientComponentSetter>(entityId, componentName);
+    return std::make_shared<VfAtomicClientComponentSetter>(componentName, entityItem);
 }
 
-VfAtomicClientComponentSetter::VfAtomicClientComponentSetter(int entityId, QString componentName) :
-    VfCmdEventItem(entityId),
-    m_componentName(componentName)
+VfAtomicClientComponentSetter::VfAtomicClientComponentSetter(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+    VfCmdEventItemComponent(componentName, entityItem)
 {
 }
 
@@ -25,11 +23,12 @@ void VfAtomicClientComponentSetter::startSetComponent(QVariant oldValue, QVarian
         emitSigSetFinish(true);
     else {
         ComponentData *cData = new ComponentData();
-        cData->setEntityId(getEntityId());
+        cData->setEntityId(getEntityItem()->getEntityId());
         cData->setCommand(ComponentData::Command::CCMD_SET);
         cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
         cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-        cData->setComponentName(m_componentName);
+        cData->setComponentName(getComponentName());
+        // The following magic was stopen from vf-qml
         if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
             cData->setNewValue(newValue.toList());
         else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
@@ -38,27 +37,22 @@ void VfAtomicClientComponentSetter::startSetComponent(QVariant oldValue, QVarian
             cData->setNewValue(newValue);
         cData->setOldValue(oldValue);
 
+        // connected client requires TRANSACTION - that is what servers listen to
         CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
         emit getEvenSystem()->sigSendEvent(cEvent);
     }
 }
 
-void VfAtomicClientComponentSetter::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfAtomicClientComponentSetter::processComponentEventData(const VeinComponent::ComponentData *componentData)
 {
-    EventData *evData = cmdEvent->eventData();
-    switch(evData->type()) {
-    case ComponentData::dataType():
+    if(componentData->eventCommand() == ComponentData::Command::CCMD_SET)
         emitSigSetFinish(true);
-        break;
-    case ErrorData::dataType():
-        emitSigSetFinish(false);
-        break;
-    }
 }
 
-void VfAtomicClientComponentSetter::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
+void VfAtomicClientComponentSetter::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
-
+    if(originalComponentData->eventCommand() == ComponentData::Command::CCMD_SET)
+        emitSigSetFinish(false);
 }
 
 void VfAtomicClientComponentSetter::emitSigSetFinish(bool ok)

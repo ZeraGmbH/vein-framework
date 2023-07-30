@@ -32,8 +32,11 @@ void test_atomic_client_component_setter::setInvalidIsEvil()
     ServerNoNet server;
     feedEventLoop();
     
-    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(systemEntityId, "foo");
-    server.cmdEventHandlerSystem.addItem(setter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    server.cmdEventHandlerSystem.addItem(entityItem);
+
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create("foo", entityItem);
+    entityItem->addItem(setter);
 
     setter->startSetComponent(QVariant(), QVariant());
     // check event loop fired: connect after start
@@ -50,8 +53,11 @@ void test_atomic_client_component_setter::setEqualEmitsOk()
     ServerNoNet server;
     feedEventLoop();
     
-    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(systemEntityId, "foo");
-    server.cmdEventHandlerSystem.addItem(setter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    server.cmdEventHandlerSystem.addItem(entityItem);
+
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create("foo", entityItem);
+    entityItem->addItem(setter);
 
     setter->startSetComponent("foo", "foo");
     // check event loop fired: connect after start
@@ -76,9 +82,12 @@ void test_atomic_client_component_setter::setToInvalidEntity()
 
     clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
     feedEventLoop();
-    
-    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(invalidId, "foo");
-    cmdEventHandlerSystem.addItem(setter);
+
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(invalidId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create("foo", entityItem);
+    entityItem->addItem(setter);
     QSignalSpy setterSpy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     setter->startSetComponent("foo", "bar");
     feedEventLoop();
@@ -108,8 +117,11 @@ void test_atomic_client_component_setter::setvalidEntityNet()
     clientStack.subscribeEntityId(testId, &cmdEventHandlerSystem);
     feedEventLoop();
     
-    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create(testId, "foo");
-    cmdEventHandlerSystem.addItem(setter);
+    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testId);
+    cmdEventHandlerSystem.addItem(entityItem);
+
+    VfAtomicClientComponentSetterPtr setter = VfAtomicClientComponentSetter::create("foo", entityItem);
+    entityItem->addItem(setter);
     QSignalSpy setterSpy(setter.get(), &VfAtomicClientComponentSetter::sigSetFinish);
     setter->startSetComponent(42, 0);
     feedEventLoop();
