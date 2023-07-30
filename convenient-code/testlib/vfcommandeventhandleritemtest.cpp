@@ -13,10 +13,11 @@ VfCommandEventHandlerItemTest::VfCommandEventHandlerItemTest(int entityId) :
 void VfCommandEventHandlerItemTest::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     Q_UNUSED(cmdEvent)
-    emit sigCommandEvenProcessed();
+    emit sigCommandEventReceived();
 }
 
 void VfCommandEventHandlerItemTest::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
 {
-
+    Q_UNUSED(originalEventData)
+    emit sigCommandErrorEventReceived();
 }

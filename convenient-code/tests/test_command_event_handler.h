@@ -12,6 +12,7 @@ private slots:
     void multipleEntities();
     void multipleItems();
     void unknownEventType();
+    void handleErrorEvents();
 };
 
 #endif // TEST_COMMAND_EVENT_HANDLER_H

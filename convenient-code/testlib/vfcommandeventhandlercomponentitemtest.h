@@ -14,7 +14,7 @@ public:
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
-    void sigCommandEvenProcessed();
+    void sigCommandEventReceived();
 private:
 };
 
