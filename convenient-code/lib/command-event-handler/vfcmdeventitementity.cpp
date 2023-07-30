@@ -13,12 +13,12 @@ VfCmdEventItemEntity::VfCmdEventItemEntity(int entityId) :
 
 void VfCmdEventItemEntity::addItem(VfCmdEventItemComponentPtr item)
 {
-    m_componentItems[item->getComponentName()].addElem(item);
+    m_componentItems[item->getComponentName()].addItem(item);
 }
 
 void VfCmdEventItemEntity::removeItem(VfCmdEventItemComponentPtr item)
 {
-    m_componentItems[item->getComponentName()].removeElem(item);
+    m_componentItems[item->getComponentName()].removeItem(item);
 }
 
 using namespace VeinEvent;

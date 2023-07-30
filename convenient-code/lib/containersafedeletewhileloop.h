@@ -3,58 +3,58 @@
 
 #include <unordered_set>
 
-template <class T>
+template <class ItemType>
 class ContainerSafeDeleteWhileLoop
 {
 public:
-    void addElem(T elem) {
-        m_elems.insert(elem);
+    void addItem(ItemType item) {
+        m_items.insert(item);
     }
-    void removeElem(T elem) {
+    void removeItem(ItemType item) {
         if(!m_inIteration)
-            m_elems.erase(elem);
+            m_items.erase(item);
         else
-            m_elemsToDeleteOnIterEnd.insert(elem);
+            m_itemsToDeleteOnIterEnd.insert(item);
     }
-    T getFirst() {
-        m_actualElem = m_elems.begin();
+    ItemType getFirst() {
+        m_iterActualItem = m_items.begin();
         if(notEnd()) {
             m_inIteration = true;
-            return *m_actualElem;
+            return *m_iterActualItem;
         }
         return {};
     }
-    T getNext() {
+    ItemType getNext() {
         if(notEnd()) {
-            m_actualElem++;
+            m_iterActualItem++;
             ignoreDeleted();
         }
         if(notEnd())
-            return *m_actualElem;
+            return *m_iterActualItem;
         m_inIteration = false;
         doDeletions();
         return {};
     }
 private:
     inline bool notEnd() const {
-        return m_actualElem != m_elems.end();
+        return m_iterActualItem != m_items.end();
     }
-    bool isToDelete(T elem) {
-        return m_elemsToDeleteOnIterEnd.find(elem) != m_elemsToDeleteOnIterEnd.end();
+    bool isToDelete(ItemType item) {
+        return m_itemsToDeleteOnIterEnd.find(item) != m_itemsToDeleteOnIterEnd.end();
     }
     void ignoreDeleted() {
-        while(notEnd() && isToDelete(*m_actualElem))
-            m_actualElem++;
+        while(notEnd() && isToDelete(*m_iterActualItem))
+            m_iterActualItem++;
     }
     void doDeletions() {
-        for(auto elemToPostDelete : m_elemsToDeleteOnIterEnd)
-            removeElem(elemToPostDelete);
-        m_elemsToDeleteOnIterEnd.clear();
+        for(auto elemToPostDelete : m_itemsToDeleteOnIterEnd)
+            removeItem(elemToPostDelete);
+        m_itemsToDeleteOnIterEnd.clear();
     }
     bool m_inIteration = false;
-    std::unordered_set<T> m_elems;
-    std::unordered_set<T> m_elemsToDeleteOnIterEnd;
-    typename std::unordered_set<T>::iterator m_actualElem = m_elems.end();
+    std::unordered_set<ItemType> m_items;
+    std::unordered_set<ItemType> m_itemsToDeleteOnIterEnd;
+    typename std::unordered_set<ItemType>::iterator m_iterActualItem = m_items.end();
 };
 
 #endif // CONTAINERSAFEDELETEWHILELOOP_H

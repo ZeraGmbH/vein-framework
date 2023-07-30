@@ -17,15 +17,15 @@ void test_container_safe_delete_while_loop::removeOnEmpty()
 {
     // Just crash (throw) test
     ContainerSafeDeleteWhileLoop<int> cont;
-    cont.removeElem(0);
+    cont.removeItem(0);
 }
 
 void test_container_safe_delete_while_loop::addAndIterate()
 {
     ContainerSafeDeleteWhileLoop<int> cont;
-    cont.addElem(1);
-    cont.addElem(2);
-    cont.addElem(3);
+    cont.addItem(1);
+    cont.addItem(2);
+    cont.addItem(3);
 
     QSet<int> set;
     for(auto i = cont.getFirst(); i!=0; i=cont.getNext())
@@ -39,10 +39,10 @@ void test_container_safe_delete_while_loop::addAndIterate()
 void test_container_safe_delete_while_loop::addRemoveAndIterate()
 {
     ContainerSafeDeleteWhileLoop<int> cont;
-    cont.addElem(1);
-    cont.addElem(2);
-    cont.addElem(3);
-    cont.removeElem(2);
+    cont.addItem(1);
+    cont.addItem(2);
+    cont.addItem(3);
+    cont.removeItem(2);
     QSet<int> set;
     for(auto i = cont.getFirst(); i!=0; i=cont.getNext())
         set.insert(i);
@@ -54,14 +54,14 @@ void test_container_safe_delete_while_loop::addRemoveAndIterate()
 void test_container_safe_delete_while_loop::deleteAllOnFirstIteration()
 {
     ContainerSafeDeleteWhileLoop<int> cont;
-    cont.addElem(1);
-    cont.addElem(2);
-    cont.addElem(3);
+    cont.addItem(1);
+    cont.addItem(2);
+    cont.addItem(3);
     QSet<int> setloop;
     for(auto i = cont.getFirst(); i!=0; i=cont.getNext()) {
-        cont.removeElem(1);
-        cont.removeElem(2);
-        cont.removeElem(3);
+        cont.removeItem(1);
+        cont.removeItem(2);
+        cont.removeItem(3);
         setloop.insert(i);
     }
     QCOMPARE(setloop.count(), 1);
