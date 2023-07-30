@@ -1,25 +1,23 @@
 #ifndef VFATOMICCLIENTCOMPONENTSETTER_H
 #define VFATOMICCLIENTCOMPONENTSETTER_H
 
-#include "vfcmdeventitem.h"
+#include <vfcmdeventitemcomponent.h>
 #include <QObject>
 
-class VfAtomicClientComponentSetter : public QObject, public VfCmdEventItem
+class VfAtomicClientComponentSetter : public QObject, public VfCmdEventItemComponent
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfAtomicClientComponentSetter> create(int entityId, QString componentName);
-    VfAtomicClientComponentSetter(int entityId, QString componentName);
+    static std::shared_ptr<VfAtomicClientComponentSetter> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfAtomicClientComponentSetter(QString componentName, VfCmdEventItemEntityPtr entityItem);
 
     void startSetComponent(QVariant oldValue, QVariant newValue);
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
-    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
+    void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
+    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigSetFinish(bool ok);
 private:
     void emitSigSetFinish(bool ok);
-private:
-    QString m_componentName;
 };
 
 typedef std::shared_ptr<VfAtomicClientComponentSetter> VfAtomicClientComponentSetterPtr;
