@@ -43,18 +43,13 @@ void VfAtomicClientEntitySubscriber::parseIntrospectionData(EventData *evData)
         m_componentNames.append(entry.toString());
 }
 
-void VfAtomicClientEntitySubscriber::finishSubscription(bool ok)
-{
-    emit sigSubscribed(ok, getEntityId());
-}
-
 void VfAtomicClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     // we send entity data and receive introspection data
     if(evData->type() == IntrospectionData::dataType()) {
         parseIntrospectionData(evData);
-        finishSubscription(evData->isValid());
+        emitSigSubscribed(evData->isValid());
     }
 }
 
@@ -64,6 +59,11 @@ void VfAtomicClientEntitySubscriber::processErrorCommandEventData(VeinEvent::Eve
         // again: we sent entity data
         EntityData *entityData = static_cast<EntityData *>(originalEventData);
         if(entityData->eventCommand() == EntityData::Command::ECMD_SUBSCRIBE)
-            finishSubscription(false);
+            emitSigSubscribed(false);
     }
+}
+
+void VfAtomicClientEntitySubscriber::emitSigSubscribed(bool ok)
+{
+    emit sigSubscribed(ok, getEntityId());
 }

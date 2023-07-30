@@ -18,7 +18,7 @@ signals:
     void sigSubscribed(bool ok, int entityId);
 private:
     void parseIntrospectionData(VeinEvent::EventData *evData);
-    void finishSubscription(bool ok);
+    void emitSigSubscribed(bool ok);
     QStringList m_componentNames;
 };
 
