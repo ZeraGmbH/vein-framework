@@ -4,9 +4,6 @@
 #include <QJsonObject>
 #include <QJsonArray>
 
-using namespace VeinEvent;
-using namespace VeinComponent;
-
 std::shared_ptr<VfAtomicClientEntitySubscriber> VfAtomicClientEntitySubscriber::create(int entityId)
 {
     return std::make_shared<VfAtomicClientEntitySubscriber>(entityId);
@@ -16,6 +13,9 @@ VfAtomicClientEntitySubscriber::VfAtomicClientEntitySubscriber(int entityId) :
     VfCmdEventItem(entityId)
 {
 }
+
+using namespace VeinEvent;
+using namespace VeinComponent;
 
 void VfAtomicClientEntitySubscriber::sendSubscription()
 {
