@@ -33,7 +33,7 @@ void VfAtomicClientComponentGetter::processComponentEventData(const ComponentDat
         emit sigGetFinish(componentData->newValue().isValid(), componentData->newValue());
 }
 
-void VfAtomicClientComponentGetter::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+void VfAtomicClientComponentGetter::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
     if(originalComponentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
         emit sigGetFinish(false, originalComponentData->newValue());

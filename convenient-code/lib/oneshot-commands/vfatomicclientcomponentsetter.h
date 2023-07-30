@@ -13,7 +13,7 @@ public:
 
     void startSetComponent(QVariant oldValue, QVariant newValue);
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
-    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
+    void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigSetFinish(bool ok);
 private:

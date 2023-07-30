@@ -28,7 +28,7 @@ void VfComponentChangeNotifier::processComponentEventData(const ComponentData *c
     }
 }
 
-void VfComponentChangeNotifier::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+void VfComponentChangeNotifier::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
     // We are just listener. So it is not us to blame.
     Q_UNUSED(originalComponentData)

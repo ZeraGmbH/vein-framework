@@ -15,7 +15,7 @@ public:
 
     void startGetComponent();
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
-    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
+    void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigGetFinish(bool ok, QVariant value);
 };
