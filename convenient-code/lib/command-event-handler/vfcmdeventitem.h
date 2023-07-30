@@ -14,6 +14,7 @@ public:
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
     int getEntityId() const;
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
+    virtual void processErrorCommandEventData(VeinEvent::EventData *originalEventData) = 0;
 private:
     const int m_entityId;
     VeinEvent::EventSystem* m_eventSystem = nullptr;

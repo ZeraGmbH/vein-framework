@@ -10,11 +10,13 @@ class VfComponentChangeNotifier : public QObject, public VfCmdEventItemComponent
 public:
     static std::shared_ptr<VfComponentChangeNotifier> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
     VfComponentChangeNotifier(QString componentName, VfCmdEventItemEntityPtr entityItem);
+
     const QVariant &getValue() const;
+    void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
+    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigValueChanged();
 private:
-    void processComponentEventData(const VeinComponent::ComponentData *cData) override;
     QVariant m_componentValue;
 };
 

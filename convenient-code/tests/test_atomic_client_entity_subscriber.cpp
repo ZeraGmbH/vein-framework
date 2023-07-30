@@ -32,8 +32,9 @@ void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceived()
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
     QCOMPARE(arguments.at(0).toBool(), true);
-    QCOMPARE(arguments.at(1).toBool(), systemEntityId);
+    QCOMPARE(arguments.at(1).toInt(), systemEntityId);
 }
+
 
 void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntity()
 {
@@ -50,6 +51,43 @@ void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntity()
     feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1).toInt(), noneExistentEnitityId);
+}
+
+using namespace VeinEvent;
+using namespace VeinComponent;
+
+void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithOtherError()
+{
+    VeinEvent::EventHandler eventHandler;
+    VeinTestServer testServer(&eventHandler);
+    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    feedEventLoop();
+
+    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(noneExistentEnitityId);
+    cmdEventHandlerSystem.addItem(entityToSubscribe);
+    QSignalSpy spy(entityToSubscribe.get(), &VfAtomicClientEntitySubscriber::sigSubscribed);
+    entityToSubscribe->sendSubscription();
+
+    // Provoke a component error to same entity
+    ComponentData* cData = new ComponentData(noneExistentEnitityId, ComponentData::Command::CCMD_SET);
+    cData->setComponentName("foo");
+    cData->setCommand(ComponentData::Command::CCMD_SET);
+    cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+    cData->setNewValue(42);
+    cData->setOldValue(44);
+    CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
+    emit cmdEventHandlerSystem.sigSendEvent(commandEvent);
+    feedEventLoop();
+
+    QCOMPARE(spy.count(), 1);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1).toInt(), noneExistentEnitityId);
 }
 
 void test_atomic_client_entity_subscriber::introspectComponentNames()
@@ -98,7 +136,7 @@ void test_atomic_client_entity_subscriber::invalidIntrospectionData()
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
     QCOMPARE(arguments.at(0).toBool(), false);
-    QCOMPARE(arguments.at(1).toBool(), systemEntityId);
+    QCOMPARE(arguments.at(1).toInt(), systemEntityId);
 }
 
 void test_atomic_client_entity_subscriber::feedEventLoop()

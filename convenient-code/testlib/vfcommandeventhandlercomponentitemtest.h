@@ -10,10 +10,12 @@ class VfCommandEventHandlerComponentItemTest : public QObject, public VfCmdEvent
 public:
     static std::shared_ptr<VfCommandEventHandlerComponentItemTest> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
     VfCommandEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem);
+
+    void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
+    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigCommandEvenProcessed();
 private:
-    void processComponentEventData(const VeinComponent::ComponentData *cData) override;
 };
 
 typedef std::shared_ptr<VfCommandEventHandlerComponentItemTest> VfCommandEventHandlerComponentItemTestPtr;

@@ -12,11 +12,12 @@ class VfAtomicClientComponentGetter : public QObject, public VfCmdEventItemCompo
 public:
     static std::shared_ptr<VfAtomicClientComponentGetter> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
     VfAtomicClientComponentGetter(QString componentName, VfCmdEventItemEntityPtr entityItem);
+
     void startGetComponent();
+    void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
+    void processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
     void sigGetFinish(bool ok, QVariant value);
-private:
-    void processComponentEventData(const VeinComponent::ComponentData *cData) override;
 };
 
 typedef std::shared_ptr<VfAtomicClientComponentGetter> VfAtomicClientComponentGetterPtr;

@@ -10,11 +10,13 @@ class VfAtomicClientComponentSetter : public QObject, public VfCmdEventItem
 public:
     static std::shared_ptr<VfAtomicClientComponentSetter> create(int entityId, QString componentName);
     VfAtomicClientComponentSetter(int entityId, QString componentName);
+
     void startSetComponent(QVariant oldValue, QVariant newValue);
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
     void sigSetFinish(bool ok);
 private:
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void emitSigSetFinish(bool ok);
 private:
     QString m_componentName;

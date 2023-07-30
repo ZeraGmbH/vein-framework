@@ -56,6 +56,11 @@ void VfAtomicClientComponentSetter::processCommandEvent(VeinEvent::CommandEvent 
     }
 }
 
+void VfAtomicClientComponentSetter::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
+{
+
+}
+
 void VfAtomicClientComponentSetter::emitSigSetFinish(bool ok)
 {
     QMetaObject::invokeMethod(this,

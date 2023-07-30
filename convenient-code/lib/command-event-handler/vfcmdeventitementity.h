@@ -14,10 +14,12 @@ class VfCmdEventItemEntity : public VfCmdEventItem
 public:
     static std::shared_ptr<VfCmdEventItemEntity> create(int entityId);
     VfCmdEventItemEntity(int entityId);
+
     void addItem(VfCmdEventItemComponentPtr item);
     void removeItem(VfCmdEventItemComponentPtr item);
-private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
+private:
     QHash<QString, CmdEventItemEntityContainerType> m_componentItems;
 };
 

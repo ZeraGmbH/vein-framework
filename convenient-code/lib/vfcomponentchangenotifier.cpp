@@ -20,10 +20,16 @@ const QVariant &VfComponentChangeNotifier::getValue() const
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfComponentChangeNotifier::processComponentEventData(const ComponentData *cData)
+void VfComponentChangeNotifier::processComponentEventData(const ComponentData *componentData)
 {
-    if(cData->eventCommand() == ComponentData::Command::CCMD_SET) {
-        m_componentValue = cData->newValue();
+    if(componentData->eventCommand() == ComponentData::Command::CCMD_SET) {
+        m_componentValue = componentData->newValue();
         emit sigValueChanged();
     }
+}
+
+void VfComponentChangeNotifier::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+{
+    // We are just listener. So it is not us to blame.
+    Q_UNUSED(originalComponentData)
 }

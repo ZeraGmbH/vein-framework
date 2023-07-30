@@ -10,10 +10,10 @@ class VfCommandEventHandlerItemTest : public QObject, public VfCmdEventItem
 public:
     static std::shared_ptr<VfCommandEventHandlerItemTest> create(int entityId);
     VfCommandEventHandlerItemTest(int entityId);
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
     void sigCommandEvenProcessed();
-private:
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
 };
 
 typedef std::shared_ptr<VfCommandEventHandlerItemTest> VfCommandEventHandlerItemTestPtr;
