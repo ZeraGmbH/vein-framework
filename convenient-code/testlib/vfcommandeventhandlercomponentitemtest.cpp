@@ -13,7 +13,7 @@ VfCommandEventHandlerComponentItemTest::VfCommandEventHandlerComponentItemTest(Q
 void VfCommandEventHandlerComponentItemTest::processComponentEventData(const VeinComponent::ComponentData *componentData)
 {
     Q_UNUSED(componentData)
-    emit sigCommandEvenProcessed();
+    emit sigCommandEventReceived();
 }
 
 void VfCommandEventHandlerComponentItemTest::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)

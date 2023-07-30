@@ -13,7 +13,8 @@ public:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
-    void sigCommandEvenProcessed();
+    void sigCommandEventReceived();
+    void sigCommandErrorEventReceived();
 };
 
 typedef std::shared_ptr<VfCommandEventHandlerItemTest> VfCommandEventHandlerItemTestPtr;
