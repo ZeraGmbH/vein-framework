@@ -9,9 +9,11 @@ class VfAtomicClientEntitySubscriber : public QObject, public VfCmdEventItem
 public:
     static std::shared_ptr<VfAtomicClientEntitySubscriber> create(int entityId);
     VfAtomicClientEntitySubscriber(int entityId);
+
     void sendSubscription();
     QStringList getComponentNames();
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
     void sigSubscribed(bool ok, int entityId);
 private:

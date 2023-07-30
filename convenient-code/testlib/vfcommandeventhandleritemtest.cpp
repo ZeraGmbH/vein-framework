@@ -15,3 +15,8 @@ void VfCommandEventHandlerItemTest::processCommandEvent(VeinEvent::CommandEvent 
     Q_UNUSED(cmdEvent)
     emit sigCommandEvenProcessed();
 }
+
+void VfCommandEventHandlerItemTest::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
+{
+
+}

@@ -53,13 +53,19 @@ void VfAtomicClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent
 {
     EventData *evData = cmdEvent->eventData();
     Q_ASSERT(evData != nullptr);
-    switch(evData->type()) {
-    case IntrospectionData::dataType():
+    // we send entity data and receive introspection data
+    if(evData->type() == IntrospectionData::dataType()) {
         parseIntrospectionData(evData);
         finishSubscription(evData->isValid());
-        break;
-    case ErrorData::dataType():
-        finishSubscription(false);
-        break;
+    }
+}
+
+void VfAtomicClientEntitySubscriber::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
+{
+    if(originalEventData->type() == EntityData::dataType()) {
+        // again: we sent entity data
+        EntityData *entityData = static_cast<EntityData *>(originalEventData);
+        if(entityData->eventCommand() == EntityData::Command::ECMD_SUBSCRIBE)
+            finishSubscription(false);
     }
 }

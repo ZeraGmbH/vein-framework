@@ -27,8 +27,15 @@ void VfAtomicClientComponentGetter::startGetComponent()
     emit getEvenSystem()->sigSendEvent(cEvent);
 }
 
-void VfAtomicClientComponentGetter::processComponentEventData(const ComponentData *cData)
+void VfAtomicClientComponentGetter::processComponentEventData(const ComponentData *componentData)
 {
-    if(cData->eventCommand() == ComponentData::Command::CCMD_FETCH)
-        emit sigGetFinish(cData->newValue().isValid(), cData->newValue());
+    if(componentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
+        emit sigGetFinish(componentData->newValue().isValid(), componentData->newValue());
+}
+
+void VfAtomicClientComponentGetter::processErrorComonentEventData(const VeinComponent::ComponentData *originalComponentData)
+{
+    if(originalComponentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
+        emit sigGetFinish(false, originalComponentData->newValue());
+
 }
