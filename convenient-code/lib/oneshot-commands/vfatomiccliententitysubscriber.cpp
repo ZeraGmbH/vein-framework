@@ -1,6 +1,5 @@
 #include "vfatomiccliententitysubscriber.h"
 #include "vcmp_entitydata.h"
-#include "vcmp_errordata.h"
 #include <vcmp_introspectiondata.h>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -52,7 +51,6 @@ void VfAtomicClientEntitySubscriber::finishSubscription(bool ok)
 void VfAtomicClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
-    Q_ASSERT(evData != nullptr);
     // we send entity data and receive introspection data
     if(evData->type() == IntrospectionData::dataType()) {
         parseIntrospectionData(evData);

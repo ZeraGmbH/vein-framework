@@ -28,22 +28,18 @@ void VfCommandEventHandler::removeItem(VfCmdEventItemPtr item)
 
 void VfCommandEventHandler::processEvent(QEvent *event)
 {
-    if(event->type() == CommandEvent::eventType()) {
-        CommandEvent *cmdEvent = static_cast<CommandEvent *>(event);
-        Q_ASSERT(cmdEvent != nullptr);
-        processCommandEvent(cmdEvent);
-    }
+    if(event->type() == CommandEvent::eventType())
+        processCommandEvent(static_cast<CommandEvent *>(event));
 }
 
-void VfCommandEventHandler::processCommandEvent(
-    VeinEvent::CommandEvent *cmdEvent) {
+void VfCommandEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+{
     if(cmdEvent->eventSubtype() == m_eventSubtypeFilter) {
         VeinEvent::EventData *eventData = cmdEvent->eventData();
-        Q_ASSERT(eventData != nullptr);
         int entityId = eventData->entityId();
-        int eventDataType = eventData->type();
         auto iter = m_items.find(entityId);
         if(iter != m_items.end()) {
+            int eventDataType = eventData->type();
             if(eventDataType != ErrorData::dataType()) {
                 for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())
                     item->processCommandEvent(cmdEvent);

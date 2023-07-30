@@ -15,7 +15,7 @@ class VfCoreStackClient : public QObject
     Q_OBJECT
 public:
     VfCoreStackClient();
-    void subscribeEntity(int entityId); // yes clients use vfqml but...
+    void subscribeEntity(int entityId); // this should go once we got tasks
     VeinEvent::EventHandler eventHandler;
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
