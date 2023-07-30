@@ -1,13 +1,13 @@
-#include "vfatomicclientcomponentgetter.h"
+#include "vfatomicclientcomponentfetcher.h"
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 
-std::shared_ptr<VfAtomicClientComponentGetter> VfAtomicClientComponentGetter::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
+std::shared_ptr<VfAtomicClientComponentFetcher> VfAtomicClientComponentFetcher::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
 {
-    return std::make_shared<VfAtomicClientComponentGetter>(componentName, entityItem);
+    return std::make_shared<VfAtomicClientComponentFetcher>(componentName, entityItem);
 }
 
-VfAtomicClientComponentGetter::VfAtomicClientComponentGetter(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfAtomicClientComponentFetcher::VfAtomicClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem) :
     VfCmdEventItemComponent(componentName, entityItem)
 {
 }
@@ -15,7 +15,7 @@ VfAtomicClientComponentGetter::VfAtomicClientComponentGetter(QString componentNa
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfAtomicClientComponentGetter::startGetComponent()
+void VfAtomicClientComponentFetcher::startGetComponent()
 {
     ComponentData *cData = new ComponentData(getEntityItem()->getEntityId(), ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
@@ -25,13 +25,13 @@ void VfAtomicClientComponentGetter::startGetComponent()
     emit getEvenSystem()->sigSendEvent(cEvent);
 }
 
-void VfAtomicClientComponentGetter::processComponentEventData(const ComponentData *componentData)
+void VfAtomicClientComponentFetcher::processComponentEventData(const ComponentData *componentData)
 {
     if(componentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
         emit sigGetFinish(componentData->newValue().isValid(), componentData->newValue());
 }
 
-void VfAtomicClientComponentGetter::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
+void VfAtomicClientComponentFetcher::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)
 {
     if(originalComponentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
         emit sigGetFinish(false, originalComponentData->newValue());
