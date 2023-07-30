@@ -10,13 +10,13 @@ VfCommandEventHandler::VfCommandEventHandler(CommandEvent::EventSubtype eventSub
 
 void VfCommandEventHandler::addItem(VfCmdEventItemPtr item)
 {
-    ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
+    CommandEventHandlerContainerType &items = m_items[item->getEntityId()];
     items.addItem(item);
 }
 
 void VfCommandEventHandler::removeItem(VfCmdEventItemPtr item)
 {
-    ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr> &items = m_items[item->getEntityId()];
+    CommandEventHandlerContainerType &items = m_items[item->getEntityId()];
     items.removeItem(item);
 }
 

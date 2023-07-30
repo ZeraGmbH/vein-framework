@@ -3,7 +3,7 @@
 
 #include <unordered_set>
 
-template <class ItemType>
+template <class ItemType, class ItemContainerType>
 class ContainerSafeDeleteWhileLoop
 {
 public:
@@ -52,9 +52,9 @@ private:
         m_itemsToDeleteOnIterEnd.clear();
     }
     bool m_inIteration = false;
-    std::unordered_set<ItemType> m_items;
+    ItemContainerType m_items;
+    typename ItemContainerType::iterator m_iterActualItem = m_items.end();
     std::unordered_set<ItemType> m_itemsToDeleteOnIterEnd;
-    typename std::unordered_set<ItemType>::iterator m_iterActualItem = m_items.end();
 };
 
 #endif // CONTAINERSAFEDELETEWHILELOOP_H
