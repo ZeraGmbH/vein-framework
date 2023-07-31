@@ -22,6 +22,7 @@ target_link_libraries(VfConvenientCode
     VfEvent
     VfComponent
     VfNet2
+    Zera::zera-tasks-base
     )
 
 target_include_directories(VfConvenientCode
