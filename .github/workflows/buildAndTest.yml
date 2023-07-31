@@ -18,6 +18,13 @@ jobs:
     container:
       image: schnitzeltony/fedora-qt5:32
     steps:
+      - name: Download artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          repo: ZeraGmbH/zera-metaproject
+          name: buildroot
+          workflow: buildAndExportArtifact.yml
+          path: /github/home/install/
       - uses: actions/checkout@master
       - name: Build
         run: |
