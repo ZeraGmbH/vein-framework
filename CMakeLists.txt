@@ -23,6 +23,7 @@ pkg_check_modules(Systemd REQUIRED libsystemd)
 if(useOpenSsl)
 	find_package(OpenSSL COMPONENTS SSL Crypto REQUIRED)
 endif()
+find_package(ZenuxCore REQUIRED)
 
 enable_testing()
 # Inspired by
