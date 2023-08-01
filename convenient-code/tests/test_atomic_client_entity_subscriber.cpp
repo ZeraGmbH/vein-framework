@@ -4,6 +4,9 @@
 #include "vfcommandeventhandlersystem.h"
 #include "veintestserver.h"
 #include "ve_eventhandler.h"
+#include "vfcorestackclient.h"
+#include "vftestserverstack.h"
+#include "vtcp_workerfactorymethodstest.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -12,6 +15,7 @@ QTEST_MAIN(test_atomic_client_entity_subscriber)
 
 static constexpr int systemEntityId = 0;
 static constexpr int noneExistentEnitityId = 42;
+static constexpr int serverPort = 4242;
 
 void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceived()
 {
@@ -35,6 +39,26 @@ void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceived()
     QCOMPARE(arguments.at(1).toInt(), systemEntityId);
 }
 
+void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VfTestServerStack serverStack(serverPort);
+
+    VfCoreStackClient clientStack;
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    feedEventLoop();
+
+    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(systemEntityId);
+    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    QSignalSpy spy(entityToSubscribe.get(), &VfAtomicClientEntitySubscriber::sigSubscribed);
+    entityToSubscribe->sendSubscription();
+    feedEventLoop();
+
+    QCOMPARE(spy.count(), 1);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1).toInt(), systemEntityId);
+}
 
 void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntity()
 {
