@@ -51,6 +51,7 @@ function(SETUP_TESTS)
             VfConvenientCodeTest
             ModmanBase
             veinserver-testlib
+            Zera::zera-timers-testlib
             )
     endforeach()
 endfunction()
