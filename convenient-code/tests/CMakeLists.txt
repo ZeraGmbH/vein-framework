@@ -9,4 +9,5 @@ SETUP_TESTS(
     test_core_stack_client
     test_task_client_entity_subscribe
     test_task_client_component_fetcher
+    test_task_client_component_setter
 )
