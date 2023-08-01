@@ -1,11 +1,10 @@
 #include "test_veinnetworkstacks.h"
 #include "vf_cmd_event_handler_system.h"
 #include "vf_client_entity_subscriber.h"
-#include "ve_eventhandler.h"
+#include "vf_core_stack_client.h"
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include "vf_test_server_stack.h"
-#include "vf_test_client_stack.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -20,11 +19,9 @@ void test_veinnetworkstacks::receiveIntrospection()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
 
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    VfCoreStackClient clientStack;
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    cmdEventHandlerSystem.addItem(entityToSubscribe);
+    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
 
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);

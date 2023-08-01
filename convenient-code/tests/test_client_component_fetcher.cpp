@@ -2,7 +2,6 @@
 #include "vf_client_component_fetcher.h"
 #include "veintestserver.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_client_stack.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <QAbstractEventDispatcher>
@@ -95,17 +94,15 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
 
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
@@ -124,17 +121,15 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
 
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
     entityItem->addItem(fetcher);

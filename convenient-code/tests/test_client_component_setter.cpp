@@ -1,7 +1,7 @@
 #include "test_client_component_setter.h"
 #include "vf_client_component_setter.h"
 #include "veintestserver.h"
-#include "vf_test_client_stack.h"
+#include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <QAbstractEventDispatcher>
@@ -74,17 +74,15 @@ void test_client_component_setter::setToInvalidEntity()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
 
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(invalidId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
     entityItem->addItem(setter);
@@ -100,10 +98,8 @@ void test_client_component_setter::setvalidEntityNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
 
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
@@ -113,12 +109,12 @@ void test_client_component_setter::setvalidEntityNet()
     serverAdditionalEntity.createComponent("foo", 42);
     feedEventLoop();
 
-    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
-    clientStack.subscribeEntityId(testId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntity(systemEntityId);
+    clientStack.subscribeEntity(testId);
     feedEventLoop();
     
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
     entityItem->addItem(setter);

@@ -1,8 +1,8 @@
 #include "test_component_change_notifier.h"
 #include "vf_component_change_notifier.h"
 #include "vf_cmd_event_handler.h"
+#include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
-#include "vf_test_client_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <vcmp_componentdata.h>
 #include <QAbstractEventDispatcher>
@@ -69,10 +69,8 @@ void test_component_change_notifier::inClientServerStack()
     // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
-    VfTestClientStack clientStack;
-    VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
 
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
@@ -83,12 +81,12 @@ void test_component_change_notifier::inClientServerStack()
     feedEventLoop();
 
     // client
-    clientStack.subscribeEntityId(systemEntityId, &cmdEventHandlerSystem);
-    clientStack.subscribeEntityId(testEntityId, &cmdEventHandlerSystem);
+    clientStack.subscribeEntity(systemEntityId);
+    clientStack.subscribeEntity(testEntityId);
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
     QSignalSpy spy(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
