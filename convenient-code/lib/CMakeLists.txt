@@ -2,12 +2,14 @@ file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/tasks/*.cpp
     )
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/tasks/*.h
     )
 
 add_library(VfConvenientCode SHARED
@@ -32,6 +34,7 @@ target_include_directories(VfConvenientCode
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tasks>
     )
 
 set_target_properties(VfConvenientCode PROPERTIES VERSION ${PROJECT_VERSION})

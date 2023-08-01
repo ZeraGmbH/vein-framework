@@ -7,4 +7,5 @@ SETUP_TESTS(
     test_command_event_handler
     test_component_change_notifier
     test_core_stack_client
+    test_task_client_entity_subscribe
 )
