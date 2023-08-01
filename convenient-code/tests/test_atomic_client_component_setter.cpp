@@ -127,6 +127,7 @@ void test_atomic_client_component_setter::setvalidEntityNet()
     feedEventLoop();
 
     QCOMPARE(setterSpy.count(), 1);
+    QCOMPARE(setterSpy[0][0].toBool(), true);
 }
 
 void test_atomic_client_component_setter::feedEventLoop()
