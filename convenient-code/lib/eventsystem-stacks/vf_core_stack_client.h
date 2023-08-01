@@ -8,8 +8,7 @@
 #include <QHash>
 
 // * Minimum facade for a vein client
-// * Application should append further event systems to eventHandler
-// * Example usages are found in tests here and vf-debugger
+// * Application should APPEND further event systems to eventHandler
 class VfCoreStackClient : public QObject
 {
     Q_OBJECT
