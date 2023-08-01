@@ -19,7 +19,7 @@ public:
     VeinEvent::EventHandler eventHandler;
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    VfCommandEventHandlerSystemPtr cmdEventHandlerSystem;
 signals:
     void sigSubscribed(bool ok, int entityId);
 

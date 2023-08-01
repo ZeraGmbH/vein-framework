@@ -1,5 +1,10 @@
 #include "vfcommandeventhandlersystem.h"
 
+std::shared_ptr<VfCommandEventHandlerSystem> VfCommandEventHandlerSystem::create(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter)
+{
+    return std::make_shared<VfCommandEventHandlerSystem>(eventSubtypeFilter);
+}
+
 VfCommandEventHandlerSystem::VfCommandEventHandlerSystem(VeinEvent::CommandEvent::EventSubtype eventSubtypeFilter) :
     m_commandEventHandler(eventSubtypeFilter)
 {
