@@ -1,6 +1,6 @@
 #include "test_cmd_event_item_entity.h"
-#include "vfcommandeventhandler.h"
-#include "vfcommandeventhandlercomponentitemtest.h"
+#include "vf_cmd_event_handler.h"
+#include "vf_cmd_event_handler_component_item_test.h"
 #include <vcmp_componentdata.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -17,17 +17,17 @@ static const char* componentName2 = "bar";
 
 void test_cmd_event_item_entity::ignoreOtherComponentSameEntity()
 {
-    VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
+    VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(entitiyId1);
     commandEventHandler.addItem(entityItem);
-    VfCommandEventHandlerComponentItemTestPtr testItem = VfCommandEventHandlerComponentItemTest::create(componentName1, entityItem);
+    VfCmdEventHandlerComponentItemTestPtr testItem = VfCmdEventHandlerComponentItemTest::create(componentName1, entityItem);
     entityItem->addItem(testItem);
 
     ComponentData* cData = new ComponentData(entitiyId1);
     cData->setComponentName(componentName2);
     CommandEvent *commandNotify = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
 
-    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerComponentItemTest::sigCommandEventReceived);
+    QSignalSpy spyNotify(testItem.get(), &VfCmdEventHandlerComponentItemTest::sigCommandEventReceived);
     commandEventHandler.processEvent(commandNotify);
     QCOMPARE(spyNotify.count(), 0);
     delete commandNotify;
@@ -35,17 +35,17 @@ void test_cmd_event_item_entity::ignoreOtherComponentSameEntity()
 
 void test_cmd_event_item_entity::acceptSameComponentSameEntity()
 {
-    VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
+    VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(entitiyId1);
     commandEventHandler.addItem(entityItem);
-    VfCommandEventHandlerComponentItemTestPtr testItem = VfCommandEventHandlerComponentItemTest::create(componentName1, entityItem);
+    VfCmdEventHandlerComponentItemTestPtr testItem = VfCmdEventHandlerComponentItemTest::create(componentName1, entityItem);
     entityItem->addItem(testItem);
 
     ComponentData* cData = new ComponentData(entitiyId1);
     cData->setComponentName(componentName1);
     CommandEvent *commandNotify = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
 
-    QSignalSpy spyNotify(testItem.get(), &VfCommandEventHandlerComponentItemTest::sigCommandEventReceived);
+    QSignalSpy spyNotify(testItem.get(), &VfCmdEventHandlerComponentItemTest::sigCommandEventReceived);
     commandEventHandler.processEvent(commandNotify);
     QCOMPARE(spyNotify.count(), 1);
     delete commandNotify;
@@ -54,18 +54,18 @@ void test_cmd_event_item_entity::acceptSameComponentSameEntity()
 void test_cmd_event_item_entity::sameComponentNamesOnDifferentEntities()
 {
     const char* commonComponentName = "commonFoo";
-    VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
+    VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem1 = VfCmdEventItemEntity::create(entitiyId1);
     VfCmdEventItemEntityPtr entityItem2 = VfCmdEventItemEntity::create(entitiyId2);
     commandEventHandler.addItem(entityItem1);
     commandEventHandler.addItem(entityItem2);
-    VfCommandEventHandlerComponentItemTestPtr testItem1 = VfCommandEventHandlerComponentItemTest::create(commonComponentName, entityItem1);
-    VfCommandEventHandlerComponentItemTestPtr testItem2 = VfCommandEventHandlerComponentItemTest::create(commonComponentName, entityItem2);
+    VfCmdEventHandlerComponentItemTestPtr testItem1 = VfCmdEventHandlerComponentItemTest::create(commonComponentName, entityItem1);
+    VfCmdEventHandlerComponentItemTestPtr testItem2 = VfCmdEventHandlerComponentItemTest::create(commonComponentName, entityItem2);
     entityItem1->addItem(testItem1);
     entityItem2->addItem(testItem2);
 
-    QSignalSpy spyNotify1(testItem1.get(), &VfCommandEventHandlerComponentItemTest::sigCommandEventReceived);
-    QSignalSpy spyNotify2(testItem2.get(), &VfCommandEventHandlerComponentItemTest::sigCommandEventReceived);
+    QSignalSpy spyNotify1(testItem1.get(), &VfCmdEventHandlerComponentItemTest::sigCommandEventReceived);
+    QSignalSpy spyNotify2(testItem2.get(), &VfCmdEventHandlerComponentItemTest::sigCommandEventReceived);
 
     ComponentData* cData1 = new ComponentData(entitiyId1);
     cData1->setComponentName(commonComponentName);

@@ -1,14 +1,18 @@
 file(GLOB SOURCES
     ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler/*.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/commands/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/eventsystem-stacks/*.cpp
+    ${CMAKE_CURRENT_SOURCE_DIR}/notifier/*.cpp
     ${CMAKE_CURRENT_SOURCE_DIR}/tasks/*.cpp
     )
 
 file(GLOB HEADER
     ${CMAKE_CURRENT_SOURCE_DIR}/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler/*.h
-    ${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/commands/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/eventsystem-stacks/*.h
+    ${CMAKE_CURRENT_SOURCE_DIR}/notifier/*.h
     ${CMAKE_CURRENT_SOURCE_DIR}/tasks/*.h
     )
 
@@ -33,7 +37,9 @@ target_include_directories(VfConvenientCode
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/command-event-handler>
-    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/oneshot-commands>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/commands>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/eventsystem-stacks>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/notifier>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/tasks>
     )
 

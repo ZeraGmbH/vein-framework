@@ -1,11 +1,11 @@
 #include "test_veinnetworkstacks.h"
-#include "vfcommandeventhandlersystem.h"
-#include "vfatomiccliententitysubscriber.h"
+#include "vf_cmd_event_handler_system.h"
+#include "vf_client_entity_subscriber.h"
 #include "ve_eventhandler.h"
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include "vftestserverstack.h"
-#include "vftestclientstack.h"
+#include "vf_test_server_stack.h"
+#include "vf_test_client_stack.h"
 #include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
@@ -21,13 +21,13 @@ void test_veinnetworkstacks::receiveIntrospection()
     VfTestServerStack serverStack(serverPort);
 
     VfTestClientStack clientStack;
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    VfCmdEventHandlerSystem cmdEventHandlerSystem;
     clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(systemEntityId);
+    VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
 
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    QSignalSpy spy(entityToSubscribe.get(), &VfAtomicClientEntitySubscriber::sigSubscribed);
+    QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     bool clientConnected = false;
     // check event loop fired: connect after connect
     QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {

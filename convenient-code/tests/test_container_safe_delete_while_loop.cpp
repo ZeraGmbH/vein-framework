@@ -1,5 +1,5 @@
 #include "test_container_safe_delete_while_loop.h"
-#include "containersafedeletewhileloop.h"
+#include "container_safe_delete_while_loop.h"
 #include <set>
 #include <QTest>
 
