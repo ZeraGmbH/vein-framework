@@ -60,6 +60,33 @@ void test_atomic_client_entity_subscriber::intropectSystemEntitySignalReceivedNe
     QCOMPARE(arguments.at(1).toInt(), systemEntityId);
 }
 
+void test_atomic_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VfTestServerStack serverStack(serverPort);
+
+    VfCoreStackClient clientStack;
+    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    feedEventLoop();
+
+    VfAtomicClientEntitySubscriberPtr entityToSubscribe = VfAtomicClientEntitySubscriber::create(systemEntityId);
+    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    QSignalSpy spy(entityToSubscribe.get(), &VfAtomicClientEntitySubscriber::sigSubscribed);
+    entityToSubscribe->sendSubscription();
+    entityToSubscribe->sendSubscription();
+    feedEventLoop();
+
+    // Just for the record:
+    // vfnet2 seems not to add additional peer data for multile subscriptions
+    QCOMPARE(spy.count(), 2);
+    QList<QVariant> arguments = spy[0];
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1).toInt(), systemEntityId);
+    arguments = spy[1];
+    QCOMPARE(arguments.at(0).toBool(), true);
+    QCOMPARE(arguments.at(1).toInt(), systemEntityId);
+}
+
 void test_atomic_client_entity_subscriber::trySubscribeOnNonExistantEntity()
 {
     VeinEvent::EventHandler eventHandler;
