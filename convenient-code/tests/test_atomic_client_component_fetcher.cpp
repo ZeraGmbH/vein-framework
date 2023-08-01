@@ -1,6 +1,7 @@
 #include "test_atomic_client_component_fetcher.h"
 #include "vfatomicclientcomponentfetcher.h"
 #include "veintestserver.h"
+#include "vfcorestackclient.h"
 #include "vftestclientstack.h"
 #include "vftestserverstack.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -73,14 +74,12 @@ void test_atomic_client_component_fetcher::noGetFromUnsubscribedEntityValidCompo
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
 
-    VfTestClientStack clientStack;
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
-    clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
-    cmdEventHandlerSystem.addItem(entityItem);
+    clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfAtomicClientComponentFetcherPtr fetcher = VfAtomicClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
