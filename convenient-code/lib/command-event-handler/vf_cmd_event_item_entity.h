@@ -4,11 +4,11 @@
 #include "vf_cmd_event_item.h"
 #include "container_safe_delete_while_loop.h"
 
-class VfCmdEventItemComponent;
+class VfCmdEventItemComponent; // forward / repeat typedef to avoid circular include
 typedef std::shared_ptr<VfCmdEventItemComponent> VfCmdEventItemComponentPtr;
-typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemComponentPtr, std::unordered_set<VfCmdEventItemComponentPtr>> CmdEventItemEntityContainerType;
 
 
+// Receive command events and distribute component event data to VfCmdEventItemComponent objects
 class VfCmdEventItemEntity : public VfCmdEventItem
 {
 public:
@@ -20,6 +20,7 @@ public:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 private:
+    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemComponentPtr, std::unordered_set<VfCmdEventItemComponentPtr>> CmdEventItemEntityContainerType;
     QHash<QString, CmdEventItemEntityContainerType> m_componentItems;
 };
 

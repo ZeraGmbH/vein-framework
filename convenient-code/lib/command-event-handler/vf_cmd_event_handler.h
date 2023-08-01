@@ -5,8 +5,8 @@
 #include "container_safe_delete_while_loop.h"
 #include <QHash>
 
-typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr, std::unordered_set<VfCmdEventItemPtr>> CommandEventHandlerContainerType;
-
+// * Distribute command events to VfCmdEventItem objects
+// * EventSystem VfCmdEventHandlerSystem has a VfCmdEventHandler
 class VfCmdEventHandler
 {
 public:
@@ -17,6 +17,7 @@ public:
     void removeItem(VfCmdEventItemPtr item);
     void processEvent(QEvent *event);
 private:
+    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr, std::unordered_set<VfCmdEventItemPtr>> CommandEventHandlerContainerType;
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
     void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, CommandEventHandlerContainerType>::iterator iter);
     QHash<int, CommandEventHandlerContainerType> m_items;
