@@ -9,6 +9,7 @@ class test_atomic_client_entity_subscriber : public QObject
 private slots:
     void intropectSystemEntitySignalReceived();
     void intropectSystemEntitySignalReceivedNetwork();
+    void intropectSystemEntityTwiceNetwork();
     void trySubscribeOnNonExistantEntity();
     void trySubscribeOnNonExistantEntityTogetherwithOtherError();
     void introspectComponentNames();
