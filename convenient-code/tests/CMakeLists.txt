@@ -3,6 +3,7 @@ SETUP_TESTS(
     test_atomic_client_entity_subscriber
     test_atomic_client_component_fetcher
     test_atomic_client_component_setter
+    test_atomic_client_entity_unsubscriber
     test_cmd_event_item_entity
     test_command_event_handler
     test_component_change_notifier
