@@ -1,11 +1,11 @@
 SETUP_TESTS(
     test_container_safe_delete_while_loop
-    test_atomic_client_entity_subscriber
-    test_atomic_client_component_fetcher
-    test_atomic_client_component_setter
-    test_atomic_client_entity_unsubscriber
+    test_client_entity_subscriber
+    test_client_component_fetcher
+    test_client_component_setter
+    test_client_entity_unsubscriber
     test_cmd_event_item_entity
-    test_command_event_handler
+    test_cmd_event_handler
     test_component_change_notifier
     test_core_stack_client
     test_task_client_entity_subscribe

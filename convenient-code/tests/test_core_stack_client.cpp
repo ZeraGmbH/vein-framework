@@ -1,6 +1,6 @@
 #include "test_core_stack_client.h"
-#include "vfcorestackclient.h"
-#include "vftestserverstack.h"
+#include "vf_core_stack_client.h"
+#include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <QSignalSpy>
 #include <QTest>

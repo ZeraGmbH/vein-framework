@@ -1,8 +1,8 @@
 #include "test_component_change_notifier.h"
-#include "vfcomponentchangenotifier.h"
-#include "vfcommandeventhandler.h"
-#include "vftestserverstack.h"
-#include "vftestclientstack.h"
+#include "vf_component_change_notifier.h"
+#include "vf_cmd_event_handler.h"
+#include "vf_test_server_stack.h"
+#include "vf_test_client_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <vcmp_componentdata.h>
 #include <QAbstractEventDispatcher>
@@ -21,7 +21,7 @@ static constexpr int serverPort = 4242;
 
 void test_component_change_notifier::ignoreOtherCommandsThanSet()
 {
-    VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
+    VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     commandEventHandler.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
@@ -48,7 +48,7 @@ void test_component_change_notifier::ignoreOtherCommandsThanSet()
 
 void test_component_change_notifier::notifySet()
 {
-    VfCommandEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
+    VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
     VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
     commandEventHandler.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
@@ -70,7 +70,7 @@ void test_component_change_notifier::inClientServerStack()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     VfTestServerStack serverStack(serverPort);
     VfTestClientStack clientStack;
-    VfCommandEventHandlerSystem cmdEventHandlerSystem;
+    VfCmdEventHandlerSystem cmdEventHandlerSystem;
     clientStack.eventHandler.addSubsystem(&cmdEventHandlerSystem);
 
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
