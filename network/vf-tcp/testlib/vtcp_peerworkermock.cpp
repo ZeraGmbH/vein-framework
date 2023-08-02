@@ -7,19 +7,25 @@ namespace VeinTcp
 
 // client
 TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, secret) :
-    m_myPeer(peer),
     m_bAmClientPeer(true),
+    m_myPeer(peer),
     m_connectionEstablished(false)
 {
+    connect(m_myPeer, &TcpPeer::sigConnectionClosed, this, [&](TcpPeer*){
+        m_connectionEstablished = false;
+    });
 }
 
 // server
 TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret) :
-    m_myPeer(peer),
     m_bAmClientPeer(false),
+    m_myPeer(peer),
     m_otherPeer(reinterpret_cast<TcpPeer *>(socketDescriptor)),
     m_connectionEstablished(true)
 {
+    connect(m_myPeer, &TcpPeer::sigConnectionClosed, this, [&](TcpPeer*){
+        m_connectionEstablished = false;
+    });
 }
 
 // client only
@@ -36,6 +42,12 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
             emitSigConnectionEstablished();
         }
     }
+}
+
+TcpPeerWorkerMock::~TcpPeerWorkerMock()
+{
+    if(m_connectionEstablished)
+        emit m_myPeer->sigConnectionClosed(m_myPeer);
 }
 
 // client & server

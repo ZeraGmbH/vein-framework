@@ -18,16 +18,21 @@ private:
     friend class TcpWorkerFactoryMethodsTest;
 public:
     TcpServerWorkerMock(TcpServer *server, secret);
-    ~TcpServerWorkerMock();
+    virtual ~TcpServerWorkerMock();
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
     // for mock peer
     static TcpServerWorkerMock* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);
+private slots:
+    void onPeerClosed(VeinTcp::TcpPeer *peer);
 private:
+    void removePeersFromHashes(TcpPeer *peer);
     quint16 m_portListening = 0;
-    QList<TcpPeer*> m_clients;
     TcpServer *m_server = nullptr;
+    QHash<TcpPeer*, TcpPeer*> m_keyClientValueServer;
+    QHash<TcpPeer*, TcpPeer*> m_keyServerValueClient;
+
     static QHash<quint16 /* port */, TcpServerWorkerMock*> m_serverMocks;
 };
 }

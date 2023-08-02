@@ -269,6 +269,110 @@ void test_networkmock::talkBidirectionalMock()
     QCOMPARE(spyServerSend[0][1], "ServerSend");
 }
 
+void test_networkmock::clientConnectKillClientReal()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+
+    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer();
+    clientPeer->setPeerId(QUuid::createUuid());
+    VeinTcp::TcpPeer *establishedPeer = nullptr;
+    QSignalSpy spy(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
+    clientPeer->startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    connect(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
+        establishedPeer = peer;
+    });
+
+    QVERIFY(spy.wait(1000));
+    QCOMPARE(clientPeer->getPeerId(), establishedPeer->getPeerId());
+    QCOMPARE(clientPeer, establishedPeer);
+
+    // crasher test
+    delete clientPeer;
+}
+
+void test_networkmock::clientConnectKillClientMock()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VeinTcp::TcpServer server;
+    server.startServer(serverPort, false);
+
+    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer();
+    clientPeer->setPeerId(QUuid::createUuid());
+    VeinTcp::TcpPeer *establishedPeer = nullptr;
+    QSignalSpy spy(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
+    clientPeer->startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    connect(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
+        establishedPeer = peer;
+    });
+
+    QVERIFY(spy.wait(1000));
+    QCOMPARE(clientPeer->getPeerId(), establishedPeer->getPeerId());
+    QCOMPARE(clientPeer, establishedPeer);
+
+    // crasher test
+    delete clientPeer;
+}
+
+void test_networkmock::clientConnectKillServerReal()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
+    VeinTcp::TcpServer *server = new VeinTcp::TcpServer();
+    server->startServer(serverPort, false);
+
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.setPeerId(QUuid::createUuid());
+    VeinTcp::TcpPeer *establishedPeer = nullptr;
+    QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
+    clientPeer.startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    connect(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
+        establishedPeer = peer;
+    });
+
+    QVERIFY(spy.wait(1000));
+    QCOMPARE(clientPeer.getPeerId(), establishedPeer->getPeerId());
+    QCOMPARE(&clientPeer, establishedPeer);
+
+    delete server;
+
+    // check event loop fired: connect after start
+    QSignalSpy closeSpy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionClosed);
+    QVERIFY(closeSpy.wait(1000));
+    QCOMPARE(closeSpy.count(), 1);
+}
+
+void test_networkmock::clientConnectKillServerMock()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+    VeinTcp::TcpServer *server = new VeinTcp::TcpServer();
+    server->startServer(serverPort, false);
+
+    VeinTcp::TcpPeer clientPeer;
+    clientPeer.setPeerId(QUuid::createUuid());
+    VeinTcp::TcpPeer *establishedPeer = nullptr;
+    QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
+    clientPeer.startConnection("localhost", serverPort);
+    // check event loop fired: connect after start
+    connect(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, [&](VeinTcp::TcpPeer *peer){
+        establishedPeer = peer;
+    });
+
+    QVERIFY(spy.wait(1000));
+    QCOMPARE(clientPeer.getPeerId(), establishedPeer->getPeerId());
+    QCOMPARE(&clientPeer, establishedPeer);
+
+    delete server;
+
+    // check event loop fired: connect after start
+    QSignalSpy closeSpy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionClosed);
+    QVERIFY(closeSpy.wait(1000));
+    QCOMPARE(closeSpy.count(), 1);
+}
+
 void test_networkmock::cleanup()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
