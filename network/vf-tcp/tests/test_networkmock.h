@@ -7,6 +7,13 @@ class test_networkmock : public QObject
 {
     Q_OBJECT
 private slots:
+
+    void clientConnectKillClientReal();
+    void clientConnectKillClientMock();
+
+    void clientConnectKillServerReal();
+    void clientConnectKillServerMock();
+
     void failPeerConnectNoServerReal();
     void failPeerConnectNoServerMock();
 
