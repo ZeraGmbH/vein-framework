@@ -28,10 +28,9 @@ private:
     void emitSigConnectionEstablished();
     void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void emitSigSocketError(QAbstractSocket::SocketError error);
-    TcpPeer *m_peer = nullptr;
     bool m_bAmClientPeer;
-    TcpPeer* m_serverPeer = nullptr;
-    TcpPeer* m_clientPeer = nullptr;
+    TcpPeer *m_myPeer = nullptr;
+    TcpPeer *m_otherPeer = nullptr;
     bool m_connectionEstablished = false;
 };
 }

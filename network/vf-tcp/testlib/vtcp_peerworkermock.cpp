@@ -7,7 +7,7 @@ namespace VeinTcp
 
 // client
 TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, secret) :
-    m_peer(peer),
+    m_myPeer(peer),
     m_bAmClientPeer(true),
     m_connectionEstablished(false)
 {
@@ -15,9 +15,9 @@ TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, secret) :
 
 // server
 TcpPeerWorkerMock::TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret) :
-    m_peer(peer),
+    m_myPeer(peer),
     m_bAmClientPeer(false),
-    m_clientPeer(reinterpret_cast<TcpPeer *>(socketDescriptor)),
+    m_otherPeer(reinterpret_cast<TcpPeer *>(socketDescriptor)),
     m_connectionEstablished(true)
 {
 }
@@ -32,7 +32,7 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
         if(!serverMock)
             emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
         else {
-            m_serverPeer = serverMock->emitSigClientConnected(m_peer);
+            m_otherPeer = serverMock->emitSigClientConnected(m_myPeer);
             emitSigConnectionEstablished();
         }
     }
@@ -43,18 +43,15 @@ void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
     TcpPeerWorkerMock* const_this = const_cast<TcpPeerWorkerMock*>(this);
-    if(m_bAmClientPeer)
-        const_this->emitMessageReceived(m_serverPeer, byteArray);
-    else
-        const_this->emitMessageReceived(m_clientPeer, byteArray);
+    const_this->emitMessageReceived(m_otherPeer, byteArray);
 }
 
 void TcpPeerWorkerMock::emitSigSocketError(QAbstractSocket::SocketError error)
 {
-    QMetaObject::invokeMethod(m_peer,
+    QMetaObject::invokeMethod(m_myPeer,
                               "sigSocketError",
                               Qt::QueuedConnection,
-                              Q_ARG(VeinTcp::TcpPeer*, m_peer),
+                              Q_ARG(VeinTcp::TcpPeer*, m_myPeer),
                               Q_ARG(QAbstractSocket::SocketError, error));
 }
 
@@ -68,7 +65,7 @@ void TcpPeerWorkerMock::emitSigConnectionEstablished()
 void TcpPeerWorkerMock::doEmitSigConnectionEstablished()
 {
     m_connectionEstablished = true;
-    emit m_peer->sigConnectionEstablished(m_peer);
+    emit m_myPeer->sigConnectionEstablished(m_myPeer);
 }
 
 // client & server
