@@ -15,6 +15,7 @@ void TcpWorkerFactoryMethodsTest::enableRealNetwork()
 
 void TcpWorkerFactoryMethodsTest::enableMockNetwork()
 {
+    TcpServerWorkerMock::cleanupServerMocks();
     m_createFunctionPeer =
         [](TcpPeer *peer) {
             return std::make_unique<TcpPeerWorkerMock>(peer, TcpPeerWorkerMock::secret());
