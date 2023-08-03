@@ -19,11 +19,14 @@ private:
 public:
     TcpServerWorkerMock(TcpServer *server, secret);
     virtual ~TcpServerWorkerMock();
+
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
     // for mock peer
     static TcpServerWorkerMock* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);
+    // for TcpWorkerFactoryMethodsTest
+    static void cleanupServerMocks();
 private slots:
     void onPeerClosed(VeinTcp::TcpPeer *peer);
 private:
