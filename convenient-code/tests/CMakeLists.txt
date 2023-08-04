@@ -11,4 +11,5 @@ SETUP_TESTS(
     test_task_client_entity_subscribe
     test_task_client_component_fetcher
     test_task_client_component_setter
+    test_task_simple_vein_getter
 )
