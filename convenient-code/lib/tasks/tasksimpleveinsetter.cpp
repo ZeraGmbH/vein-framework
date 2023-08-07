@@ -3,10 +3,10 @@
 #include "task_client_component_setter.h"
 #include "task_client_component_fetcher.h"
 
-std::shared_ptr<TaskSimpleVeinSetter> TaskSimpleVeinSetter::create(int entityId, QString componentName, QVariant newValue,
+std::unique_ptr<TaskSimpleVeinSetter> TaskSimpleVeinSetter::create(int entityId, QString componentName, QVariant newValue,
                                                                    VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
-    return std::make_shared<TaskSimpleVeinSetter>(entityId, componentName, newValue, cmdEventHandlerSystem, timeout);
+    return std::make_unique<TaskSimpleVeinSetter>(entityId, componentName, newValue, cmdEventHandlerSystem, timeout);
 }
 
 TaskSimpleVeinSetter::TaskSimpleVeinSetter(int entityId, QString componentName, QVariant newValue,
