@@ -10,7 +10,7 @@ class TaskSimpleVeinSetter : public TaskTemplate
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<TaskSimpleVeinSetter> create(int entityId, QString componentName, QVariant newValue,
+    static std::shared_ptr<TaskSimpleVeinSetter> create(int entityId, QString componentName, QVariant newValue,
                                                  VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
     TaskSimpleVeinSetter(int entityId, QString componentName, QVariant newValue,
                          VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
@@ -23,5 +23,5 @@ private:
     TaskContainerSequence m_task;
 };
 
-typedef std::unique_ptr<TaskSimpleVeinSetter> TaskSimpleVeinSetterPtr;
+typedef std::shared_ptr<TaskSimpleVeinSetter> TaskSimpleVeinSetterPtr;
 #endif // TASKSIMPLEVEINSETTER_H
