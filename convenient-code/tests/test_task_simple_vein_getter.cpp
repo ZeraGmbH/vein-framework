@@ -31,7 +31,7 @@ void test_task_simple_vein_getter::getValid()
 
     feedEventLoop();
 
-    std::unique_ptr<TaskSimpleVeinGetter> task = TaskSimpleVeinGetter::create(systemEntityId, "EntityName",
+    TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "EntityName",
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
     bool receivedOk = false;
     int timeout=0;
@@ -57,7 +57,7 @@ void test_task_simple_vein_getter::getInvalid()
 
     feedEventLoop();
 
-    std::unique_ptr<TaskSimpleVeinGetter> task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
+    TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
     QSignalSpy spy(task.get(), &TaskTemplate::sigFinish);
     task->start();
@@ -70,7 +70,7 @@ void test_task_simple_vein_getter::getInvalid()
 void test_task_simple_vein_getter::getTimeout()
 {
     VfCmdEventHandlerSystemPtr cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
-    std::unique_ptr<TaskSimpleVeinGetter> task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
+    TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
                                                                               cmdEventHandlerSystem, stdTimeout);
     bool receivedOk = true;
     int timeout=0;
