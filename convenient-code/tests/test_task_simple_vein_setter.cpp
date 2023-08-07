@@ -43,7 +43,7 @@ void test_task_simple_vein_setter::setValid()
     serverAdditionalEntity.createComponent("foo", 42);
     feedEventLoop();
 
-    std::unique_ptr<TaskSimpleVeinSetter> taskSet = TaskSimpleVeinSetter::create(testId, "foo", 4711,
+    TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "foo", 4711,
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
     bool receivedOk = false;
     int timeout=0;
@@ -89,7 +89,7 @@ void test_task_simple_vein_setter::setInvalid()
     serverAdditionalEntity.createComponent("foo", 42);
     feedEventLoop();
 
-    std::unique_ptr<TaskSimpleVeinSetter> taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
+    TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
                                                                                  clientStack.cmdEventHandlerSystem, stdTimeout);
     QSignalSpy spy(taskSet.get(), &TaskTemplate::sigFinish);
     taskSet->start();
@@ -102,7 +102,7 @@ void test_task_simple_vein_setter::setInvalid()
 void test_task_simple_vein_setter::setTimeout()
 {
     VfCmdEventHandlerSystemPtr cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
-    std::unique_ptr<TaskSimpleVeinSetter> taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
+    TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
                                                                                  cmdEventHandlerSystem, stdTimeout);
     bool receivedOk = true;
     int timeout=0;
