@@ -58,7 +58,7 @@ void test_task_simple_vein_setter::setValid()
     QVERIFY(receivedOk);
 
 
-    std::unique_ptr<TaskSimpleVeinGetter> taskGet = TaskSimpleVeinGetter::create(testId, "foo",
+    TaskSimpleVeinGetterPtr taskGet = TaskSimpleVeinGetter::create(testId, "foo",
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
     receivedOk = false;
     timeout=0;

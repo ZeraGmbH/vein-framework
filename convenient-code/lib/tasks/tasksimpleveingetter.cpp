@@ -2,10 +2,10 @@
 #include "task_client_entity_subscribe.h"
 #include "task_client_component_fetcher.h"
 
-std::unique_ptr<TaskSimpleVeinGetter> TaskSimpleVeinGetter::create(int entityId, QString componentName,
+std::shared_ptr<TaskSimpleVeinGetter> TaskSimpleVeinGetter::create(int entityId, QString componentName,
                                                                    VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
-    return std::make_unique<TaskSimpleVeinGetter>(entityId, componentName, cmdEventHandlerSystem, timeout);
+    return std::make_shared<TaskSimpleVeinGetter>(entityId, componentName, cmdEventHandlerSystem, timeout);
 }
 
 TaskSimpleVeinGetter::TaskSimpleVeinGetter(int entityId, QString componentName,

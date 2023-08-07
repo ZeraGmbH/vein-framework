@@ -10,7 +10,7 @@ class TaskSimpleVeinGetter : public TaskTemplate
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<TaskSimpleVeinGetter> create(int entityId, QString componentName, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
+    static std::shared_ptr<TaskSimpleVeinGetter> create(int entityId, QString componentName, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
     TaskSimpleVeinGetter(int entityId, QString componentName, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
     virtual ~TaskSimpleVeinGetter();
     QVariant getValue();
@@ -22,5 +22,5 @@ private:
     TaskContainerSequence m_task;
 };
 
-typedef std::unique_ptr<TaskSimpleVeinGetter> TaskSimpleVeinGetterPtr;
+typedef std::shared_ptr<TaskSimpleVeinGetter> TaskSimpleVeinGetterPtr;
 #endif // TASKSIMPLEVEINGETTER_H
