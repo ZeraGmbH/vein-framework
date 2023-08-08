@@ -20,7 +20,8 @@ private:
     std::shared_ptr<QVariant> m_oldValue;
     VfCmdEventItemEntityPtr m_entityItem;
     VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
-    TaskContainerSequence m_task;
+    TaskContainerSequence m_taskGet;
+    TaskContainerSequence m_taskSet;
 };
 
 typedef std::unique_ptr<TaskSimpleVeinSetter> TaskSimpleVeinSetterPtr;

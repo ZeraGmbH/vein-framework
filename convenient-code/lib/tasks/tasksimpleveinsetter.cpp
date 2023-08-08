@@ -17,16 +17,19 @@ TaskSimpleVeinSetter::TaskSimpleVeinSetter(int entityId, QString componentName, 
 {
     std::shared_ptr<QStringList> componentList = std::make_shared<QStringList>();
     m_cmdEventHandlerSystem->addItem(m_entityItem);
-    m_task.addSub(TaskClientEntitySubscribe::create(entityId, cmdEventHandlerSystem, componentList, timeout, [](){
+    m_taskGet.addSub(TaskClientEntitySubscribe::create(entityId, cmdEventHandlerSystem, componentList, timeout, [](){
         qWarning("Subscriber Task failed");
     }));
-    m_task.addSub(TaskClientComponentFetcher::create(componentName, m_entityItem, m_oldValue, timeout, [](){
+    m_taskGet.addSub(TaskClientComponentFetcher::create(componentName, m_entityItem, m_oldValue, timeout, [](){
         qWarning("Getter Task failed");
     }));
-    m_task.addSub(TaskClientComponentSetter::create(m_entityItem, componentName, *m_oldValue, newValue, timeout, [](){
-        qWarning("Setter Task failed");
-    }));
-    connect(&m_task, &TaskTemplate::sigFinish, this, &TaskTemplate::sigFinish);
+    connect(&m_taskGet, &TaskTemplate::sigFinish, this, [this, componentName, newValue, timeout](bool ok, int taskId){
+        m_taskSet.addSub(TaskClientComponentSetter::create(m_entityItem, componentName, *m_oldValue, newValue, timeout, [](){
+            qWarning("Setter Task failed");
+        }));
+        connect(&m_taskSet, &TaskTemplate::sigFinish, this, &TaskSimpleVeinSetter::sigFinish);
+        m_taskSet.start();
+    });
 }
 
 TaskSimpleVeinSetter::~TaskSimpleVeinSetter()
@@ -36,6 +39,6 @@ TaskSimpleVeinSetter::~TaskSimpleVeinSetter()
 
 void TaskSimpleVeinSetter::start()
 {
-    m_task.start();
+    m_taskGet.start();
 }
 
