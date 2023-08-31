@@ -17,10 +17,10 @@ public:
     void removeItem(VfCmdEventItemPtr item);
     void processEvent(QEvent *event);
 private:
-    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr, std::unordered_set<VfCmdEventItemPtr>> CommandEventHandlerContainerType;
+    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr, std::unordered_set<VfCmdEventItemPtr>> SafeDeleteSet;
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
-    void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, CommandEventHandlerContainerType>::iterator iter);
-    QHash<int, CommandEventHandlerContainerType> m_items;
+    void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, SafeDeleteSet>::iterator iter);
+    QHash<int, SafeDeleteSet> m_items;
     const VeinEvent::CommandEvent::EventSubtype m_eventSubtypeFilter;
 };
 

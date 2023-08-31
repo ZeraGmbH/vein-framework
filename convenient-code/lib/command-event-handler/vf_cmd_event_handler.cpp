@@ -16,13 +16,13 @@ VfCmdEventHandler::VfCmdEventHandler(CommandEvent::EventSubtype eventSubtypeFilt
 
 void VfCmdEventHandler::addItem(VfCmdEventItemPtr item)
 {
-    CommandEventHandlerContainerType &items = m_items[item->getEntityId()];
+    SafeDeleteSet &items = m_items[item->getEntityId()];
     items.addItem(item);
 }
 
 void VfCmdEventHandler::removeItem(VfCmdEventItemPtr item)
 {
-    CommandEventHandlerContainerType &items = m_items[item->getEntityId()];
+    SafeDeleteSet &items = m_items[item->getEntityId()];
     items.removeItem(item);
 }
 
@@ -51,7 +51,7 @@ void VfCmdEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 }
 
 void VfCmdEventHandler::handleErrorData(VeinEvent::EventData *&eventData,
-                                            QHash<int, CommandEventHandlerContainerType>::iterator iter)
+                                        QHash<int, SafeDeleteSet>::iterator iter)
 {
     VeinComponent::ErrorData *errData = static_cast<VeinComponent::ErrorData *>(eventData);
     int originalDataType = errData->originalDataType();

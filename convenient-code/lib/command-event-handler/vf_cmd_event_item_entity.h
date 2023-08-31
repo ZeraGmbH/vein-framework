@@ -20,8 +20,8 @@ public:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 private:
-    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemComponentPtr, std::unordered_set<VfCmdEventItemComponentPtr>> CmdEventItemEntityContainerType;
-    QHash<QString, CmdEventItemEntityContainerType> m_componentItems;
+    typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemComponentPtr, std::unordered_set<VfCmdEventItemComponentPtr>> SafeDeleteSet;
+    QHash<QString, SafeDeleteSet> m_componentItems;
 };
 
 typedef std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntityPtr;
