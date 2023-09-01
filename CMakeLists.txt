@@ -25,6 +25,11 @@ if(useOpenSsl)
 endif()
 find_package(ZenuxCore REQUIRED)
 
+find_program(PLANTUML NAMES plantuml NO_CACHE)
+if(${PLANTUML} MATCHES "PLANTUML-NOTFOUND")
+    message(WARNING "Program plantuml not found. On Fedora install plantuml")
+endif()
+
 enable_testing()
 # Inspired by
 # https://github.com/KDAB/kdabtv/blob/master/Qt-Widgets-and-more/UnitTests/Tests/CMakeLists.txt
