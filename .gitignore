@@ -30,17 +30,10 @@ unittest
 *.so*
 
 # qtcreator generated files
-*.pro.user*
 *.qmlproject.user*
 *.pluginspec
 
-#ignore the doc directory
-doc/*
-doc/
 
-
-# per user project includes
-*.user.pri
 
 # ignore build output
 bin/*
