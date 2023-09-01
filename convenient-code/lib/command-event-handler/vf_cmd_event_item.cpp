@@ -5,7 +5,7 @@ VfCmdEventItem::VfCmdEventItem(int entityId) :
 {
 }
 
-VeinEvent::EventSystem *VfCmdEventItem::getEvenSystem() const
+VeinEvent::EventSystem *VfCmdEventItem::getEventSystem() const
 {
     return m_eventSystem;
 }

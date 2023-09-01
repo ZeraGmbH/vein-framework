@@ -11,7 +11,7 @@ public:
     VfCmdEventItemComponent(QString componentName, VfCmdEventItemEntityPtr entityItem);
     const QString &getComponentName() const;
     VfCmdEventItemEntityPtr getEntityItem() const;
-    VeinEvent::EventSystem* getEvenSystem() const;
+    VeinEvent::EventSystem* getEventSystem() const;
     virtual void processComponentEventData(const VeinComponent::ComponentData *componentData) = 0;
     virtual void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) = 0;
 private:

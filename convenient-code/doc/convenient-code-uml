@@ -2,63 +2,64 @@
 
 EventSystem <|-- VfCmdEventHandlerSystem
 abstract class EventSystem {
-    void sigSendEvent(QEvent *t_event)
-    {abstract} void processEvent(QEvent *t_event)
+    signal void sigSendEvent(QEvent *event)
+    {abstract} void processEvent(QEvent *event)
 }
 
 class VfCmdEventHandlerSystem {
+    void processEvent(QEvent *event)
     void addItem(VfCmdEventItemPtr item)
     void removeItem(VfCmdEventItemPtr item)
-    void processEvent(QEvent *event) override
+    -VfCmdEventHandler m_commandEventHandler
 }
 
-VfCmdEventHandlerSystem "1" --> "1" VfCmdEventHandler
-VfCmdEventHandler "0" *-- "*" VfCmdEventItem
+VfCmdEventHandlerSystem *-- "1" VfCmdEventHandler : owns >
+VfCmdEventHandler o-- "0..*" VfCmdEventItem : has shared items >
 
 class VfCmdEventHandler {
+    void processEvent(QEvent *event)
     void addItem(VfCmdEventItemPtr item)
     void removeItem(VfCmdEventItemPtr item)
-    void processEvent(QEvent *event)
     -QHash<int, SafeDeleteSet> m_items
 }
+note right of VfCmdEventHandler: Filter incoming QEvents for (notification) command-events with\nmatching entity ID and distribute them to VfCmdEventItem items
 
-VfCmdEventItem "1" -up-> "1" EventSystem:"call sigSendEvent"
+EventSystem <-- VfCmdEventItem: for emit sigSendEvent
 abstract class VfCmdEventItem {
     void setEventSystem(EventSystem* eventSystem)
     int getEntityId()
     {abstract} void processCommandEvent(CommandEvent *cmdEvent)
     {abstract} void processErrorCommandEventData(EventData *originalEventData)
-    EventSystem* m_eventSystem
+    -EventSystem* m_eventSystem
 }
 
-VfClientEntitySubscriber -up-|> VfCmdEventItem
-'VfCmdEventItem <|-- VfClientEntitySubscriber
+VfCmdEventItem <|-- VfClientEntitySubscriber
 class VfClientEntitySubscriber {
     void processCommandEvent(...)
     void processErrorCommandEventData(...)
 }
 
-VfClientEntityUnsubscriber -up-|> VfCmdEventItem
+VfCmdEventItem <|-- VfClientEntityUnsubscriber
 class VfClientEntityUnsubscriber {
     void processCommandEvent(...)
     void processErrorCommandEventData(...)
 }
 
 class VfCmdEventItemEntity {
-    void addItem(VfCmdEventItemComponentPtr item);
-    void removeItem(VfCmdEventItemComponentPtr item);
     void processCommandEvent(...)
     void processErrorCommandEventData(...)
-    -QHash<QString, SafeDeleteSet> m_componentItems;
+    void addItem(VfCmdEventItemComponentPtr item)
+    void removeItem(VfCmdEventItemComponentPtr item)
+    -QHash<QString, SafeDeleteSet> m_componentItems
 }
+note top of VfCmdEventItemEntity: Filter incoming command-events/error-event-data for component-(error-)data\nand distribute them to VfCmdEventItemComponent items
 VfCmdEventItemEntity -up-|> VfCmdEventItem
 
-VfCmdEventItemEntity "0" *-- "*" VfCmdEventItemComponent
+VfCmdEventItemEntity o-- "0..*" VfCmdEventItemComponent : has shared component items >
 abstract class VfCmdEventItemComponent {
-    VfCmdEventItemEntityPtr getEntityItem()
-    EventSystem* getEvenSystem()
     {abstract} void processComponentEventData(ComponentData *componentData)
     {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
+    VfCmdEventItemEntityPtr getEntityItem()
 }
 
 class VfClientComponentFetcher {

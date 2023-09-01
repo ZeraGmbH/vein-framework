@@ -15,7 +15,7 @@ class VfCmdEventItem
 {
 public:
     VfCmdEventItem(int entityId);
-    VeinEvent::EventSystem* getEvenSystem() const;
+    VeinEvent::EventSystem* getEventSystem() const;
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
     int getEntityId() const;
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;

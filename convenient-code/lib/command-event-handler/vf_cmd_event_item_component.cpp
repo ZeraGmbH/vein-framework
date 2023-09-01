@@ -16,7 +16,7 @@ VfCmdEventItemEntityPtr VfCmdEventItemComponent::getEntityItem() const
     return m_entityItem;
 }
 
-VeinEvent::EventSystem *VfCmdEventItemComponent::getEvenSystem() const
+VeinEvent::EventSystem *VfCmdEventItemComponent::getEventSystem() const
 {
-    return m_entityItem->getEvenSystem();
+    return m_entityItem->getEventSystem();
 }
