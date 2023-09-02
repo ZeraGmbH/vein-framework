@@ -34,11 +34,15 @@ package "Entity event filtering & distibution" <<Frame>> {
     class VfClientEntitySubscriber {
         void processCommandEvent(...)
         void processErrorCommandEventData(...)
+        void sendSubscription()
+        signal void sigSubscribed(bool ok, int entityId)
     }
 
     class VfClientEntityUnsubscriber {
         void processCommandEvent(...)
         void processErrorCommandEventData(...)
+        void sendUnsubscription()
+        signal void sigUnsubscribed(bool ok, int entityId)
     }
 
     class VfCmdEventItemEntity {
@@ -52,28 +56,33 @@ package "Entity event filtering & distibution" <<Frame>> {
 }
 
 package "Component-data filtering & distibution" <<Frame>> {
-abstract class VfComponentEventItem {
-    int getEntityId()
-    QString &getComponentName()
-    void sendEvent(QEvent *event)
-    {abstract} void processComponentEventData(ComponentData *componentData)
-    {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
-}
+    abstract class VfComponentEventItem {
+        int getEntityId()
+        QString &getComponentName()
+        void sendEvent(QEvent *event)
+        {abstract} void processComponentEventData(ComponentData *componentData)
+        {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
+    }
 
-class VfClientComponentFetcher {
-    void processComponentEventData(...)
-    void processErrorComponentEventData(...)
-}
+    class VfClientComponentFetcher {
+        void processComponentEventData(...)
+        void processErrorComponentEventData(...)
+        void startGetComponent()
+        signal void sigGetFinish(bool ok, QVariant value)
+    }
 
-class VfClientComponentSetter {
-    void processComponentEventData(...)
-    void processErrorComponentEventData(...)
-}
+    class VfClientComponentSetter {
+        void processComponentEventData(...)
+        void processErrorComponentEventData(...)
+        void startSetComponent(QVariant oldValue, QVariant newValue)
+        signal void sigSetFinish(bool ok)
+    }
 
-class VfComponentChangeNotifier {
-    void processComponentEventData(..)
-    void processErrorComponentEventData(...)
-}
+    class VfComponentChangeNotifier {
+        void processComponentEventData(..)
+        void processErrorComponentEventData(...)
+        signal void sigValueChanged()
+    }
 }
 
 EventSystem <|-- VfCmdEventHandlerSystem
