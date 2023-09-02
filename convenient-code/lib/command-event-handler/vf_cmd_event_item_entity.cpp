@@ -1,5 +1,5 @@
 #include "vf_cmd_event_item_entity.h"
-#include "vf_cmd_event_item_component.h"
+#include "vf_component_event_item.h"
 
 std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntity::create(int entityId)
 {
@@ -7,7 +7,7 @@ std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntity::create(int entityId)
 }
 
 VfCmdEventItemEntity::VfCmdEventItemEntity(int entityId) :
-    VfCmdEventItem(entityId)
+    VfEntityEventItem(entityId)
 {
 }
 

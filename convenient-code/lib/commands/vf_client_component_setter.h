@@ -1,10 +1,10 @@
 #ifndef VFATOMICCLIENTCOMPONENTSETTER_H
 #define VFATOMICCLIENTCOMPONENTSETTER_H
 
-#include <vf_cmd_event_item_component.h>
+#include <vf_component_event_item.h>
 #include <QObject>
 
-class VfClientComponentSetter : public QObject, public VfCmdEventItemComponent
+class VfClientComponentSetter : public QObject, public VfComponentEventItem
 {
     Q_OBJECT
 public:

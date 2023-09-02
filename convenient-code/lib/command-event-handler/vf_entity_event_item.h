@@ -7,14 +7,14 @@
 #include <unordered_set>
 #include <memory>
 
-class VfCmdEventItem;
-typedef std::shared_ptr<VfCmdEventItem> VfCmdEventItemPtr;
+class VfEntityEventItem;
+typedef std::shared_ptr<VfEntityEventItem> VfCmdEventItemPtr;
 
 // Base item handled by VfCmdEventHandler
-class VfCmdEventItem
+class VfEntityEventItem
 {
 public:
-    VfCmdEventItem(int entityId);
+    VfEntityEventItem(int entityId);
     VeinEvent::EventSystem* getEventSystem() const;
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
     int getEntityId() const;

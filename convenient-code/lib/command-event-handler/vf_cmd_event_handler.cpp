@@ -16,13 +16,13 @@ VfCmdEventHandler::VfCmdEventHandler(CommandEvent::EventSubtype eventSubtypeFilt
 
 void VfCmdEventHandler::addItem(VfCmdEventItemPtr item)
 {
-    SafeDeleteSet &items = m_items[item->getEntityId()];
+    SafeDeleteSet &items = m_entityItems[item->getEntityId()];
     items.addItem(item);
 }
 
 void VfCmdEventHandler::removeItem(VfCmdEventItemPtr item)
 {
-    SafeDeleteSet &items = m_items[item->getEntityId()];
+    SafeDeleteSet &items = m_entityItems[item->getEntityId()];
     items.removeItem(item);
 }
 
@@ -37,8 +37,8 @@ void VfCmdEventHandler::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
     if(cmdEvent->eventSubtype() == m_eventSubtypeFilter) {
         VeinEvent::EventData *eventData = cmdEvent->eventData();
         int entityId = eventData->entityId();
-        auto iter = m_items.find(entityId);
-        if(iter != m_items.end()) {
+        auto iter = m_entityItems.find(entityId);
+        if(iter != m_entityItems.end()) {
             int eventDataType = eventData->type();
             if(eventDataType != ErrorData::dataType()) {
                 for(auto item = iter.value().getFirst(); item!=0; item=iter.value().getNext())

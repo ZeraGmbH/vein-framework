@@ -1,9 +1,9 @@
 #ifndef VFATOMICCLIENTENTITYUNSUBSCRIBER_H
 #define VFATOMICCLIENTENTITYUNSUBSCRIBER_H
 
-#include "vf_cmd_event_item.h"
+#include "vf_entity_event_item.h"
 
-class VfClientEntityUnsubscriber : public QObject, public VfCmdEventItem
+class VfClientEntityUnsubscriber : public QObject, public VfEntityEventItem
 {
     Q_OBJECT
 public:

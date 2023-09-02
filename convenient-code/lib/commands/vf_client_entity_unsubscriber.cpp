@@ -7,7 +7,7 @@ std::shared_ptr<VfClientEntityUnsubscriber> VfClientEntityUnsubscriber::create(i
 }
 
 VfClientEntityUnsubscriber::VfClientEntityUnsubscriber(int entityId) :
-    VfCmdEventItem(entityId)
+    VfEntityEventItem(entityId)
 {
 }
 
