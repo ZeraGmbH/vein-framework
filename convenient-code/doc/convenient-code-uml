@@ -22,7 +22,7 @@ package "Entity event filtering & distibution" <<Frame>> {
         void removeItem(VfCmdEventItemPtr item)
         -QHash<int, SafeDeleteSet> m_entityItems
     }
-    note left: Filter (notification) command-events from\nincoming QEvents and distribute them to\nVfCmdEventItem items with matching entity ID
+    note right: Filter (notification) command-events from\nincoming QEvents and distribute them to\nVfCmdEventItem items with matching entity ID
 
     abstract class VfEntityEventItem {
         int getEntityId()
@@ -52,7 +52,10 @@ package "Entity event filtering & distibution" <<Frame>> {
         void removeItem(VfCmdEventItemComponentPtr item)
         -QHash<QString, SafeDeleteSet> m_componentItems
     }
-    note top of VfEntityComponentEventItem: Filter component-(error-)data from incoming\ncommand-events/error-event-data and distribute\nto VfComponentEventItem items
+    note top: Filter component-(error-)data from incoming\nand distribute to VfComponentEventItem items
+    ' force layout
+    VfClientEntitySubscriber -[hidden]> VfClientEntityUnsubscriber
+    VfClientEntityUnsubscriber -[hidden]> VfEntityComponentEventItem
 }
 
 package "Component-data filtering & distibution" <<Frame>> {
