@@ -52,7 +52,7 @@ package "Entity event filtering & distibution" <<Frame>> {
         void removeItem(VfCmdEventItemComponentPtr item)
         -QHash<QString, SafeDeleteSet> m_componentItems
     }
-    note top: Filter incoming component events / error data\nand distribute to added VfComponentEventItem\nobjects with matching component name
+    note top: Filter component (error) data from incoming\nand distribute to added VfComponentEventItem\nobjects with matching component name
     ' force layout
     VfClientEntitySubscriber -[hidden]> VfClientEntityUnsubscriber
     VfClientEntityUnsubscriber -[hidden]> VfEntityComponentEventItem
