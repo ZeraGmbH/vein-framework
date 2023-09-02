@@ -1,7 +1,7 @@
 #ifndef VFCMDEVENTITEMCOMPONENT_H
 #define VFCMDEVENTITEMCOMPONENT_H
 
-#include "vf_cmd_event_item_entity.h"
+#include "vf_entity_component_event_item.h"
 #include "vcmp_componentdata.h"
 
 class VfComponentEventItem

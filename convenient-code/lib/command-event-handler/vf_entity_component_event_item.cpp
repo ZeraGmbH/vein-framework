@@ -1,22 +1,22 @@
-#include "vf_cmd_event_item_entity.h"
+#include "vf_entity_component_event_item.h"
 #include "vf_component_event_item.h"
 
-std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntity::create(int entityId)
+std::shared_ptr<VfEntityComponentEventItem> VfEntityComponentEventItem::create(int entityId)
 {
-    return std::make_shared<VfCmdEventItemEntity>(entityId);
+    return std::make_shared<VfEntityComponentEventItem>(entityId);
 }
 
-VfCmdEventItemEntity::VfCmdEventItemEntity(int entityId) :
+VfEntityComponentEventItem::VfEntityComponentEventItem(int entityId) :
     VfEntityEventItem(entityId)
 {
 }
 
-void VfCmdEventItemEntity::addItem(VfCmdEventItemComponentPtr item)
+void VfEntityComponentEventItem::addItem(VfCmdEventItemComponentPtr item)
 {
     m_componentItems[item->getComponentName()].addItem(item);
 }
 
-void VfCmdEventItemEntity::removeItem(VfCmdEventItemComponentPtr item)
+void VfEntityComponentEventItem::removeItem(VfCmdEventItemComponentPtr item)
 {
     m_componentItems[item->getComponentName()].removeItem(item);
 }
@@ -24,7 +24,7 @@ void VfCmdEventItemEntity::removeItem(VfCmdEventItemComponentPtr item)
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfEntityComponentEventItem::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     EventData *evData = cmdEvent->eventData();
     if(evData->type() == ComponentData::dataType()) {
@@ -37,7 +37,7 @@ void VfCmdEventItemEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent
     }
 }
 
-void VfCmdEventItemEntity::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
+void VfEntityComponentEventItem::processErrorCommandEventData(VeinEvent::EventData *originalEventData)
 {
     if(originalEventData->type() == ComponentData::dataType()) {
         ComponentData *componentData = static_cast<ComponentData *>(originalEventData);

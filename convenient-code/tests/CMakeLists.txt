@@ -4,7 +4,7 @@ SETUP_TESTS(
     test_client_component_fetcher
     test_client_component_setter
     test_client_entity_unsubscriber
-    test_cmd_event_item_entity
+    test_entity_component_event_item
     test_cmd_event_handler
     test_component_change_notifier
     test_core_stack_client

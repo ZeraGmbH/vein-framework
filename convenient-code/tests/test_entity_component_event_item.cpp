@@ -1,11 +1,11 @@
-#include "test_cmd_event_item_entity.h"
+#include "test_entity_component_event_item.h"
 #include "vf_cmd_event_handler.h"
 #include "vf_cmd_event_handler_component_item_test.h"
 #include <vcmp_componentdata.h>
 #include <QSignalSpy>
 #include <QTest>
 
-QTEST_MAIN(test_cmd_event_item_entity)
+QTEST_MAIN(test_entity_component_event_item)
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -15,10 +15,10 @@ static constexpr int entitiyId2 = 1;
 static const char* componentName1 = "foo";
 static const char* componentName2 = "bar";
 
-void test_cmd_event_item_entity::ignoreOtherComponentSameEntity()
+void test_entity_component_event_item::ignoreOtherComponentSameEntity()
 {
     VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(entitiyId1);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(entitiyId1);
     commandEventHandler.addItem(entityItem);
     VfCmdEventHandlerComponentItemTestPtr testItem = VfCmdEventHandlerComponentItemTest::create(componentName1, entityItem);
     entityItem->addItem(testItem);
@@ -33,10 +33,10 @@ void test_cmd_event_item_entity::ignoreOtherComponentSameEntity()
     delete commandNotify;
 }
 
-void test_cmd_event_item_entity::acceptSameComponentSameEntity()
+void test_entity_component_event_item::acceptSameComponentSameEntity()
 {
     VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(entitiyId1);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(entitiyId1);
     commandEventHandler.addItem(entityItem);
     VfCmdEventHandlerComponentItemTestPtr testItem = VfCmdEventHandlerComponentItemTest::create(componentName1, entityItem);
     entityItem->addItem(testItem);
@@ -51,12 +51,12 @@ void test_cmd_event_item_entity::acceptSameComponentSameEntity()
     delete commandNotify;
 }
 
-void test_cmd_event_item_entity::sameComponentNamesOnDifferentEntities()
+void test_entity_component_event_item::sameComponentNamesOnDifferentEntities()
 {
     const char* commonComponentName = "commonFoo";
     VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfCmdEventItemEntityPtr entityItem1 = VfCmdEventItemEntity::create(entitiyId1);
-    VfCmdEventItemEntityPtr entityItem2 = VfCmdEventItemEntity::create(entitiyId2);
+    VfCmdEventItemEntityPtr entityItem1 = VfEntityComponentEventItem::create(entitiyId1);
+    VfCmdEventItemEntityPtr entityItem2 = VfEntityComponentEventItem::create(entitiyId2);
     commandEventHandler.addItem(entityItem1);
     commandEventHandler.addItem(entityItem2);
     VfCmdEventHandlerComponentItemTestPtr testItem1 = VfCmdEventHandlerComponentItemTest::create(commonComponentName, entityItem1);

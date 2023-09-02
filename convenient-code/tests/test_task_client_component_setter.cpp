@@ -36,7 +36,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     feedEventLoop();
 
@@ -62,7 +62,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
 void test_task_client_component_setter::timeout()
 {
     VfCoreStackClient clientStack;
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     feedEventLoop();
 

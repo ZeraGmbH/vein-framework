@@ -33,7 +33,7 @@ void test_client_component_fetcher::errorSignalFromUnsubscribedEntityInvalidComp
     QList<int> entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
@@ -53,7 +53,7 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
     ServerNoNet server;
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
@@ -77,7 +77,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
@@ -101,7 +101,7 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
     clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
@@ -128,7 +128,7 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
     clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
@@ -153,7 +153,7 @@ void test_client_component_fetcher::getTwoDifferentComponent()
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher1 = VfClientComponentFetcher::create("EntityName", entityItem);

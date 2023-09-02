@@ -32,7 +32,7 @@ void test_client_component_setter::setInvalidIsEvil()
     ServerNoNet server;
     feedEventLoop();
     
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
@@ -53,7 +53,7 @@ void test_client_component_setter::setEqualEmitsOk()
     ServerNoNet server;
     feedEventLoop();
     
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
@@ -81,7 +81,7 @@ void test_client_component_setter::setToInvalidEntity()
     clientStack.subscribeEntity(systemEntityId);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(invalidId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(invalidId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
@@ -113,7 +113,7 @@ void test_client_component_setter::setvalidEntityNet()
     clientStack.subscribeEntity(testId);
     feedEventLoop();
     
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
