@@ -1,10 +1,10 @@
 #ifndef VFCOMPONENTCHANGENOTIFIER_H
 #define VFCOMPONENTCHANGENOTIFIER_H
 
-#include <vf_cmd_event_item_component.h>
+#include <vf_component_event_item.h>
 #include <memory>
 
-class VfComponentChangeNotifier : public QObject, public VfCmdEventItemComponent
+class VfComponentChangeNotifier : public QObject, public VfComponentEventItem
 {
     Q_OBJECT
 public:

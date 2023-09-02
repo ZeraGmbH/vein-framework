@@ -10,7 +10,7 @@ std::shared_ptr<VfClientEntitySubscriber> VfClientEntitySubscriber::create(int e
 }
 
 VfClientEntitySubscriber::VfClientEntitySubscriber(int entityId) :
-    VfCmdEventItem(entityId)
+    VfEntityEventItem(entityId)
 {
 }
 

@@ -1,12 +1,12 @@
 #ifndef VFATOMICCLIENTCOMPONENTFETCHER_H
 #define VFATOMICCLIENTCOMPONENTFETCHER_H
 
-#include <vf_cmd_event_item_component.h>
+#include <vf_component_event_item.h>
 #include <memory>
 
 // * Client fetcher
 // * Servers have VfStorageHash
-class VfClientComponentFetcher : public QObject, public VfCmdEventItemComponent
+class VfClientComponentFetcher : public QObject, public VfComponentEventItem
 {
     Q_OBJECT
 public:

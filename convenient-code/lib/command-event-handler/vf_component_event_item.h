@@ -5,10 +5,10 @@
 #include "ve_eventsystem.h"
 #include "vcmp_componentdata.h"
 
-class VfCmdEventItemComponent
+class VfComponentEventItem
 {
 public:
-    VfCmdEventItemComponent(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfComponentEventItem(QString componentName, VfCmdEventItemEntityPtr entityItem);
     const QString &getComponentName() const;
     VfCmdEventItemEntityPtr getEntityItem() const;
     VeinEvent::EventSystem* getEventSystem() const;
@@ -19,6 +19,6 @@ private:
     VfCmdEventItemEntityPtr m_entityItem;
 };
 
-typedef std::shared_ptr<VfCmdEventItemComponent> VfCmdEventItemComponentPtr;
+typedef std::shared_ptr<VfComponentEventItem> VfCmdEventItemComponentPtr;
 
 #endif // VFCMDEVENTITEMCOMPONENT_H

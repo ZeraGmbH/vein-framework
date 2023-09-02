@@ -1,10 +1,10 @@
 #ifndef VFCOMMANDEVENTHANDLERITEMTEST_H
 #define VFCOMMANDEVENTHANDLERITEMTEST_H
 
-#include <vf_cmd_event_item.h>
+#include <vf_entity_event_item.h>
 #include <QObject>
 
-class VfCmdEventHandlerItemTest : public QObject, public VfCmdEventItem
+class VfCmdEventHandlerItemTest : public QObject, public VfEntityEventItem
 {
     Q_OBJECT
 public:

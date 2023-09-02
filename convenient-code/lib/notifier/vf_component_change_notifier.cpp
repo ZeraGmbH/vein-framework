@@ -8,7 +8,7 @@ std::shared_ptr<VfComponentChangeNotifier> VfComponentChangeNotifier::create(QSt
 }
 
 VfComponentChangeNotifier::VfComponentChangeNotifier(QString componentName, VfCmdEventItemEntityPtr entityItem) :
-    VfCmdEventItemComponent(componentName, entityItem)
+    VfComponentEventItem(componentName, entityItem)
 {
 }
 

@@ -8,7 +8,7 @@ std::shared_ptr<VfClientComponentFetcher> VfClientComponentFetcher::create(QStri
 }
 
 VfClientComponentFetcher::VfClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem) :
-    VfCmdEventItemComponent(componentName, entityItem)
+    VfComponentEventItem(componentName, entityItem)
 {
 }
 

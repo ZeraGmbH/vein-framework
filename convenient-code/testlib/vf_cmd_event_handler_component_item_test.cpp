@@ -6,7 +6,7 @@ std::shared_ptr<VfCmdEventHandlerComponentItemTest> VfCmdEventHandlerComponentIt
 }
 
 VfCmdEventHandlerComponentItemTest::VfCmdEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem) :
-    VfCmdEventItemComponent{componentName, entityItem}
+    VfComponentEventItem{componentName, entityItem}
 {
 }
 

@@ -6,7 +6,7 @@ std::shared_ptr<VfCmdEventHandlerItemTest> VfCmdEventHandlerItemTest::create(int
 }
 
 VfCmdEventHandlerItemTest::VfCmdEventHandlerItemTest(int entityId) :
-    VfCmdEventItem(entityId)
+    VfEntityEventItem(entityId)
 {
 }
 
