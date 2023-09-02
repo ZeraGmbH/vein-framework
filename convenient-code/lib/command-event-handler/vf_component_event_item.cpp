@@ -11,9 +11,9 @@ const QString &VfComponentEventItem::getComponentName() const
     return m_componentName;
 }
 
-VfCmdEventItemEntityPtr VfComponentEventItem::getEntityItem() const
+int VfComponentEventItem::getEntityId() const
 {
-    return m_entityItem;
+    return m_entityItem->getEntityId();
 }
 
 VeinEvent::EventSystem *VfComponentEventItem::getEventSystem() const

@@ -17,7 +17,7 @@ using namespace VeinComponent;
 
 void VfClientComponentFetcher::startGetComponent()
 {
-    ComponentData *cData = new ComponentData(getEntityItem()->getEntityId(), ComponentData::Command::CCMD_FETCH);
+    ComponentData *cData = new ComponentData(getEntityId(), ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
     cData->setComponentName(getComponentName());
