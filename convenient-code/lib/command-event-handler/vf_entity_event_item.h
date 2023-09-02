@@ -15,9 +15,9 @@ class VfEntityEventItem
 {
 public:
     VfEntityEventItem(int entityId);
-    VeinEvent::EventSystem* getEventSystem() const;
     void setEventSystem(VeinEvent::EventSystem* eventSystem);
     int getEntityId() const;
+    void sendEvent(QEvent *event) const;
     virtual void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) = 0;
     virtual void processErrorCommandEventData(VeinEvent::EventData *originalEventData) = 0;
 private:

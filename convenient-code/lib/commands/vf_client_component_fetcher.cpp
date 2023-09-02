@@ -22,7 +22,7 @@ void VfClientComponentFetcher::startGetComponent()
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
     cData->setComponentName(getComponentName());
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-    emit getEventSystem()->sigSendEvent(cEvent);
+    sendEvent(cEvent);
 }
 
 void VfClientComponentFetcher::processComponentEventData(const ComponentData *componentData)

@@ -11,12 +11,12 @@ const QString &VfComponentEventItem::getComponentName() const
     return m_componentName;
 }
 
+void VfComponentEventItem::sendEvent(QEvent *event) const
+{
+    m_entityItem->sendEvent(event);
+}
+
 int VfComponentEventItem::getEntityId() const
 {
     return m_entityItem->getEntityId();
-}
-
-VeinEvent::EventSystem *VfComponentEventItem::getEventSystem() const
-{
-    return m_entityItem->getEventSystem();
 }

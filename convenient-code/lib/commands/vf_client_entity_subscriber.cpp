@@ -25,7 +25,7 @@ void VfClientEntitySubscriber::sendSubscription()
     eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
     eData->setEventTarget(EntityData::EventTarget::ET_ALL);
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
-    emit getEventSystem()->sigSendEvent(cEvent);
+    sendEvent(cEvent);
 }
 
 QStringList VfClientEntitySubscriber::getComponentNames()

@@ -5,9 +5,9 @@ VfEntityEventItem::VfEntityEventItem(int entityId) :
 {
 }
 
-VeinEvent::EventSystem *VfEntityEventItem::getEventSystem() const
+void VfEntityEventItem::sendEvent(QEvent *event) const
 {
-    return m_eventSystem;
+    emit m_eventSystem->sigSendEvent(event);
 }
 
 void VfEntityEventItem::setEventSystem(VeinEvent::EventSystem *eventSystem)
