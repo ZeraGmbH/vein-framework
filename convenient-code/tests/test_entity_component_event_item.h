@@ -3,7 +3,7 @@
 
 #include <QObject>
 
-class test_cmd_event_item_entity : public QObject
+class test_entity_component_event_item : public QObject
 {
     Q_OBJECT
 private slots:

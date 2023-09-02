@@ -22,7 +22,7 @@ static constexpr int serverPort = 4242;
 void test_component_change_notifier::ignoreOtherCommandsThanSet()
 {
     VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     commandEventHandler.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
@@ -49,7 +49,7 @@ void test_component_change_notifier::ignoreOtherCommandsThanSet()
 void test_component_change_notifier::notifySet()
 {
     VfCmdEventHandler commandEventHandler(CommandEvent::EventSubtype::NOTIFICATION);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     commandEventHandler.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
@@ -85,7 +85,7 @@ void test_component_change_notifier::inClientServerStack()
     clientStack.subscribeEntity(testEntityId);
     feedEventLoop();
 
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(testEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);

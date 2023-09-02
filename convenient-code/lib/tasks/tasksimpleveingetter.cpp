@@ -12,7 +12,7 @@ TaskSimpleVeinGetter::TaskSimpleVeinGetter(int entityId, QString componentName,
                                            VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout):
     m_value(std::make_shared<QVariant>()),
     m_cmdEventHandlerSystem(cmdEventHandlerSystem),
-    m_entityItem(VfCmdEventItemEntity::create(entityId))
+    m_entityItem(VfEntityComponentEventItem::create(entityId))
 {
     std::shared_ptr<QStringList> componentList = std::make_shared<QStringList>();
     m_cmdEventHandlerSystem->addItem(m_entityItem);

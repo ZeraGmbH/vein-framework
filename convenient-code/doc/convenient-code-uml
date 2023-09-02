@@ -45,14 +45,14 @@ package "Entity event filtering & distibution" <<Frame>> {
         signal void sigUnsubscribed(bool ok, int entityId)
     }
 
-    class VfCmdEventItemEntity {
+    class VfEntityComponentEventItem {
         void processCommandEvent(...)
         void processErrorCommandEventData(...)
         void addItem(VfCmdEventItemComponentPtr item)
         void removeItem(VfCmdEventItemComponentPtr item)
         -QHash<QString, SafeDeleteSet> m_componentItems
     }
-    note top of VfCmdEventItemEntity: Filter component-(error-)data from incoming\ncommand-events/error-event-data and distribute\nto VfComponentEventItem items
+    note top of VfEntityComponentEventItem: Filter component-(error-)data from incoming\ncommand-events/error-event-data and distribute\nto VfComponentEventItem items
 }
 
 package "Component-data filtering & distibution" <<Frame>> {
@@ -93,8 +93,8 @@ VfCmdEventHandler o-- "0..*" VfEntityEventItem : has shared entity items >
 VfEntityEventItem <|-- VfClientEntitySubscriber
 VfEntityEventItem <|-- VfClientEntityUnsubscriber
 
-VfEntityEventItem <|-- VfCmdEventItemEntity
-VfCmdEventItemEntity o-- "0..*" VfComponentEventItem : has shared component items >
+VfEntityEventItem <|-- VfEntityComponentEventItem
+VfEntityComponentEventItem o-- "0..*" VfComponentEventItem : has shared component items >
 
 VfComponentEventItem <|-- VfClientComponentFetcher
 VfComponentEventItem <|-- VfClientComponentSetter

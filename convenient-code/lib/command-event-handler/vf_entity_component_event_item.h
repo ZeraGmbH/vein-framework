@@ -9,11 +9,11 @@ typedef std::shared_ptr<VfComponentEventItem> VfCmdEventItemComponentPtr;
 
 
 // Receive command events and distribute component event data to VfComponentEventItem objects
-class VfCmdEventItemEntity : public VfEntityEventItem
+class VfEntityComponentEventItem : public VfEntityEventItem
 {
 public:
-    static std::shared_ptr<VfCmdEventItemEntity> create(int entityId);
-    VfCmdEventItemEntity(int entityId);
+    static std::shared_ptr<VfEntityComponentEventItem> create(int entityId);
+    VfEntityComponentEventItem(int entityId);
 
     void addItem(VfCmdEventItemComponentPtr item);
     void removeItem(VfCmdEventItemComponentPtr item);
@@ -24,6 +24,6 @@ private:
     QHash<QString, SafeDeleteSet> m_componentItems;
 };
 
-typedef std::shared_ptr<VfCmdEventItemEntity> VfCmdEventItemEntityPtr;
+typedef std::shared_ptr<VfEntityComponentEventItem> VfCmdEventItemEntityPtr;
 
 #endif // VFCMDEVENTITEMENTITY_H

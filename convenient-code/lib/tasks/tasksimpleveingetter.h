@@ -3,7 +3,7 @@
 
 #include "taskcontainersequence.h"
 #include "vf_cmd_event_handler_system.h"
-#include "vf_cmd_event_item_entity.h"
+#include "vf_entity_component_event_item.h"
 #include <tasktemplate.h>
 
 class TaskSimpleVeinGetter : public TaskTemplate

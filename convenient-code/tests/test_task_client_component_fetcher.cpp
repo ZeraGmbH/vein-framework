@@ -29,7 +29,7 @@ void test_task_client_component_fetcher::fetchSubscribed()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     feedEventLoop();
 
@@ -51,7 +51,7 @@ void test_task_client_component_fetcher::fetchSubscribed()
 void test_task_client_component_fetcher::timeout()
 {
     VfCoreStackClient clientStack;
-    VfCmdEventItemEntityPtr entityItem = VfCmdEventItemEntity::create(systemEntityId);
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     feedEventLoop();
 
