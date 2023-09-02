@@ -26,8 +26,7 @@ package "Entity event filtering & distibution" <<Frame>> {
 
     abstract class VfEntityEventItem {
         int getEntityId()
-        EventSystem* getEventSystem()
-        void setEventSystem(EventSystem* eventSystem)
+        void sendEvent(QEvent *event)
         {abstract} void processCommandEvent(CommandEvent *cmdEvent)
         {abstract} void processErrorCommandEventData(EventData *originalEventData)
     }
@@ -54,11 +53,11 @@ package "Entity event filtering & distibution" <<Frame>> {
 
 package "Component-data filtering & distibution" <<Frame>> {
 abstract class VfComponentEventItem {
-    {abstract} void processComponentEventData(ComponentData *componentData)
-    {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
     int getEntityId()
     QString &getComponentName()
-    EventSystem *getEventSystem()
+    void sendEvent(QEvent *event)
+    {abstract} void processComponentEventData(ComponentData *componentData)
+    {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
 }
 
 class VfClientComponentFetcher {
@@ -81,8 +80,6 @@ EventSystem <|-- VfCmdEventHandlerSystem
 
 VfCmdEventHandlerSystem *-- "1" VfCmdEventHandler : owns >
 VfCmdEventHandler o-- "0..*" VfEntityEventItem : has shared entity items >
-
-EventSystem <-- VfEntityEventItem: emit sigSendEvent
 
 VfEntityEventItem <|-- VfClientEntitySubscriber
 VfEntityEventItem <|-- VfClientEntityUnsubscriber

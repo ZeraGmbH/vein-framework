@@ -38,7 +38,7 @@ void VfClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newV
 
         // connected client requires TRANSACTION - that is what servers listen to
         CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-        emit getEventSystem()->sigSendEvent(cEvent);
+        sendEvent(cEvent);
     }
 }
 
