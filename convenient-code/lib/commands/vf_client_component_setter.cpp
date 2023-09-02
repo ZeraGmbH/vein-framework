@@ -22,7 +22,7 @@ void VfClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newV
     else if(oldValue == newValue)
         emitSigSetFinish(true);
     else {
-        ComponentData *cData = new ComponentData(getEntityItem()->getEntityId(), ComponentData::Command::CCMD_SET);
+        ComponentData *cData = new ComponentData(getEntityId(), ComponentData::Command::CCMD_SET);
         cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
         cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         cData->setComponentName(getComponentName());

@@ -25,9 +25,9 @@ package "Entity event filtering & distibution" <<Frame>> {
     note left: Filter (notification) command-events from\nincoming QEvents and distribute them to\nVfCmdEventItem items with matching entity ID
 
     abstract class VfEntityEventItem {
+        int getEntityId()
         EventSystem* getEventSystem()
         void setEventSystem(EventSystem* eventSystem)
-        int getEntityId()
         {abstract} void processCommandEvent(CommandEvent *cmdEvent)
         {abstract} void processErrorCommandEventData(EventData *originalEventData)
     }
@@ -56,8 +56,9 @@ package "Component-data filtering & distibution" <<Frame>> {
 abstract class VfComponentEventItem {
     {abstract} void processComponentEventData(ComponentData *componentData)
     {abstract} void processErrorComponentEventData(ComponentData *originalComponentData)
-    VfCmdEventItemEntityPtr getEntityItem()
-    QString &getComponentName();
+    int getEntityId()
+    QString &getComponentName()
+    EventSystem *getEventSystem()
 }
 
 class VfClientComponentFetcher {
