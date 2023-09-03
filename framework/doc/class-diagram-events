@@ -1,0 +1,134 @@
+@startuml
+
+class QEvent {
+    void accept()
+    Type type()
+    {static} int registerEventType(int hint = -1)
+}
+note right of QEvent::registerEventType
+    Each event class statically calls registerEventType().
+    To identify event type, values for type() and
+    getEventType() / eventType() (TODO same names)
+    are compared.
+end note
+
+class NetworkStatusEvent {
+    {static} int getEventType()
+}
+
+class ProtocolEvent {
+    {static} int getEventType()
+}
+
+class CommandEvent {
+    {static} int eventType()
+    EventSubtype eventSubtype()
+    EventData *eventData()
+}
+note right of CommandEvent::eventSubtype
+    enum CommandEvent::EventSubtype:
+    * NOTIFICATION: All
+    * TRANSACTION: subscribed Client -> Server
+end note
+
+' force layout
+NetworkStatusEvent -[hidden]> ProtocolEvent
+ProtocolEvent -[hidden]> CommandEvent
+
+abstract class EventData {
+    ' attribute-like method
+    {field} int entityId()
+    {abstract} int type()
+    {abstract} bool isValid()
+    {abstract} QByteArray serialize()
+    {abstract} void deserialize(QByteArray &data)
+}
+
+class EntityData {
+    ' attribute-like method
+    {field} Command eventCommand()
+    int type()
+    bool isValid()
+    QByteArray serialize()
+    void deserialize(QByteArray &data)
+}
+note bottom
+    enum EntityData::Command:
+    * ECMD_INVALID
+    * ECMD_ADD
+    * ECMD_REMOVE
+    * ECMD_SUBSCRIBE
+    * ECMD_UNSUBSCRIBE
+end note
+
+class ComponentData {
+    ' attribute-like method
+    {field} Command eventCommand()
+    int type()
+    bool isValid()
+    QByteArray serialize()
+    void deserialize(QByteArray &data)
+}
+note bottom
+    enum ComponentData::Command:
+    * CCMD_INVALID
+    * CCMD_ADD
+    * CCMD_REMOVE
+    * CCMD_SET
+    * CCMD_FETCH
+end note
+
+class IntrospectionData {
+    int type()
+    bool isValid()
+    QByteArray serialize()
+    void deserialize(QByteArray &data)
+}
+
+class RemoteProcedureData {
+    ' attribute-like method
+    {field} Command command()
+    int type()
+    bool isValid()
+    QByteArray serialize()
+    void deserialize(QByteArray &data)
+}
+note bottom
+    enum RemoteProcedureData::Command:
+    * RPCMD_INVALID
+    * RPCMD_CALL
+    * RPCMD_REGISTER
+    * RPCMD_RESULT
+    * RPCMD_PROGRESS
+    * RPCMD_CANCELLATION
+end note
+
+class ErrorData {
+    int type()
+    bool isValid()
+    QString errorDescription()
+    int originalDataType()
+    QByteArray &originalData()
+}
+note bottom
+    ErrorData wraps arbitrary EventData.
+    Wrapped data is extracted by:
+    * create concrete EventData object
+        matching originalDataType()
+    * call deserialize(originalData())
+        on concrete object.
+end note
+
+QEvent <|-- NetworkStatusEvent
+QEvent <|-- ProtocolEvent
+QEvent <|-- CommandEvent
+
+CommandEvent *-- "1" EventData : owns >
+
+EventData <|-- EntityData
+EventData <|-- ComponentData
+EventData <|-- IntrospectionData
+EventData <|-- RemoteProcedureData
+EventData <|-- ErrorData
+
+@enduml
