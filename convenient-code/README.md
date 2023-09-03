@@ -1,2 +1,2 @@
 # Class diagram
-![Class diagram](doc/convenient-code-uml.svg)
+![Class diagram](doc/class-diagram.svg)
