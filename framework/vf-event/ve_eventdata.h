@@ -37,7 +37,7 @@ public:
 
     virtual int type() const =0;
 
-    virtual bool isValid() const;
+    virtual bool isValid() const = 0;
 
     /**
      * @brief Used to encode the class in binary information form
