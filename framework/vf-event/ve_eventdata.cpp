@@ -28,11 +28,6 @@ void EventData::setEventTarget(EventData::EventTarget t_eventTarget)
     m_eventTarget = t_eventTarget;
 }
 
-bool EventData::isValid() const
-{
-    return false;
-}
-
 int EventData::entityId() const
 {
     return m_entityId;
