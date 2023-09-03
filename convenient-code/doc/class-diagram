@@ -103,4 +103,4 @@ VfComponentEventItem <|-- VfClientComponentFetcher
 VfComponentEventItem <|-- VfClientComponentSetter
 VfComponentEventItem <|-- VfComponentChangeNotifier
 
-@endum
+@enduml
