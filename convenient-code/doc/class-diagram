@@ -15,7 +15,7 @@ package "vein-framework interface" <<Frame>> {
 }
 
 
-package "Entity event filtering & distibution" <<Frame>> {
+package "Entity operations" <<Frame>> {
     class VfCmdEventHandler {
         void processEvent(QEvent *event)
         void addItem(VfCmdEventItemPtr item)
@@ -58,7 +58,7 @@ package "Entity event filtering & distibution" <<Frame>> {
     VfClientEntityUnsubscriber -[hidden]> VfEntityComponentEventItem
 }
 
-package "Component-data filtering & distibution" <<Frame>> {
+package "Component operations" <<Frame>> {
     abstract class VfComponentEventItem {
         int getEntityId()
         QString &getComponentName()

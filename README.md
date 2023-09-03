@@ -4,7 +4,7 @@ Vein framework is an event broker system. Data transferred is structured as enti
 * Entities are identified by a system-unique integer id
 * Entities are containers for components
 * Entities should have a component 'EntityName'
-* Components are identified by a component name which should be unique within its entity
+* Components are identified by a component name which must be unique within its entity
 * Component data is of type QVariant
 
 ## Framework
