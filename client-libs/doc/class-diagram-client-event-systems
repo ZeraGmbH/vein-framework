@@ -1,0 +1,31 @@
+@startuml
+
+package "framework" <<Frame>> {
+    abstract class EventSystem {
+        signal void sigSendEvent(QEvent *event)
+        {abstract} void processEvent(QEvent *event)
+    }
+}
+
+class VeinQml {
+    ConnectionState state
+    void processEvent(...)
+
+    EntityComponentMap *getEntity(const QString &entityName)
+    bool hasEntity(const QString &entityName)
+    EntityComponentMap *getEntityById(int id)
+    QList<int> getEntityList()
+
+    {static} VeinQml *getStaticInstance()
+    {static} void setStaticInstance(VeinQml *instance)
+    void entitySubscribeById(int entityId)
+    void entityUnsubscribeById(int entityId)
+
+    signal void sigStateChanged(ConnectionState state)
+    signal sigEntityAvailable(QString entityName)
+}
+
+EventSystem <|-- VeinQml
+
+@enduml
+

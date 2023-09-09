@@ -1,0 +1,29 @@
+@startuml
+
+package "framework" <<Frame>> {
+    abstract class EventSystem {
+        signal void sigSendEvent(QEvent *event)
+        {abstract} void processEvent(QEvent *event)
+    }
+}
+
+class VfEventSystemCommandFilter {
+    void processEvent(...)
+    {abstract} void processCommandEvent(VeinEvent::CommandEvent *commandEvent)
+}
+
+class VfCppEntity {
+    void processEvent(...)
+    VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false)
+    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true)
+    void watchComponent(int entityId, const QString &componentName)
+    bool unWatchComponent(int entityId, const QString &componentName)
+    void initModule()
+    signal void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value)
+}
+
+
+EventSystem <|-- VfEventSystemCommandFilter
+EventSystem <|-- VfCppEntity
+
+@enduml
