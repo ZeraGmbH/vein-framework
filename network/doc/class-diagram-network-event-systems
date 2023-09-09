@@ -1,0 +1,30 @@
+@startuml
+
+package "framework" <<Frame>> {
+    abstract class EventSystem {
+        signal void sigSendEvent(QEvent *event)
+        {abstract} void processEvent(QEvent *event)
+    }
+}
+
+class NetworkSystem {
+    ' attribute-like methods
+    {field} OperationMode operationMode()
+    {field} void setOperationMode(const OperationMode &t_operationMode)
+    void processEvent(...)
+}
+
+class TcpSystem {
+    void processEvent(...)
+    signal void sigConnnectionEstablished(QUuid t_connectionId)
+    signal void sigClientConnected(QUuid t_connectionId)
+    signal void sigClientDisconnected(QUuid t_connectionId)
+    bool startServer(quint16 t_port, bool t_systemdSocket=true)
+    void connectToServer(const QString &t_host, quint16 t_port)
+}
+
+EventSystem <|-- NetworkSystem
+EventSystem <|-- TcpSystem
+
+@enduml
+

@@ -11,17 +11,26 @@ Vein framework is an event broker system. Data transferred is structured as enti
 ## Framework ([framework](framework))
 Framework contains all interfaces for events / event handler and storage system.<br>
 
-### Class diagram vein events:
+### Events:
 ![Class diagram events](framework/doc/class-diagram-events.svg)
+
+### Event-handler and event-systems:
+![Class diagram event-handler](framework/doc/class-diagram-event-systems.svg)
 
 ## Common convenient code ([convenient-code](convenient-code))
 Code to perform common operations in vein-framework.<br>
-### Class diagram convenient code:
+### Event handling classes:
 ![Class diagram convenient code](convenient-code/doc/class-diagram.svg)
 
 ## Client libraries ([client-libs](client-libs))
+### Event systems:
+![Client event systems](client-libs/doc/class-diagram-client-event-systems.svg)
 
 ## Server libraries ([server-libs](server-libs))
+### Event systems:
+![Server event systems](server-libs/doc/class-diagram-server-event-systems.svg)
 
 ## Network ([network](network))
+### Event systems:
+![Class diagram network systems](network/doc/class-diagram-network-event-systems.svg)
 

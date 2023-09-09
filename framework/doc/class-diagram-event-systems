@@ -1,0 +1,42 @@
+@startuml
+
+class EventHandler {
+    QList<EventSystem*> subsystems
+    void addSubsystem(EventSystem* t_subsystem)
+    void clearSubsystems()
+}
+
+abstract class EventSystem {
+    signal void sigSendEvent(QEvent *event)
+    {abstract} void processEvent(QEvent *event)
+}
+
+class IntrospectionSystem {
+    void processEvent(...)
+}
+
+class StorageSystem {
+    void processEvent(...)
+}
+
+class ModuleManagerController {
+    ' attribute-like methods
+    {field} int getEntityId()
+    {field} StorageSystem *getStorageSystem()
+    {field}void setStorage(VeinEvent::StorageSystem *t_storageSystem)
+
+    void processEvent(...)
+    signal void sigChangeSession(const QString &t_newSession)
+    signal void sigModulesPausedChanged(bool t_paused)
+    void initializeEntity(const QString &sessionPath, const QStringList &sessionList)
+    void setModulesPaused(bool t_paused)
+}
+
+EventHandler *-- "0..*" EventSystem : has list of >
+
+
+EventSystem <|-- IntrospectionSystem
+EventSystem <|-- StorageSystem
+EventSystem <|-- ModuleManagerController
+
+@enduml
