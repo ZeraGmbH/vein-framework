@@ -33,7 +33,7 @@ class ModuleManagerController {
     void setModulesPaused(bool t_paused)
 }
 
-EventHandler *-- "0..*" EventSystem : forwards events to >
+EventHandler o-- "0..*" EventSystem : forwards events to >
 
 
 EventSystem <|-- IntrospectionSystem
