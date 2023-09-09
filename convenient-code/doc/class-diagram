@@ -1,17 +1,15 @@
 @startuml
 
-package "vein-framework interface" <<Frame>> {
-    abstract class EventSystem {
-        signal void sigSendEvent(QEvent *event)
-        {abstract} void processEvent(QEvent *event)
-    }
+abstract class EventSystem {
+    signal void sigSendEvent(QEvent *event)
+    {abstract} void processEvent(QEvent *event)
+}
 
-    class VfCmdEventHandlerSystem {
-        void processEvent(...)
-        void addItem(VfCmdEventItemPtr item)
-        void removeItem(VfCmdEventItemPtr item)
-        -VfCmdEventHandler m_commandEventHandler
-    }
+class VfCmdEventHandlerSystem {
+    void processEvent(...)
+    void addItem(VfCmdEventItemPtr item)
+    void removeItem(VfCmdEventItemPtr item)
+    -VfCmdEventHandler m_commandEventHandler
 }
 
 
@@ -22,7 +20,11 @@ package "Entity operations" <<Frame>> {
         void removeItem(VfCmdEventItemPtr item)
         -QHash<int, SafeDeleteSet> m_entityItems
     }
-    note right: Filter (notification) command-events from\nincoming QEvents and distribute them to added\nVfCmdEventItem objects with matching entity ID
+    note right
+    Filter (notification) command-events from
+    incoming QEvents and distribute them to added
+    VfEntityEventItem objects with matching entity ID
+    end note
 
     abstract class VfEntityEventItem {
         int getEntityId()
@@ -52,7 +54,12 @@ package "Entity operations" <<Frame>> {
         void removeItem(VfCmdEventItemComponentPtr item)
         -QHash<QString, SafeDeleteSet> m_componentItems
     }
-    note top: Filter component (error) data from incoming\nand distribute to added VfComponentEventItem\nobjects with matching component name
+    note top
+    Filter component (error) data from incoming
+    and distribute to added VfComponentEventItem
+    objects with matching component name
+    end note
+
     ' force layout
     VfClientEntitySubscriber -[hidden]> VfClientEntityUnsubscriber
     VfClientEntityUnsubscriber -[hidden]> VfEntityComponentEventItem

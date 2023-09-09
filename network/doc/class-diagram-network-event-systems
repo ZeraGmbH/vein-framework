@@ -1,10 +1,8 @@
 @startuml
 
-package "framework" <<Frame>> {
-    abstract class EventSystem {
-        signal void sigSendEvent(QEvent *event)
-        {abstract} void processEvent(QEvent *event)
-    }
+abstract class EventSystem {
+    signal void sigSendEvent(QEvent *event)
+    {abstract} void processEvent(QEvent *event)
 }
 
 class NetworkSystem {

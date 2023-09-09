@@ -2,6 +2,7 @@
 
 class EventHandler {
     QList<EventSystem*> subsystems
+    #void customEvent(QEvent *t_event) override
     void addSubsystem(EventSystem* t_subsystem)
     void clearSubsystems()
 }
@@ -32,7 +33,7 @@ class ModuleManagerController {
     void setModulesPaused(bool t_paused)
 }
 
-EventHandler *-- "0..*" EventSystem : has list of >
+EventHandler *-- "0..*" EventSystem : forwards events to >
 
 
 EventSystem <|-- IntrospectionSystem
