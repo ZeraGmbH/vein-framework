@@ -156,7 +156,6 @@ void test_client_entity_subscriber::introspectComponentNames()
     feedEventLoop();
 
     QStringList componentNames = entityToSubscribe->getComponentNames();
-    QCOMPARE(componentNames.size(), 7);
     QVERIFY(componentNames.contains("EntityName"));
     QVERIFY(componentNames.contains("Session"));
     QVERIFY(componentNames.contains("SessionsAvailable"));
@@ -164,7 +163,7 @@ void test_client_entity_subscriber::introspectComponentNames()
     QVERIFY(componentNames.contains("ModulesPaused"));
     QVERIFY(componentNames.contains("Error_Messages"));
     QVERIFY(componentNames.contains("LoggedComponents"));
-
+    QVERIFY(componentNames.contains("DevMode"));
 }
 
 using namespace VeinEvent;

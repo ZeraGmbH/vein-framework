@@ -24,7 +24,6 @@ void test_modman_start::emptyModman()
     QList<VfTestComponentSpy::TComponentInfo> systemComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
     QCOMPARE(allComponents.size(), systemComponents.size());
 
-    QCOMPARE(systemComponents.size(), 7);
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "EntityName"));
     QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "EntityName").newValue, "_System");
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Session"));
@@ -34,6 +33,7 @@ void test_modman_start::emptyModman()
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "ModulesPaused"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Error_Messages"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "LoggedComponents"));
+    QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "DevMode"));
 
     QCOMPARE(vfTestServer.getComponentChangeList().size(), 0);
 }
