@@ -16,7 +16,7 @@ class ModuleManagerController : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit ModuleManagerController(QObject *t_parent = nullptr);
+    explicit ModuleManagerController(QObject *t_parent = nullptr, bool demo = false);
     static constexpr int getEntityId();
     VeinEvent::StorageSystem *getStorageSystem() const;
     /**
@@ -84,6 +84,7 @@ private:
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
+    bool m_devMode = false;
 };
 
 #endif // MODULEMANAGERSETTINGS_H

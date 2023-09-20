@@ -19,9 +19,11 @@ constexpr QLatin1String ModuleManagerController::s_sessionsAvailableComponentNam
 constexpr QLatin1String ModuleManagerController::s_notificationMessagesComponentName;
 constexpr QLatin1String ModuleManagerController::s_loggedComponentsComponentName;
 constexpr QLatin1String ModuleManagerController::s_modulesPausedComponentName;
+static const char *devModeComponentName = "DevMode";
 
-ModuleManagerController::ModuleManagerController(QObject *t_parent) :
-    VeinEvent::EventSystem(t_parent)
+ModuleManagerController::ModuleManagerController(QObject *t_parent, bool devMode) :
+    VeinEvent::EventSystem(t_parent),
+    m_devMode(devMode)
 {
 }
 
@@ -143,6 +145,17 @@ void ModuleManagerController::initializeEntity(const QString &sessionPath, const
         initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
         initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
         emit sigSendEvent(initEvent);
+
+
+        initData = new VeinComponent::ComponentData();
+        initData->setEntityId(s_entityId);
+        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
+        initData->setComponentName(devModeComponentName);
+        initData->setNewValue(QVariant(m_devMode));
+        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
+        emit sigSendEvent(initEvent);
     }
     else
     {
@@ -168,6 +181,7 @@ void ModuleManagerController::initOnce()
         componentData.insert(ModuleManagerController::s_notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
         componentData.insert(ModuleManagerController::s_loggedComponentsComponentName, QVariantMap());
         componentData.insert(ModuleManagerController::s_modulesPausedComponentName, QVariant(false));
+        componentData.insert(devModeComponentName, QVariant(false));
 
         VeinComponent::ComponentData *initialData=nullptr;
         for(const QString &compName : componentData.keys())
