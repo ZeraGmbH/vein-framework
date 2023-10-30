@@ -32,7 +32,7 @@ public:
     OperationMode operationMode() const;
     void setOperationMode(const OperationMode &t_operationMode);
 public:
-    void processEvent(QEvent *t_event) override;
+    void processEvent(QEvent *event) override;
 private:
     NetworkSystemPrivate *d_ptr = nullptr;
 };
