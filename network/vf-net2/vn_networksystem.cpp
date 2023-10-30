@@ -240,27 +240,24 @@ void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &t_opera
 void NetworkSystem::processEvent(QEvent *t_event)
 {
     Q_ASSERT(t_event != nullptr);
-    VeinEvent::EventData *evData = nullptr;
     if(t_event->type() == ProtocolEvent::getEventType()) { //incoming messages
         ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
         d_ptr->processIncoming(pEvent);
     }
     else if(t_event->type() == CommandEvent::eventType()) { //outgoing messages
+        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+        Q_ASSERT(cEvent != nullptr);
+        VeinEvent::EventData *evData = cEvent->eventData();
+        Q_ASSERT(evData != nullptr);
+
         switch (d_ptr->m_operationMode)
         {
         case VeinNet::NetworkSystem::VNOM_DEBUG:
-        {
             vCDebug(VEIN_NET_VERBOSE) << "Debug mode is enabled, dropped event:" << t_event;
             t_event->accept();
             break;
-        }
         case VeinNet::NetworkSystem::VNOM_PASS_THROUGH:
-        {
-            VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
-            Q_ASSERT(cEvent != nullptr);
-            evData = cEvent->eventData();
-            Q_ASSERT(evData != nullptr);
             if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL
                 && evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
                 QByteArray flatBuffer = d_ptr->prepareEnvelope(cEvent);
@@ -270,20 +267,11 @@ void NetworkSystem::processEvent(QEvent *t_event)
                 d_ptr->sendNetworkEvent(protoReceivers, flatBuffer);
             }
             break;
-        }
         case VeinNet::NetworkSystem::VNOM_SUBSCRIPTION:
-        {
             // check if the event is a notification event with entity command subscribe/unsubscribe
             //   drop the event and add/remove the sender to/from the subscriber list
             // or else
             //   send the event to all active subscribers
-            VeinEvent::CommandEvent *cEvent = nullptr;
-            cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
-            Q_ASSERT(cEvent != nullptr);
-
-            evData = cEvent->eventData();
-            Q_ASSERT(evData != nullptr);
-
             if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL
                 && evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
                 bool isDiscarded = false;
@@ -302,10 +290,8 @@ void NetworkSystem::processEvent(QEvent *t_event)
             }
             break;
         }
-        }
     }
-    else if(t_event->type() == NetworkStatusEvent::getEventType())
-    {
+    else if(t_event->type() == NetworkStatusEvent::getEventType()) {
         NetworkStatusEvent *sEvent = static_cast<NetworkStatusEvent *>(t_event);
         Q_ASSERT(sEvent != nullptr);
         d_ptr->handleNetworkStatusEvent(sEvent);
