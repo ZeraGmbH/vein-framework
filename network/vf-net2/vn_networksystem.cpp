@@ -35,12 +35,12 @@ class NetworkSystemPrivate
         VF_ASSERT(static_cast<int>(CommandEvent::EventSubtype::TRANSACTION) == static_cast<int>(VeinFrameworkIDL::EventSubtype_VC_TRANSACTION), "Enum compatibility is a requirement");
     }
 
-    void processIncoming(QEvent *t_event)
+    void deserializeIncomingAndSendCmdEvent(QEvent *t_event)
     {
         ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
         //do not process messages from this instance
-        if(pEvent->isOfLocalOrigin() == false) {
+        if(!pEvent->isOfLocalOrigin()) {
             QByteArray rawBuffer = pEvent->buffer();
             flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(rawBuffer.constData()), rawBuffer.size());
             if(VeinFrameworkIDL::VerifyECSEnvelopeBuffer(verifier)) {
@@ -104,7 +104,7 @@ class NetworkSystemPrivate
             }
         }
     }
-    void processOutgoing(QEvent *t_event)
+    void processCmdEvents(QEvent *t_event)
     {
         VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
         Q_ASSERT(cEvent != nullptr);
@@ -121,7 +121,7 @@ class NetworkSystemPrivate
                 && evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
                 QByteArray flatBuffer = prepareEnvelope(cEvent);
                 QList<QUuid> protoReceivers;
-                if(cEvent->peerId().isNull() == false)
+                if(!cEvent->peerId().isNull())
                     protoReceivers = QList<QUuid>() << cEvent->peerId();
                 sendNetworkEvent(protoReceivers, flatBuffer);
             }
@@ -131,16 +131,16 @@ class NetworkSystemPrivate
             //   drop the event and add/remove the sender to/from the subscriber list
             // or else
             //   send the event to all active subscribers
-            if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL
-                && evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
+            if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL &&
+                evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
                 bool handled = false;
                 if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && evData->type() == VeinComponent::EntityData::dataType())
                     handled = tryHandleSubscription(static_cast<VeinComponent::EntityData *>(evData), cEvent->peerId());
                 if(handled)
                     cEvent->setAccepted(true);
                 else if(m_subscriptions.contains(evData->entityId())) {
-                    QList<QUuid> protoReceivers=m_subscriptions.value(evData->entityId());
-                    if(protoReceivers.isEmpty() == false) {
+                    QList<QUuid> protoReceivers = m_subscriptions.value(evData->entityId());
+                    if(!protoReceivers.isEmpty()) {
                         QByteArray flatBuffer = prepareEnvelope(cEvent);
                         vCDebug(VEIN_NET_VERBOSE) << "Processing command event:" << cEvent << "type:" << static_cast<qint8>(cEvent->eventSubtype());// << "new event:" << protoEvent;
                         sendNetworkEvent(protoReceivers, flatBuffer);
@@ -152,28 +152,28 @@ class NetworkSystemPrivate
 
     }
 
-    bool tryHandleSubscription(VeinComponent::EntityData *t_eData, QUuid t_peerId)
+    bool tryHandleSubscription(VeinComponent::EntityData *eData, QUuid peerId)
     {
-        Q_ASSERT(t_eData != nullptr);
+        Q_ASSERT(eData != nullptr);
         bool handled = false;
-        switch(t_eData->eventCommand())
+        switch(eData->eventCommand())
         {
         case EntityData::Command::ECMD_SUBSCRIBE:
         {
-            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(t_eData->entityId());
-            if(!tmpCurrentSubscriptions.contains(t_peerId))
-                tmpCurrentSubscriptions.append(t_peerId);
-            m_subscriptions.insert(t_eData->entityId(), tmpCurrentSubscriptions);
-            vCDebug(VEIN_NET_VERBOSE) << "Added subscription for entity:" << t_eData->entityId() << "network peer:" << t_peerId;
+            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
+            if(!tmpCurrentSubscriptions.contains(peerId))
+                tmpCurrentSubscriptions.append(peerId);
+            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
+            vCDebug(VEIN_NET_VERBOSE) << "Added subscription for entity:" << eData->entityId() << "network peer:" << peerId;
             handled = true;
             break;
         }
         case EntityData::Command::ECMD_UNSUBSCRIBE:
         {
-            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(t_eData->entityId());
-            tmpCurrentSubscriptions.removeAll(t_peerId);
-            m_subscriptions.insert(t_eData->entityId(), tmpCurrentSubscriptions);
-            vCDebug(VEIN_NET_VERBOSE) << "Removed subscription for entity:" << t_eData->entityId() << "network peer:" << t_peerId;
+            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
+            tmpCurrentSubscriptions.removeAll(peerId);
+            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
+            vCDebug(VEIN_NET_VERBOSE) << "Removed subscription for entity:" << eData->entityId() << "network peer:" << peerId;
             handled = true;
             break;
         }
@@ -183,12 +183,12 @@ class NetworkSystemPrivate
         return handled;
     }
 
-    void handleNetworkStatusEvent(NetworkStatusEvent *t_sEvent)
+    void handleNetworkStatusEvent(NetworkStatusEvent *sEvent)
     {
-        Q_ASSERT(t_sEvent != nullptr);
-        vCDebug(VEIN_NET_VERBOSE) << "processing NetworkStatusEvent:" << t_sEvent;
-        if(t_sEvent->getStatus() == NetworkStatusEvent::NetworkStatus::NSE_DISCONNECTED) {
-            const QUuid tmpPeerId = t_sEvent->getPeerId();
+        Q_ASSERT(sEvent != nullptr);
+        vCDebug(VEIN_NET_VERBOSE) << "processing NetworkStatusEvent:" << sEvent;
+        if(sEvent->getStatus() == NetworkStatusEvent::NetworkStatus::NSE_DISCONNECTED) {
+            const QUuid tmpPeerId = sEvent->getPeerId();
             const auto tmpSubscriptionKeysCopy = m_subscriptions.keys();
             for(const int tmpKey : tmpSubscriptionKeysCopy) {
                 QList<QUuid> tmpSubscribers = m_subscriptions.value(tmpKey);
@@ -199,8 +199,8 @@ class NetworkSystemPrivate
                 }
             }
         }
-        else if(t_sEvent->getStatus() == NetworkStatusEvent::NetworkStatus::NSE_SOCKET_ERROR) {
-            switch(t_sEvent->getError())
+        else if(sEvent->getStatus() == NetworkStatusEvent::NetworkStatus::NSE_SOCKET_ERROR) {
+            switch(sEvent->getError())
             {
             case QAbstractSocket::RemoteHostClosedError:
                 break; /// @todo reconnect here?
@@ -210,16 +210,16 @@ class NetworkSystemPrivate
         }
     }
 
-    QByteArray prepareEnvelope(VeinEvent::CommandEvent *t_cEvent)
+    QByteArray prepareEnvelope(VeinEvent::CommandEvent *cEvent)
     {
-        Q_ASSERT(t_cEvent != nullptr);
-        const VeinEvent::EventData *evData = t_cEvent->eventData();
+        Q_ASSERT(cEvent != nullptr);
+        const VeinEvent::EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
         const QByteArray serializedEventData = evData->serialize();
         const auto dataString = m_flatBufferBuilder.CreateString(serializedEventData.constData(), serializedEventData.size());
 
         VeinFrameworkIDL::ECSEventBuilder ecsEventBuilder = VeinFrameworkIDL::ECSEventBuilder(m_flatBufferBuilder);
-        ecsEventBuilder.add_command(static_cast<VeinFrameworkIDL::EventSubtype>(t_cEvent->eventSubtype())); //enums are compatible
+        ecsEventBuilder.add_command(static_cast<VeinFrameworkIDL::EventSubtype>(cEvent->eventSubtype())); //enums are compatible
 
         ecsEventBuilder.add_dataType(evData->type());
         ecsEventBuilder.add_eventData(dataString);
@@ -237,12 +237,12 @@ class NetworkSystemPrivate
         return retVal;
     }
 
-    void sendNetworkEvent(QList<QUuid> t_receivers, QByteArray t_data)
+    void sendNetworkEvent(QList<QUuid> receivers, QByteArray data)
     {
-        Q_ASSERT(t_data.isNull() == false);
+        Q_ASSERT(data.isNull() == false);
         ProtocolEvent *protoEvent = new ProtocolEvent(ProtocolEvent::EventOrigin::EO_LOCAL); //create a new event of local origin
-        protoEvent->setBuffer(t_data);
-        protoEvent->setReceivers(t_receivers);
+        protoEvent->setBuffer(data);
+        protoEvent->setReceivers(receivers);
         emit q_ptr->sigSendEvent(protoEvent);
     }
 
@@ -262,8 +262,8 @@ class NetworkSystemPrivate
 
 
 
-NetworkSystem::NetworkSystem(QObject * t_parent) :
-    EventSystem(t_parent),
+NetworkSystem::NetworkSystem(QObject *parent) :
+    EventSystem(parent),
     d_ptr(new NetworkSystemPrivate(this))
 {
     vCDebug(VEIN_NET) << "Initialized network system";
@@ -280,18 +280,18 @@ NetworkSystem::OperationMode NetworkSystem::operationMode() const
     return d_ptr->m_operationMode;
 }
 
-void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &t_operationMode)
+void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &operationMode)
 {
-    d_ptr->m_operationMode = t_operationMode;
+    d_ptr->m_operationMode = operationMode;
 }
 
 void NetworkSystem::processEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
     if(event->type() == ProtocolEvent::getEventType())
-        d_ptr->processIncoming(event);
+        d_ptr->deserializeIncomingAndSendCmdEvent(event);
     else if(event->type() == CommandEvent::eventType())
-        d_ptr->processOutgoing(event);
+        d_ptr->processCmdEvents(event);
     else if(event->type() == NetworkStatusEvent::getEventType()) {
         NetworkStatusEvent *sEvent = static_cast<NetworkStatusEvent *>(event);
         Q_ASSERT(sEvent != nullptr);
