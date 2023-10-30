@@ -35,7 +35,7 @@ class NetworkSystemPrivate
         VF_ASSERT(static_cast<int>(CommandEvent::EventSubtype::TRANSACTION) == static_cast<int>(VeinFrameworkIDL::EventSubtype_VC_TRANSACTION), "Enum compatibility is a requirement");
     }
 
-    void processProtoEvent(ProtocolEvent *t_pEvent)
+    void processIncoming(ProtocolEvent *t_pEvent)
     {
         Q_ASSERT(t_pEvent != nullptr);
         //do not process messages from this instance
@@ -242,10 +242,9 @@ void NetworkSystem::processEvent(QEvent *t_event)
     Q_ASSERT(t_event != nullptr);
     VeinEvent::EventData *evData = nullptr;
     if(t_event->type() == ProtocolEvent::getEventType()) { //incoming messages
-        ProtocolEvent *pEvent = nullptr;
-        pEvent = static_cast<ProtocolEvent *>(t_event);
+        ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
-        d_ptr->processProtoEvent(pEvent);
+        d_ptr->processIncoming(pEvent);
     }
     else if(t_event->type() == CommandEvent::eventType()) { //outgoing messages
         switch (d_ptr->m_operationMode)
