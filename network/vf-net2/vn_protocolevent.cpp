@@ -2,6 +2,8 @@
 
 namespace VeinNet
 {
+const int ProtocolEvent::s_eventType = QEvent::registerEventType();
+
 ProtocolEvent::ProtocolEvent(EventOrigin t_fromLocalOrigin):
     QEvent(static_cast<QEvent::Type>(getEventType())),
     m_localOrigin(static_cast<bool>(t_fromLocalOrigin))
@@ -51,5 +53,4 @@ void ProtocolEvent::setPeerId(QUuid t_peerId)
     m_peerId = t_peerId;
 }
 
-const int ProtocolEvent::s_eventType = QEvent::registerEventType();
 }
