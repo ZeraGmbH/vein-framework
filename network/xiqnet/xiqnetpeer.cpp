@@ -83,9 +83,10 @@ void XiQNetPeer::setWrapper(XiQNetWrapper *value)
 
 void XiQNetPeer::sendMessage(const google::protobuf::Message &t_message) const
 {
-    Q_ASSERT_X(isConnected(), __PRETTY_FUNCTION__, "[xiqnet-qt] Trying to send data to disconnected host.");
-    Q_ASSERT(d_ptr->m_wrapper != nullptr);
-
+    if(!isConnected() || !d_ptr->m_wrapper) {
+        qWarning("[xiqnet-qt] Trying to send data to disconnected host.");
+        return;
+    }
     d_ptr->sendArray(d_ptr->m_wrapper->protobufToByteArray(t_message));
 }
 
