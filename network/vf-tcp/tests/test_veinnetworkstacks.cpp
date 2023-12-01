@@ -5,7 +5,6 @@
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include "vf_test_server_stack.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -34,9 +33,4 @@ void test_veinnetworkstacks::receiveIntrospection()
     spy.wait(1000);
     QVERIFY(clientConnected);
     QCOMPARE(spy.count(), 1);
-}
-
-void test_veinnetworkstacks::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

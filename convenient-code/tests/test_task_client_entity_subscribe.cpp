@@ -5,7 +5,6 @@
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -29,13 +28,13 @@ void test_task_client_entity_subscribe::subscibeOk()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
     TaskClientEntitySubscribe task(systemEntityId, clientStack.cmdEventHandlerSystem, components);
     QSignalSpy spy(&task, &TaskTemplate::sigFinish);
     task.start();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     QVERIFY(components->size() > 0);
 }
@@ -43,7 +42,7 @@ void test_task_client_entity_subscribe::subscibeOk()
 void test_task_client_entity_subscribe::timeout()
 {
     VfCoreStackClient clientStack;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
     TaskTemplatePtr task = TaskClientEntitySubscribe::create(systemEntityId, clientStack.cmdEventHandlerSystem, components, stdTimeout);
@@ -68,7 +67,7 @@ void test_task_client_entity_subscribe::invalidEntity()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
     TaskTemplatePtr task = TaskClientEntitySubscribe::create(invalidEntityId, clientStack.cmdEventHandlerSystem, components, stdTimeout);
@@ -84,9 +83,4 @@ void test_task_client_entity_subscribe::invalidEntity()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
-}
-
-void test_task_client_entity_subscribe::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

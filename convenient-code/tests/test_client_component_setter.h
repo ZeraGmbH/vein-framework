@@ -11,8 +11,6 @@ private slots:
     void setEqualEmitsOk();
     void setToInvalidEntity();
     void setvalidEntityNet();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_ATOMIC_CLIENT_COMPONENT_SETTER_H

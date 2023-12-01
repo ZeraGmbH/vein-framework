@@ -14,8 +14,6 @@ private slots:
     void trySubscribeOnNonExistantEntityTogetherwithOtherError();
     void introspectComponentNames();
     void invalidIntrospectionData();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_ATOMIC_CLIENT_ENTITY_SUBSCRIBER_H

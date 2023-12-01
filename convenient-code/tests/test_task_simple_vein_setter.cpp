@@ -6,7 +6,6 @@
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -22,12 +21,6 @@ void test_task_simple_vein_setter::init()
     TimeMachineForTest::reset();
 }
 
-
-void test_task_simple_vein_setter::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
-}
-
 void test_task_simple_vein_setter::setValid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
@@ -35,13 +28,13 @@ void test_task_simple_vein_setter::setValid()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
     serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "foo", 4711,
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
@@ -81,13 +74,13 @@ void test_task_simple_vein_setter::setInvalid()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
     serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
                                                                                  clientStack.cmdEventHandlerSystem, stdTimeout);

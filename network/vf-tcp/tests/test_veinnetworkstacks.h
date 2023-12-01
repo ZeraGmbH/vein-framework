@@ -11,8 +11,6 @@ private slots:
     // before starting on network mock. In case we are done
     // and this test turns fragile, it can be removed
     void receiveIntrospection();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_VEINNETWORKSTACKS_H

@@ -4,7 +4,7 @@
 #include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -29,7 +29,7 @@ struct ServerNoNet
 void test_client_component_fetcher::errorSignalFromUnsubscribedEntityInvalidComponentNoNet()
 {
     ServerNoNet server;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QList<int> entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 1);
 
@@ -40,7 +40,7 @@ void test_client_component_fetcher::errorSignalFromUnsubscribedEntityInvalidComp
     entityItem->addItem(fetcher);
     QSignalSpy spy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -51,7 +51,7 @@ void test_client_component_fetcher::errorSignalFromUnsubscribedEntityInvalidComp
 void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet()
 {
     ServerNoNet server;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
@@ -60,7 +60,7 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
     entityItem->addItem(fetcher);
     QSignalSpy spy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -75,7 +75,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -84,7 +84,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
     entityItem->addItem(fetcher);
     QSignalSpy fetcherSpy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(fetcherSpy.count(), 0);
 }
@@ -96,10 +96,10 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -108,7 +108,7 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
     entityItem->addItem(fetcher);
     QSignalSpy fetcherSpy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(fetcherSpy.count(), 1);
     QList<QVariant> arguments = fetcherSpy[0];
@@ -123,10 +123,10 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -135,7 +135,7 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
     entityItem->addItem(fetcher);
     QSignalSpy fetcherSpy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(fetcherSpy.count(), 1);
     QList<QVariant> arguments = fetcherSpy[0];
@@ -151,7 +151,7 @@ void test_client_component_fetcher::getTwoDifferentComponent()
     server.simulAllModulesLoaded("fooPath", QStringList() << "fooPath");
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityItem);
@@ -166,7 +166,7 @@ void test_client_component_fetcher::getTwoDifferentComponent()
 
     fetcher1->startGetComponent();
     fetcher2->startGetComponent();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(fetcherSpy1.count(), 1);
     QList<QVariant> arguments1 = fetcherSpy1[0];
@@ -177,9 +177,4 @@ void test_client_component_fetcher::getTwoDifferentComponent()
     QList<QVariant> arguments2 = fetcherSpy2[0];
     QCOMPARE(arguments2.at(0).toBool(), true);
     QCOMPARE(arguments2.at(1), QVariant("fooPath"));
-}
-
-void test_client_component_fetcher::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

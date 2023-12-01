@@ -13,8 +13,6 @@ private slots:
     void getFromSubscribedEntityValidComponentNet();
     void getFromSubscribedEntityInvalidComponentNet();
     void getTwoDifferentComponent();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_ATOMIC_CLIENT_COMPONENT_FETCHER_H

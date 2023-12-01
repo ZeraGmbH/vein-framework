@@ -5,7 +5,7 @@
 #include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -21,13 +21,13 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfClientEntityUnsubscriberPtr entityToUnsubscribe = VfClientEntityUnsubscriber::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     // No response
     QCOMPARE(spy.count(), 0);
@@ -40,13 +40,13 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
     QSignalSpy spySubscribe(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spySubscribe.count(), 1);
     QCOMPARE(spySubscribe[0][0].toBool(), true);
 
@@ -54,13 +54,8 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
     clientStack.cmdEventHandlerSystem->addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     // No response
     QCOMPARE(spy.count(), 0);
-}
-
-void test_client_entity_unsubscriber::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

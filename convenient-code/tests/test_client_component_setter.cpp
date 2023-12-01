@@ -4,7 +4,7 @@
 #include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -30,7 +30,7 @@ struct ServerNoNet
 void test_client_component_setter::setInvalidIsEvil()
 {
     ServerNoNet server;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
@@ -41,7 +41,7 @@ void test_client_component_setter::setInvalidIsEvil()
     setter->startSetComponent(QVariant(), QVariant());
     // check event loop fired: connect after start
     QSignalSpy spy(setter.get(), &VfClientComponentSetter::sigSetFinish);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -51,7 +51,7 @@ void test_client_component_setter::setInvalidIsEvil()
 void test_client_component_setter::setEqualEmitsOk()
 {
     ServerNoNet server;
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
@@ -62,7 +62,7 @@ void test_client_component_setter::setEqualEmitsOk()
     setter->startSetComponent("foo", "foo");
     // check event loop fired: connect after start
     QSignalSpy spy(setter.get(), &VfClientComponentSetter::sigSetFinish);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -76,10 +76,10 @@ void test_client_component_setter::setToInvalidEntity()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(invalidId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -88,7 +88,7 @@ void test_client_component_setter::setToInvalidEntity()
     entityItem->addItem(setter);
     QSignalSpy setterSpy(setter.get(), &VfClientComponentSetter::sigSetFinish);
     setter->startSetComponent("foo", "bar");
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     // Nothing takes care!!!
     QCOMPARE(setterSpy.count(), 0);
@@ -101,17 +101,17 @@ void test_client_component_setter::setvalidEntityNet()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
     serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
     clientStack.subscribeEntity(testId);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -120,14 +120,8 @@ void test_client_component_setter::setvalidEntityNet()
     entityItem->addItem(setter);
     QSignalSpy setterSpy(setter.get(), &VfClientComponentSetter::sigSetFinish);
     setter->startSetComponent(42, 0);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(setterSpy.count(), 1);
     QCOMPARE(setterSpy[0][0].toBool(), true);
 }
-
-void test_client_component_setter::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
-}
-

@@ -7,7 +7,7 @@
 #include "vf_core_stack_client.h"
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -23,7 +23,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
     VeinTestServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
     
@@ -31,7 +31,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -46,13 +46,13 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -67,14 +67,14 @@ void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     // Just for the record:
     // vfnet2 seems not to add additional peer data for multile subscriptions
@@ -93,13 +93,13 @@ void test_client_entity_subscriber::trySubscribeOnNonExistantEntity()
     VeinTestServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(noneExistentEnitityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -116,7 +116,7 @@ void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithO
     VeinTestServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(noneExistentEnitityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
@@ -133,7 +133,7 @@ void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithO
     cData->setOldValue(44);
     CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
     emit cmdEventHandlerSystem.sigSendEvent(commandEvent);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QList<QVariant> arguments = spy[0];
@@ -147,13 +147,13 @@ void test_client_entity_subscriber::introspectComponentNames()
     VeinTestServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
     cmdEventHandlerSystem.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QStringList componentNames = entityToSubscribe->getComponentNames();
     QVERIFY(componentNames.contains("EntityName"));
@@ -187,9 +187,4 @@ void test_client_entity_subscriber::invalidIntrospectionData()
     QList<QVariant> arguments = spy[0];
     QCOMPARE(arguments.at(0).toBool(), false);
     QCOMPARE(arguments.at(1).toInt(), systemEntityId);
-}
-
-void test_client_entity_subscriber::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

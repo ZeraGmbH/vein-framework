@@ -6,7 +6,6 @@
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -31,18 +30,18 @@ void test_task_client_component_fetcher::fetchSubscribed()
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
     TaskClientEntitySubscribe taskSubscribe(systemEntityId, clientStack.cmdEventHandlerSystem, components);
     taskSubscribe.start();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
     TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("EntityName", entityItem, value, stdTimeout);
     QSignalSpy spy(fetcherTask.get(), &TaskTemplate::sigFinish);
     fetcherTask->start();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spy.count(), 1);
     QCOMPARE(*value, QVariant("_System"));
@@ -53,7 +52,7 @@ void test_task_client_component_fetcher::timeout()
     VfCoreStackClient clientStack;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
     TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("EntityName", entityItem, value, stdTimeout);
@@ -69,9 +68,4 @@ void test_task_client_component_fetcher::timeout()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
-}
-
-void test_task_client_component_fetcher::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

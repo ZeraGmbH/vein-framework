@@ -11,8 +11,6 @@ private slots:
     void subscibeOk();
     void timeout();
     void invalidEntity();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_TASK_CLIENT_ENTITY_SUBSCRIBE_H

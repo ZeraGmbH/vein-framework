@@ -10,8 +10,6 @@ private slots:
     void init();
     void setValidValueSubscribed();
     void timeout();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_TASK_CLIENT_COMPONENT_SETTER_H

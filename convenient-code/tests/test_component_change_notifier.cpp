@@ -5,7 +5,7 @@
 #include "vf_test_server_stack.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <vcmp_componentdata.h>
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -72,18 +72,18 @@ void test_component_change_notifier::inClientServerStack()
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testEntityId);
     serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent(componentName, 42);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     // client
     clientStack.subscribeEntity(systemEntityId);
     clientStack.subscribeEntity(testEntityId);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
@@ -101,13 +101,8 @@ void test_component_change_notifier::inClientServerStack()
     CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
     QCoreApplication::instance()->postEvent(&clientStack.eventHandler, commandEvent);
 
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);
     QVariant notifierVal = changeNotifier->getValue();
     QCOMPARE(notifierVal, QVariant(44));
-}
-
-void test_component_change_notifier::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

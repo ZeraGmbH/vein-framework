@@ -3,7 +3,7 @@
 #include "ve_eventhandler.h"
 #include "vftestentityspyfilter.h"
 #include "vftestcomponentspyfilter.h"
-#include <QAbstractEventDispatcher>
+#include <timemachineobject.h>
 #include <QTest>
 
 QTEST_MAIN(test_modman_start)
@@ -14,7 +14,7 @@ void test_modman_start::emptyModman()
 {
     VeinEvent::EventHandler vfEventHandler;
     VeinTestServer vfTestServer(&vfEventHandler);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
@@ -46,7 +46,7 @@ void test_modman_start::modmanPlusOneEntity()
     int entityId = 1;
     vfTestServer.addEntity(entityId, "FooEntity");
     vfTestServer.addComponent(entityId, "Foo", "FooVal", false);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
     QCOMPARE(entities.size(), 2);
@@ -76,7 +76,7 @@ void test_modman_start::modmanPlusTwoEntities()
     vfTestServer.addEntity(entityId2, "BarEntity");
     vfTestServer.addComponent(entityId2, "Bar", "BarVal", false);
     vfTestServer.addComponent(entityId2, "Baz", "BazVal", false);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
     QCOMPARE(entities.size(), 3);
@@ -112,11 +112,11 @@ void test_modman_start::modmanPlusOneEntityModulesLoaded()
     int entityId = 1;
     vfTestServer.addEntity(entityId, "FooEntity");
     vfTestServer.addComponent(entityId, "Foo", "FooVal", false);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     vfTestServer.resetLists();
     vfTestServer.simulAllModulesLoaded(QString("fooSession"), QStringList() << "fooSession" << "barSession");
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(vfTestServer.getEntityAddList().size(), 0);
     QCOMPARE(vfTestServer.getComponentAddList().size(), 0);
@@ -137,9 +137,4 @@ void test_modman_start::modmanPlusOneEntityModulesLoaded()
     QVERIFY(!entities.isEmpty());
     QVERIFY(entities.contains(systemEntityId));
     QVERIFY(entities.contains(entityId));
-}
-
-void test_modman_start::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

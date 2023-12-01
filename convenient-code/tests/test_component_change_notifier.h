@@ -10,8 +10,6 @@ private slots:
     void ignoreOtherCommandsThanSet();
     void notifySet();
     void inClientServerStack();
-private:
-    static void feedEventLoop();
 };
 
 #endif // TEST_COMPONENT_CHANGE_NOTIFIER_H

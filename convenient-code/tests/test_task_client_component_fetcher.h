@@ -10,8 +10,6 @@ private slots:
     void init();
     void fetchSubscribed();
     void timeout();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_TASK_CLIENT_COMPONENT_FETCHER_H

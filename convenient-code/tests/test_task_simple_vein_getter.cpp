@@ -5,7 +5,6 @@
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -29,7 +28,7 @@ void test_task_simple_vein_getter::getValid()
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
 
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "EntityName",
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
@@ -55,7 +54,7 @@ void test_task_simple_vein_getter::getInvalid()
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
 
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
                                                                               clientStack.cmdEventHandlerSystem, stdTimeout);
@@ -84,9 +83,4 @@ void test_task_simple_vein_getter::getTimeout()
 
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
-}
-
-void test_task_simple_vein_getter::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

@@ -7,7 +7,6 @@
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -32,18 +31,18 @@ void test_task_client_component_setter::setValidValueSubscribed()
     serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
     TaskClientEntitySubscribe taskSubscribe(testId, clientStack.cmdEventHandlerSystem, components);
     taskSubscribe.start();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskTemplatePtr setterTask = TaskClientComponentSetter::create(entityItem, "foo", 42, 40, stdTimeout);
     QSignalSpy spy(setterTask.get(), &TaskTemplate::sigFinish);
@@ -55,7 +54,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
     TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("foo", entityItem, value, stdTimeout);
     fetcherTask->start();
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(*value, QVariant(40));
 }
 
@@ -64,7 +63,7 @@ void test_task_client_component_setter::timeout()
     VfCoreStackClient clientStack;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
-    feedEventLoop();
+    TimeMachineObject::feedEventLoop();
 
     TaskTemplatePtr setterTask = TaskClientComponentSetter::create(entityItem, "foo", 42, 40, stdTimeout);
 
@@ -79,9 +78,4 @@ void test_task_client_component_setter::timeout()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
-}
-
-void test_task_client_component_setter::feedEventLoop()
-{
-    while(QCoreApplication::eventDispatcher()->processEvents(QEventLoop::AllEvents));
 }

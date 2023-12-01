@@ -11,8 +11,6 @@ private slots:
     void modmanPlusOneEntity();
     void modmanPlusTwoEntities();
     void modmanPlusOneEntityModulesLoaded();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_MODMAN_START_H

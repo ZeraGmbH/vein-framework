@@ -9,8 +9,6 @@ class test_client_entity_unsubscriber : public QObject
 private slots:
     void unsubscribeOnNotSubscribed();
     void subscribeUnsubscribe();
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_ATOMIC_CLIENT_ENTITY_UNSUBSCRIBER_H

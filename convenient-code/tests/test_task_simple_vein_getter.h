@@ -11,10 +11,6 @@ private slots:
     void getValid();
     void getInvalid();
     void getTimeout();
-
-private:
-    void feedEventLoop();
-
 };
 
 #endif // TEST_TASK_SIMPLE_VEIN_GETTER_H

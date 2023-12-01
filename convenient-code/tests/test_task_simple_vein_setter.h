@@ -11,9 +11,6 @@ private slots:
     void setValid();
     void setInvalid();
     void setTimeout();
-
-private:
-    void feedEventLoop();
 };
 
 #endif // TEST_TASK_SIMPLE_VEIN_SETTER_H

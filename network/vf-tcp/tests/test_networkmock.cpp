@@ -3,7 +3,6 @@
 #include "vtcp_peer.h"
 #include <QSignalSpy>
 #include <QTest>
-#include <QAbstractEventDispatcher>
 #include <QSignalSpy>
 #include <QTest>
 
