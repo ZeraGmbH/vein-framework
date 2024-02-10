@@ -24,6 +24,7 @@ target_link_libraries(xiqnet
     Qt5::Network
     ${Protobuf_LIBRARIES}   
     zeraprotobuf
+    VfTcp
     )
 
 set_target_properties(xiqnet PROPERTIES VERSION ${PROJECT_VERSION})

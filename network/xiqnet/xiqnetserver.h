@@ -23,7 +23,7 @@ public slots:
     void startServer(quint16 t_port, bool t_systemdSocket=true);
 
 private slots:
-    void clientDisconnectedSRV();
+    void clientDisconnectedSRV(XiQNetPeer *peer);
 private:
     void incomingConnection(qintptr t_socketDescriptor) override;
     XiQNetServerPrivate *d_ptr = nullptr;
