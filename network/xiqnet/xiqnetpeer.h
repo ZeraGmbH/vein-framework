@@ -32,7 +32,7 @@ public:
     void setWrapper(XiQNetWrapper *value);
 signals:
     void sigConnectionEstablished();
-    void sigConnectionClosed();
+    void sigConnectionClosed(XiQNetPeer *thisPeer);
     void sigMessageReceived(std::shared_ptr<google::protobuf::Message> t_Message);
     void sigSocketError(QAbstractSocket::SocketError t_socketError);
 public slots:
