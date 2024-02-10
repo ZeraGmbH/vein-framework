@@ -91,6 +91,17 @@ void TcpPeerWorker::sendArray(const QByteArray &byteArray) const
         qWarning() << "[vein-tcp] Write failed for client:" << m_peer->getPeerId();
 }
 
+QUuid TcpPeerWorker::getPeerId() const
+{
+    return m_peerId;
+}
+
+void TcpPeerWorker::setPeerId(QUuid peerId)
+{
+    Q_ASSERT(!peerId.isNull());
+    m_peerId = peerId;
+}
+
 void TcpPeerWorker::onReadyRead()
 {
     QByteArray newMessage = readArray();

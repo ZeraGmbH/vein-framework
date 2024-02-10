@@ -58,6 +58,17 @@ void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
     const_this->emitMessageReceived(m_otherPeer, byteArray);
 }
 
+QUuid TcpPeerWorkerMock::getPeerId() const
+{
+    return m_peerId;
+}
+
+void TcpPeerWorkerMock::setPeerId(QUuid peerId)
+{
+    Q_ASSERT(!peerId.isNull());
+    m_peerId = peerId;
+}
+
 void TcpPeerWorkerMock::emitSigSocketError(QAbstractSocket::SocketError error)
 {
     QMetaObject::invokeMethod(m_myPeer,
