@@ -20,8 +20,11 @@ public:
     TcpPeerWorker(TcpPeer *peer, secret);
     TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);
     virtual ~TcpPeerWorker();
+
     void startConnection(QString ipAddress, quint16 port) override;
     void sendArray(const QByteArray &byteArray) const override;
+    QUuid getPeerId() const override;
+    void setPeerId(QUuid peerId) override;
 
 private slots:
     void onReadyRead();
@@ -30,6 +33,7 @@ private:
     void prepareSocket();
     bool isConnected() const;
     QByteArray readArray() const;
+    QUuid m_peerId;
     QTcpSocket *m_tcpSock = nullptr;
     TcpPeer *m_peer = nullptr;
 };

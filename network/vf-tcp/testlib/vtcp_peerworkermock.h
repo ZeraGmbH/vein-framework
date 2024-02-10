@@ -23,6 +23,9 @@ public:
     virtual ~TcpPeerWorkerMock();
     void startConnection(QString ipAddress, quint16 port) override;
     void sendArray(const QByteArray &byteArray) const override;
+    QUuid getPeerId() const override;
+    void setPeerId(QUuid peerId) override;
+
 private slots:
     void doEmitSigConnectionEstablished();
 private:
@@ -30,6 +33,7 @@ private:
     void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
     void emitSigSocketError(QAbstractSocket::SocketError error);
 
+    QUuid m_peerId;
     bool m_bAmClientPeer;
     TcpPeer *m_myPeer = nullptr;
     TcpPeer *m_otherPeer = nullptr;
