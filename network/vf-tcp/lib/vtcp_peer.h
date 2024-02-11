@@ -16,8 +16,15 @@ public:
     explicit TcpPeer(QObject *parent = nullptr);
     explicit TcpPeer(qintptr socketDescriptor, QObject *parent = nullptr);
 
+    QString getIpAddress() const;
+    quint16 getPort() const;
+    bool isConnected() const;
+
     QUuid getPeerId() const;
     void setPeerId(QUuid t_peerId);
+
+    void writeRaw(QByteArray message) const;
+
 signals:
     void sigConnectionEstablished(VeinTcp::TcpPeer *thisPeer);
     void sigConnectionClosed(VeinTcp::TcpPeer *thisPeer);

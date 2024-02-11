@@ -17,6 +17,21 @@ TcpPeer::TcpPeer(qintptr socketDescriptor, QObject *parent) :
 {
 }
 
+QString TcpPeer::getIpAddress() const
+{
+    return m_worker->getIpAddress();
+}
+
+quint16 TcpPeer::getPort() const
+{
+    return m_worker->getPort();
+}
+
+bool TcpPeer::isConnected() const
+{
+    return m_worker->isConnected();
+}
+
 void TcpPeer::startConnection(QString ipAddress, quint16 port)
 {
     m_worker->startConnection(ipAddress, port);
@@ -30,6 +45,11 @@ QUuid TcpPeer::getPeerId() const
 void TcpPeer::setPeerId(QUuid peerId)
 {
     m_worker->setPeerId(peerId);
+}
+
+void TcpPeer::writeRaw(QByteArray message) const
+{
+    m_worker->writeRaw(message);
 }
 
 void TcpPeer::sendMessage(QByteArray message) const

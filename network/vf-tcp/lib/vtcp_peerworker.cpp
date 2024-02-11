@@ -2,6 +2,7 @@
 #include "vtcp_peer.h"
 #include <QDataStream>
 #include <QTcpSocket>
+#include <QHostAddress>
 
 namespace VeinTcp
 {
@@ -18,6 +19,16 @@ TcpPeerWorker::~TcpPeerWorker()
     // The destructor will be called in such a case so delete the QTcpSocket with deleteLater()
     m_tcpSock->deleteLater();
     m_tcpSock = nullptr;
+}
+
+QString TcpPeerWorker::getIpAddress() const
+{
+    return m_tcpSock->peerAddress().toString();
+}
+
+quint16 TcpPeerWorker::getPort() const
+{
+    return m_tcpSock->peerPort();
 }
 
 void VeinTcp::TcpPeerWorker::prepareSocket()
@@ -57,6 +68,11 @@ bool TcpPeerWorker::isConnected() const
 {
     return m_tcpSock &&
            (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
+}
+
+void TcpPeerWorker::writeRaw(QByteArray message) const
+{
+    m_tcpSock->write(message);
 }
 
 QByteArray TcpPeerWorker::readArray() const

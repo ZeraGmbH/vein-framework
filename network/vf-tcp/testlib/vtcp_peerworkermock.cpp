@@ -34,6 +34,8 @@ void TcpPeerWorkerMock::startConnection(QString ipAddress, quint16 port)
     if(ipAddress != "localhost" && ipAddress != "127.0.0.1")
         emitSigSocketError(QAbstractSocket::HostNotFoundError);
     else {
+        m_ipAddress = ipAddress; // correct only with checks above
+        m_port = port;
         TcpServerWorkerMock* serverMock = TcpServerWorkerMock::getServerMock(port);
         if(!serverMock)
             emitSigSocketError(QAbstractSocket::ConnectionRefusedError);
@@ -50,7 +52,29 @@ TcpPeerWorkerMock::~TcpPeerWorkerMock()
         emit m_myPeer->sigConnectionClosed(m_myPeer);
 }
 
+QString TcpPeerWorkerMock::getIpAddress() const
+{
+    return m_ipAddress;
+}
+
+quint16 TcpPeerWorkerMock::getPort() const
+{
+    return m_port;
+}
+
+bool TcpPeerWorkerMock::isConnected() const
+{
+    return m_connectionEstablished;
+}
+
 // client & server
+void TcpPeerWorkerMock::writeRaw(QByteArray message) const
+{
+    Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    TcpPeerWorkerMock* const_this = const_cast<TcpPeerWorkerMock*>(this);
+    const_this->emitMessageReceived(m_otherPeer, message); // does this make sense???
+}
+
 void TcpPeerWorkerMock::sendArray(const QByteArray &byteArray) const
 {
     Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
