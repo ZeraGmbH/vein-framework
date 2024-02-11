@@ -36,11 +36,15 @@ void VeinTcp::TcpPeerWorker::prepareSocket()
     connect(m_tcpSock, &QTcpSocket::connected, m_peer, [this](){ emit m_peer->sigConnectionEstablished(m_peer); });
     connect(m_tcpSock, &QTcpSocket::readyRead, this, &TcpPeerWorker::onReadyRead);
     connect(m_tcpSock, &QTcpSocket::disconnected, m_peer, [this](){ emit m_peer->sigConnectionClosed(m_peer); });
-    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(
-        m_tcpSock, &QTcpSocket::error, // Fix once using Qt > 5.14
-        m_peer, [this](QAbstractSocket::SocketError socketError) {
-            emit m_peer->sigSocketError(m_peer, socketError);
-        });
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(m_tcpSock, &QTcpSocket::error, m_peer, [this](QAbstractSocket::SocketError socketError) {
+        emit m_peer->sigSocketError(m_peer, socketError);
+    });
+#else
+    connect(m_tcpSock, &QTcpSocket::errorOccurred, this, [this](QAbstractSocket::SocketError error) {
+        emit m_peer->sigSocketError(m_peer, error);
+    });
+#endif
     connect(m_tcpSock, &QTcpSocket::disconnected, this, &TcpPeerWorker::closeConnection);
     m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
