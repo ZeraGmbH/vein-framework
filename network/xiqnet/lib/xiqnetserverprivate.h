@@ -6,7 +6,6 @@
 
 class XiQNetPeer;
 class XiQNetServer;
-class XiQNetWrapper;
 
 /**
  * @brief XiQNetServer PIMPL
@@ -17,7 +16,6 @@ class XiQNetServerPrivate
   ~XiQNetServerPrivate();
 
   QList<XiQNetPeer*> m_clients;
-  XiQNetWrapper *m_defaultWrapper = nullptr;
   XiQNetServer *q_ptr = nullptr;
 
   friend class XiQNetServer;

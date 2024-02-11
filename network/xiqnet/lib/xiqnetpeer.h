@@ -1,11 +1,11 @@
 #ifndef PROTOPEER_H
 #define PROTOPEER_H
 
-#include "xiqnet_global.h"
 #include "xiqnet_export.h"
 #include "xiqnetwrapper.h"
 #include <QString>
 #include <QTcpSocket>
+#include <QUuid>
 
 class XiQNetPeerPrivate;
 
@@ -21,22 +21,18 @@ public:
     quint16 getPort() const;
     bool isConnected() const;
 
-    int getPeerId() const;
-    void setPeerId(int t_peerId);
+    QUuid getPeerId() const;
+    void setPeerId(QUuid peerId);
 
-    // This is lazy crap
-    QTcpSocket *getTcpSocket() const;
-    // This makes the difference to vf-tcp: protobuf en/decoding is in here / vf-tcp
-    // handles opaque QByteArray - see further 'google' below
-    XiQNetWrapper *getWrapper() const;
-    void setWrapper(XiQNetWrapper *value);
+    void writeRaw(QByteArray message) const;
+
 signals:
-    void sigConnectionEstablished();
+    void sigConnectionEstablished(XiQNetPeer *thisPeer);
     void sigConnectionClosed(XiQNetPeer *thisPeer);
-    void sigMessageReceived(std::shared_ptr<google::protobuf::Message> t_Message);
-    void sigSocketError(QAbstractSocket::SocketError t_socketError);
+    void sigMessageReceived(XiQNetPeer *thisPeer, QByteArray message);
+    void sigSocketError(XiQNetPeer *thisPeer, QAbstractSocket::SocketError t_socketError);
 public slots:
-    void sendMessage(const google::protobuf::Message &t_message) const;
+    void sendMessage(QByteArray message) const;
     void startConnection(QString t_ipAddress, quint16 t_port);
 
 private slots:

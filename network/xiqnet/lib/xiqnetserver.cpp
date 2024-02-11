@@ -15,12 +15,6 @@ XiQNetServer::~XiQNetServer()
     delete d_ptr;
 }
 
-void XiQNetServer::setDefaultWrapper(XiQNetWrapper *t_wrapper)
-{
-    Q_ASSERT(t_wrapper != nullptr);
-    d_ptr->m_defaultWrapper = t_wrapper;
-}
-
 void XiQNetServer::startServer(quint16 t_port, bool t_systemdSocket)
 {
     if(t_systemdSocket) {
@@ -57,8 +51,6 @@ void XiQNetServer::incomingConnection(qintptr t_socketDescriptor)
 {
     qDebug()<<"[xiqnet-qt]Client connected";
     XiQNetPeer *client = new XiQNetPeer(t_socketDescriptor, this);
-    if(d_ptr->m_defaultWrapper)
-        client->setWrapper(d_ptr->m_defaultWrapper);
     d_ptr->m_clients.append(client);
     connect(client, &XiQNetPeer::sigConnectionClosed, this, &XiQNetServer::clientDisconnectedSRV);
     emit sigClientConnected(client);
