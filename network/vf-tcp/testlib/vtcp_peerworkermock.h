@@ -21,8 +21,15 @@ public:
     TcpPeerWorkerMock(TcpPeer *peer, secret);
     TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret);
     virtual ~TcpPeerWorkerMock();
+
+    virtual QString getIpAddress() const override;
+    virtual quint16 getPort() const override;
+    bool isConnected() const override;
+    void writeRaw(QByteArray message) const override;
+
     void startConnection(QString ipAddress, quint16 port) override;
     void sendArray(const QByteArray &byteArray) const override;
+
     QUuid getPeerId() const override;
     void setPeerId(QUuid peerId) override;
 
@@ -38,6 +45,8 @@ private:
     TcpPeer *m_myPeer = nullptr;
     TcpPeer *m_otherPeer = nullptr;
     bool m_connectionEstablished = false;
+    QString m_ipAddress;
+    quint16 m_port;
 };
 }
 #endif // VEIN_TCP_PEERWORKERMOCK_H
