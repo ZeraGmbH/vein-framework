@@ -22,7 +22,15 @@ XiQNetPeer::XiQNetPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this]() {
         emit sigConnectionClosed(this);
     });
-    connect(d_ptr->m_tcpSock, SIGNAL(error(QAbstractSocket::SocketError)), this, SIGNAL(sigSocketError(QAbstractSocket::SocketError)));
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, d_ptr->q_ptr, [this](QAbstractSocket::SocketError socketError) {
+        emit d_ptr->q_ptr->sigSocketError(d_ptr->q_ptr, socketError);
+    });
+#else
+    connect(d_ptr->m_tcpSock, &QTcpSocket::errorOccurred, this, [this](QAbstractSocket::SocketError error) {
+        emit sigSocketError(this, error);
+    });
+#endif
 
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::closeConnection);
     if(!d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor)) {
@@ -95,7 +103,15 @@ void XiQNetPeer::startConnection(QString t_ipAddress, quint16 t_port)
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this]() {
         emit sigConnectionClosed(this);
     });
-    connect(d_ptr->m_tcpSock, SIGNAL(error(QAbstractSocket::SocketError)), this, SIGNAL(sigSocketError(QAbstractSocket::SocketError)));
+#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+    connect<void(QTcpSocket::*)(QAbstractSocket::SocketError)>(d_ptr->m_tcpSock, &QTcpSocket::error, d_ptr->q_ptr, [this](QAbstractSocket::SocketError socketError) {
+        emit d_ptr->q_ptr->sigSocketError(d_ptr->q_ptr, socketError);
+    });
+#else
+    connect(d_ptr->m_tcpSock, &QTcpSocket::errorOccurred, this, [this](QAbstractSocket::SocketError error) {
+        emit sigSocketError(this, error);
+    });
+#endif
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::closeConnection);
     d_ptr->m_tcpSock->connectToHost(t_ipAddress, t_port);
     d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
