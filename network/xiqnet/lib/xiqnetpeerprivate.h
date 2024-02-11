@@ -16,11 +16,10 @@ private:
 
     QByteArray readArray();
     void sendArray(const QByteArray &t_byteArray) const;
-    int m_peerId = -1;
+    QUuid m_peerId;
 
     qint32 m_socketBufferExpectedSize = 0;
     QTcpSocket *m_tcpSock = nullptr;
-    XiQNetWrapper *m_wrapper = nullptr;
     XiQNetPeer *q_ptr = nullptr;
 
     friend class XiQNetPeer;

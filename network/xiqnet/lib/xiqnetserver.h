@@ -1,7 +1,6 @@
 #ifndef H2012_xiqnet_SERVER_PUB_H
 #define H2012_xiqnet_SERVER_PUB_H
 
-#include "xiqnet_global.h"
 #include "xiqnet_export.h"
 #include <QTcpServer>
 #include <QList>
@@ -16,7 +15,6 @@ class XIQNET_EXPORT XiQNetServer : public QTcpServer
 public:
     explicit XiQNetServer(QObject *t_parent = nullptr);
     virtual ~XiQNetServer();
-    void setDefaultWrapper(XiQNetWrapper *t_wrapper);
 signals:
     void sigClientConnected(XiQNetPeer *t_peer);
 public slots:

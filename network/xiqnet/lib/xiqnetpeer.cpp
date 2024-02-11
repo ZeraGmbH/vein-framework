@@ -15,8 +15,9 @@ XiQNetPeer::XiQNetPeer(qintptr t_socketDescriptor, QObject *t_parent) :
     d_ptr(new XiQNetPeerPrivate(this))
 {
     d_ptr->m_tcpSock = new QTcpSocket();
-    d_ptr->m_wrapper = nullptr;
-    connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, &XiQNetPeer::sigConnectionEstablished);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, [this]() {
+        emit sigConnectionEstablished(this);
+    });
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &XiQNetPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this]() {
         emit sigConnectionClosed(this);
@@ -25,7 +26,7 @@ XiQNetPeer::XiQNetPeer(qintptr t_socketDescriptor, QObject *t_parent) :
 
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, &XiQNetPeer::closeConnection);
     if(!d_ptr->m_tcpSock->setSocketDescriptor(t_socketDescriptor)) {
-        emit sigSocketError(d_ptr->m_tcpSock->error());
+        emit sigSocketError(this, d_ptr->m_tcpSock->error());
         qFatal("[xiqnet-qt] Error setting clients socket descriptor");
     }
     d_ptr->m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
@@ -56,40 +57,28 @@ bool XiQNetPeer::isConnected() const
     return d_ptr->m_tcpSock && (d_ptr->m_tcpSock->state()==QTcpSocket::ConnectedState || d_ptr->m_tcpSock->state()==QTcpSocket::BoundState);
 }
 
-int XiQNetPeer::getPeerId() const
+QUuid XiQNetPeer::getPeerId() const
 {
     return d_ptr->m_peerId;
 }
 
-void XiQNetPeer::setPeerId(int t_peerId)
+void XiQNetPeer::setPeerId(QUuid peerId)
 {
-    Q_ASSERT(t_peerId>=0);
-
-    d_ptr->m_peerId = t_peerId;
+    d_ptr->m_peerId = peerId;
 }
 
-QTcpSocket *XiQNetPeer::getTcpSocket() const
+void XiQNetPeer::writeRaw(QByteArray message) const
 {
-    return d_ptr->m_tcpSock;
+    d_ptr->m_tcpSock->write(message);
 }
 
-XiQNetWrapper *XiQNetPeer::getWrapper() const
+void XiQNetPeer::sendMessage(QByteArray message) const
 {
-    return d_ptr->m_wrapper;
-}
-
-void XiQNetPeer::setWrapper(XiQNetWrapper *value)
-{
-    d_ptr->m_wrapper = value;
-}
-
-void XiQNetPeer::sendMessage(const google::protobuf::Message &t_message) const
-{
-    if(!isConnected() || !d_ptr->m_wrapper) {
+    if(!isConnected()) {
         qWarning("[xiqnet-qt] Trying to send data to disconnected host.");
         return;
     }
-    d_ptr->sendArray(d_ptr->m_wrapper->protobufToByteArray(t_message));
+    d_ptr->sendArray(message);
 }
 
 void XiQNetPeer::startConnection(QString t_ipAddress, quint16 t_port)
@@ -99,7 +88,9 @@ void XiQNetPeer::startConnection(QString t_ipAddress, quint16 t_port)
 
     d_ptr->m_tcpSock= new QTcpSocket(this);
 
-    connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, &XiQNetPeer::sigConnectionEstablished);
+    connect(d_ptr->m_tcpSock, &QTcpSocket::connected, this, [this]() {
+        emit sigConnectionEstablished(this);
+    });
     connect(d_ptr->m_tcpSock, &QTcpSocket::readyRead, this, &XiQNetPeer::onReadyRead);
     connect(d_ptr->m_tcpSock, &QTcpSocket::disconnected, this, [this]() {
         emit sigConnectionClosed(this);
@@ -114,23 +105,17 @@ void XiQNetPeer::closeConnection()
 {
     Q_ASSERT(d_ptr->m_tcpSock);
 
-    //void out the wrapper
-    d_ptr->m_wrapper=0;
-
     d_ptr->m_tcpSock->close();
     //qDebug() << "disconnected";
 }
 
 void XiQNetPeer::onReadyRead()
 {
-    Q_ASSERT(d_ptr->m_wrapper != nullptr);
-
     QByteArray newMessage;
     newMessage = d_ptr->readArray();
     while(!newMessage.isNull())
     {
-        //qDebug() << "[proto-net-qt] Message received: "<<newMessage.toBase64();
-        emit sigMessageReceived(d_ptr->m_wrapper->byteArrayToProtobuf(newMessage));
+        emit sigMessageReceived(this, newMessage);
         newMessage = d_ptr->readArray();
     }
 }
