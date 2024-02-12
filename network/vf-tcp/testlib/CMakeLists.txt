@@ -30,7 +30,7 @@ set_target_properties(vf-tcp-testlib PROPERTIES SOVERSION ${PROJECT_VERSION_MAJO
 generate_export_header(vf-tcp-testlib)
 
 install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/vftcptest_export.h
+    ${CMAKE_CURRENT_BINARY_DIR}/vf-tcp-testlib_export.h
     DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/vf-tcp-testlib
     )
 
