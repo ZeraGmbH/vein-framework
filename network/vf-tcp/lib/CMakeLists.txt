@@ -17,7 +17,7 @@ add_library(VfTcp SHARED
 
 target_include_directories(VfTcp
     PUBLIC
-    $<INSTALL_INTERFACE:include/VfTcp>
+    $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/VfTcp>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
     )

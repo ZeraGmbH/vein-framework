@@ -52,7 +52,7 @@ function(SETUP_TESTS)
             VfComponentTest
             VfCpp
             VfNet2
-            VfTcpTest
+            vf-tcp-testlib
             VfConvenientCodeTest
             ModmanBase
             veinserver-testlib
