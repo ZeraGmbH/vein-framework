@@ -1,2 +1,0 @@
-SETUP_TESTS(
-    )
