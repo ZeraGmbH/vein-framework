@@ -132,7 +132,11 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice) const
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << tmpData.typeName() << tmpDataType << QMetaType::type("QList<QString>") << QMetaType::type(tmpData.typeName());
                 if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
                     QVariantList tmpIntList;
-                    const auto intList = tmpData.value<QList<int> >();
+                    auto intList = tmpData.value<QList<int> >();
+                    if(tmpEntityId == 0 && tmpComponentName == "Entities")
+                        std::sort(intList .begin(), intList .end());
+                    else
+                        qFatal("Unexpected int-list: Entity id: %i / comonente %s", tmpEntityId, qPrintable(tmpComponentName));
                     for(const int &tmpInt : intList)
                         tmpIntList.append(tmpInt);
                     toInsert = QJsonArray::fromVariantList(tmpIntList);
