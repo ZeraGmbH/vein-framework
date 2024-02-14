@@ -117,12 +117,14 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice) const
         QJsonDocument tmpDoc;
         QJsonObject rootObject;
 
-        const auto tmpEntityIdKeys = m_data->keys();
+        QList<int> tmpEntityIdKeys = m_data->keys();
+        std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : tmpEntityIdKeys) {
-            const auto entityHashPointer = m_data->value(tmpEntityId);
+            const QHash<QString, QVariant>* entityHashPointer = m_data->value(tmpEntityId);
             QJsonObject tmpEntityObject;
 
-            const auto tmpEntityComponentNames = m_data->value(tmpEntityId)->keys();
+            QStringList tmpEntityComponentNames = m_data->value(tmpEntityId)->keys();
+            std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = entityHashPointer->value(tmpComponentName);
                 QJsonValue toInsert;
