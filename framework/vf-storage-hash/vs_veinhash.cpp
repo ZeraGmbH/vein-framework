@@ -107,105 +107,80 @@ StorageSystem::StorageType VeinHash::getStorageType() const
     return StorageSystem::MEMORY_STORAGE;
 }
 
-void VeinHash::dumpToFile(QFile *t_fileDevice, bool t_overwrite) const
+void VeinHash::dumpToFile(QIODevice *outputFileDevice) const
 {
     QElapsedTimer qET;
     qET.start();
-    //debug
-    Q_ASSERT(t_fileDevice->exists() == false || t_overwrite);
-    if((t_fileDevice->exists() == false || t_overwrite) &&
-            (t_fileDevice->isOpen() || t_fileDevice->open(QFile::WriteOnly)) &&
-            t_fileDevice->isWritable())
-    {
+    if( (outputFileDevice->isOpen() || outputFileDevice->open(QFile::WriteOnly)) &&
+         outputFileDevice->isWritable()) {
 
         QJsonDocument tmpDoc;
         QJsonObject rootObject;
 
         const auto tmpEntityIdKeys = m_data->keys();
-
-        for(const int tmpEntityId : tmpEntityIdKeys)
-        {
+        for(const int tmpEntityId : tmpEntityIdKeys) {
             const auto entityHashPointer = m_data->value(tmpEntityId);
             QJsonObject tmpEntityObject;
-            const auto tmpEntityComponentNames = m_data->value(tmpEntityId)->keys();
 
-            for(const QString &tmpComponentName : tmpEntityComponentNames)
-            {
+            const auto tmpEntityComponentNames = m_data->value(tmpEntityId)->keys();
+            for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = entityHashPointer->value(tmpComponentName);
                 QJsonValue toInsert;
                 int tmpDataType = QMetaType::type(tmpData.typeName());
-
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << tmpData.typeName() << tmpDataType << QMetaType::type("QList<QString>") << QMetaType::type(tmpData.typeName());
-
-                if(tmpDataType == QMetaType::type("QList<int>")) //needs manual conversion
-                {
+                if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
                     QVariantList tmpIntList;
                     const auto intList = tmpData.value<QList<int> >();
                     for(const int &tmpInt : intList)
-                    {
                         tmpIntList.append(tmpInt);
-                    }
                     toInsert = QJsonArray::fromVariantList(tmpIntList);
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<Int>" << tmpComponentName << tmpIntList;
                 }
-                else if(tmpDataType == QMetaType::type("QList<double>")) //needs manual conversion
-                {
+                else if(tmpDataType == QMetaType::type("QList<double>"))  { //needs manual conversion
                     QVariantList tmpDoubleList;
                     const auto doubleList = tmpData.value<QList<double> >();
                     for(const double tmpDouble : doubleList)
-                    {
                         tmpDoubleList.append(tmpDouble);
-                    }
                     toInsert = QJsonArray::fromVariantList(tmpDoubleList);
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<double>" << tmpComponentName << tmpDoubleList;
                 }
-                else if(tmpDataType == QMetaType::QStringList) //needs manual conversion
-                {
+                else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
                     QVariantList tmpStringList;
                     const auto stringList = tmpData.value<QStringList>();
                     for(const QString &tmpString : stringList)
-                    {
                         tmpStringList.append(tmpString);
-                    }
                     toInsert = QJsonArray::fromVariantList(tmpStringList);
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<QString>" << tmpComponentName << tmpStringList << stringList;
                 }
-                else if(tmpData.canConvert(QMetaType::QVariantList) && tmpData.toList().isEmpty() == false)
-                {
+                else if(tmpData.canConvert(QMetaType::QVariantList) && tmpData.toList().isEmpty() == false) {
                     toInsert = QJsonArray::fromVariantList(tmpData.toList());
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray" << tmpComponentName << tmpData.toList();
                 }
-                else if(tmpData.canConvert(QMetaType::QVariantMap) && tmpData.toMap().isEmpty() == false)
-                {
+                else if(tmpData.canConvert(QMetaType::QVariantMap) && tmpData.toMap().isEmpty() == false) {
                     toInsert = QJsonObject::fromVariantMap(tmpData.toMap());
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonObject" << tmpComponentName << tmpData.toMap();
                 }
-                else
-                {
-                    toInsert = QJsonValue::fromVariant(tmpData);
+                else {
+                    if(tmpComponentName == "INF_ModuleInterface" ) {
+                        QJsonDocument doc = QJsonDocument::fromJson(tmpData.toString().toUtf8());
+                        toInsert = doc.object();
+                    }
+                    else
+                        toInsert = QJsonValue::fromVariant(tmpData);
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonValue" << tmpComponentName << QJsonValue::fromVariant(tmpData) << tmpData;
                 }
-
                 if(toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
-                {
-                    //VF_ASSERT(toInsert.isNull() == false, QString("Datatype %1 is not supported").arg(tmpData.typeName()).toStdString().c_str());
                     qCWarning(VEIN_STORAGE_HASH) << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
-                }
-
                 tmpEntityObject.insert(tmpComponentName, toInsert);
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
-            //vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonObject" << tmpEntityId;
         }
         tmpDoc.setObject(rootObject);
-        t_fileDevice->write(tmpDoc.toJson());
+        outputFileDevice->write(tmpDoc.toJson());
     }
 
-    if(t_fileDevice->isOpen())
-    {
-        t_fileDevice->close();
-    }
-
+    if(outputFileDevice->isOpen())
+        outputFileDevice->close();
     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Dump finished in" << qET.nsecsElapsed() << "nSecs" << qET.elapsed();
 }
 

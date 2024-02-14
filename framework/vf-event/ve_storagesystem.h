@@ -55,15 +55,7 @@ public:
 
     virtual QList<int> getEntityList() const =0;
 
-    /**
-     * @brief Causes a StorageType specific dump of the storage contents to a file
-     * Useful for debugging purposes.
-     *
-     * @note The file type is an implementation detail that is independent of any file extensions
-     * @param t_fileDevice file path for the dump
-     * @param t_overwrite overwrites existing files if set to true
-     */
-    virtual void dumpToFile(QFile *t_fileDevice, bool t_overwrite=false) const=0;
+    virtual void dumpToFile(QIODevice *outputFileDevice) const=0;
 
     /**
      * @brief Optional function that sets up the storage
