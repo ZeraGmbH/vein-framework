@@ -107,7 +107,7 @@ StorageSystem::StorageType VeinHash::getStorageType() const
     return StorageSystem::MEMORY_STORAGE;
 }
 
-void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entities) const
+void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     QElapsedTimer qET;
     qET.start();
