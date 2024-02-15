@@ -46,16 +46,12 @@ public:
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const =0;
     virtual bool hasStoredValue(int t_entityId, const QString &t_componentName) const =0;
 
-    /**
-     * @brief Retrieves a list of the components from entity t_entityId
-     * @return
-     */
     virtual QList<QString> getEntityComponents(int t_entityId) const =0;
     virtual bool hasEntity(int t_entityId) const =0;
 
     virtual QList<int> getEntityList() const =0;
 
-    virtual void dumpToFile(QIODevice *outputFileDevice) const=0;
+    virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entities) const=0;
 
     /**
      * @brief Optional function that sets up the storage

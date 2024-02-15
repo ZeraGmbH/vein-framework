@@ -107,7 +107,7 @@ StorageSystem::StorageType VeinHash::getStorageType() const
     return StorageSystem::MEMORY_STORAGE;
 }
 
-void VeinHash::dumpToFile(QIODevice *outputFileDevice) const
+void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entities) const
 {
     QElapsedTimer qET;
     qET.start();
@@ -120,6 +120,8 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice) const
         QList<int> tmpEntityIdKeys = m_data->keys();
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : tmpEntityIdKeys) {
+            if(!entities.isEmpty() && !entities.contains(tmpEntityId))
+                continue;
             const QHash<QString, QVariant>* entityHashPointer = m_data->value(tmpEntityId);
             QJsonObject tmpEntityObject;
 
