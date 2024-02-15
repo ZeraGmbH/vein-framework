@@ -120,7 +120,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
         QList<int> tmpEntityIdKeys = m_data->keys();
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : tmpEntityIdKeys) {
-            if(!entities.isEmpty() && !entities.contains(tmpEntityId))
+            if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
                 continue;
             const QHash<QString, QVariant>* entityHashPointer = m_data->value(tmpEntityId);
             QJsonObject tmpEntityObject;
