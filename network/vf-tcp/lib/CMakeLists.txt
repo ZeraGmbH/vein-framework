@@ -13,7 +13,7 @@ file(GLOB RESOURCES
 add_library(VfTcp SHARED
     ${SOURCES}
     ${HEADER}
-    )
+)
 
 target_include_directories(VfTcp
     PUBLIC
