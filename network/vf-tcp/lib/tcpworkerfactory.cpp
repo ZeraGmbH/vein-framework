@@ -17,10 +17,4 @@ TcpServerWorkerInterfacePtr TcpWorkerFactory::createWorkerForServer(TcpServer *s
     return std::make_unique<TcpServerWorker>(server, TcpServerWorker::secret());
 }
 
-TcpPeerWorkerInterfacePtr TcpWorkerFactory::createPeerWorkerInServer(TcpPeer *peer, qintptr socketDescriptor, NETWORK network)
-{
-    Q_UNUSED(network)
-    return std::make_unique<TcpPeerWorker>(peer, socketDescriptor, TcpPeerWorker::secret());
-}
-
 }

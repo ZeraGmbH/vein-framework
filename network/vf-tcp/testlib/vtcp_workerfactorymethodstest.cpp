@@ -9,7 +9,6 @@ namespace VeinTcp
 void TcpWorkerFactoryMethodsTest::enableRealNetwork()
 {
     m_createFunctionPeer = getCreateFunctionPeer();
-    m_createFunctionPeerWithDescriptor = getCreateFunctionPeerWithDescriptor();
     m_createFunctionServer = getCreateFunctionServer();
 }
 
@@ -19,10 +18,6 @@ void TcpWorkerFactoryMethodsTest::enableMockNetwork()
     m_createFunctionPeer =
         [](TcpPeer *peer) {
             return std::make_unique<TcpPeerWorkerMock>(peer, TcpPeerWorkerMock::secret());
-        };
-    m_createFunctionPeerWithDescriptor =
-        [](TcpPeer *peer, qintptr socketDescriptor) {
-            return std::make_unique<TcpPeerWorkerMock>(peer, socketDescriptor, TcpPeerWorkerMock::secret());
         };
     m_createFunctionServer =
         [](TcpServer *server) {

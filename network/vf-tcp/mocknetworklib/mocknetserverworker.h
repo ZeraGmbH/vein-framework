@@ -23,6 +23,7 @@ public:
 
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
+    TcpPeerWorkerInterfacePtr createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor) override;
     // for mock peer
     static MockNetServerWorker* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);

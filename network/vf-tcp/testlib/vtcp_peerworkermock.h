@@ -17,6 +17,7 @@ private:
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
     friend class TcpWorkerFactoryMethodsTest;
+    friend class TcpServerWorkerMock;
 public:
     TcpPeerWorkerMock(TcpPeer *peer, secret);
     TcpPeerWorkerMock(TcpPeer *peer, qintptr socketDescriptor, secret);

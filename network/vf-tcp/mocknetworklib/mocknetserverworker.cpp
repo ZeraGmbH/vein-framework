@@ -1,4 +1,5 @@
 #include "mocknetserverworker.h"
+#include "mocknetpeerworker.h"
 #include "vtcp_peer.h"
 #include "vtcp_server.h"
 #include <systemd/sd-daemon.h>
@@ -46,6 +47,11 @@ bool MockNetServerWorker::isListenActive()
     return m_portListening != 0;
 }
 
+TcpPeerWorkerInterfacePtr MockNetServerWorker::createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor)
+{
+    return std::make_unique<MockNetPeerWorker>(peer, socketDescriptor, MockNetPeerWorker::secret());
+}
+
 MockNetServerWorker* MockNetServerWorker::getServerMock(quint16 port)
 {
     MockNetServerWorker *server = nullptr;
@@ -57,7 +63,7 @@ MockNetServerWorker* MockNetServerWorker::getServerMock(quint16 port)
 // called by client peer
 TcpPeer* MockNetServerWorker::emitSigClientConnected(TcpPeer* clientPeer)
 {
-    TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(clientPeer));
+    TcpPeer* serverPeer = new VeinTcp::TcpPeer(qintptr(clientPeer), this);
     QMetaObject::invokeMethod(m_server,
                               "sigClientConnected",
                               Qt::QueuedConnection,

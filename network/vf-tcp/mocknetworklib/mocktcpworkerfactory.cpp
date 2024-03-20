@@ -16,10 +16,4 @@ TcpServerWorkerInterfacePtr MockTcpWorkerFactory::createWorkerForServer(TcpServe
     return std::make_unique<MockNetServerWorker>(server, MockNetServerWorker::secret());
 }
 
-TcpPeerWorkerInterfacePtr MockTcpWorkerFactory::createPeerWorkerInServer(TcpPeer *peer, qintptr socketDescriptor, NETWORK network)
-{
-    Q_UNUSED(network)
-    return std::make_unique<MockNetPeerWorker>(peer, socketDescriptor, MockNetPeerWorker::secret());
-}
-
 }

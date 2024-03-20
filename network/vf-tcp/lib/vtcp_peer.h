@@ -3,6 +3,7 @@
 
 #include "vftcp_export.h"
 #include "vtcp_peerworkerinterface.h"
+#include "vtcp_serverworkerinterface.h"
 #include <QString>
 #include <QAbstractSocket>
 #include <QUuid>
@@ -14,7 +15,7 @@ class VFTCP_EXPORT TcpPeer : public QObject
     Q_OBJECT
 public:
     explicit TcpPeer(QObject *parent = nullptr);
-    explicit TcpPeer(qintptr socketDescriptor, QObject *parent = nullptr);
+    explicit TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface* serverWorker, QObject *parent = nullptr);
 
     QString getIpAddress() const;
     quint16 getPort() const;
