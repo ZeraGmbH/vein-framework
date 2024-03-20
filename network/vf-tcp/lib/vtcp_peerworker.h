@@ -17,6 +17,7 @@ private:
     struct secret { explicit secret() = default; };
     friend class TcpWorkerFactoryMethods;
     friend class TcpWorkerFactory;
+    friend class TcpServerWorker;
 public:
     TcpPeerWorker(TcpPeer *peer, secret);
     TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);

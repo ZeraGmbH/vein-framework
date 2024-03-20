@@ -10,7 +10,6 @@ class MockTcpWorkerFactory : public AbstractTcpWorkerFactory
 public:
     TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer, NETWORK network) override;
     TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server, NETWORK network) override;
-    TcpPeerWorkerInterfacePtr createPeerWorkerInServer(TcpPeer *peer, qintptr socketDescriptor, NETWORK network) override;
 };
 }
 

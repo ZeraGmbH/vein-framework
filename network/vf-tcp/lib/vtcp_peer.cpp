@@ -11,9 +11,9 @@ TcpPeer::TcpPeer(QObject *parent) :
 {
 }
 
-TcpPeer::TcpPeer(qintptr socketDescriptor, QObject *parent) :
+TcpPeer::TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface *serverWorker, QObject *parent) :
     QObject(parent),
-    m_worker(TcpWorkerFactoryMethods::createTcpPeerWorker(this, socketDescriptor))
+    m_worker(serverWorker->createServerPeerWorker(this, socketDescriptor))
 {
 }
 

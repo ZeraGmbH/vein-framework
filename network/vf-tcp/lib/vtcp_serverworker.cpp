@@ -1,5 +1,6 @@
 #include "vtcp_serverworker.h"
 #include "vtcp_peer.h"
+#include "vtcp_peerworker.h"
 #include "vtcp_server.h"
 #include <systemd/sd-daemon.h>
 
@@ -20,7 +21,7 @@ TcpServerWorker::~TcpServerWorker()
 void TcpServerWorker::incomingConnection(qintptr socketDescriptor)
 {
     qDebug()<<"[vein-tcp] Client connected";
-    TcpPeer *client = new TcpPeer(socketDescriptor, this); //deleted in TcpServer::clientDisconnectedSRV
+    TcpPeer *client = new TcpPeer(socketDescriptor, this, this); //deleted in TcpServer::clientDisconnectedSRV
     m_clients.append(client);
     connect(client, &TcpPeer::sigConnectionClosed, this, &TcpServerWorker::clientDisconnectedSRV);
     emit m_server->sigClientConnected(client);
@@ -67,5 +68,10 @@ bool TcpServerWorker::startServer(quint16 port, bool systemdSocket)
 bool TcpServerWorker::isListenActive()
 {
     return isListening();
+}
+
+TcpPeerWorkerInterfacePtr TcpServerWorker::createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor)
+{
+    return std::make_unique<TcpPeerWorker>(peer, socketDescriptor, TcpPeerWorker::secret());
 }
 }

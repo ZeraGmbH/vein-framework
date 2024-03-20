@@ -18,7 +18,6 @@ class AbstractTcpWorkerFactory
 public:
     virtual TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer, NETWORK network) = 0;
     virtual TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server, NETWORK network) = 0;
-    virtual TcpPeerWorkerInterfacePtr createPeerWorkerInServer(TcpPeer *peer, qintptr socketDescriptor, NETWORK network) = 0;
 };
 }
 

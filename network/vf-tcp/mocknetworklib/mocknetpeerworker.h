@@ -16,8 +16,8 @@ private:
     // Just our friend MockNetTcpWorkerFactory can create us (by make_unique) - see
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
-    friend class MockNetTcpWorkerFactory;
     friend class MockTcpWorkerFactory;
+    friend class MockNetServerWorker;
 public:
     MockNetPeerWorker(TcpPeer *peer, secret);
     MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);

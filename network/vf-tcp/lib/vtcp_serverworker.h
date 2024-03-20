@@ -23,6 +23,7 @@ public:
     ~TcpServerWorker();
     bool startServer(quint16 port, bool systemdSocket) override;
     bool isListenActive() override;
+    TcpPeerWorkerInterfacePtr createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor) override;
 private slots:
     void clientDisconnectedSRV(TcpPeer *peer);
 private:
