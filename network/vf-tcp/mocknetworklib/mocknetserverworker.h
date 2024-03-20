@@ -12,7 +12,7 @@ class MockNetServerWorker : public QObject, public TcpServerWorkerInterface
 {
     Q_OBJECT
 private:
-    // Just our friend MockNetTcpWorkerFactory can create us (by make_unique) - see
+    // Just our friends can create us (by make_unique) - see
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
     friend class MockNetTcpWorkerFactory;
