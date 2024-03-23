@@ -192,13 +192,9 @@ QVariant VeinHash::getStoredValue(int t_entityId, const QString &t_componentName
 {
     QVariant retVal;
     if(m_data->contains(t_entityId))
-    {
         retVal = m_data->value(t_entityId)->value(t_componentName);
-    }
     else
-    {
         qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  t_entityId << "component" << t_componentName;
-    }
     return retVal;
 }
 
