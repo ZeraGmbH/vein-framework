@@ -1,36 +1,29 @@
 #include "vs_veinhash.h"
-
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_errordata.h>
 #include <ve_commandevent.h>
 #include <QEvent>
-
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QFile>
-
-#include <QElapsedTimer>
 
 Q_LOGGING_CATEGORY(VEIN_STORAGE_HASH, VEIN_DEBUGNAME_STORAGE_HASH)
 Q_LOGGING_CATEGORY(VEIN_STORAGE_HASH_VERBOSE, VEIN_DEBUGNAME_STORAGE_HASH_VERBOSE)
-
 
 using namespace VeinEvent;
 using namespace VeinComponent;
 
 namespace VeinStorage
 {
-VeinHash::VeinHash(QObject *t_parent) :
-    StorageSystem(t_parent)
+VeinHash::VeinHash(QObject *parent) :
+    StorageSystem(parent)
 {
-    vCDebug(VEIN_STORAGE_HASH) << "Created VeinHash storage";
 }
 
-void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> t_origins)
+void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
 {
-    m_acceptableOrigins = t_origins;
+    m_acceptableOrigins = origins;
 }
 
 const QList<EventData::EventOrigin> &VeinHash::getAcceptableOrigin() const
@@ -38,48 +31,26 @@ const QList<EventData::EventOrigin> &VeinHash::getAcceptableOrigin() const
     return m_acceptableOrigins;
 }
 
-VeinHash::~VeinHash()
+void VeinHash::processEvent(QEvent *event)
 {
-    vCDebug(VEIN_STORAGE_HASH) << "Destroyed VeinHash storage";
-
-    for(int i=0; i<m_data->count(); ++i)
-    {
-        QHash<QString, QVariant> *tmpToDelete = m_data->values().at(i);
-        delete tmpToDelete;
-    }
-    delete m_data;
-}
-
-
-void VeinHash::processEvent(QEvent *t_event)
-{
-    if(t_event->type()==CommandEvent::eventType())
-    {
-        CommandEvent *cEvent = nullptr;
-        EventData *evData = nullptr;
-        cEvent = static_cast<CommandEvent *>(t_event);
+    if(event->type()==CommandEvent::eventType()) {
+        CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
-
-        evData = cEvent->eventData();
+        EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
 
-        if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin()))
-        {
+        if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin())) {
             switch (evData->type())
             {
             case ComponentData::dataType():
             {
-                ComponentData *cData=nullptr;
-                cData = static_cast<ComponentData *>(evData);
+                ComponentData *cData = static_cast<ComponentData *>(evData);
                 Q_ASSERT(cData != nullptr);
-
-                if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET))
-                {
+                if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
                     vCDebug(VEIN_STORAGE_HASH) << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
-                    t_event->accept();
+                    event->accept();
                 }
-                else
-                {
+                else {
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing component data from event" << cEvent;
                     processComponentData(cData);
                 }
@@ -87,8 +58,7 @@ void VeinHash::processEvent(QEvent *t_event)
             }
             case EntityData::dataType():
             {
-                EntityData *eData=nullptr;
-                eData = static_cast<EntityData *>(evData);
+                EntityData *eData = static_cast<EntityData *>(evData);
                 Q_ASSERT(eData != nullptr);
 
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing entity data from event" << cEvent;
@@ -104,26 +74,21 @@ void VeinHash::processEvent(QEvent *t_event)
 
 void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
-    QElapsedTimer qET;
-    qET.start();
-    if( (outputFileDevice->isOpen() || outputFileDevice->open(QFile::WriteOnly)) &&
-         outputFileDevice->isWritable()) {
-
-        QJsonDocument tmpDoc;
+    if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
+        outputFileDevice->isWritable()) {
         QJsonObject rootObject;
-
-        QList<int> tmpEntityIdKeys = m_data->keys();
+        QList<int> tmpEntityIdKeys = m_entityComponentData.keys();
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : tmpEntityIdKeys) {
             if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
                 continue;
-            const QHash<QString, QVariant>* entityHashPointer = m_data->value(tmpEntityId);
+            const QHash<QString, QVariant> entityHashPointer = m_entityComponentData.value(tmpEntityId);
             QJsonObject tmpEntityObject;
 
-            QStringList tmpEntityComponentNames = m_data->value(tmpEntityId)->keys();
+            QStringList tmpEntityComponentNames = m_entityComponentData.value(tmpEntityId).keys();
             std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
-                QVariant tmpData = entityHashPointer->value(tmpComponentName);
+                QVariant tmpData = entityHashPointer.value(tmpComponentName);
                 QJsonValue toInsert;
                 int tmpDataType = QMetaType::type(tmpData.typeName());
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << tmpData.typeName() << tmpDataType << QMetaType::type("QList<QString>") << QMetaType::type(tmpData.typeName());
@@ -178,185 +143,154 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
         }
+        QJsonDocument tmpDoc;
         tmpDoc.setObject(rootObject);
         outputFileDevice->write(tmpDoc.toJson());
     }
 
     if(outputFileDevice->isOpen())
         outputFileDevice->close();
-    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Dump finished in" << qET.nsecsElapsed() << "nSecs" << qET.elapsed();
 }
 
 
-QVariant VeinHash::getStoredValue(int t_entityId, const QString &t_componentName) const
+QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
 {
     QVariant retVal;
-    if(m_data->contains(t_entityId))
-        retVal = m_data->value(t_entityId)->value(t_componentName);
+    if(m_entityComponentData.contains(entityId))
+        retVal = m_entityComponentData.value(entityId).value(componentName);
     else
-        qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  t_entityId << "component" << t_componentName;
+        qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  entityId << "component" << componentName;
     return retVal;
 }
 
-bool VeinHash::hasStoredValue(int t_entityId, const QString &t_componentName) const
+bool VeinHash::hasStoredValue(int entityId, const QString &componentName) const
 {
-    return m_data->contains(t_entityId) && m_data->value(t_entityId)->contains(t_componentName);
+    return m_entityComponentData.contains(entityId) && m_entityComponentData.value(entityId).contains(componentName);
 }
 
 
-QList<QString> VeinHash::getEntityComponents(int t_entityId) const
+QList<QString> VeinHash::getEntityComponents(int entityId) const
 {
-    return m_data->value(t_entityId)->keys();
+    return m_entityComponentData.value(entityId).keys();
 }
 
-bool VeinHash::hasEntity(int t_entityId) const
+bool VeinHash::hasEntity(int entityId) const
 {
-    return m_data->contains(t_entityId);
+    return m_entityComponentData.contains(entityId);
 }
 
 QList<int> VeinHash::getEntityList() const
 {
-    return m_data->keys();
+    return m_entityComponentData.keys();
 }
 
-bool VeinHash::processComponentData(ComponentData *t_cData)
+void VeinHash::processComponentData(ComponentData *cData)
 {
-    Q_ASSERT(t_cData != nullptr);
-
-    bool retVal=false;
-    const QString componentName= t_cData->componentName();
-    switch(t_cData->eventCommand())
+    Q_ASSERT(cData != nullptr);
+    const QString componentName= cData->componentName();
+    const int entityId = cData->entityId();
+    switch(cData->eventCommand())
     {
     case ComponentData::Command::CCMD_ADD:
     {
-        if(m_data->contains(t_cData->entityId()) == false)
-        {
-            QString tmpErrorString = tr("can not add value for invalid entity id: %1").arg(t_cData->entityId());
+        if(!m_entityComponentData.contains(entityId)) {
+            QString tmpErrorString = QString("can not add value for invalid entity id: %1").arg(entityId);
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_cData);
+            sendError(tmpErrorString, cData);
         }
-        else if(m_data->value(t_cData->entityId())->contains(componentName) == true)
-        {
-            QString tmpErrorString = tr("value already exists for component: %1 %2").arg(t_cData->entityId()).arg(t_cData->componentName());
+        else if(m_entityComponentData.value(entityId).contains(componentName)) {
+            QString tmpErrorString = QString("value already exists for component: %1 %2").arg(entityId).arg(cData->componentName());
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_cData);
+            sendError(tmpErrorString, cData);
         }
-        else
-        {
-            vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "adding component:" << t_cData->entityId() << componentName << "with value:" << t_cData->newValue();
-            m_data->value(t_cData->entityId())->insert(componentName,t_cData->newValue());
-            retVal = true;
+        else {
+            vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "adding component:" << entityId << componentName << "with value:" << cData->newValue();
+            m_entityComponentData[entityId][componentName] = cData->newValue();
         }
         break;
     }
-
     case ComponentData::Command::CCMD_REMOVE:
     {
-        if(m_data->contains(t_cData->entityId()) && m_data->value(t_cData->entityId())->contains(componentName))
-        {
-            vCDebug(VEIN_STORAGE_HASH) << "removing entry:" << t_cData->entityId() << componentName;
-            m_data->value(t_cData->entityId())->remove(componentName);
-            retVal = true;
+        if(m_entityComponentData.contains(entityId) && m_entityComponentData.value(entityId).contains(componentName)) {
+            vCDebug(VEIN_STORAGE_HASH) << "removing entry:" << entityId << componentName;
+            m_entityComponentData[entityId].remove(componentName);
         }
         break;
     }
     case ComponentData::Command::CCMD_SET:
     {
-        if(m_data->contains(t_cData->entityId()) == false)
-        {
-            QString tmpErrorString = tr("can not set value for nonexistant entity id: %1").arg(t_cData->entityId());
+        if(!m_entityComponentData.contains(entityId)) {
+            QString tmpErrorString = tr("can not set value for nonexistant entity id: %1").arg(entityId);
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_cData);
+            sendError(tmpErrorString, cData);
         }
-        else if(m_data->value(t_cData->entityId())->contains(componentName) == false)
-        {
-            QString tmpErrorString = tr("can not set value for nonexistant component: %1 %2").arg(t_cData->entityId()).arg(t_cData->componentName());
+        else if(!m_entityComponentData[entityId].contains(componentName)) {
+            QString tmpErrorString = tr("can not set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName());
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_cData);
+            sendError(tmpErrorString, cData);
         }
-        else
-        {
-            vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "setting key:" << componentName << "from:" << m_data->value(t_cData->entityId())->value(componentName) << "to:" << t_cData->newValue();
-            m_data->value(t_cData->entityId())->insert(componentName,t_cData->newValue());
-            retVal = true;
+        else {
+            vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "setting key:" << componentName << "from:" << m_entityComponentData.value(entityId).value(componentName) << "to:" << cData->newValue();
+            m_entityComponentData[entityId][componentName] = cData->newValue();
         }
         break;
     }
     case ComponentData::Command::CCMD_FETCH:
     {
         ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
-        vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing CCMD_FETCH, entityId:" << t_cData->entityId() << "componentName:" << componentName;
-        t_cData->setNewValue(getStoredValue(t_cData->entityId(), componentName));
-        t_cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
-        t_cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-        retVal = true;
+        vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing CCMD_FETCH, entityId:" << entityId << "componentName:" << componentName;
+        cData->setNewValue(getStoredValue(entityId, componentName));
+        cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+        cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         break;
     }
     default:
         break;
     }
-    return retVal;
 }
 
-bool VeinHash::processEntityData(EntityData *t_eData)
+void VeinHash::processEntityData(EntityData *eData)
 {
-    Q_ASSERT(t_eData != nullptr);
-
-    bool retVal =false;
-    switch(t_eData->eventCommand())
+    Q_ASSERT(eData != nullptr);
+    switch(eData->eventCommand())
     {
     case EntityData::Command::ECMD_ADD:
     {
-        if(m_data->contains(t_eData->entityId()) == false)
-        {
-            QHash<QString, QVariant> *tmpHash = new QHash<QString, QVariant>();
-            m_data->insert(t_eData->entityId(), tmpHash);
-            retVal = true;
-        }
-        else
-        {
-            QString tmpErrorString = tr("Cannot add entity, entity id already exists: %1").arg(t_eData->entityId());
+        if(!m_entityComponentData.contains(eData->entityId()))
+            m_entityComponentData.insert(eData->entityId(), QHash<QString, QVariant>());
+        else {
+            QString tmpErrorString = tr("Cannot add entity, entity id already exists: %1").arg(eData->entityId());
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_eData);
+            sendError(tmpErrorString, eData);
         }
         break;
     }
-
     case EntityData::Command::ECMD_REMOVE:
     {
-        if(m_data->contains(t_eData->entityId()) == true)
-        {
-            QHash<QString, QVariant> *tmpHash = m_data->value(t_eData->entityId());
-            m_data->remove(t_eData->entityId());
-            delete tmpHash;
-            retVal = true;
-        }
-        else
-        {
-            QString tmpErrorString = tr("Cannot delete entity, entity id does not exists: %1").arg(t_eData->entityId());
+        if(m_entityComponentData.contains(eData->entityId()))
+            m_entityComponentData.remove(eData->entityId());
+        else {
+            QString tmpErrorString = tr("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId());
             qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, t_eData);
+            sendError(tmpErrorString, eData);
         }
         break;
     }
-
     default: //ECMD_SUBSCRIBE etc. is handled by the networksystem
         break;
     }
-    return retVal;
 }
 
-void VeinHash::sendError(const QString &t_errorString, EventData *t_data)
+void VeinHash::sendError(const QString &errorString, EventData *data)
 {
-    Q_ASSERT(t_data != nullptr);
+    Q_ASSERT(data != nullptr);
 
     ErrorData *errData = new ErrorData();
-
-    errData->setEntityId(t_data->entityId());
-    errData->setOriginalData(t_data);
+    errData->setEntityId(data->entityId());
+    errData->setOriginalData(data);
     errData->setEventOrigin(EventData::EventOrigin::EO_LOCAL);
-    errData->setEventTarget(t_data->eventTarget());
-    errData->setErrorDescription(t_errorString);
+    errData->setEventTarget(data->eventTarget());
+    errData->setErrorDescription(errorString);
 
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, errData);
     emit sigSendEvent(cEvent);

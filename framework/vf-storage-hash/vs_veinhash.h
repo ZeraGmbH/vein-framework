@@ -29,11 +29,9 @@ class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
 {
     Q_OBJECT
 public:
-    explicit VeinHash(QObject *t_parent=nullptr);
-    void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> t_origins);
+    explicit VeinHash(QObject *parent = nullptr);
+    void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins);
     const QList<VeinEvent::EventData::EventOrigin> &getAcceptableOrigin() const;
-
-    virtual ~VeinHash() override;
 
     //stands for QHash<"entity descriptor", QHash<"component name", "component data">*>
     template <typename T>
@@ -41,36 +39,19 @@ public:
 
     //VeinEvent::StorageSystem interface
 public:
-    void processEvent(QEvent *t_event) override;
+    void processEvent(QEvent *event) override;
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
-    Q_INVOKABLE QVariant getStoredValue(int t_entityId, const QString &t_componentName) const override;
-    Q_INVOKABLE bool hasStoredValue(int t_entityId, const QString &t_componentName) const override;
-    QList<QString> getEntityComponents(int t_entityId) const override;
-    bool hasEntity(int t_entityId) const override;
+    Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
+    Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
+    QList<QString> getEntityComponents(int entityId) const override;
+    bool hasEntity(int entityId) const override;
     QList<int> getEntityList() const override;
 private:
-    /**
-     * @brief handles ADD, REMOVE and SET for ComponentData events
-     * @param t_cData
-     * @return
-     */
-    bool processComponentData(VeinComponent::ComponentData *t_cData);
+    void processComponentData(VeinComponent::ComponentData *cData);
+    void processEntityData(VeinComponent::EntityData *eData);
+    void sendError(const QString &errorString, VeinEvent::EventData *data);
 
-    /**
-     * @brief handles ADD and REMOVE for EntityData events
-     * @param t_eData
-     * @return
-     */
-    bool processEntityData(VeinComponent::EntityData *t_eData);
-
-    /**
-     * @brief sends ErrorEvents with the EventDate that caused the error
-     * @param t_errorString
-     * @param t_data
-     */
-    void sendError(const QString &t_errorString, VeinEvent::EventData *t_data);
-
-    ComponentStorage<int> *m_data = new ComponentStorage<int>();
+    QHash<int, QHash<QString, QVariant>> m_entityComponentData;
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins = {VeinEvent::EventData::EventOrigin::EO_LOCAL, VeinEvent::EventData::EventOrigin::EO_FOREIGN};
 };
 }
