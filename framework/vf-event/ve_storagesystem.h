@@ -24,19 +24,6 @@ class VFEVENT_EXPORT StorageSystem : public EventSystem
 public:
     explicit StorageSystem(QObject *t_parent=nullptr);
 
-    enum StorageType {
-        MEMORY_STORAGE = 0, /**< like a QHash or an in memory SQLITE DB */
-        FILE_STORAGE = 1, /**< like a JSON file or a SQLITE file DB */
-        NETWORK_STORAGE = 2 /**< like a DHT or a MySQL database */
-    };
-
-    /**
-     * @brief Depending on the StorageType the storage system is useful for different purposes
-     * @return Returns the StorageType of this implementation
-     */
-    virtual StorageType getStorageType() const=0;
-
-
     /**
      * @brief Execution speed depends on the implementation
      * @param t_entityId
