@@ -102,11 +102,6 @@ void VeinHash::processEvent(QEvent *t_event)
     }
 }
 
-StorageSystem::StorageType VeinHash::getStorageType() const
-{
-    return StorageSystem::MEMORY_STORAGE;
-}
-
 void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     QElapsedTimer qET;

@@ -42,7 +42,6 @@ public:
     //VeinEvent::StorageSystem interface
 public:
     void processEvent(QEvent *t_event) override;
-    StorageType getStorageType() const override;
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
     Q_INVOKABLE QVariant getStoredValue(int t_entityId, const QString &t_componentName) const override;
     Q_INVOKABLE bool hasStoredValue(int t_entityId, const QString &t_componentName) const override;
