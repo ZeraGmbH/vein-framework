@@ -36,13 +36,6 @@ public:
     virtual QList<int> getEntityList() const =0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const=0;
-
-    /**
-     * @brief Optional function that sets up the storage
-     * @param t_sourceUrl
-     * @return success indicator
-     */
-    virtual bool initializeData(const QUrl &t_sourceUrl)=0;
 };
 }
 
