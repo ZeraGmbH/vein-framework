@@ -204,14 +204,6 @@ bool VeinHash::hasStoredValue(int t_entityId, const QString &t_componentName) co
 }
 
 
-bool VeinHash::initializeData(const QUrl &t_sourceUrl)
-{
-    Q_UNUSED(t_sourceUrl)
-    qCWarning(VEIN_STORAGE_HASH) << "Function initializeData is currently not implemented";
-    Q_ASSERT(false);
-    return false;
-}
-
 QList<QString> VeinHash::getEntityComponents(int t_entityId) const
 {
     return m_data->value(t_entityId)->keys();
