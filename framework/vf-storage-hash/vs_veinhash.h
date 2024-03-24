@@ -9,12 +9,6 @@
 Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE_HASH)
 Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE_HASH_VERBOSE)
 
-namespace VeinEvent
-{
-class CommandEvent;
-class EventData;
-}
-
 namespace VeinComponent
 {
 class ComponentData;
