@@ -206,7 +206,7 @@ void VeinHash::processComponentData(ComponentData *cData)
         }
         else {
             vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "adding component:" << entityId << componentName << "with value:" << cData->newValue();
-            m_entityComponentData[entityId][componentName] = cData->newValue();
+            m_entityComponentData[entityId].insert(componentName, cData->newValue());
         }
         break;
     }
