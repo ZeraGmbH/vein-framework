@@ -39,8 +39,7 @@ void VeinHash::processEvent(QEvent *event)
             }
             case EntityData::dataType():
             {
-                EntityData *eData = static_cast<EntityData *>(evData);
-                processEntityData(eData);
+                processEntityData(static_cast<EntityData *>(evData));
                 break;
             }
             default:
@@ -182,7 +181,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
         QJsonObject rootObject;
         QList<int> tmpEntityIdKeys = m_entityComponentData.keys();
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
-        for(const int tmpEntityId : tmpEntityIdKeys) {
+        for(const int tmpEntityId : qAsConst(tmpEntityIdKeys)) {
             if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
                 continue;
             const QHash<QString, QVariant> entityHashPointer = m_entityComponentData.value(tmpEntityId);
@@ -201,7 +200,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
                         std::sort(intList .begin(), intList .end());
                     else
                         qFatal("Unexpected int-list: Entity id: %i / comonente %s", tmpEntityId, qPrintable(tmpComponentName));
-                    for(const int &tmpInt : intList)
+                    for(const int &tmpInt : qAsConst(intList))
                         tmpIntList.append(tmpInt);
                     toInsert = QJsonArray::fromVariantList(tmpIntList);
                 }
