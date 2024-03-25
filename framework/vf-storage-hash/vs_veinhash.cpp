@@ -38,7 +38,7 @@ void VeinHash::processEvent(QEvent *event)
                 ComponentData *cData = static_cast<ComponentData *>(evData);
                 Q_ASSERT(cData != nullptr);
                 if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
-                    vCDebug(VEIN_STORAGE_HASH) << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
+                    qCWarning(VEIN_STORAGE_HASH) << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
                     event->accept();
                 }
                 else {
@@ -51,7 +51,6 @@ void VeinHash::processEvent(QEvent *event)
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
                 Q_ASSERT(eData != nullptr);
-
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing entity data from event" << cEvent;
                 processEntityData(eData);
                 break;
@@ -72,16 +71,10 @@ void VeinHash::processComponentData(ComponentData *cData)
     {
     case ComponentData::Command::CCMD_ADD:
     {
-        if(!m_entityComponentData.contains(entityId)) {
-            QString tmpErrorString = QString("can not add value for invalid entity id: %1").arg(entityId);
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, cData);
-        }
-        else if(m_entityComponentData.value(entityId).contains(componentName)) {
-            QString tmpErrorString = QString("value already exists for component: %1 %2").arg(entityId).arg(cData->componentName());
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, cData);
-        }
+        if(!m_entityComponentData.contains(entityId))
+            sendError(QString("can not add value for invalid entity id: %1").arg(entityId), cData);
+        else if(m_entityComponentData.value(entityId).contains(componentName))
+            sendError(QString("value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), cData);
         else {
             vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "adding component:" << entityId << componentName << "with value:" << cData->newValue();
             m_entityComponentData[entityId].insert(componentName, cData->newValue());
@@ -98,16 +91,10 @@ void VeinHash::processComponentData(ComponentData *cData)
     }
     case ComponentData::Command::CCMD_SET:
     {
-        if(!m_entityComponentData.contains(entityId)) {
-            QString tmpErrorString = tr("can not set value for nonexistant entity id: %1").arg(entityId);
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, cData);
-        }
-        else if(!m_entityComponentData[entityId].contains(componentName)) {
-            QString tmpErrorString = tr("can not set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName());
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, cData);
-        }
+        if(!m_entityComponentData.contains(entityId))
+            sendError(QString("can not set value for nonexistant entity id: %1").arg(entityId), cData);
+        else if(!m_entityComponentData[entityId].contains(componentName))
+            sendError(QString("can not set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName()), cData);
         else {
             vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "setting key:" << componentName << "from:" << m_entityComponentData.value(entityId).value(componentName) << "to:" << cData->newValue();
             m_entityComponentData[entityId][componentName] = cData->newValue();
@@ -137,22 +124,16 @@ void VeinHash::processEntityData(EntityData *eData)
     {
         if(!m_entityComponentData.contains(eData->entityId()))
             m_entityComponentData.insert(eData->entityId(), QHash<QString, QVariant>());
-        else {
-            QString tmpErrorString = tr("Cannot add entity, entity id already exists: %1").arg(eData->entityId());
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, eData);
-        }
+        else
+            sendError(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), eData);
         break;
     }
     case EntityData::Command::ECMD_REMOVE:
     {
         if(m_entityComponentData.contains(eData->entityId()))
             m_entityComponentData.remove(eData->entityId());
-        else {
-            QString tmpErrorString = tr("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId());
-            qCWarning(VEIN_STORAGE_HASH) << tmpErrorString;
-            sendError(tmpErrorString, eData);
-        }
+        else
+            sendError(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), eData);
         break;
     }
     default: //ECMD_SUBSCRIBE etc. is handled by the networksystem
@@ -203,6 +184,7 @@ QList<int> VeinHash::getEntityList() const
 
 void VeinHash::sendError(const QString &errorString, EventData *data)
 {
+    qCWarning(VEIN_STORAGE_HASH) << errorString;
     Q_ASSERT(data != nullptr);
 
     ErrorData *errData = new ErrorData();
