@@ -38,7 +38,7 @@ void VeinHash::processEvent(QEvent *event)
                 ComponentData *cData = static_cast<ComponentData *>(evData);
                 Q_ASSERT(cData != nullptr);
                 if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
-                    qCWarning(VEIN_STORAGE_HASH) << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
+                    qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
                     event->accept();
                 }
                 else {
@@ -157,7 +157,7 @@ QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) co
     if(m_entityComponentData.contains(entityId))
         retVal = m_entityComponentData.value(entityId).value(componentName);
     else
-        qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  entityId << "component" << componentName;
+        qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << "Unknown entity with id:" <<  entityId << "component" << componentName;
     return retVal;
 }
 
@@ -184,7 +184,7 @@ QList<int> VeinHash::getEntityList() const
 
 void VeinHash::sendError(const QString &errorString, EventData *data)
 {
-    qCWarning(VEIN_STORAGE_HASH) << errorString;
+    qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << errorString;
     Q_ASSERT(data != nullptr);
 
     ErrorData *errData = new ErrorData();
@@ -264,7 +264,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
                     vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonValue" << tmpComponentName << QJsonValue::fromVariant(tmpData) << tmpData;
                 }
                 if(toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
-                    qCWarning(VEIN_STORAGE_HASH) << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
+                    qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
                 tmpEntityObject.insert(tmpComponentName, toInsert);
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
