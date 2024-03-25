@@ -6,9 +6,6 @@
 #include <ve_eventdata.h>
 #include <QHash>
 
-Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE_HASH)
-Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE_HASH_VERBOSE)
-
 namespace VeinComponent
 {
 class ComponentData;
