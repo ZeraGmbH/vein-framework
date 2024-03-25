@@ -26,17 +26,13 @@ void VeinHash::processEvent(QEvent *event)
 {
     if(event->type()==CommandEvent::eventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-        Q_ASSERT(cEvent != nullptr);
         EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-
         if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin())) {
             switch (evData->type())
             {
             case ComponentData::dataType():
             {
                 ComponentData *cData = static_cast<ComponentData *>(evData);
-                Q_ASSERT(cData != nullptr);
                 if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
                     qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
                     event->accept();
@@ -50,7 +46,6 @@ void VeinHash::processEvent(QEvent *event)
             case EntityData::dataType():
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
-                Q_ASSERT(eData != nullptr);
                 vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "Processing entity data from event" << cEvent;
                 processEntityData(eData);
                 break;
@@ -64,7 +59,6 @@ void VeinHash::processEvent(QEvent *event)
 
 void VeinHash::processComponentData(ComponentData *cData)
 {
-    Q_ASSERT(cData != nullptr);
     const QString componentName= cData->componentName();
     const int entityId = cData->entityId();
     switch(cData->eventCommand())
@@ -117,7 +111,6 @@ void VeinHash::processComponentData(ComponentData *cData)
 
 void VeinHash::processEntityData(EntityData *eData)
 {
-    Q_ASSERT(eData != nullptr);
     switch(eData->eventCommand())
     {
     case EntityData::Command::ECMD_ADD:
@@ -185,8 +178,6 @@ QList<int> VeinHash::getEntityList() const
 void VeinHash::sendError(const QString &errorString, EventData *data)
 {
     qWarning() << VEIN_DEBUGNAME_STORAGE_HASH << errorString;
-    Q_ASSERT(data != nullptr);
-
     ErrorData *errData = new ErrorData();
     errData->setEntityId(data->entityId());
     errData->setOriginalData(data);
