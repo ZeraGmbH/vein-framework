@@ -22,16 +22,6 @@ VeinHash::VeinHash(QObject *parent) :
 {
 }
 
-void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
-{
-    m_acceptableOrigins = origins;
-}
-
-const QList<EventData::EventOrigin> &VeinHash::getAcceptableOrigin() const
-{
-    return m_acceptableOrigins;
-}
-
 void VeinHash::processEvent(QEvent *event)
 {
     if(event->type()==CommandEvent::eventType()) {
@@ -71,118 +61,6 @@ void VeinHash::processEvent(QEvent *event)
             }
         }
     }
-}
-
-void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
-{
-    if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
-        outputFileDevice->isWritable()) {
-        QJsonObject rootObject;
-        QList<int> tmpEntityIdKeys = m_entityComponentData.keys();
-        std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
-        for(const int tmpEntityId : tmpEntityIdKeys) {
-            if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
-                continue;
-            const QHash<QString, QVariant> entityHashPointer = m_entityComponentData.value(tmpEntityId);
-            QJsonObject tmpEntityObject;
-
-            QStringList tmpEntityComponentNames = m_entityComponentData.value(tmpEntityId).keys();
-            std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
-            for(const QString &tmpComponentName : tmpEntityComponentNames) {
-                QVariant tmpData = entityHashPointer.value(tmpComponentName);
-                QJsonValue toInsert;
-                int tmpDataType = QMetaType::type(tmpData.typeName());
-                vCDebug(VEIN_STORAGE_HASH_VERBOSE) << tmpData.typeName() << tmpDataType << QMetaType::type("QList<QString>") << QMetaType::type(tmpData.typeName());
-                if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
-                    QVariantList tmpIntList;
-                    auto intList = tmpData.value<QList<int> >();
-                    if(tmpEntityId == 0 && tmpComponentName == "Entities")
-                        std::sort(intList .begin(), intList .end());
-                    else
-                        qFatal("Unexpected int-list: Entity id: %i / comonente %s", tmpEntityId, qPrintable(tmpComponentName));
-                    for(const int &tmpInt : intList)
-                        tmpIntList.append(tmpInt);
-                    toInsert = QJsonArray::fromVariantList(tmpIntList);
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<Int>" << tmpComponentName << tmpIntList;
-                }
-                else if(tmpDataType == QMetaType::type("QList<double>"))  { //needs manual conversion
-                    QVariantList tmpDoubleList;
-                    const auto doubleList = tmpData.value<QList<double> >();
-                    for(const double tmpDouble : doubleList)
-                        tmpDoubleList.append(tmpDouble);
-                    toInsert = QJsonArray::fromVariantList(tmpDoubleList);
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<double>" << tmpComponentName << tmpDoubleList;
-                }
-                else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
-                    QVariantList tmpStringList;
-                    const auto stringList = tmpData.value<QStringList>();
-                    for(const QString &tmpString : stringList)
-                        tmpStringList.append(tmpString);
-                    toInsert = QJsonArray::fromVariantList(tmpStringList);
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<QString>" << tmpComponentName << tmpStringList << stringList;
-                }
-                else if(tmpData.canConvert(QMetaType::QVariantList) && tmpData.toList().isEmpty() == false) {
-                    toInsert = QJsonArray::fromVariantList(tmpData.toList());
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray" << tmpComponentName << tmpData.toList();
-                }
-                else if(tmpData.canConvert(QMetaType::QVariantMap) && tmpData.toMap().isEmpty() == false) {
-                    toInsert = QJsonObject::fromVariantMap(tmpData.toMap());
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonObject" << tmpComponentName << tmpData.toMap();
-                }
-                else {
-                    if(tmpComponentName == "INF_ModuleInterface" ) {
-                        QJsonDocument doc = QJsonDocument::fromJson(tmpData.toString().toUtf8());
-                        toInsert = doc.object();
-                    }
-                    else
-                        toInsert = QJsonValue::fromVariant(tmpData);
-                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonValue" << tmpComponentName << QJsonValue::fromVariant(tmpData) << tmpData;
-                }
-                if(toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
-                    qCWarning(VEIN_STORAGE_HASH) << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
-                tmpEntityObject.insert(tmpComponentName, toInsert);
-            }
-            rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
-        }
-        QJsonDocument tmpDoc;
-        tmpDoc.setObject(rootObject);
-        outputFileDevice->write(tmpDoc.toJson());
-    }
-
-    if(outputFileDevice->isOpen())
-        outputFileDevice->close();
-}
-
-
-QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
-{
-    QVariant retVal;
-    if(m_entityComponentData.contains(entityId))
-        retVal = m_entityComponentData.value(entityId).value(componentName);
-    else
-        qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  entityId << "component" << componentName;
-    return retVal;
-}
-
-bool VeinHash::hasStoredValue(int entityId, const QString &componentName) const
-{
-    return m_entityComponentData.contains(entityId) && m_entityComponentData.value(entityId).contains(componentName);
-}
-
-
-QList<QString> VeinHash::getEntityComponents(int entityId) const
-{
-    return m_entityComponentData.value(entityId).keys();
-}
-
-bool VeinHash::hasEntity(int entityId) const
-{
-    return m_entityComponentData.contains(entityId);
-}
-
-QList<int> VeinHash::getEntityList() const
-{
-    return m_entityComponentData.keys();
 }
 
 void VeinHash::processComponentData(ComponentData *cData)
@@ -282,6 +160,47 @@ void VeinHash::processEntityData(EntityData *eData)
     }
 }
 
+void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
+{
+    m_acceptableOrigins = origins;
+}
+
+const QList<EventData::EventOrigin> &VeinHash::getAcceptableOrigin() const
+{
+    return m_acceptableOrigins;
+}
+
+QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
+{
+    QVariant retVal;
+    if(m_entityComponentData.contains(entityId))
+        retVal = m_entityComponentData.value(entityId).value(componentName);
+    else
+        qCWarning(VEIN_STORAGE_HASH) << "Unknown entity with id:" <<  entityId << "component" << componentName;
+    return retVal;
+}
+
+bool VeinHash::hasStoredValue(int entityId, const QString &componentName) const
+{
+    return m_entityComponentData.contains(entityId) && m_entityComponentData.value(entityId).contains(componentName);
+}
+
+
+QList<QString> VeinHash::getEntityComponents(int entityId) const
+{
+    return m_entityComponentData.value(entityId).keys();
+}
+
+bool VeinHash::hasEntity(int entityId) const
+{
+    return m_entityComponentData.contains(entityId);
+}
+
+QList<int> VeinHash::getEntityList() const
+{
+    return m_entityComponentData.keys();
+}
+
 void VeinHash::sendError(const QString &errorString, EventData *data)
 {
     Q_ASSERT(data != nullptr);
@@ -296,4 +215,85 @@ void VeinHash::sendError(const QString &errorString, EventData *data)
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, errData);
     emit sigSendEvent(cEvent);
 }
+
+void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
+{
+    if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
+        outputFileDevice->isWritable()) {
+        QJsonObject rootObject;
+        QList<int> tmpEntityIdKeys = m_entityComponentData.keys();
+        std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
+        for(const int tmpEntityId : tmpEntityIdKeys) {
+            if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
+                continue;
+            const QHash<QString, QVariant> entityHashPointer = m_entityComponentData.value(tmpEntityId);
+            QJsonObject tmpEntityObject;
+
+            QStringList tmpEntityComponentNames = m_entityComponentData.value(tmpEntityId).keys();
+            std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
+            for(const QString &tmpComponentName : tmpEntityComponentNames) {
+                QVariant tmpData = entityHashPointer.value(tmpComponentName);
+                QJsonValue toInsert;
+                int tmpDataType = QMetaType::type(tmpData.typeName());
+                vCDebug(VEIN_STORAGE_HASH_VERBOSE) << tmpData.typeName() << tmpDataType << QMetaType::type("QList<QString>") << QMetaType::type(tmpData.typeName());
+                if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
+                    QVariantList tmpIntList;
+                    auto intList = tmpData.value<QList<int> >();
+                    if(tmpEntityId == 0 && tmpComponentName == "Entities")
+                        std::sort(intList .begin(), intList .end());
+                    else
+                        qFatal("Unexpected int-list: Entity id: %i / comonente %s", tmpEntityId, qPrintable(tmpComponentName));
+                    for(const int &tmpInt : intList)
+                        tmpIntList.append(tmpInt);
+                    toInsert = QJsonArray::fromVariantList(tmpIntList);
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<Int>" << tmpComponentName << tmpIntList;
+                }
+                else if(tmpDataType == QMetaType::type("QList<double>"))  { //needs manual conversion
+                    QVariantList tmpDoubleList;
+                    const auto doubleList = tmpData.value<QList<double> >();
+                    for(const double tmpDouble : doubleList)
+                        tmpDoubleList.append(tmpDouble);
+                    toInsert = QJsonArray::fromVariantList(tmpDoubleList);
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<double>" << tmpComponentName << tmpDoubleList;
+                }
+                else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
+                    QVariantList tmpStringList;
+                    const auto stringList = tmpData.value<QStringList>();
+                    for(const QString &tmpString : stringList)
+                        tmpStringList.append(tmpString);
+                    toInsert = QJsonArray::fromVariantList(tmpStringList);
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray from QList<QString>" << tmpComponentName << tmpStringList << stringList;
+                }
+                else if(tmpData.canConvert(QMetaType::QVariantList) && tmpData.toList().isEmpty() == false) {
+                    toInsert = QJsonArray::fromVariantList(tmpData.toList());
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonArray" << tmpComponentName << tmpData.toList();
+                }
+                else if(tmpData.canConvert(QMetaType::QVariantMap) && tmpData.toMap().isEmpty() == false) {
+                    toInsert = QJsonObject::fromVariantMap(tmpData.toMap());
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonObject" << tmpComponentName << tmpData.toMap();
+                }
+                else {
+                    if(tmpComponentName == "INF_ModuleInterface" ) {
+                        QJsonDocument doc = QJsonDocument::fromJson(tmpData.toString().toUtf8());
+                        toInsert = doc.object();
+                    }
+                    else
+                        toInsert = QJsonValue::fromVariant(tmpData);
+                    vCDebug(VEIN_STORAGE_HASH_VERBOSE) << "inserted QJsonValue" << tmpComponentName << QJsonValue::fromVariant(tmpData) << tmpData;
+                }
+                if(toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
+                    qCWarning(VEIN_STORAGE_HASH) << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
+                tmpEntityObject.insert(tmpComponentName, toInsert);
+            }
+            rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
+        }
+        QJsonDocument tmpDoc;
+        tmpDoc.setObject(rootObject);
+        outputFileDevice->write(tmpDoc.toJson());
+    }
+
+    if(outputFileDevice->isOpen())
+        outputFileDevice->close();
+}
+
 }
