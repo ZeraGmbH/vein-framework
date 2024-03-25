@@ -25,8 +25,6 @@
 # define VEIN_DEBUGNAME_QML "\e[1;37m<Vein.Api.QML>\033[0m"
 # define VEIN_DEBUGNAME_QML_INTROSPECTION "\e[1;37m<Vein.Api.QML.Introspection>\033[0m"
 # define VEIN_DEBUGNAME_QML_VERBOSE "\e[0;37m<Vein.Api.QML>\033[0m"
-# define VEIN_DEBUGNAME_STORAGE_HASH "\033[1;36m<Vein.Storage.Hash>\033[0m"
-# define VEIN_DEBUGNAME_STORAGE_HASH_VERBOSE "\033[0;36m<Vein.Storage.Hash>\033[0m"
 # define VEIN_DEBUGNAME_NET_TCP "\e[1;33m<Vein.Network.Tcp>\033[0m"
 # define VEIN_DEBUGNAME_NET_TCP_VERBOSE "\e[0;33m<Vein.Network.Tcp>\033[0m"
 #else
@@ -41,8 +39,6 @@
 # define VEIN_DEBUGNAME_QML "<Vein.Api.QML>"
 # define VEIN_DEBUGNAME_QML_INTROSPECTION "<Vein.Api.QML.Introspection>"
 # define VEIN_DEBUGNAME_QML_VERBOSE "<Vein.Api.QML>"
-# define VEIN_DEBUGNAME_STORAGE_HASH "<Vein.Storage.Hash>"
-# define VEIN_DEBUGNAME_STORAGE_HASH_VERBOSE "<Vein.Storage.Hash>"
 # define VEIN_DEBUGNAME_NET_TCP "<Vein.Network.Tcp>"
 # define VEIN_DEBUGNAME_NET_TCP_VERBOSE "<Vein.Network.Tcp>"
 #endif //defined(VEIN_COLORS_SUPPORT)
