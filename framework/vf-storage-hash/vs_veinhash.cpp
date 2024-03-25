@@ -1,5 +1,4 @@
 #include "vs_veinhash.h"
-#include "vh_logging.h"
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_errordata.h>
