@@ -24,12 +24,6 @@ public:
     explicit VeinHash(QObject *parent = nullptr);
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins);
     const QList<VeinEvent::EventData::EventOrigin> &getAcceptableOrigin() const;
-
-    //stands for QHash<"entity descriptor", QHash<"component name", "component data">*>
-    template <typename T>
-    using ComponentStorage = QHash<T, QHash<QString, QVariant>*>;
-
-    //VeinEvent::StorageSystem interface
 public:
     void processEvent(QEvent *event) override;
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
