@@ -15,10 +15,8 @@ class ComponentData;
 class EntityData;
 }
 
-namespace VeinStorage {
-/**
-   * @brief A QHash based VeinEvent::StorageSystem implementation
-   */
+namespace VeinStorage
+{
 class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
 {
     Q_OBJECT
