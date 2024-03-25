@@ -1,7 +1,7 @@
 #ifndef VEINHASH_H
 #define VEINHASH_H
 
-#include "globalIncludes.h"
+#include "vfstoragehash_export.h"
 #include <ve_storagesystem.h>
 #include <ve_eventdata.h>
 #include <QHash>
