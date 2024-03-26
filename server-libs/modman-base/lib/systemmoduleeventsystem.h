@@ -12,11 +12,11 @@ namespace VeinEvent {
 class StorageSystem;
 }
 
-class ModuleManagerController : public VeinEvent::EventSystem
+class SystemModuleEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit ModuleManagerController(QObject *t_parent = nullptr, bool demo = false);
+    explicit SystemModuleEventSystem(QObject *t_parent = nullptr, bool demo = false);
     static constexpr int getEntityId();
     VeinEvent::StorageSystem *getStorageSystem() const;
     /**
