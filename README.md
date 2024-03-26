@@ -28,19 +28,19 @@ Code to perform common operations in vein-framework.<br>
 <br>
 
 ## Client libraries ([client-libs](client-libs))
-### Event systems:
+### Event-systems:
 ![Client event systems](client-libs/doc/class-diagram-client-event-systems.svg)
 ---
 <br>
 
 ## Server libraries ([server-libs](server-libs))
-### Event systems:
+### Event-systems:
 ![Server event systems](server-libs/doc/class-diagram-server-event-systems.svg)
 ---
 <br>
 
 ## Network ([network](network))
-### Event systems:
+### Event-systems:
 ![Class diagram network systems](network/doc/class-diagram-network-event-systems.svg)
 ---
 <br>
