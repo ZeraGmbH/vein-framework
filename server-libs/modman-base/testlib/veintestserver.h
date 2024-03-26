@@ -1,7 +1,7 @@
 #ifndef VEINTESTSERVER_H
 #define VEINTESTSERVER_H
 
-#include "modulemanagercontroller.h"
+#include "systemmoduleeventsystem.h"
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
 #include "vn_introspectionsystem.h"
@@ -27,7 +27,7 @@ private:
     VfTestEntitySpy m_vfEntityAddSpy;
     VfTestComponentSpy m_vfComponentAddSpy;
     VfTestComponentSpy m_vfComponentChangeSpy;
-    ModuleManagerController m_mmController;
+    SystemModuleEventSystem m_mmController;
     VeinNet::IntrospectionSystem m_introspectionSystem;
     VeinStorage::VeinHash m_storageSystem;
 

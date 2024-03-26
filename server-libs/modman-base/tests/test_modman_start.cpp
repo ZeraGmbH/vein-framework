@@ -29,7 +29,7 @@ void test_modman_start::emptyModman()
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Session"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "SessionsAvailable"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Entities"));
-    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once ModuleManagerController::initializeEntity is called
+    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once SystemModuleEventSystem::initializeEntity is called
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "ModulesPaused"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Error_Messages"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "LoggedComponents"));
@@ -54,7 +54,7 @@ void test_modman_start::modmanPlusOneEntity()
 
     QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
     QList<VfTestComponentSpy::TComponentInfo> systemComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
-    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once ModuleManagerController::initializeEntity is called
+    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once SystemModuleEventSystem::initializeEntity is called
 
     QList<VfTestComponentSpy::TComponentInfo> entityComponents = VfTestComponentSpyFilter::filter(allComponents, entityId);
     QCOMPARE(entityComponents.size(), 2);
@@ -85,7 +85,7 @@ void test_modman_start::modmanPlusTwoEntities()
 
     QList<VfTestComponentSpy::TComponentInfo> allComponents = vfTestServer.getComponentAddList();
     QList<VfTestComponentSpy::TComponentInfo> systemComponents = VfTestComponentSpyFilter::filter(allComponents, systemEntityId);
-    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once ModuleManagerController::initializeEntity is called
+    QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once SystemModuleEventSystem::initializeEntity is called
 
     QList<VfTestComponentSpy::TComponentInfo> entityComponents1 = VfTestComponentSpyFilter::filter(allComponents, entityId1);
     QCOMPARE(entityComponents1.size(), 2);

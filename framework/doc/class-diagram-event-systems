@@ -20,7 +20,7 @@ class StorageSystem {
     void processEvent(...)
 }
 
-class ModuleManagerController {
+class SystemModuleEventSystem {
     ' attribute-like methods
     {field} int getEntityId()
     {field} StorageSystem *getStorageSystem()
@@ -38,6 +38,6 @@ EventHandler o-- "0..*" EventSystem : forwards events to >
 
 EventSystem <|-- IntrospectionSystem
 EventSystem <|-- StorageSystem
-EventSystem <|-- ModuleManagerController
+EventSystem <|-- SystemModuleEventSystem
 
 @enduml

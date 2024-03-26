@@ -1,5 +1,4 @@
-#include "modulemanagercontroller.h"
-
+#include "systemmoduleeventsystem.h"
 #include <ve_eventdata.h>
 #include <ve_commandevent.h>
 #include <ve_storagesystem.h>
@@ -11,38 +10,38 @@
 #include <QDateTime>
 
 //constexpr definition, see: https://stackoverflow.com/questions/8016780/undefined-reference-to-static-constexpr-char
-constexpr QLatin1String ModuleManagerController::s_entityName;
-constexpr QLatin1String ModuleManagerController::s_entityNameComponentName;
-constexpr QLatin1String ModuleManagerController::s_entitiesComponentName;
-constexpr QLatin1String ModuleManagerController::s_sessionComponentName;
-constexpr QLatin1String ModuleManagerController::s_sessionsAvailableComponentName;
-constexpr QLatin1String ModuleManagerController::s_notificationMessagesComponentName;
-constexpr QLatin1String ModuleManagerController::s_loggedComponentsComponentName;
-constexpr QLatin1String ModuleManagerController::s_modulesPausedComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_entityName;
+constexpr QLatin1String SystemModuleEventSystem::s_entityNameComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_entitiesComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_sessionComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_sessionsAvailableComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_notificationMessagesComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_loggedComponentsComponentName;
+constexpr QLatin1String SystemModuleEventSystem::s_modulesPausedComponentName;
 static const char *devModeComponentName = "DevMode";
 
-ModuleManagerController::ModuleManagerController(QObject *t_parent, bool devMode) :
+SystemModuleEventSystem::SystemModuleEventSystem(QObject *t_parent, bool devMode) :
     VeinEvent::EventSystem(t_parent),
     m_devMode(devMode)
 {
 }
 
-constexpr int ModuleManagerController::getEntityId()
+constexpr int SystemModuleEventSystem::getEntityId()
 {
     return s_entityId;
 }
 
-VeinEvent::StorageSystem *ModuleManagerController::getStorageSystem() const
+VeinEvent::StorageSystem *SystemModuleEventSystem::getStorageSystem() const
 {
     return m_storageSystem;
 }
 
-void ModuleManagerController::setStorage(VeinEvent::StorageSystem *t_storageSystem)
+void SystemModuleEventSystem::setStorage(VeinEvent::StorageSystem *t_storageSystem)
 {
     m_storageSystem = t_storageSystem;
 }
 
-void ModuleManagerController::processEvent(QEvent *t_event)
+void SystemModuleEventSystem::processEvent(QEvent *t_event)
 {
     if(t_event->type() == VeinEvent::CommandEvent::eventType()) {
         bool validated = false;
@@ -68,7 +67,7 @@ void ModuleManagerController::processEvent(QEvent *t_event)
                     validated = true;
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET && // validate set event for _System.Session
                         cData->entityId() == s_entityId) {
-                    if(cData->componentName() == ModuleManagerController::s_sessionComponentName) {
+                    if(cData->componentName() == SystemModuleEventSystem::s_sessionComponentName) {
                         m_currentSession = cData->newValue().toString();
                         if(m_sessionReady == true) {
                             emit sigChangeSession(cData->newValue().toString());
@@ -76,13 +75,13 @@ void ModuleManagerController::processEvent(QEvent *t_event)
                         }
                         t_event->accept();
                     }
-                    else if(cData->componentName() == ModuleManagerController::s_notificationMessagesComponentName) {
+                    else if(cData->componentName() == SystemModuleEventSystem::s_notificationMessagesComponentName) {
                         handleNotificationMessage(cData->newValue().toJsonObject());
                         t_event->accept();
                     }
-                    else if(cData->componentName() == ModuleManagerController::s_loggedComponentsComponentName)
+                    else if(cData->componentName() == SystemModuleEventSystem::s_loggedComponentsComponentName)
                         validated = true;
-                    else if(cData->componentName() == ModuleManagerController::s_modulesPausedComponentName) {
+                    else if(cData->componentName() == SystemModuleEventSystem::s_modulesPausedComponentName) {
                         validated = true;
                         setModulesPaused(cData->newValue().toBool());
                     }
@@ -98,7 +97,7 @@ void ModuleManagerController::processEvent(QEvent *t_event)
     }
 }
 
-void ModuleManagerController::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
+void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
 {
     if(m_storageSystem!=nullptr)
     {
@@ -113,7 +112,7 @@ void ModuleManagerController::initializeEntity(const QString &sessionPath, const
         initData = new VeinComponent::ComponentData();
         initData->setEntityId(s_entityId);
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(ModuleManagerController::s_entitiesComponentName);
+        initData->setComponentName(SystemModuleEventSystem::s_entitiesComponentName);
         initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
         initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
         qDebug() << "ENTITIES" << m_storageSystem->getEntityList() << QVariant::fromValue<QList<int> >(m_storageSystem->getEntityList()).value<QList<int> >();
@@ -127,7 +126,7 @@ void ModuleManagerController::initializeEntity(const QString &sessionPath, const
         initData = new VeinComponent::ComponentData();
         initData->setEntityId(s_entityId);
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(ModuleManagerController::s_sessionComponentName);
+        initData->setComponentName(SystemModuleEventSystem::s_sessionComponentName);
         initData->setNewValue(QVariant(m_currentSession));
         initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
         initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
@@ -139,7 +138,7 @@ void ModuleManagerController::initializeEntity(const QString &sessionPath, const
         initData = new VeinComponent::ComponentData();
         initData->setEntityId(s_entityId);
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(ModuleManagerController::s_sessionsAvailableComponentName);
+        initData->setComponentName(SystemModuleEventSystem::s_sessionsAvailableComponentName);
         initData->setNewValue(QVariant(m_availableSessions));
         initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
         initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
@@ -159,11 +158,11 @@ void ModuleManagerController::initializeEntity(const QString &sessionPath, const
     }
     else
     {
-        qCritical() << "[ModuleManagerController] StorageSystem required to call initializeEntities";
+        qCritical() << "[SystemModuleEventSystem] StorageSystem required to call initializeEntities";
     }
 }
 
-void ModuleManagerController::initOnce()
+void SystemModuleEventSystem::initOnce()
 {
     if(m_initDone == false)
     {
@@ -174,13 +173,13 @@ void ModuleManagerController::initOnce()
         emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, systemData));
 
         QHash<QString, QVariant> componentData;
-        componentData.insert(ModuleManagerController::s_entityNameComponentName, ModuleManagerController::s_entityName);
-        componentData.insert(ModuleManagerController::s_entitiesComponentName, QVariant());
-        componentData.insert(ModuleManagerController::s_sessionComponentName, QVariant(m_currentSession));
-        componentData.insert(ModuleManagerController::s_sessionsAvailableComponentName, QVariant(m_availableSessions));
-        componentData.insert(ModuleManagerController::s_notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
-        componentData.insert(ModuleManagerController::s_loggedComponentsComponentName, QVariantMap());
-        componentData.insert(ModuleManagerController::s_modulesPausedComponentName, QVariant(false));
+        componentData.insert(SystemModuleEventSystem::s_entityNameComponentName, SystemModuleEventSystem::s_entityName);
+        componentData.insert(SystemModuleEventSystem::s_entitiesComponentName, QVariant());
+        componentData.insert(SystemModuleEventSystem::s_sessionComponentName, QVariant(m_currentSession));
+        componentData.insert(SystemModuleEventSystem::s_sessionsAvailableComponentName, QVariant(m_availableSessions));
+        componentData.insert(SystemModuleEventSystem::s_notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
+        componentData.insert(SystemModuleEventSystem::s_loggedComponentsComponentName, QVariantMap());
+        componentData.insert(SystemModuleEventSystem::s_modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
 
         VeinComponent::ComponentData *initialData=nullptr;
@@ -200,7 +199,7 @@ void ModuleManagerController::initOnce()
     }
 }
 
-void ModuleManagerController::setModulesPaused(bool t_paused)
+void SystemModuleEventSystem::setModulesPaused(bool t_paused)
 {
     if(t_paused != m_modulesPaused)
     {
@@ -209,7 +208,7 @@ void ModuleManagerController::setModulesPaused(bool t_paused)
     }
 }
 
-void ModuleManagerController::handleNotificationMessage(QJsonObject t_message)
+void SystemModuleEventSystem::handleNotificationMessage(QJsonObject t_message)
 {
     Q_ASSERT(t_message.isEmpty() == false);
     VeinComponent::ComponentData *notificationMessagesData = new VeinComponent::ComponentData();
