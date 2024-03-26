@@ -10,16 +10,16 @@ VeinTestServer::VeinTestServer(VeinEvent::EventHandler *eventHandler) :
     m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET)
 
 {
-    m_mmController.setStorage(&m_storageSystem);
+    m_systemModuleSystem.setStorage(&m_storageSystem);
 
     m_vfEventHandler->addSubsystem(&m_vfEntityAddSpy);
     m_vfEventHandler->addSubsystem(&m_vfComponentAddSpy);
     m_vfEventHandler->addSubsystem(&m_vfComponentChangeSpy);
-    m_vfEventHandler->addSubsystem(&m_mmController);
+    m_vfEventHandler->addSubsystem(&m_systemModuleSystem);
     m_vfEventHandler->addSubsystem(&m_introspectionSystem);
     m_vfEventHandler->addSubsystem(&m_storageSystem);
 
-    m_mmController.initOnce();
+    m_systemModuleSystem.initOnce();
 }
 
 void VeinTestServer::addEntity(int entityId, QString entityName)
@@ -57,7 +57,7 @@ QList<VfTestComponentSpy::TComponentInfo> VeinTestServer::getComponentChangeList
 
 void VeinTestServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
 {
-    m_mmController.initializeEntity(sessionPath, sessionList);
+    m_systemModuleSystem.initializeEntity(sessionPath, sessionList);
 }
 
 void VeinTestServer::resetLists()

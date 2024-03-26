@@ -27,7 +27,7 @@ private:
     VfTestEntitySpy m_vfEntityAddSpy;
     VfTestComponentSpy m_vfComponentAddSpy;
     VfTestComponentSpy m_vfComponentChangeSpy;
-    SystemModuleEventSystem m_mmController;
+    SystemModuleEventSystem m_systemModuleSystem;
     VeinNet::IntrospectionSystem m_introspectionSystem;
     VeinStorage::VeinHash m_storageSystem;
 
