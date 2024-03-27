@@ -5,11 +5,11 @@ ModuleEventHandler::ModuleEventHandler(QObject *parent) : VeinEvent::EventHandle
 {
 }
 
-void ModuleEventHandler::addModuleSystem(VeinEvent::EventSystem *t_eventSystem)
+void ModuleEventHandler::addModuleSystem(VeinEvent::EventSystem *eventSystem)
 {
-    if(m_moduleSystems.contains(t_eventSystem) == false) {
-        m_moduleSystems.append(t_eventSystem);
-        t_eventSystem->attach(this);
+    if(m_moduleSystems.contains(eventSystem) == false) {
+        m_moduleSystems.append(eventSystem);
+        eventSystem->attach(this);
     }
 }
 
@@ -18,9 +18,9 @@ void ModuleEventHandler::clearModuleSystems()
     m_moduleSystems.clear();
 }
 
-void ModuleEventHandler::customEvent(QEvent *t_event)
+void ModuleEventHandler::customEvent(QEvent *event)
 {
-    for(int i=0; i < m_moduleSystems.count() && t_event->isAccepted()==false; ++i)
-        m_moduleSystems.at(i)->processEvent(t_event);
-    VeinEvent::EventHandler::customEvent(t_event);
+    for(int i=0; i < m_moduleSystems.count() && event->isAccepted()==false; ++i)
+        m_moduleSystems.at(i)->processEvent(event);
+    VeinEvent::EventHandler::customEvent(event);
 }
