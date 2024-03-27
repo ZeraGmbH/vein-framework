@@ -4,6 +4,8 @@
 namespace VeinEvent
 {
 
+const int CommandEvent::m_registeredQEventType = QEvent::registerEventType();
+
 CommandEvent::CommandEvent(EventSubtype subtype, EventData *data) :
     QEvent(static_cast<QEvent::Type>(getQEventType())),
     m_subtype(subtype),
@@ -13,7 +15,7 @@ CommandEvent::CommandEvent(EventSubtype subtype, EventData *data) :
     Q_ASSERT(data != nullptr);
     Q_ASSERT(data->entityId() >= 0);
     if(data->isValid() == false)
-        qCWarning(VEIN_EVENT) << "Invalid event data" << data;
+        qWarning() << VEIN_DEBUGNAME_EVENT << "Invalid event data" << data;
     this->setAccepted(false);
 }
 
@@ -58,5 +60,4 @@ EventData *CommandEvent::eventData() const
     return m_activeEvent->m_eventData;
 }
 
-const int CommandEvent::m_registeredQEventType = QEvent::registerEventType();
 }
