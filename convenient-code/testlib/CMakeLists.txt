@@ -28,6 +28,3 @@ target_include_directories(VfConvenientCodeTest
 
 set_target_properties(VfConvenientCodeTest PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(VfConvenientCodeTest PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
-
-generate_export_header(VfConvenientCodeTest)
-
