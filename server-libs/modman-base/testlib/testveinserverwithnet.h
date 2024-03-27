@@ -8,7 +8,7 @@
 class TestVeinServerWithNet
 {
 public:
-    TestVeinServerWithNet(int serverPort, bool systemdSocket = false);
+    TestVeinServerWithNet(int serverPort, QList<VeinEvent::EventSystem*> aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
     VeinEvent::EventHandler* getEventHandler();
 private:
     VeinEvent::EventHandler m_eventHandler;
