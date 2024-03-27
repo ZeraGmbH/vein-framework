@@ -5,7 +5,7 @@ namespace VeinEvent
 {
 
 CommandEvent::CommandEvent(EventSubtype t_subtype, EventData *t_data) :
-    QEvent(static_cast<QEvent::Type>(eventType())),
+    QEvent(static_cast<QEvent::Type>(getQEventType())),
     m_subtype(t_subtype),
     m_eventData(t_data)
 {
@@ -25,9 +25,9 @@ CommandEvent::~CommandEvent()
 }
 
 
-int CommandEvent::eventType()
+int CommandEvent::getQEventType()
 {
-    return s_eventType;
+    return m_registeredQEventType;
 }
 
 QUuid CommandEvent::peerId() const
@@ -55,5 +55,5 @@ EventData *CommandEvent::eventData() const
     return m_eventData;
 }
 
-const int CommandEvent::s_eventType = QEvent::registerEventType();
+const int CommandEvent::m_registeredQEventType = QEvent::registerEventType();
 }

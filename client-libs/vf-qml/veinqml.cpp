@@ -128,7 +128,7 @@ void VeinQml::entityUnsubscribeById(int t_entityId)
 
 void VeinQml::processEvent(QEvent *t_event)
 {
-    if(t_event->type()==CommandEvent::eventType()) {
+    if(t_event->type()==CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(t_event);
         Q_ASSERT(cEvent != nullptr);
         EventData *evData = cEvent->eventData();

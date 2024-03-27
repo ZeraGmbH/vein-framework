@@ -26,11 +26,7 @@ namespace VeinNet
 
     NetworkStatusEvent(NetworkStatus t_status, QUuid t_peerId);
 
-    /**
-     * @brief On the first call this randomly assigns a QEvent::Type for this class
-     * @return
-     */
-    static int getEventType();
+    static int getQEventType();
 
     NetworkStatus getStatus() const;
 
@@ -40,10 +36,7 @@ namespace VeinNet
     QUuid getPeerId() const;
 
   private:
-    /**
-     * @brief 'Randomly' assigned static event type (QEvent::Type)
-     */
-    static const int s_eventType;
+    static const int m_registeredQEventType;
 
     /**
      * @brief indicates the current status of the network peer

@@ -53,7 +53,7 @@ void VfCppEntity::initModule()
 
 void VfCppEntity::processEvent(QEvent *event)
 {
-    if(event->type()==VeinEvent::CommandEvent::eventType()) {
+    if(event->type()==VeinEvent::CommandEvent::getQEventType()) {
         VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
         VeinEvent::EventData *evData = cEvent->eventData();

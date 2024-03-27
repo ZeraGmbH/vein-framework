@@ -28,7 +28,7 @@ void VfCmdEventHandler::removeItem(VfCmdEventItemPtr item)
 
 void VfCmdEventHandler::processEvent(QEvent *event)
 {
-    if(event->type() == CommandEvent::eventType())
+    if(event->type() == CommandEvent::getQEventType())
         processCommandEvent(static_cast<CommandEvent *>(event));
 }
 

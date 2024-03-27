@@ -22,7 +22,7 @@ public:
      * @brief On the first call this randomly assigns a QEvent::Type for this class
      * @return
      */
-    static int getEventType();
+    static int getQEventType();
 
     QByteArray buffer() const;
     void setBuffer(QByteArray t_buffer);
@@ -51,10 +51,7 @@ private:
      */
     QList<QUuid> m_receivers;
 
-    /**
-     * @brief 'Randomly' assigned static event type (QEvent::Type)
-     */
-    static const int s_eventType;
+    static const int m_registeredQEventType;
 
     /**
      * @brief for remote events this is the unique network id

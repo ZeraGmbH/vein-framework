@@ -132,7 +132,7 @@ void TcpSystem::onSocketError(VeinTcp::TcpPeer *t_peer, QAbstractSocket::SocketE
 void TcpSystem::processEvent(QEvent *t_event)
 {
     Q_ASSERT(t_event != nullptr);
-    if(t_event->type()==ProtocolEvent::getEventType()) {
+    if(t_event->type()==ProtocolEvent::getQEventType()) {
         ProtocolEvent *pEvent=nullptr;
         pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
