@@ -42,7 +42,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -63,7 +63,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

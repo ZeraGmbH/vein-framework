@@ -13,7 +13,7 @@ static constexpr int serverPort = 4242;
 void test_core_stack_client::subsriptionWithThrowAwayObjects()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

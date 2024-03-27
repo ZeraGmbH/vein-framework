@@ -71,7 +71,7 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
 void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -92,7 +92,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -119,7 +119,7 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

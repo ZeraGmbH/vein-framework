@@ -21,3 +21,8 @@ TestVeinServer *TestVeinServerWithNet::getServer()
 {
     return &m_server;
 }
+
+VeinEvent::StorageSystem *TestVeinServerWithNet::getStorage()
+{
+    return getServer()->getStorage();
+}

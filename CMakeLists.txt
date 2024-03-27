@@ -53,6 +53,7 @@ function(SETUP_TESTS)
             VfCpp
             VfNet2
             vf-tcp-testlib
+            VfFrameworkTest
             VfConvenientCodeTest
             ModmanBase
             veinserver-testlib
