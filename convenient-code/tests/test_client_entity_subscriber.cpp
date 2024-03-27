@@ -2,10 +2,10 @@
 #include "vcmp_introspectiondata.h"
 #include "vf_client_entity_subscriber.h"
 #include "vf_cmd_event_handler_system.h"
-#include "veintestserver.h"
+#include "testveinserver.h"
 #include "ve_eventhandler.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -20,7 +20,7 @@ static constexpr int serverPort = 4242;
 void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 {
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
+    TestVeinServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
@@ -42,7 +42,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -63,7 +63,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -90,7 +90,7 @@ void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 void test_client_entity_subscriber::trySubscribeOnNonExistantEntity()
 {
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
+    TestVeinServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
@@ -113,7 +113,7 @@ using namespace VeinComponent;
 void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithOtherError()
 {
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
+    TestVeinServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
@@ -144,7 +144,7 @@ void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithO
 void test_client_entity_subscriber::introspectComponentNames()
 {
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer testServer(&eventHandler);
+    TestVeinServer testServer(&eventHandler);
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();

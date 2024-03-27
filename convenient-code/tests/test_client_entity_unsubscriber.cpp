@@ -3,7 +3,7 @@
 #include "vf_client_entity_subscriber.h"
 #include "vf_cmd_event_handler_system.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -17,7 +17,7 @@ static constexpr int serverPort = 4242;
 void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -36,7 +36,7 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 void test_client_entity_unsubscriber::subscribeUnsubscribe()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
