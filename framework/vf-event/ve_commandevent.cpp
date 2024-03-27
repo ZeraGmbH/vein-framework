@@ -4,18 +4,16 @@
 namespace VeinEvent
 {
 
-CommandEvent::CommandEvent(EventSubtype t_subtype, EventData *t_data) :
+CommandEvent::CommandEvent(EventSubtype subtype, EventData *data) :
     QEvent(static_cast<QEvent::Type>(getQEventType())),
-    m_subtype(t_subtype),
-    m_eventData(t_data)
+    m_subtype(subtype),
+    m_eventData(data),
+    m_activeEvent(this)
 {
-    Q_ASSERT(t_data != nullptr);
-    Q_ASSERT(t_data->entityId() >= 0);
-
-    if(t_data->isValid() == false)
-    {
-        qCWarning(VEIN_EVENT) << "Invalid event data" << t_data;
-    }
+    Q_ASSERT(data != nullptr);
+    Q_ASSERT(data->entityId() >= 0);
+    if(data->isValid() == false)
+        qCWarning(VEIN_EVENT) << "Invalid event data" << data;
     this->setAccepted(false);
 }
 
@@ -24,6 +22,11 @@ CommandEvent::~CommandEvent()
     delete m_eventData;
 }
 
+void CommandEvent::mutateInto(std::unique_ptr<CommandEvent> otherCmdEvent)
+{
+    m_mutationCmdEvent = std::move(otherCmdEvent);
+    m_activeEvent = m_mutationCmdEvent.get();
+}
 
 int CommandEvent::getQEventType()
 {
@@ -32,27 +35,27 @@ int CommandEvent::getQEventType()
 
 QUuid CommandEvent::peerId() const
 {
-    return m_peerId;
+    return m_activeEvent->m_peerId;
 }
 
-void CommandEvent::setPeerId(QUuid t_pPeerId)
+void CommandEvent::setPeerId(QUuid pPeerId)
 {
-    m_peerId = t_pPeerId;
+    m_activeEvent->m_peerId = pPeerId;
 }
 
 CommandEvent::EventSubtype CommandEvent::eventSubtype() const
 {
-    return m_subtype;
+    return m_activeEvent->m_subtype;
 }
 
-void CommandEvent::setEventSubtype(CommandEvent::EventSubtype t_newType)
+void CommandEvent::setEventSubtype(CommandEvent::EventSubtype newType)
 {
-    m_subtype = t_newType;
+    m_activeEvent->m_subtype = newType;
 }
 
 EventData *CommandEvent::eventData() const
 {
-    return m_eventData;
+    return m_activeEvent->m_eventData;
 }
 
 const int CommandEvent::m_registeredQEventType = QEvent::registerEventType();
