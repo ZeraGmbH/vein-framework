@@ -10,12 +10,12 @@ class ModuleEventHandler : public VeinEvent::EventHandler
     Q_OBJECT
 public:
     explicit ModuleEventHandler(QObject *parent = nullptr);
-public slots:
-    void addModuleSystem(VeinEvent::EventSystem *t_eventSystem);
+    void addModuleSystem(VeinEvent::EventSystem *eventSystem);
     void clearModuleSystems();
 protected:
-    void customEvent(QEvent *t_event) override;
+    void customEvent(QEvent *event) override;
 private:
+    // Modules' event systems are processed first
     QList<VeinEvent::EventSystem *> m_moduleSystems;
 };
 
