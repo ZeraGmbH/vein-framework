@@ -1,9 +1,14 @@
 #include "testveinserverwithnet.h"
 
 TestVeinServerWithNet::TestVeinServerWithNet(int serverPort, bool systemdScok) :
-    server(&eventHandler)
+    m_server(&m_eventHandler)
 {
-    eventHandler.addSubsystem(&netSystem);
-    eventHandler.addSubsystem(&tcpSystem);
-    tcpSystem.startServer(serverPort, systemdScok);
+    m_eventHandler.addSubsystem(&m_netSystem);
+    m_eventHandler.addSubsystem(&m_tcpSystem);
+    m_tcpSystem.startServer(serverPort, systemdScok);
+}
+
+VeinEvent::EventHandler *TestVeinServerWithNet::getEventHandler()
+{
+    return &m_eventHandler;
 }
