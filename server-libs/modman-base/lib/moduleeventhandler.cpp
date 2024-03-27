@@ -5,16 +5,15 @@ ModuleEventHandler::ModuleEventHandler(QObject *parent) : VeinEvent::EventHandle
 {
 }
 
-void ModuleEventHandler::addSystem(VeinEvent::EventSystem *t_eventSystem)
+void ModuleEventHandler::addModuleSystem(VeinEvent::EventSystem *t_eventSystem)
 {
-    if(m_moduleSystems.contains(t_eventSystem) == false)
-    {
+    if(m_moduleSystems.contains(t_eventSystem) == false) {
         m_moduleSystems.append(t_eventSystem);
         t_eventSystem->attach(this);
     }
 }
 
-void ModuleEventHandler::clearSystems()
+void ModuleEventHandler::clearModuleSystems()
 {
     m_moduleSystems.clear();
 }
