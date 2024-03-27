@@ -16,6 +16,9 @@ target_link_libraries(ModmanBase
     Qt5::Core
     VfEvent
     VfComponent
+    VfCryptoBridge
+    VfNet2
+    VfStorageHash
     )
 
 set_target_properties(ModmanBase PROPERTIES VERSION ${PROJECT_VERSION})
