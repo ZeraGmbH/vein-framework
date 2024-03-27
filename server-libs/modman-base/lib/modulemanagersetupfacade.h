@@ -14,8 +14,8 @@ public:
     ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem, bool devMode = false, QObject *parent = nullptr);
     static void registerMetaTypeStreamOperators();
     void addSubsystem(VeinEvent::EventSystem* subsystem);
-    void addSystem(VeinEvent::EventSystem* system);
-    void clearSystems();
+    void addModuleSystem(VeinEvent::EventSystem* system);
+    void clearModuleSystems();
     SystemModuleEventSystem *getModuleManagerController();
     VeinEvent::StorageSystem *getStorageSystem();
     LicenseSystemInterface *getLicenseSystem();

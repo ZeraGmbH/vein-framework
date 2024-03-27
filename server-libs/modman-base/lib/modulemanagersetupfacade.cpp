@@ -29,14 +29,14 @@ void ModuleManagerSetupFacade::addSubsystem(VeinEvent::EventSystem *subsystem)
     m_eventHandler.addSubsystem(subsystem);
 }
 
-void ModuleManagerSetupFacade::addSystem(VeinEvent::EventSystem *system)
+void ModuleManagerSetupFacade::addModuleSystem(VeinEvent::EventSystem *system)
 {
-    m_eventHandler.addSystem(system);
+    m_eventHandler.addModuleSystem(system);
 }
 
-void ModuleManagerSetupFacade::clearSystems()
+void ModuleManagerSetupFacade::clearModuleSystems()
 {
-    m_eventHandler.clearSystems();
+    m_eventHandler.clearModuleSystems();
 }
 
 SystemModuleEventSystem *ModuleManagerSetupFacade::getModuleManagerController()
