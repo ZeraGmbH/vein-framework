@@ -24,12 +24,6 @@ target_link_libraries(ModmanBase
 set_target_properties(ModmanBase PROPERTIES VERSION ${PROJECT_VERSION})
 set_target_properties(ModmanBase PROPERTIES SOVERSION ${PROJECT_VERSION_MAJOR})
 
-generate_export_header(ModmanBase)
-install(FILES
-    ${CMAKE_CURRENT_BINARY_DIR}/modmanbase_export.h
-    DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/ModmanBase
-    )
-
 target_include_directories(ModmanBase
     PUBLIC
     $<INSTALL_INTERFACE:${CMAKE_INSTALL_INCLUDEDIR}/ModmanBase>
