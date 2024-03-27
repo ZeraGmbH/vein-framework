@@ -1,7 +1,7 @@
 #include "test_task_client_entity_subscribe.h"
 #include "task_client_entity_subscribe.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
@@ -24,7 +24,7 @@ void test_task_client_entity_subscribe::init()
 void test_task_client_entity_subscribe::subscibeOk()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -63,7 +63,7 @@ void test_task_client_entity_subscribe::timeout()
 void test_task_client_entity_subscribe::invalidEntity()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

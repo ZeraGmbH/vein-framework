@@ -1,5 +1,5 @@
 #include "test_modman_start.h"
-#include "veintestserver.h"
+#include "testveinserver.h"
 #include "ve_eventhandler.h"
 #include "vftestentityspyfilter.h"
 #include "vftestcomponentspyfilter.h"
@@ -13,7 +13,7 @@ static constexpr int systemEntityId = 0;
 void test_modman_start::emptyModman()
 {
     VeinEvent::EventHandler vfEventHandler;
-    VeinTestServer vfTestServer(&vfEventHandler);
+    TestVeinServer vfTestServer(&vfEventHandler);
     TimeMachineObject::feedEventLoop();
 
     QList<int> entities = vfTestServer.getEntityAddList();
@@ -41,7 +41,7 @@ void test_modman_start::emptyModman()
 void test_modman_start::modmanPlusOneEntity()
 {
     VeinEvent::EventHandler vfEventHandler;
-    VeinTestServer vfTestServer(&vfEventHandler);
+    TestVeinServer vfTestServer(&vfEventHandler);
 
     int entityId = 1;
     vfTestServer.addEntity(entityId, "FooEntity");
@@ -67,7 +67,7 @@ void test_modman_start::modmanPlusOneEntity()
 void test_modman_start::modmanPlusTwoEntities()
 {
     VeinEvent::EventHandler vfEventHandler;
-    VeinTestServer vfTestServer(&vfEventHandler);
+    TestVeinServer vfTestServer(&vfEventHandler);
 
     int entityId1 = 1;
     vfTestServer.addEntity(entityId1, "FooEntity");
@@ -107,7 +107,7 @@ void test_modman_start::modmanPlusTwoEntities()
 void test_modman_start::modmanPlusOneEntityModulesLoaded()
 {
     VeinEvent::EventHandler vfEventHandler;
-    VeinTestServer vfTestServer(&vfEventHandler);
+    TestVeinServer vfTestServer(&vfEventHandler);
 
     int entityId = 1;
     vfTestServer.addEntity(entityId, "FooEntity");

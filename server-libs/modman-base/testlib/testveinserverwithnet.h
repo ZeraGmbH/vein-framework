@@ -1,19 +1,19 @@
 #ifndef VFTESTSERVERSTACK_H
 #define VFTESTSERVERSTACK_H
 
-#include "veintestserver.h"
+#include "testveinserver.h"
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 
-class VfTestServerStack
+class TestVeinServerWithNet
 {
 public:
-    VfTestServerStack(int serverPort, bool systemdScok = false);
+    TestVeinServerWithNet(int serverPort, bool systemdScok = false);
     VeinEvent::EventHandler eventHandler;
 private:
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
-    VeinTestServer server;
+    TestVeinServer server;
 };
 
 #endif // VFTESTSERVERSTACK_H

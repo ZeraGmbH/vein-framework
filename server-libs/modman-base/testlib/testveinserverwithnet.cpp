@@ -1,6 +1,6 @@
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 
-VfTestServerStack::VfTestServerStack(int serverPort, bool systemdScok) :
+TestVeinServerWithNet::TestVeinServerWithNet(int serverPort, bool systemdScok) :
     server(&eventHandler)
 {
     eventHandler.addSubsystem(&netSystem);

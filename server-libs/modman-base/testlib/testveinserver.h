@@ -1,5 +1,5 @@
-#ifndef VEINTESTSERVER_H
-#define VEINTESTSERVER_H
+#ifndef TESTVEINSERVER_H
+#define TESTVEINSERVER_H
 
 #include "systemmoduleeventsystem.h"
 #include "ve_eventhandler.h"
@@ -11,10 +11,10 @@
 #include <memory>
 #include <unordered_map>
 
-class VeinTestServer
+class TestVeinServer
 {
 public:
-    explicit VeinTestServer(VeinEvent::EventHandler *eventHandler);
+    explicit TestVeinServer(VeinEvent::EventHandler *eventHandler);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
     QList<int> getEntityAddList() const;
@@ -34,4 +34,4 @@ private:
     std::unordered_map<int, std::unique_ptr<VfCpp::VfCppEntity>> m_entities;
 };
 
-#endif // VEINTESTSERVER_H
+#endif // TESTVEINSERVER_H

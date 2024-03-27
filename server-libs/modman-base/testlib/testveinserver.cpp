@@ -1,9 +1,9 @@
-#include "veintestserver.h"
+#include "testveinserver.h"
 
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
 
-VeinTestServer::VeinTestServer(VeinEvent::EventHandler *eventHandler) :
+TestVeinServer::TestVeinServer(VeinEvent::EventHandler *eventHandler) :
     m_vfEventHandler(eventHandler),
     m_vfEntityAddSpy(EntityData::Command::ECMD_ADD),
     m_vfComponentAddSpy(ComponentData::Command::CCMD_ADD),
@@ -22,7 +22,7 @@ VeinTestServer::VeinTestServer(VeinEvent::EventHandler *eventHandler) :
     m_systemModuleSystem.initOnce();
 }
 
-void VeinTestServer::addEntity(int entityId, QString entityName)
+void TestVeinServer::addEntity(int entityId, QString entityName)
 {
     if(m_entities.find(entityId) != m_entities.end()) {
         qFatal("Entity ID %i already inserted!", entityId);
@@ -33,34 +33,34 @@ void VeinTestServer::addEntity(int entityId, QString entityName)
     m_entities[entityId]->createComponent("EntityName", entityName, true);
 }
 
-void VeinTestServer::addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly)
+void TestVeinServer::addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly)
 {
     if(m_entities.find(entityId) == m_entities.end())
         qFatal("Entity with ID %i was not added by addEntity!", entityId);
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
 }
 
-QList<int> VeinTestServer::getEntityAddList() const
+QList<int> TestVeinServer::getEntityAddList() const
 {
     return m_vfEntityAddSpy.getEntityList();
 }
 
-QList<VfTestComponentSpy::TComponentInfo> VeinTestServer::getComponentAddList() const
+QList<VfTestComponentSpy::TComponentInfo> TestVeinServer::getComponentAddList() const
 {
     return m_vfComponentAddSpy.getComponentList();
 }
 
-QList<VfTestComponentSpy::TComponentInfo> VeinTestServer::getComponentChangeList() const
+QList<VfTestComponentSpy::TComponentInfo> TestVeinServer::getComponentChangeList() const
 {
     return m_vfComponentChangeSpy.getComponentList();
 }
 
-void VeinTestServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
+void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
 {
     m_systemModuleSystem.initializeEntity(sessionPath, sessionList);
 }
 
-void VeinTestServer::resetLists()
+void TestVeinServer::resetLists()
 {
     m_vfEntityAddSpy.reset();
     m_vfComponentAddSpy.reset();

@@ -1,8 +1,8 @@
 #include "test_client_component_fetcher.h"
 #include "vf_client_component_fetcher.h"
-#include "veintestserver.h"
+#include "testveinserver.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -17,7 +17,7 @@ static constexpr int serverPort = 4242;
 struct ServerNoNet
 {
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer server;
+    TestVeinServer server;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     ServerNoNet() :
         server(&eventHandler)
@@ -71,7 +71,7 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
 void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -92,7 +92,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -119,7 +119,7 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -147,7 +147,7 @@ void test_client_component_fetcher::getTwoDifferentComponent()
 {
     // just server / no subscription
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer server(&eventHandler);
+    TestVeinServer server(&eventHandler);
     server.simulAllModulesLoaded("fooPath", QStringList() << "fooPath");
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
     eventHandler.addSubsystem(&cmdEventHandlerSystem);

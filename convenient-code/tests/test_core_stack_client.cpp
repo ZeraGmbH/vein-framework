@@ -1,6 +1,6 @@
 #include "test_core_stack_client.h"
 #include "vf_core_stack_client.h"
-#include "vf_test_server_stack.h"
+#include "testveinserverwithnet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <QSignalSpy>
 #include <QTest>
@@ -13,7 +13,7 @@ static constexpr int serverPort = 4242;
 void test_core_stack_client::subsriptionWithThrowAwayObjects()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    VfTestServerStack serverStack(serverPort);
+    TestVeinServerWithNet serverStack(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
