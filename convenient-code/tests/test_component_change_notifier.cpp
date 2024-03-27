@@ -68,14 +68,14 @@ void test_component_change_notifier::inClientServerStack()
 {
     // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testEntityId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent(componentName, 42);
     TimeMachineObject::feedEventLoop();

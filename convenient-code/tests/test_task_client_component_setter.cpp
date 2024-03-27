@@ -26,9 +26,9 @@ void test_task_client_component_setter::setValidValueSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

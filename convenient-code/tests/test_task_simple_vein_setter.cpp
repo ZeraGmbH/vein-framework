@@ -24,14 +24,14 @@ void test_task_simple_vein_setter::init()
 void test_task_simple_vein_setter::setValid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
@@ -70,14 +70,14 @@ void test_task_simple_vein_setter::setValid()
 void test_task_simple_vein_setter::setInvalid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

@@ -72,7 +72,7 @@ void test_client_component_setter::setEqualEmitsOk()
 void test_client_component_setter::setToInvalidEntity()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -97,14 +97,14 @@ void test_client_component_setter::setToInvalidEntity()
 void test_client_component_setter::setvalidEntityNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

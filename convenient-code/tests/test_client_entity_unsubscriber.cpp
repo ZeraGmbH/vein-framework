@@ -17,7 +17,7 @@ static constexpr int serverPort = 4242;
 void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
@@ -36,7 +36,7 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 void test_client_entity_unsubscriber::subscribeUnsubscribe()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

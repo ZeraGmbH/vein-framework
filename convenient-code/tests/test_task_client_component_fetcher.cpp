@@ -24,7 +24,7 @@ void test_task_client_component_fetcher::init()
 void test_task_client_component_fetcher::fetchSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);

@@ -40,6 +40,11 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
 }
 
+VeinEvent::StorageSystem *TestVeinServer::getStorage()
+{
+    return &m_storageSystem;
+}
+
 QList<int> TestVeinServer::getEntityAddList() const
 {
     return m_vfEntityAddSpy.getEntityList();
