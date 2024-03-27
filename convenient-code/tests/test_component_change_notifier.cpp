@@ -75,7 +75,7 @@ void test_component_change_notifier::inClientServerStack()
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testEntityId);
-    serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
+    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent(componentName, 42);
     TimeMachineObject::feedEventLoop();

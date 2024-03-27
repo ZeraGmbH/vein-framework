@@ -104,7 +104,7 @@ void test_client_component_setter::setvalidEntityNet()
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.eventHandler.addSubsystem(&serverAdditionalEntity);
+    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

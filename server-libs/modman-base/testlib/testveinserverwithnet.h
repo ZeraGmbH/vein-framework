@@ -9,11 +9,12 @@ class TestVeinServerWithNet
 {
 public:
     TestVeinServerWithNet(int serverPort, bool systemdScok = false);
-    VeinEvent::EventHandler eventHandler;
+    VeinEvent::EventHandler* getEventHandler();
 private:
-    VeinNet::NetworkSystem netSystem;
-    VeinNet::TcpSystem tcpSystem;
-    TestVeinServer server;
+    VeinEvent::EventHandler m_eventHandler;
+    VeinNet::NetworkSystem m_netSystem;
+    VeinNet::TcpSystem m_tcpSystem;
+    TestVeinServer m_server;
 };
 
 #endif // VFTESTSERVERSTACK_H
