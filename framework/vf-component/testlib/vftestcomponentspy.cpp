@@ -20,7 +20,7 @@ void VfTestComponentSpy::reset()
 
 void VfTestComponentSpy::processEvent(QEvent *event)
 {
-    if(event->type() == VeinEvent::CommandEvent::eventType()) {
+    if(event->type() == VeinEvent::CommandEvent::getQEventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
         if(cmdEvent != nullptr) {
             VeinEvent::EventData *evData = cmdEvent->eventData();

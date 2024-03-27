@@ -8,20 +8,19 @@ class QEvent {
 note right of QEvent::registerEventType
     Each event class statically calls registerEventType().
     To identify event type, values for type() and
-    getEventType() / eventType() (TODO same names)
-    are compared.
+    getQEventType() are compared.
 end note
 
 class NetworkStatusEvent {
-    {static} int getEventType()
+    {static} int getQEventType()
 }
 
 class ProtocolEvent {
-    {static} int getEventType()
+    {static} int getQEventType()
 }
 
 class CommandEvent {
-    {static} int eventType()
+    {static} int getQEventType()
     EventSubtype eventSubtype()
     EventData *eventData()
 }

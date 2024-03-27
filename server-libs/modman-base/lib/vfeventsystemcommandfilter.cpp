@@ -7,7 +7,7 @@ VfEventSystemCommandFilter::VfEventSystemCommandFilter(VeinEvent::CommandEvent::
 
 void VfEventSystemCommandFilter::processEvent(QEvent *event)
 {
-    if(event->type() == VeinEvent::CommandEvent::eventType()) {
+    if(event->type() == VeinEvent::CommandEvent::getQEventType()) {
         VeinEvent::CommandEvent *commandEvent = static_cast<VeinEvent::CommandEvent *>(event);
         if(commandEvent && commandEvent->eventSubtype() == m_subtypeToFilter) {
             processCommandEvent(commandEvent);

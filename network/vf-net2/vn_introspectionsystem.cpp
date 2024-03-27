@@ -40,7 +40,7 @@ const QString IntrospectionSystem::s_nameComponent = QLatin1String("EntityName")
 void IntrospectionSystem::processEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
-    if(event->type() == CommandEvent::eventType()) {
+    if(event->type() == CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         Q_ASSERT(cEvent != nullptr);
         EventData *evData = cEvent->eventData();

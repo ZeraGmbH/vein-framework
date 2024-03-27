@@ -20,7 +20,7 @@ VeinHash::VeinHash(QObject *parent) :
 
 void VeinHash::processEvent(QEvent *event)
 {
-    if(event->type()==CommandEvent::eventType()) {
+    if(event->type()==CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         EventData *evData = cEvent->eventData();
         if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin())) {

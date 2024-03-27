@@ -1,5 +1,5 @@
 # vein-framework
-Vein framework is an event broker system. Data transferred is structured as entity with components:
+Vein framework is an event broker system. Data transferred is structured as entities with components:
 
 * Entities are identified by a system-unique integer id
 * Entities are containers for components

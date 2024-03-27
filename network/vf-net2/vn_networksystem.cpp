@@ -288,11 +288,11 @@ void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &operati
 void NetworkSystem::processEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
-    if(event->type() == ProtocolEvent::getEventType())
+    if(event->type() == ProtocolEvent::getQEventType())
         d_ptr->deserializeIncomingAndSendCmdEvent(event);
-    else if(event->type() == CommandEvent::eventType())
+    else if(event->type() == CommandEvent::getQEventType())
         d_ptr->processCmdEvents(event);
-    else if(event->type() == NetworkStatusEvent::getEventType()) {
+    else if(event->type() == NetworkStatusEvent::getQEventType()) {
         NetworkStatusEvent *sEvent = static_cast<NetworkStatusEvent *>(event);
         Q_ASSERT(sEvent != nullptr);
         d_ptr->handleNetworkStatusEvent(sEvent);

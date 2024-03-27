@@ -2,18 +2,18 @@
 
 namespace VeinNet
 {
-const int ProtocolEvent::s_eventType = QEvent::registerEventType();
+const int ProtocolEvent::m_registeredQEventType = QEvent::registerEventType();
 
 ProtocolEvent::ProtocolEvent(EventOrigin t_fromLocalOrigin):
-    QEvent(static_cast<QEvent::Type>(getEventType())),
+    QEvent(static_cast<QEvent::Type>(getQEventType())),
     m_localOrigin(static_cast<bool>(t_fromLocalOrigin))
 {
     this->setAccepted(false);
 }
 
-int ProtocolEvent::getEventType()
+int ProtocolEvent::getQEventType()
 {
-    return s_eventType;
+    return m_registeredQEventType;
 }
 
 QByteArray ProtocolEvent::buffer() const
