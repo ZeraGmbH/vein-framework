@@ -5,13 +5,15 @@
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 
-struct VfTestServerStack
+class VfTestServerStack
 {
+public:
+    VfTestServerStack(int serverPort, bool systemdScok = false);
     VeinEvent::EventHandler eventHandler;
-    VeinTestServer server;
+private:
     VeinNet::NetworkSystem netSystem;
     VeinNet::TcpSystem tcpSystem;
-    VfTestServerStack(int serverPort, bool systemdScok = false);
+    VeinTestServer server;
 };
 
 #endif // VFTESTSERVERSTACK_H
