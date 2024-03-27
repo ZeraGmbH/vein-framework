@@ -8,7 +8,7 @@
 class TestVeinServerWithNet
 {
 public:
-    TestVeinServerWithNet(int serverPort, bool systemdScok = false);
+    TestVeinServerWithNet(int serverPort, bool systemdSocket = false);
     VeinEvent::EventHandler* getEventHandler();
 private:
     VeinEvent::EventHandler m_eventHandler;
