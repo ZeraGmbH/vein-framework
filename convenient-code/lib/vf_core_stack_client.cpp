@@ -3,28 +3,28 @@
 
 VfCoreStackClient::VfCoreStackClient()
 {
-    cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
-    netSystem.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
-    eventHandler.addSubsystem(&netSystem);
-    eventHandler.addSubsystem(&tcpSystem);
-    eventHandler.addSubsystem(cmdEventHandlerSystem.get());
+    m_cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
+    m_netSystem.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
+    m_eventHandler.addSubsystem(&m_netSystem);
+    m_eventHandler.addSubsystem(&m_tcpSystem);
+    m_eventHandler.addSubsystem(m_cmdEventHandlerSystem.get());
 }
 
 void VfCoreStackClient::connectToServer(const QString &host, quint16 port)
 {
-    tcpSystem.connectToServer(host, port);
+    m_tcpSystem.connectToServer(host, port);
 }
 
 VeinNet::TcpSystem *VfCoreStackClient::getTcpSystem()
 {
-    return &tcpSystem;
+    return &m_tcpSystem;
 }
 
 void VfCoreStackClient::subscribeEntity(int entityId)
 {
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(entityId);
     m_pendingCommandEventItems[entityToSubscribe.get()] = entityToSubscribe;
-    cmdEventHandlerSystem->addItem(entityToSubscribe);
+    m_cmdEventHandlerSystem->addItem(entityToSubscribe);
     connect(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed,
             this, &VfCoreStackClient::onSubscribed);
     entityToSubscribe->sendSubscription();
@@ -33,6 +33,6 @@ void VfCoreStackClient::subscribeEntity(int entityId)
 void VfCoreStackClient::onSubscribed(bool ok)
 {
     VfCmdEventItemPtr item = m_pendingCommandEventItems.take(sender());
-    cmdEventHandlerSystem->removeItem(item);
+    m_cmdEventHandlerSystem->removeItem(item);
     emit sigSubscribed(ok, item->getEntityId());
 }

@@ -31,7 +31,7 @@ void test_task_client_entity_subscribe::subscibeOk()
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskClientEntitySubscribe task(systemEntityId, clientStack.cmdEventHandlerSystem, components);
+    TaskClientEntitySubscribe task(systemEntityId, clientStack.m_cmdEventHandlerSystem, components);
     QSignalSpy spy(&task, &TaskTemplate::sigFinish);
     task.start();
     TimeMachineObject::feedEventLoop();
@@ -45,7 +45,7 @@ void test_task_client_entity_subscribe::timeout()
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskTemplatePtr task = TaskClientEntitySubscribe::create(systemEntityId, clientStack.cmdEventHandlerSystem, components, stdTimeout);
+    TaskTemplatePtr task = TaskClientEntitySubscribe::create(systemEntityId, clientStack.m_cmdEventHandlerSystem, components, stdTimeout);
 
     bool receivedOk = true;
     int timeout=0;
@@ -70,7 +70,7 @@ void test_task_client_entity_subscribe::invalidEntity()
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskTemplatePtr task = TaskClientEntitySubscribe::create(invalidEntityId, clientStack.cmdEventHandlerSystem, components, stdTimeout);
+    TaskTemplatePtr task = TaskClientEntitySubscribe::create(invalidEntityId, clientStack.m_cmdEventHandlerSystem, components, stdTimeout);
 
     bool receivedOk = true;
     int timeout=0;

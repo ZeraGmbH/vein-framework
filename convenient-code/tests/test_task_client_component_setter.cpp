@@ -36,11 +36,11 @@ void test_task_client_component_setter::setValidValueSubscribed()
     VfCoreStackClient clientStack;
     clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskClientEntitySubscribe taskSubscribe(testId, clientStack.cmdEventHandlerSystem, components);
+    TaskClientEntitySubscribe taskSubscribe(testId, clientStack.m_cmdEventHandlerSystem, components);
     taskSubscribe.start();
     TimeMachineObject::feedEventLoop();
 
@@ -62,7 +62,7 @@ void test_task_client_component_setter::timeout()
 {
     VfCoreStackClient clientStack;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     TaskTemplatePtr setterTask = TaskClientComponentSetter::create(entityItem, "foo", 42, 40, stdTimeout);
