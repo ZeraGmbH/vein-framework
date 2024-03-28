@@ -1,7 +1,8 @@
 <RCC>
     <qresource prefix="/">
         <file>dumpEntityAdded.json</file>
+        <file>dumpEventsFetch.json</file>
+        <file>dumpEventsSubscribe.json</file>
         <file>dumpInitial.json</file>
-        <file>dumpSubscribe.json</file>
     </qresource>
 </RCC>
