@@ -16,12 +16,12 @@ void test_core_stack_client::subsriptionWithThrowAwayObjects()
     TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
 
     QSignalSpy spy(&clientStack, &VfCoreStackClient::sigSubscribed);
     bool clientConnected = false;
     // check event loop fired: connect after connect
-    QObject::connect(&clientStack.tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished, this, [&]() {
+    QObject::connect(clientStack.getTcpSystem(), &VeinNet::TcpSystem::sigConnnectionEstablished, this, [&]() {
         clientConnected = true;
         clientStack.subscribeEntity(systemEntityId);
     });
