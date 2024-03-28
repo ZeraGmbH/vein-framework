@@ -23,22 +23,23 @@ void test_client_command_events::subscribeSystemEntity()
     TestVeinServerWithNet serverNet(serverPort);
     serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
 
-    VfCoreStackClient client;
-    QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents, "client");
-    client.appendEventSystem(&cmdEventSpy);
-    client.connectToServer("127.0.0.1", serverPort);
+    VfCoreStackClient vfClient;
+    vfClient.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
-    QVERIFY(cmdEventSpy.isEmpty());
+    QJsonObject jsonEvents;
+    TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
+    serverNet.getServer()->appendEventSystem(&serverCmdEventSpy);
+    TestCommandEventSpyEventSystem clientCmdEventSpy(&jsonEvents, "client");
+    vfClient.appendEventSystem(&clientCmdEventSpy);
 
-    client.subscribeEntity(systemEntityId);
+    vfClient.subscribeEntity(systemEntityId);
     TimeMachineObject::feedEventLoop();
 
     QFile file(":/dumpEventsSubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
-    QByteArray jsonDumped = cmdEventSpy.dumpToJson();
+    QByteArray jsonDumped = clientCmdEventSpy.dumpToJson();
     if(jsonExpected != jsonDumped) {
         qWarning("Expected events:");
         qInfo("%s", qPrintable(jsonExpected));
