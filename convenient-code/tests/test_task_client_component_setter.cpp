@@ -34,7 +34,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
     TimeMachineObject::feedEventLoop();
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.cmdEventHandlerSystem->addItem(entityItem);
     TimeMachineObject::feedEventLoop();

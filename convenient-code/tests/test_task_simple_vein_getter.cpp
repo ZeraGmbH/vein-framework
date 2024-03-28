@@ -26,7 +26,7 @@ void test_task_simple_vein_getter::getValid()
     TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
 
     TimeMachineObject::feedEventLoop();
 
@@ -52,7 +52,7 @@ void test_task_simple_vein_getter::getInvalid()
     TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
 
     TimeMachineObject::feedEventLoop();
 

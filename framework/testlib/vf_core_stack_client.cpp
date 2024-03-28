@@ -10,6 +10,16 @@ VfCoreStackClient::VfCoreStackClient()
     eventHandler.addSubsystem(cmdEventHandlerSystem.get());
 }
 
+void VfCoreStackClient::connectToServer(const QString &host, quint16 port)
+{
+    tcpSystem.connectToServer(host, port);
+}
+
+VeinNet::TcpSystem *VfCoreStackClient::getTcpSystem()
+{
+    return &tcpSystem;
+}
+
 void VfCoreStackClient::subscribeEntity(int entityId)
 {
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(entityId);
