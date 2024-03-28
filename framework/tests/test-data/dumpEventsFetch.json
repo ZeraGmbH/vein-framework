@@ -1,6 +1,7 @@
 {
     "VeinEvents": [
         {
+            "AsRole": "client",
             "Entity": 0,
             "EvDataType": "ComponentData",
             "EventCommand": "CCMD_FETCH",
@@ -11,6 +12,7 @@
             "ValidPeer": false
         },
         {
+            "AsRole": "client",
             "Entity": 0,
             "EvDataType": "ComponentData",
             "EventCommand": "CCMD_FETCH",

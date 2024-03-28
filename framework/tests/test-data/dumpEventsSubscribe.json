@@ -1,6 +1,7 @@
 {
     "VeinEvents": [
         {
+            "AsRole": "client",
             "Entity": 0,
             "EvDataType": "EntityData",
             "EventCommand": "ECMD_SUBSCRIBE",
@@ -11,6 +12,7 @@
             "ValidPeer": false
         },
         {
+            "AsRole": "client",
             "Entity": 0,
             "EvDataType": "IntrospectionData",
             "EventOrigin": "EO_FOREIGN",

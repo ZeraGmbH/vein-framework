@@ -25,7 +25,7 @@ void test_client_command_events::subscribeSystemEntity()
 
     VfCoreStackClient client;
     QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents);
+    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents, "client");
     client.appendEventSystem(&cmdEventSpy);
     client.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
@@ -57,7 +57,7 @@ void test_client_command_events::fetchSystemEntity()
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     client.addItem(entityItem);
     QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents);
+    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents, "client");
     client.appendEventSystem(&cmdEventSpy);
     client.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
