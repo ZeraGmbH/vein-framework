@@ -2,55 +2,69 @@
 #include "testveinserverwithnet.h"
 #include "vf_core_stack_client.h"
 #include "vtcp_workerfactorymethodstest.h"
+#include "vs_veinhash.h"
 #include <timemachineobject.h>
+#include <QBuffer>
 #include <QTest>
 
 static constexpr int serverPort = 4242;
+
+QTEST_MAIN(test_storage)
+
+void test_storage::initTestCase()
+{
+    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
+}
+
+void test_storage::systemEntityOnly()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    QFile file(":/dumpInitial.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+
+    QString jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    if(jsonExpected != jsonDumped) {
+        qWarning("Expected storage hash:");
+        qInfo("%s", qPrintable(jsonExpected));
+        qWarning("Dumped storage hash:");
+        qInfo("%s", qPrintable(jsonDumped));
+        QCOMPARE(jsonExpected, jsonDumped);
+    }
+}
+
 static constexpr int testEntityId = 37;
 static const char* entityName = "foo";
 static const char* componentName = "bar";
 static const char* componentValue = "value";
 
-QTEST_MAIN(test_storage)
-
-void test_storage::serverSide()
+void test_storage::addEntity()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+    serverNet.getServer()->simulAllModulesLoaded(QString("session"), QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QVERIFY(storage->hasEntity(0)); // system entity
-    QVERIFY(!storage->hasEntity(testEntityId));
+    QFile file(":/dumpEntityAdded.json");
+    QVERIFY(file.open(QFile::ReadOnly));
 
-    TestVeinServer* server = serverNet.getServer();
-    server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentValue, false);
-    TimeMachineObject::feedEventLoop();
-
-    QVERIFY(storage->hasEntity(testEntityId));
-    QVERIFY(storage->hasStoredValue(testEntityId, componentName));
-    QCOMPARE(storage->getStoredValue(testEntityId, componentName), componentValue);
-}
-
-void test_storage::clientSide()
-{
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverNet(serverPort);
-
-    VfCoreStackClient clientStack;
-    clientStack.connectToServer("127.0.0.1", serverPort);
-    TimeMachineObject::feedEventLoop();
-
-    TestVeinServer* server = serverNet.getServer();
-    server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentValue, false);
-    TimeMachineObject::feedEventLoop();
-
-
-
-
-
-    /*QVERIFY(storage->hasEntity(testEntityId));
-    QVERIFY(storage->hasStoredValue(testEntityId, componentName));
-    QCOMPARE(storage->getStoredValue(testEntityId, componentName), componentValue);*/
+    QString jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    if(jsonExpected != jsonDumped) {
+        qWarning("Expected storage hash:");
+        qInfo("%s", qPrintable(jsonExpected));
+        qWarning("Dumped storage hash:");
+        qInfo("%s", qPrintable(jsonDumped));
+        QCOMPARE(jsonExpected, jsonDumped);
+    }
 }

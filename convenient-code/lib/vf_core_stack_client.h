@@ -17,7 +17,7 @@ public:
     void connectToServer(const QString &host, quint16 port);
     void subscribeEntity(int entityId); // this should go once we got tasks
 
-    VeinEvent::EventHandler* getEventHandler();
+    void appendEventSystem(VeinEvent::EventSystem* system);
     void addItem(VfCmdEventItemPtr item);
     VfCmdEventHandlerSystemPtr getCmdEventHandlerSystem();
 signals:

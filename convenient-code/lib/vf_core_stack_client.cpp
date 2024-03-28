@@ -27,9 +27,9 @@ void VfCoreStackClient::subscribeEntity(int entityId)
     entityToSubscribe->sendSubscription();
 }
 
-VeinEvent::EventHandler *VfCoreStackClient::getEventHandler()
+void VfCoreStackClient::appendEventSystem(VeinEvent::EventSystem *system)
 {
-    return &m_eventHandler;
+    m_eventHandler.addSubsystem(system);
 }
 
 void VfCoreStackClient::addItem(VfCmdEventItemPtr item)
