@@ -1,0 +1,22 @@
+{
+    "0": {
+        "DevMode": false,
+        "Entities": [
+            0,
+            37
+        ],
+        "EntityName": "_System",
+        "Error_Messages": null,
+        "LoggedComponents": {
+        },
+        "ModulesPaused": false,
+        "Session": "session",
+        "SessionsAvailable": [
+            "sessionList"
+        ]
+    },
+    "37": {
+        "EntityName": "foo",
+        "bar": "value"
+    }
+}

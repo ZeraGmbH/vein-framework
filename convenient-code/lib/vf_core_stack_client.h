@@ -14,18 +14,23 @@ class VfCoreStackClient : public QObject
     Q_OBJECT
 public:
     VfCoreStackClient();
+    void connectToServer(const QString &host, quint16 port);
     void subscribeEntity(int entityId); // this should go once we got tasks
-    VeinEvent::EventHandler eventHandler;
-    VeinNet::NetworkSystem netSystem;
-    VeinNet::TcpSystem tcpSystem;
-    VfCmdEventHandlerSystemPtr cmdEventHandlerSystem;
+
+    void appendEventSystem(VeinEvent::EventSystem* system);
+    void addItem(VfCmdEventItemPtr item);
+    VfCmdEventHandlerSystemPtr getCmdEventHandlerSystem();
 signals:
+    void sigConnnectionEstablished();
     void sigSubscribed(bool ok, int entityId);
 
 private slots:
     void onSubscribed(bool ok);
 private:
-    // first proof of concept for throw away after using once
+    VeinEvent::EventHandler m_eventHandler;
+    VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
+    VeinNet::NetworkSystem m_netSystem;
+    VeinNet::TcpSystem m_tcpSystem;
     QHash<void*, VfCmdEventItemPtr> m_pendingCommandEventItems;
 };
 

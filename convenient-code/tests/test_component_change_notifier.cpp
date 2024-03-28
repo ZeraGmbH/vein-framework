@@ -1,4 +1,5 @@
 #include "test_component_change_notifier.h"
+#include "vf_client_component_setter.h"
 #include "vf_component_change_notifier.h"
 #include "vf_cmd_event_handler.h"
 #include "vf_core_stack_client.h"
@@ -68,14 +69,14 @@ void test_component_change_notifier::inClientServerStack()
 {
     // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testEntityId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent(componentName, 42);
     TimeMachineObject::feedEventLoop();
@@ -86,20 +87,14 @@ void test_component_change_notifier::inClientServerStack()
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
     QSignalSpy spy(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);
 
-    // Send set event manually to reduce dependencies
-    ComponentData* cData = new ComponentData(testEntityId, ComponentData::Command::CCMD_SET);
-    cData->setComponentName(componentName);
-    cData->setOldValue(42);
-    cData->setNewValue(44);
-    cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-    CommandEvent *commandEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-    QCoreApplication::instance()->postEvent(&clientStack.eventHandler, commandEvent);
+    VfClientComponentSetterPtr setter = VfClientComponentSetter::create(componentName, entityItem);
+    entityItem->addItem(setter);
+    setter->startSetComponent(42, 44);
 
     TimeMachineObject::feedEventLoop();
     QCOMPARE(spy.count(), 1);

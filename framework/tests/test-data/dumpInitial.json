@@ -1,0 +1,17 @@
+{
+    "0": {
+        "DevMode": false,
+        "Entities": [
+            0
+        ],
+        "EntityName": "_System",
+        "Error_Messages": null,
+        "LoggedComponents": {
+        },
+        "ModulesPaused": false,
+        "Session": "foo",
+        "SessionsAvailable": [
+            "fooList"
+        ]
+    }
+}

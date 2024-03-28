@@ -42,14 +42,14 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     TimeMachineObject::feedEventLoop();
@@ -63,14 +63,14 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     entityToSubscribe->sendSubscription();

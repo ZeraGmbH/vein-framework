@@ -24,20 +24,20 @@ void test_task_simple_vein_setter::init()
 void test_task_simple_vein_setter::setValid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "foo", 4711,
-                                                                              clientStack.cmdEventHandlerSystem, stdTimeout);
+                                                                   clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
     connect(taskSet.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
@@ -52,7 +52,7 @@ void test_task_simple_vein_setter::setValid()
 
 
     TaskSimpleVeinGetterPtr taskGet = TaskSimpleVeinGetter::create(testId, "foo",
-                                                                              clientStack.cmdEventHandlerSystem, stdTimeout);
+                                                                   clientStack.getCmdEventHandlerSystem(), stdTimeout);
     receivedOk = false;
     timeout=0;
     connect(taskGet.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
@@ -70,20 +70,20 @@ void test_task_simple_vein_setter::setValid()
 void test_task_simple_vein_setter::setInvalid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinSetterPtr taskSet = TaskSimpleVeinSetter::create(testId, "bar", 4711,
-                                                                                 clientStack.cmdEventHandlerSystem, stdTimeout);
+                                                                   clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskSet.get(), &TaskTemplate::sigFinish);
     taskSet->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);

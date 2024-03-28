@@ -71,14 +71,14 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
 void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
@@ -92,17 +92,17 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
@@ -119,17 +119,17 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     clientStack.subscribeEntity(systemEntityId);
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
     entityItem->addItem(fetcher);

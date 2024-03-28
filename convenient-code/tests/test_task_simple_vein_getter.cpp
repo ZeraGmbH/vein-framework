@@ -23,15 +23,15 @@ void test_task_simple_vein_getter::init()
 void test_task_simple_vein_getter::getValid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
 
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "EntityName",
-                                                                              clientStack.cmdEventHandlerSystem, stdTimeout);
+                                                                clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
     connect(task.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
@@ -49,15 +49,15 @@ void test_task_simple_vein_getter::getValid()
 void test_task_simple_vein_getter::getInvalid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
 
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
-                                                                              clientStack.cmdEventHandlerSystem, stdTimeout);
+                                                                clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(task.get(), &TaskTemplate::sigFinish);
     task->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);

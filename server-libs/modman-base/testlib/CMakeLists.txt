@@ -23,6 +23,7 @@ target_link_libraries(veinserver-testlib
     VfCpp
     VfNet2
     ModmanBase
+    Zera::zera-timers-testlib
 )
 
 set_target_properties(veinserver-testlib PROPERTIES VERSION ${PROJECT_VERSION})

@@ -26,21 +26,21 @@ void test_task_client_component_setter::setValidValueSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverStack.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskClientEntitySubscribe taskSubscribe(testId, clientStack.cmdEventHandlerSystem, components);
+    TaskClientEntitySubscribe taskSubscribe(testId, clientStack.getCmdEventHandlerSystem(), components);
     taskSubscribe.start();
     TimeMachineObject::feedEventLoop();
 
@@ -62,7 +62,7 @@ void test_task_client_component_setter::timeout()
 {
     VfCoreStackClient clientStack;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     TaskTemplatePtr setterTask = TaskClientComponentSetter::create(entityItem, "foo", 42, 40, stdTimeout);

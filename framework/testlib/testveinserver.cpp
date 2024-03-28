@@ -1,4 +1,5 @@
 #include "testveinserver.h"
+#include <timemachineobject.h>
 
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
@@ -40,6 +41,11 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
 }
 
+VeinEvent::StorageSystem *TestVeinServer::getStorage()
+{
+    return &m_storageSystem;
+}
+
 QList<int> TestVeinServer::getEntityAddList() const
 {
     return m_vfEntityAddSpy.getEntityList();
@@ -58,6 +64,7 @@ QList<VfTestComponentSpy::TComponentInfo> TestVeinServer::getComponentChangeList
 void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
 {
     m_systemModuleSystem.initializeEntity(sessionPath, sessionList);
+    TimeMachineObject::feedEventLoop();
 }
 
 void TestVeinServer::resetLists()

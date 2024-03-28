@@ -17,14 +17,14 @@ static constexpr int serverPort = 4242;
 void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfClientEntityUnsubscriberPtr entityToUnsubscribe = VfClientEntityUnsubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToUnsubscribe);
+    clientStack.addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
     TimeMachineObject::feedEventLoop();
@@ -36,14 +36,14 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 void test_client_entity_unsubscriber::subscribeUnsubscribe()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverStack(serverPort);
+    TestVeinServerWithNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
-    clientStack.tcpSystem.connectToServer("127.0.0.1", serverPort);
+    clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.addItem(entityToSubscribe);
     QSignalSpy spySubscribe(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     TimeMachineObject::feedEventLoop();
@@ -51,7 +51,7 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
     QCOMPARE(spySubscribe[0][0].toBool(), true);
 
     VfClientEntityUnsubscriberPtr entityToUnsubscribe = VfClientEntityUnsubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToUnsubscribe);
+    clientStack.addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
     TimeMachineObject::feedEventLoop();

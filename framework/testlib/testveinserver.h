@@ -17,10 +17,14 @@ public:
     explicit TestVeinServer(VeinEvent::EventHandler *eventHandler);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
+    VeinEvent::StorageSystem* getStorage();
+
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
+
     void simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList);
+
     void resetLists();
 private:
     VeinEvent::EventHandler* m_vfEventHandler;
