@@ -24,7 +24,7 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
     TimeMachineObject::feedEventLoop();
 
     VfClientEntityUnsubscriberPtr entityToUnsubscribe = VfClientEntityUnsubscriber::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityToUnsubscribe);
+    clientStack.addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
     TimeMachineObject::feedEventLoop();
@@ -43,7 +43,7 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.addItem(entityToSubscribe);
     QSignalSpy spySubscribe(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     TimeMachineObject::feedEventLoop();
@@ -51,7 +51,7 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
     QCOMPARE(spySubscribe[0][0].toBool(), true);
 
     VfClientEntityUnsubscriberPtr entityToUnsubscribe = VfClientEntityUnsubscriber::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityToUnsubscribe);
+    clientStack.addItem(entityToUnsubscribe);
     QSignalSpy spy(entityToUnsubscribe.get(), &VfClientEntityUnsubscriber::sigUnsubscribed);
     entityToUnsubscribe->sendUnsubscription();
     TimeMachineObject::feedEventLoop();

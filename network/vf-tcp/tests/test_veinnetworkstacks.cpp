@@ -20,13 +20,13 @@ void test_veinnetworkstacks::receiveIntrospection()
 
     VfCoreStackClient clientStack;
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.addItem(entityToSubscribe);
 
     clientStack.connectToServer("127.0.0.1", serverPort);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     bool clientConnected = false;
     // check event loop fired: connect after connect
-    QObject::connect(clientStack.getTcpSystem(), &VeinNet::TcpSystem::sigConnnectionEstablished, [&]() {
+    QObject::connect(&clientStack, &VfCoreStackClient::sigConnnectionEstablished, [&]() {
         clientConnected = true;
         entityToSubscribe->sendSubscription();
     });
