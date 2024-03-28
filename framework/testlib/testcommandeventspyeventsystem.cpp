@@ -77,6 +77,16 @@ void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJso
     Q_ASSERT(cData != nullptr);
     jsonEventInfo.insert("EvDataType", "ComponentData");
     jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
+    QVariant oldValue = cData->oldValue();
+    if(oldValue.isValid())
+        jsonEventInfo.insert("ValueOld", oldValue.toJsonValue());
+    else
+        jsonEventInfo.insert("ValueOld", "invalid");
+    QVariant newValue = cData->newValue();
+    if(newValue.isValid())
+        jsonEventInfo.insert("ValueNew", newValue.toJsonValue());
+    else
+        jsonEventInfo.insert("ValueNew", "invalid");
 }
 
 void TestCommandEventSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
