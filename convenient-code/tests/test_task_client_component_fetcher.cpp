@@ -29,11 +29,11 @@ void test_task_client_component_fetcher::fetchSubscribed()
     VfCoreStackClient clientStack;
     clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
-    TaskClientEntitySubscribe taskSubscribe(systemEntityId, clientStack.cmdEventHandlerSystem, components);
+    TaskClientEntitySubscribe taskSubscribe(systemEntityId, clientStack.m_cmdEventHandlerSystem, components);
     taskSubscribe.start();
     TimeMachineObject::feedEventLoop();
 
@@ -51,7 +51,7 @@ void test_task_client_component_fetcher::timeout()
 {
     VfCoreStackClient clientStack;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();

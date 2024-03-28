@@ -18,16 +18,16 @@ public:
     VeinNet::TcpSystem* getTcpSystem();
     void subscribeEntity(int entityId); // this should go once we got tasks
 
-    VfCmdEventHandlerSystemPtr cmdEventHandlerSystem;
-    VeinEvent::EventHandler eventHandler;
+    VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
 signals:
     void sigSubscribed(bool ok, int entityId);
 
 private slots:
     void onSubscribed(bool ok);
 private:
-    VeinNet::NetworkSystem netSystem;
-    VeinNet::TcpSystem tcpSystem;
+    VeinEvent::EventHandler m_eventHandler;
+    VeinNet::NetworkSystem m_netSystem;
+    VeinNet::TcpSystem m_tcpSystem;
     // first proof of concept for throw away after using once
     QHash<void*, VfCmdEventItemPtr> m_pendingCommandEventItems;
 };

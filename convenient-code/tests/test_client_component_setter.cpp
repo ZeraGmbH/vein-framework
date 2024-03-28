@@ -82,7 +82,7 @@ void test_client_component_setter::setToInvalidEntity()
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(invalidId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
     entityItem->addItem(setter);
@@ -114,7 +114,7 @@ void test_client_component_setter::setvalidEntityNet()
     TimeMachineObject::feedEventLoop();
     
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
-    clientStack.cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
 
     VfClientComponentSetterPtr setter = VfClientComponentSetter::create("foo", entityItem);
     entityItem->addItem(setter);

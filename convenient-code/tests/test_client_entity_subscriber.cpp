@@ -49,7 +49,7 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     TimeMachineObject::feedEventLoop();
@@ -70,7 +70,7 @@ void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityToSubscribe);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
     entityToSubscribe->sendSubscription();
     entityToSubscribe->sendSubscription();

@@ -20,7 +20,7 @@ void test_veinnetworkstacks::receiveIntrospection()
 
     VfCoreStackClient clientStack;
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
-    clientStack.cmdEventHandlerSystem->addItem(entityToSubscribe);
+    clientStack.m_cmdEventHandlerSystem->addItem(entityToSubscribe);
 
     clientStack.connectToServer("127.0.0.1", serverPort);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
