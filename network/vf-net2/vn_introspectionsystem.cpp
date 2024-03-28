@@ -22,8 +22,8 @@ namespace VeinNet
 struct EntityIntrospection
 {
 public:
-    QSet<QString> m_components;
-    QSet<QString> m_procedures;
+    QMap<QString, int> m_components;
+    QMap<QString, int> m_procedures;
 };
 
 IntrospectionSystem::IntrospectionSystem(QObject *parent) :
@@ -116,7 +116,7 @@ void IntrospectionSystem::processEvent(QEvent *event)
                     {
                     case ComponentData::Command::CCMD_ADD:
                         Q_ASSERT(m_introspectionData.contains(cData->entityId()));
-                        m_introspectionData.value(cData->entityId())->m_components.insert(cData->componentName());
+                        m_introspectionData.value(cData->entityId())->m_components.insert(cData->componentName(), 0);
                         break;
                     case ComponentData::Command::CCMD_REMOVE:
                         Q_ASSERT(m_introspectionData.contains(cData->entityId()));
@@ -135,7 +135,7 @@ void IntrospectionSystem::processEvent(QEvent *event)
                 if(rpcData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
                     if(rpcData->command() == RemoteProcedureData::Command::RPCMD_REGISTER) {
                         Q_ASSERT(m_introspectionData.contains(rpcData->entityId()));
-                        m_introspectionData.value(rpcData->entityId())->m_procedures.insert(rpcData->procedureName());
+                        m_introspectionData.value(rpcData->entityId())->m_procedures.insert(rpcData->procedureName(), 0);
                     }
                 }
             }
@@ -150,8 +150,8 @@ QJsonObject IntrospectionSystem::getJsonIntrospection(int entityId) const
 {
     QJsonObject retVal;
     if(m_introspectionData.contains(entityId)) {
-        retVal.insert(QString("components"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_components.values()));
-        retVal.insert(QString("procedures"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_procedures.values()));
+        retVal.insert(QString("components"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_components.keys()));
+        retVal.insert(QString("procedures"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_procedures.keys()));
     }
     return retVal;
 }
