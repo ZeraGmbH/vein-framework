@@ -2,5 +2,6 @@
     <qresource prefix="/">
         <file>dumpEntityAdded.json</file>
         <file>dumpInitial.json</file>
+        <file>dumpSubscribe.json</file>
     </qresource>
 </RCC>

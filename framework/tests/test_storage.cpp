@@ -1,8 +1,6 @@
 #include "test_storage.h"
 #include "testveinserverwithnet.h"
-#include "vf_core_stack_client.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include "vs_veinhash.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>
