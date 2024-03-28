@@ -31,7 +31,7 @@ void test_task_simple_vein_getter::getValid()
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "EntityName",
-                                                                clientStack.m_cmdEventHandlerSystem, stdTimeout);
+                                                                clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
     connect(task.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
@@ -57,7 +57,7 @@ void test_task_simple_vein_getter::getInvalid()
     TimeMachineObject::feedEventLoop();
 
     TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "foo",
-                                                                clientStack.m_cmdEventHandlerSystem, stdTimeout);
+                                                                clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(task.get(), &TaskTemplate::sigFinish);
     task->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);

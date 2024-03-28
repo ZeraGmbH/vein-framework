@@ -78,7 +78,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
@@ -102,7 +102,7 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("EntityName", entityItem);
     entityItem->addItem(fetcher);
@@ -129,7 +129,7 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
     entityItem->addItem(fetcher);

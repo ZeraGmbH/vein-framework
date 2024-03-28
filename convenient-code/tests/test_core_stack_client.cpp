@@ -21,7 +21,7 @@ void test_core_stack_client::subsriptionWithThrowAwayObjects()
     QSignalSpy spy(&clientStack, &VfCoreStackClient::sigSubscribed);
     bool clientConnected = false;
     // check event loop fired: connect after connect
-    QObject::connect(clientStack.getTcpSystem(), &VeinNet::TcpSystem::sigConnnectionEstablished, this, [&]() {
+    QObject::connect(&clientStack, &VfCoreStackClient::sigConnnectionEstablished, this, [&]() {
         clientConnected = true;
         clientStack.subscribeEntity(systemEntityId);
     });

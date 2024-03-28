@@ -87,7 +87,7 @@ void test_component_change_notifier::inClientServerStack()
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
-    clientStack.m_cmdEventHandlerSystem->addItem(entityItem);
+    clientStack.addItem(entityItem);
     VfSimpleChangeNotifierPtr changeNotifier = VfComponentChangeNotifier::create(componentName, entityItem);
     entityItem->addItem(changeNotifier);
     QSignalSpy spy(changeNotifier.get(), &VfComponentChangeNotifier::sigValueChanged);

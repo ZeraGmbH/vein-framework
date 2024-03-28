@@ -8,16 +8,13 @@ VfCoreStackClient::VfCoreStackClient()
     m_eventHandler.addSubsystem(&m_netSystem);
     m_eventHandler.addSubsystem(&m_tcpSystem);
     m_eventHandler.addSubsystem(m_cmdEventHandlerSystem.get());
+    connect(&m_tcpSystem, &VeinNet::TcpSystem::sigConnnectionEstablished,
+            this, &VfCoreStackClient::sigConnnectionEstablished);
 }
 
 void VfCoreStackClient::connectToServer(const QString &host, quint16 port)
 {
     m_tcpSystem.connectToServer(host, port);
-}
-
-VeinNet::TcpSystem *VfCoreStackClient::getTcpSystem()
-{
-    return &m_tcpSystem;
 }
 
 void VfCoreStackClient::subscribeEntity(int entityId)
@@ -28,6 +25,21 @@ void VfCoreStackClient::subscribeEntity(int entityId)
     connect(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed,
             this, &VfCoreStackClient::onSubscribed);
     entityToSubscribe->sendSubscription();
+}
+
+VeinEvent::EventHandler *VfCoreStackClient::getEventHandler()
+{
+    return &m_eventHandler;
+}
+
+void VfCoreStackClient::addItem(VfCmdEventItemPtr item)
+{
+    m_cmdEventHandlerSystem->addItem(item);
+}
+
+VfCmdEventHandlerSystemPtr VfCoreStackClient::getCmdEventHandlerSystem()
+{
+    return m_cmdEventHandlerSystem;
 }
 
 void VfCoreStackClient::onSubscribed(bool ok)
