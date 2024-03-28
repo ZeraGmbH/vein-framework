@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>dumpEntityAdded.json</file>
+        <file>dumpInitial.json</file>
+    </qresource>
+</RCC>

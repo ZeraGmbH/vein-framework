@@ -7,8 +7,10 @@ class test_storage : public QObject
 {
     Q_OBJECT
 private slots:
-    void serverSide();
-    void clientSide();
+    void initTestCase();
+    // VeinHash works for servers only...
+    void systemEntityOnly();
+    void addEntity();
 };
 
 #endif // TEST_MUTABLE_COMMAND_EVENT_H

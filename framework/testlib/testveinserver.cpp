@@ -1,4 +1,5 @@
 #include "testveinserver.h"
+#include <timemachineobject.h>
 
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
@@ -63,6 +64,7 @@ QList<VfTestComponentSpy::TComponentInfo> TestVeinServer::getComponentChangeList
 void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
 {
     m_systemModuleSystem.initializeEntity(sessionPath, sessionList);
+    TimeMachineObject::feedEventLoop();
 }
 
 void TestVeinServer::resetLists()
