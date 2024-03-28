@@ -9,7 +9,9 @@
             "EventSubtype": "TRANSACTION",
             "EventTarget": "ET_ALL",
             "Valid": true,
-            "ValidPeer": false
+            "ValidPeer": false,
+            "ValueNew": "invalid",
+            "ValueOld": "invalid"
         },
         {
             "AsRole": "client",
@@ -20,7 +22,9 @@
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
-            "ValidPeer": true
+            "ValidPeer": true,
+            "ValueNew": "_System",
+            "ValueOld": "invalid"
         }
     ]
 }
