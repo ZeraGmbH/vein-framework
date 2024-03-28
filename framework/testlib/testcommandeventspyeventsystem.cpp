@@ -1,5 +1,5 @@
 #include "testcommandeventspyeventsystem.h"
-#include <vcmp_componentdata.h>
+#include "testcommandeventstrings.h"
 #include <vcmp_errordata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
@@ -8,6 +8,11 @@
 
 using namespace VeinEvent;
 using namespace VeinComponent;
+
+TestCommandEventSpyEventSystem::TestCommandEventSpyEventSystem(QJsonObject *jsonEvents) :
+    m_jsonEvents(jsonEvents)
+{
+}
 
 void TestCommandEventSpyEventSystem::processEvent(QEvent *event)
 {
@@ -43,17 +48,17 @@ void TestCommandEventSpyEventSystem::processEvent(QEvent *event)
 
 void TestCommandEventSpyEventSystem::clear()
 {
-    m_jsonEvents = QJsonObject();
+   *m_jsonEvents = QJsonObject();
 }
 
 bool TestCommandEventSpyEventSystem::isEmpty() const
 {
-    return m_jsonEvents.isEmpty();
+   return m_jsonEvents->isEmpty();
 }
 
 QByteArray TestCommandEventSpyEventSystem::dumpToJson()
 {
-    QJsonDocument doc(m_jsonEvents);
+    QJsonDocument doc(*m_jsonEvents);
     return doc.toJson(QJsonDocument::Indented);
 }
 
@@ -61,23 +66,23 @@ void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonOb
 {
     EntityData *eData = static_cast<EntityData*>(evData);
     Q_ASSERT(eData != nullptr);
-    jsonEventInfo.insert("EvData", "EntityData");
-    jsonEventInfo.insert("EventCommand", strEntityCommand(eData->eventCommand()));
+    jsonEventInfo.insert("EvDataType", "EntityData");
+    jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strEntityCommand(eData->eventCommand()));
 }
 
 void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     ComponentData *cData = static_cast<ComponentData*>(evData);
     Q_ASSERT(cData != nullptr);
-    jsonEventInfo.insert("EvData", "ComponentData");
-    // TODO
+    jsonEventInfo.insert("EvDataType", "ComponentData");
+    jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
 }
 
 void TestCommandEventSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     IntrospectionData *iData = static_cast<IntrospectionData*>(evData);
     Q_ASSERT(iData != nullptr);
-    jsonEventInfo.insert("EvData", "IntrospectionData");
+    jsonEventInfo.insert("EvDataType", "IntrospectionData");
     QJsonObject jsonIntrospection = iData->jsonData();
     jsonIntrospection = QJsonObject::fromVariantMap(jsonIntrospection.toVariantMap());
     jsonEventInfo.insert("IntrospectionData", jsonIntrospection);
@@ -87,7 +92,7 @@ void TestCommandEventSpyEventSystem::handleRpcData(VeinEvent::EventData *evData,
 {
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData*>(evData);
     Q_ASSERT(rpcData != nullptr);
-    jsonEventInfo.insert("EvData", "RemoteProcedureData");
+    jsonEventInfo.insert("EvDataType", "RemoteProcedureData");
     // TODO
 }
 
@@ -95,7 +100,7 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
 {
     ErrorData *errData = static_cast<ErrorData*>(evData);
     Q_ASSERT(errData != nullptr);
-    jsonEventInfo.insert("EvData", "ErrorData");
+    jsonEventInfo.insert("EvDataType", "ErrorData");
     // TODO
 }
 
@@ -103,9 +108,9 @@ QJsonObject TestCommandEventSpyEventSystem::commonInfo(CommandEvent *cEvent, Eve
 {
     QJsonObject jsonEntity( {
         {"Entity", evData->entityId()},
-        {"EventSubtype", strSubtype(cEvent->eventSubtype())},
-        {"EventOrigin", strOrigin(qint8(evData->eventOrigin()))},
-        {"EventTarget", strTarget(qint8(evData->eventTarget()))},
+        {"EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype())},
+        {"EventOrigin", TestCommandEventStrings::strOrigin(qint8(evData->eventOrigin()))},
+        {"EventTarget", TestCommandEventStrings::strTarget(qint8(evData->eventTarget()))},
         {"ValidPeer", !cEvent->peerId().isNull()},
         {"Valid", evData->isValid()},
     } );
@@ -115,82 +120,8 @@ QJsonObject TestCommandEventSpyEventSystem::commonInfo(CommandEvent *cEvent, Eve
 void TestCommandEventSpyEventSystem::addJsonInfo(const QJsonObject &jsonEventInfo)
 {
     QJsonArray jsonArray;
-    if(!m_jsonEvents.isEmpty())
-        jsonArray = m_jsonEvents["VeinEvents"].toArray();
+    if(!m_jsonEvents->isEmpty())
+        jsonArray = (*m_jsonEvents)["VeinEvents"].toArray();
     jsonArray.append(jsonEventInfo);
-    m_jsonEvents["VeinEvents"] = jsonArray;
-}
-
-QString TestCommandEventSpyEventSystem::strSubtype(CommandEvent::EventSubtype subtype)
-{
-    QString str;
-    switch(subtype) {
-    case CommandEvent::EventSubtype::NOTIFICATION:
-        str = "NOTIFICATION";
-        break;
-    case CommandEvent::EventSubtype::TRANSACTION:
-        str = "TRANSACTION";
-        break;
-    }
-    return str;
-}
-
-QString TestCommandEventSpyEventSystem::strOrigin(qint8 origin)
-{
-    QString str;
-    switch(origin) {
-    case qint8(EventData::EventOrigin::EO_LOCAL):
-        str = "EO_LOCAL";
-        break;
-    case qint8(EventData::EventOrigin::EO_FOREIGN):
-        str = "EO_FOREIGN";
-        break;
-    default:
-        str = QString().arg("EO_USER_DEFINED + %1", origin - qint8(EventData::EventOrigin::EO_USER_DEFINED));
-        break;
-    }
-    return str;
-}
-
-QString TestCommandEventSpyEventSystem::strTarget(qint8 target)
-{
-    QString str;
-    switch(target) {
-    case qint8(EventData::EventTarget::ET_IRRELEVANT):
-        str = "ET_IRRELEVANT";
-        break;
-    case qint8(EventData::EventTarget::ET_LOCAL):
-        str = "ET_LOCAL";
-        break;
-    case qint8(EventData::EventTarget::ET_ALL):
-        str = "ET_ALL";
-        break;
-    default:
-        str = QString().arg("ET_USER_DEFINED + %1", target - qint8(EventData::EventTarget::ET_USER_DEFINED));
-        break;
-    }
-    return str;
-}
-
-QString TestCommandEventSpyEventSystem::strEntityCommand(VeinComponent::EntityData::Command cmd)
-{
-    QString str;
-    switch(cmd) {
-    case EntityData::Command::ECMD_INVALID:
-        str = "ECMD_INVALID";
-        break;
-    case EntityData::Command::ECMD_ADD:
-        str = "ECMD_ADD";
-        break;
-    case EntityData::Command::ECMD_REMOVE:
-        str = "ECMD_REMOVE";
-        break;
-    case EntityData::Command::ECMD_SUBSCRIBE:
-        str = "ECMD_SUBSCRIBE";
-        break;
-    case EntityData::Command::ECMD_UNSUBSCRIBE:
-        str = "ECMD_UNSUBSCRIBE";
-        break;
-    }
-    return str;
+    (*m_jsonEvents)["VeinEvents"] = jsonArray;
 }

@@ -4,12 +4,12 @@
 #include <ve_eventsystem.h>
 #include <ve_eventdata.h>
 #include "ve_commandevent.h"
-#include <vcmp_entitydata.h>
 #include "QJsonObject"
 
 class TestCommandEventSpyEventSystem : public VeinEvent::EventSystem
 {
 public:
+    TestCommandEventSpyEventSystem(QJsonObject *jsonEvents);
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
@@ -23,12 +23,8 @@ private:
 
     QJsonObject commonInfo(VeinEvent::CommandEvent *cEvent, VeinEvent::EventData *evData);
     void addJsonInfo(const QJsonObject& jsonEventInfo);
-    QString strSubtype(VeinEvent::CommandEvent::EventSubtype subtype);
-    QString strOrigin(qint8 origin);
-    QString strTarget(qint8 target);
-    QString strEntityCommand(VeinComponent::EntityData::Command cmd);
 
-    QJsonObject m_jsonEvents;
+    QJsonObject *m_jsonEvents = nullptr;
 };
 
 #endif // TESTCOMMANDEVENTSPYEVENTSYSTEM_H
