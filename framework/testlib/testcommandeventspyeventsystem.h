@@ -9,7 +9,7 @@
 class TestCommandEventSpyEventSystem : public VeinEvent::EventSystem
 {
 public:
-    TestCommandEventSpyEventSystem(QJsonObject *jsonEvents);
+    TestCommandEventSpyEventSystem(QJsonObject *jsonEvents, QString roleName);
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
@@ -25,6 +25,7 @@ private:
     void addJsonInfo(const QJsonObject& jsonEventInfo);
 
     QJsonObject *m_jsonEvents = nullptr;
+    QString m_roleName;
 };
 
 #endif // TESTCOMMANDEVENTSPYEVENTSYSTEM_H

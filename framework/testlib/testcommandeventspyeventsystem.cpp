@@ -9,8 +9,9 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-TestCommandEventSpyEventSystem::TestCommandEventSpyEventSystem(QJsonObject *jsonEvents) :
-    m_jsonEvents(jsonEvents)
+TestCommandEventSpyEventSystem::TestCommandEventSpyEventSystem(QJsonObject *jsonEvents, QString roleName) :
+    m_jsonEvents(jsonEvents),
+    m_roleName(roleName)
 {
 }
 
@@ -107,6 +108,7 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
 QJsonObject TestCommandEventSpyEventSystem::commonInfo(CommandEvent *cEvent, EventData *evData)
 {
     QJsonObject jsonEntity( {
+        {"AsRole", m_roleName},
         {"Entity", evData->entityId()},
         {"EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype())},
         {"EventOrigin", TestCommandEventStrings::strOrigin(qint8(evData->eventOrigin()))},
