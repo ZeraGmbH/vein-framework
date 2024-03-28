@@ -23,6 +23,11 @@ TestVeinServer::TestVeinServer(VeinEvent::EventHandler *eventHandler) :
     m_systemModuleSystem.initOnce();
 }
 
+void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
+{
+    m_vfEventHandler->addSubsystem(system);
+}
+
 void TestVeinServer::addEntity(int entityId, QString entityName)
 {
     if(m_entities.find(entityId) != m_entities.end()) {

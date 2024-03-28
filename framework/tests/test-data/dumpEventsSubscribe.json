@@ -12,6 +12,30 @@
             "ValidPeer": false
         },
         {
+            "AsRole": "server",
+            "Entity": 0,
+            "EvDataType": "IntrospectionData",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "IntrospectionData": {
+                "components": [
+                    "DevMode",
+                    "Entities",
+                    "EntityName",
+                    "Error_Messages",
+                    "LoggedComponents",
+                    "ModulesPaused",
+                    "Session",
+                    "SessionsAvailable"
+                ],
+                "procedures": [
+                ]
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
             "AsRole": "client",
             "Entity": 0,
             "EvDataType": "IntrospectionData",
