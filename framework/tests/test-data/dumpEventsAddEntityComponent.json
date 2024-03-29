@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am at": "server",
+            "Am event in": "server",
             "Attached data": "EntityData",
             "Entity": 37,
             "EntityCommand": "ECMD_ADD",
@@ -12,7 +12,7 @@
             "ValidPeer": false
         },
         {
-            "Am at": "server",
+            "Am event in": "server",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_ADD",
             "ComponentName": "EntityName",
@@ -26,7 +26,7 @@
             "ValueOld": "invalid"
         },
         {
-            "Am at": "server",
+            "Am event in": "server",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_ADD",
             "ComponentName": "TestComponent",

@@ -143,7 +143,7 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
 
 void TestCommandEventSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
 {
-    jsonInfo.insert("Am at", m_roleName);
+    jsonInfo.insert("Am event in", m_roleName);
     jsonInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
     jsonInfo.insert("ValidPeer", !cEvent->peerId().isNull());
 }

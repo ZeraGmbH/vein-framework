@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am at": "client",
+            "Am event in": "client",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "EntityName",
@@ -15,7 +15,7 @@
             "ValueOld": "invalid"
         },
         {
-            "Am at": "server",
+            "Am event in": "server",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "EntityName",
@@ -29,7 +29,7 @@
             "ValueOld": "invalid"
         },
         {
-            "Am at": "client",
+            "Am event in": "client",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "EntityName",
