@@ -1,0 +1,46 @@
+{
+    "VeinEvents": [
+        {
+            "AsRole": "client",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_SET",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": true,
+            "ValueOld": false
+        },
+        {
+            "AsRole": "server",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_SET",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": true,
+            "ValueOld": false
+        },
+        {
+            "AsRole": "client",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_SET",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": true,
+            "ValueOld": false
+        }
+    ]
+}
