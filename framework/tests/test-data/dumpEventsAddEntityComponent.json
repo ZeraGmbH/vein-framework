@@ -1,0 +1,43 @@
+{
+    "VeinEvents": [
+        {
+            "AsRole": "server",
+            "Entity": 37,
+            "EvDataType": "EntityData",
+            "EventCommand": "ECMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "AsRole": "server",
+            "ComponentName": "EntityName",
+            "Entity": 37,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "TestEntity",
+            "ValueOld": "invalid"
+        },
+        {
+            "AsRole": "server",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "TestInitialValue",
+            "ValueOld": "invalid"
+        }
+    ]
+}

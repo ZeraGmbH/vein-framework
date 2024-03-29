@@ -16,6 +16,9 @@ private slots:
     void fetchSystemEntityComponent();
     void fetchSystemEntityNonExistingComponent();
     void setSystemEntityComponent();
+
+    void serverAddEntityAndComponent();
+
     void initTestCase();
     void init();
     void cleanup();
