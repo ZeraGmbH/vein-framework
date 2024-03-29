@@ -13,7 +13,6 @@ public:
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
-    QByteArray dumpToJson();
 private:
     void handleEntityData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleComponentData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);

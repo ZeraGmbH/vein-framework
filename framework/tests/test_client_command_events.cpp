@@ -1,5 +1,6 @@
 #include "test_client_command_events.h"
 #include "testcommandeventspyeventsystem.h"
+#include "testdumpreporter.h"
 #include "vf_core_stack_client.h"
 #include "task_client_component_fetcher.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -46,17 +47,11 @@ void test_client_command_events::subscribeSystemEntity()
     QFile file(":/dumpEventsSubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
-    QByteArray jsonDumped = clientCmdEventSpy.dumpToJson();
-    if(jsonExpected != jsonDumped) {
-        qWarning("Expected events:");
-        qInfo("%s", qPrintable(jsonExpected));
-        qWarning("Dumped events:");
-        qInfo("%s", qPrintable(jsonDumped));
-        QCOMPARE(jsonExpected, jsonDumped);
-    }
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_client_command_events::fetchSystemEntity()
+void test_client_command_events::fetchSystemEntityComponent()
 {
     VfCoreStackClient vfClient;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
@@ -82,12 +77,6 @@ void test_client_command_events::fetchSystemEntity()
     QFile file(":/dumpEventsFetch.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
-    QByteArray jsonDumped = clientCmdEventSpy.dumpToJson();
-    if(jsonExpected != jsonDumped) {
-        qWarning("Expected events:");
-        qInfo("%s", qPrintable(jsonExpected));
-        qWarning("Dumped events:");
-        qInfo("%s", qPrintable(jsonDumped));
-        QCOMPARE(jsonExpected, jsonDumped);
-    }
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }

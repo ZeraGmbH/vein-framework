@@ -1,5 +1,6 @@
 #include "test_storage.h"
 #include "testveinserverwithnet.h"
+#include "testdumpreporter.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QBuffer>
@@ -23,17 +24,11 @@ void test_storage::systemEntityOnly()
     QFile file(":/dumpInitial.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
-    QString jsonExpected = file.readAll();
+    QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    if(jsonExpected != jsonDumped) {
-        qWarning("Expected storage hash:");
-        qInfo("%s", qPrintable(jsonExpected));
-        qWarning("Dumped storage hash:");
-        qInfo("%s", qPrintable(jsonDumped));
-        QCOMPARE(jsonExpected, jsonDumped);
-    }
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
 static constexpr int testEntityId = 37;
@@ -54,15 +49,9 @@ void test_storage::addEntity()
     QFile file(":/dumpEntityAdded.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
-    QString jsonExpected = file.readAll();
+    QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    if(jsonExpected != jsonDumped) {
-        qWarning("Expected storage hash:");
-        qInfo("%s", qPrintable(jsonExpected));
-        qWarning("Dumped storage hash:");
-        qInfo("%s", qPrintable(jsonDumped));
-        QCOMPARE(jsonExpected, jsonDumped);
-    }
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }

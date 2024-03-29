@@ -4,7 +4,6 @@
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
 #include <QJsonArray>
-#include <QJsonDocument>
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -55,12 +54,6 @@ void TestCommandEventSpyEventSystem::clear()
 bool TestCommandEventSpyEventSystem::isEmpty() const
 {
    return m_jsonEvents->isEmpty();
-}
-
-QByteArray TestCommandEventSpyEventSystem::dumpToJson()
-{
-    QJsonDocument doc(*m_jsonEvents);
-    return doc.toJson(QJsonDocument::Indented);
 }
 
 void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &jsonEventInfo)
