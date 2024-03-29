@@ -14,10 +14,7 @@ static constexpr int stdTimeout = 1000;
 void test_command_events::subscribeSystemEntity()
 {
     QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
-    m_netServer->getServer()->appendEventSystem(&serverCmdEventSpy);
-    TestCommandEventSpyEventSystem clientCmdEventSpy(&jsonEvents, "client");
-    m_netClient->appendEventSystem(&clientCmdEventSpy);
+    setupSpy(jsonEvents);
 
     subscribeClient(systemEntityId);
 
@@ -33,10 +30,7 @@ void test_command_events::fetchSystemEntityComponent()
     subscribeClient(systemEntityId);
 
     QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
-    m_netServer->getServer()->appendEventSystem(&serverCmdEventSpy);
-    TestCommandEventSpyEventSystem clientCmdEventSpy(&jsonEvents, "client");
-    m_netClient->appendEventSystem(&clientCmdEventSpy);
+    setupSpy(jsonEvents);
 
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
     TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("EntityName", m_entityItem, value, stdTimeout);
@@ -74,6 +68,14 @@ void test_command_events::cleanup()
     m_entityItem = nullptr;
     m_netClient = nullptr;
     m_netServer = nullptr;
+}
+
+void test_command_events::setupSpy(QJsonObject &jsonEvents)
+{
+    m_serverCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "server");
+    m_netServer->getServer()->appendEventSystem(m_serverCmdEventSpy.get());
+    m_clientCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "client");
+    m_netClient->appendEventSystem(m_clientCmdEventSpy.get());
 }
 
 void test_command_events::subscribeClient(int entityId)
