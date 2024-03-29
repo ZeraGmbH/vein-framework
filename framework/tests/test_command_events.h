@@ -6,15 +6,15 @@
 #include "vf_entity_component_event_item.h"
 #include <memory>
 
-class test_client_command_events : public QObject
+class test_command_events : public QObject
 {
     Q_OBJECT
 private slots:
+    void subscribeSystemEntity();
+    void fetchSystemEntityComponent();
     void initTestCase();
     void init();
     void cleanup();
-    void subscribeSystemEntity();
-    void fetchSystemEntityComponent();
 private:
     void subscribeClient(int entityId);
     std::unique_ptr<TestVeinServerWithNet> m_netServer;

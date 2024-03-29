@@ -1,4 +1,4 @@
-#include "test_client_command_events.h"
+#include "test_command_events.h"
 #include "testcommandeventspyeventsystem.h"
 #include "testdumpreporter.h"
 #include "task_client_component_fetcher.h"
@@ -6,12 +6,12 @@
 #include <timemachineobject.h>
 #include <QTest>
 
-QTEST_MAIN(test_client_command_events)
+QTEST_MAIN(test_command_events)
 
 static constexpr int systemEntityId = 0;
 static constexpr int stdTimeout = 1000;
 
-void test_client_command_events::subscribeSystemEntity()
+void test_command_events::subscribeSystemEntity()
 {
     QJsonObject jsonEvents;
     TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
@@ -28,7 +28,7 @@ void test_client_command_events::subscribeSystemEntity()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_client_command_events::fetchSystemEntityComponent()
+void test_command_events::fetchSystemEntityComponent()
 {
     subscribeClient(systemEntityId);
 
@@ -51,12 +51,12 @@ void test_client_command_events::fetchSystemEntityComponent()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_client_command_events::initTestCase()
+void test_command_events::initTestCase()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
 }
 
-void test_client_command_events::init()
+void test_command_events::init()
 {
     constexpr int serverPort = 4242;
     m_netServer = std::make_unique<TestVeinServerWithNet>(serverPort);
@@ -69,14 +69,14 @@ void test_client_command_events::init()
     TimeMachineObject::feedEventLoop();
 }
 
-void test_client_command_events::cleanup()
+void test_command_events::cleanup()
 {
     m_entityItem = nullptr;
     m_netClient = nullptr;
     m_netServer = nullptr;
 }
 
-void test_client_command_events::subscribeClient(int entityId)
+void test_command_events::subscribeClient(int entityId)
 {
     m_netClient->subscribeEntity(entityId);
     TimeMachineObject::feedEventLoop();
