@@ -18,6 +18,7 @@ private slots:
     void setSystemEntityComponent();
 
     void serverAddEntityAndComponent();
+    void serverAddComponentWithSubscribedClient();
 
     void initTestCase();
     void init();
