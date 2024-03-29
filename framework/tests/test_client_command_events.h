@@ -12,7 +12,7 @@ private slots:
     void init();
     void cleanup();
     void subscribeSystemEntity();
-    void fetchSystemEntity();
+    void fetchSystemEntityComponent();
 private:
     std::unique_ptr<TestVeinServerWithNet> m_netServer;
 };
