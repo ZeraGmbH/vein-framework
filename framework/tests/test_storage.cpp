@@ -21,7 +21,7 @@ void test_storage::systemEntityOnly()
     serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpInitial.json");
+    QFile file(":/dumpStorageInitial.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -46,7 +46,7 @@ void test_storage::addEntity()
     serverNet.getServer()->simulAllModulesLoaded(QString("session"), QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpEntityAdded.json");
+    QFile file(":/dumpStorageEntityAdded.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
