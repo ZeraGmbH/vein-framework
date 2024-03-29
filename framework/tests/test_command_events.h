@@ -15,6 +15,7 @@ private slots:
     void subscribeNonExistingEntity();
     void fetchSystemEntityComponent();
     void fetchSystemEntityNonExistingComponent();
+    void setSystemEntityComponent();
     void initTestCase();
     void init();
     void cleanup();

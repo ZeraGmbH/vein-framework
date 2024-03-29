@@ -2,6 +2,7 @@
 #include "testcommandeventspyeventsystem.h"
 #include "testdumpreporter.h"
 #include "task_client_component_fetcher.h"
+#include "task_client_component_setter.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QBuffer>
@@ -90,6 +91,24 @@ void test_command_events::fetchSystemEntityNonExistingComponent()
     QBuffer buff(&jsonDumped2);
     storage->dumpToFile(&buff, QList<int>());
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
+}
+
+void test_command_events::setSystemEntityComponent()
+{
+    subscribeClient(systemEntityId);
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    TaskTemplatePtr setterTask = TaskClientComponentSetter::create(m_entityItem, "ModulesPaused", false, true, stdTimeout);
+    setterTask->start();
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsSet.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
 void test_command_events::initTestCase()
