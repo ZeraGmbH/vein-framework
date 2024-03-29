@@ -4,6 +4,7 @@
 #include "task_client_component_fetcher.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
+#include <QBuffer>
 #include <QTest>
 
 QTEST_MAIN(test_command_events)
@@ -57,6 +58,38 @@ void test_command_events::fetchSystemEntityComponent()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_command_events::fetchSystemEntityNonExistingComponent()
+{
+    subscribeClient(systemEntityId);
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
+    TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("FooComponent", m_entityItem, value, stdTimeout);
+    fetcherTask->start();
+    TimeMachineObject::feedEventLoop();
+
+    QFile file1(":/dumpEventsFetchNonExistent.json");
+    QVERIFY(file1.open(QFile::ReadOnly));
+    QByteArray jsonExpected1 = file1.readAll();
+    QByteArray jsonDumped1 = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected1, jsonDumped1));
+
+    // Unexpected result: We just fetch invalid old/new data - other
+    // parameters are same as valid fetch. So check if component was
+    // accidentally created in server...
+    VeinEvent::StorageSystem* storage = m_netServer->getStorage();
+    QFile file2(":/dumpStorageInitial.json");
+    QVERIFY(file2.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected2 = file2.readAll();
+    QByteArray jsonDumped2;
+    QBuffer buff(&jsonDumped2);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
 }
 
 void test_command_events::initTestCase()

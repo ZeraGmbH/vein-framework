@@ -1,6 +1,7 @@
 <RCC>
     <qresource prefix="/">
         <file>dumpEventsFetch.json</file>
+        <file>dumpEventsFetchNonExistent.json</file>
         <file>dumpEventsSubscribe.json</file>
         <file>dumpEventsSubscribeNonExistent.json</file>
         <file>dumpStorageEntityAdded.json</file>
