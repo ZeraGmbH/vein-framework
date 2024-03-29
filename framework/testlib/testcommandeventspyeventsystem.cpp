@@ -61,17 +61,17 @@ void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonOb
 {
     EntityData *eData = static_cast<EntityData*>(evData);
     Q_ASSERT(eData != nullptr);
-    jsonEventInfo.insert("EvDataType", "EntityData");
-    jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strEntityCommand(eData->eventCommand()));
+    jsonEventInfo.insert("Attached data", "EntityData");
+    jsonEventInfo.insert("EntityCommand", TestCommandEventStrings::strEntityCommand(eData->eventCommand()));
 }
 
 void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     ComponentData *cData = static_cast<ComponentData*>(evData);
     Q_ASSERT(cData != nullptr);
-    jsonEventInfo.insert("EvDataType", "ComponentData");
+    jsonEventInfo.insert("Attached data", "ComponentData");
     jsonEventInfo.insert("ComponentName", cData->componentName());
-    jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
+    jsonEventInfo.insert("ComponentCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
     QVariant oldValue = cData->oldValue();
     if(oldValue.isValid())
         jsonEventInfo.insert("ValueOld", oldValue.toJsonValue());
@@ -88,7 +88,7 @@ void TestCommandEventSpyEventSystem::handleIntrospectionData(VeinEvent::EventDat
 {
     IntrospectionData *iData = static_cast<IntrospectionData*>(evData);
     Q_ASSERT(iData != nullptr);
-    jsonEventInfo.insert("EvDataType", "IntrospectionData");
+    jsonEventInfo.insert("Attached data", "IntrospectionData");
     QJsonObject jsonIntrospection = iData->jsonData();
     jsonIntrospection = QJsonObject::fromVariantMap(jsonIntrospection.toVariantMap());
     jsonEventInfo.insert("IntrospectionData", jsonIntrospection);
@@ -98,7 +98,7 @@ void TestCommandEventSpyEventSystem::handleRpcData(VeinEvent::EventData *evData,
 {
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData*>(evData);
     Q_ASSERT(rpcData != nullptr);
-    jsonEventInfo.insert("EvDataType", "RemoteProcedureData");
+    jsonEventInfo.insert("Attached data", "RemoteProcedureData");
     // TODO
 }
 
@@ -106,7 +106,7 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
 {
     ErrorData *errData = static_cast<ErrorData*>(evData);
     Q_ASSERT(errData != nullptr);
-    jsonEventInfo.insert("EvDataType", "ErrorData");
+    jsonEventInfo.insert("Attached data", "ErrorData");
 
     QJsonObject origEventInfo = baseInfoFromEventData(errData);
     int originalDataType = errData->originalDataType();
@@ -143,7 +143,7 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
 
 void TestCommandEventSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
 {
-    jsonInfo.insert("AsRole", m_roleName);
+    jsonInfo.insert("Am at", m_roleName);
     jsonInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
     jsonInfo.insert("ValidPeer", !cEvent->peerId().isNull());
 }

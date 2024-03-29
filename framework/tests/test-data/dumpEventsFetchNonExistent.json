@@ -1,11 +1,11 @@
 {
     "VeinEvents": [
         {
-            "AsRole": "client",
+            "Am at": "client",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "FooComponent",
             "Entity": 0,
-            "EvDataType": "ComponentData",
-            "EventCommand": "CCMD_FETCH",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "TRANSACTION",
             "EventTarget": "ET_ALL",
@@ -15,11 +15,11 @@
             "ValueOld": "invalid"
         },
         {
-            "AsRole": "server",
+            "Am at": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "FooComponent",
             "Entity": 0,
-            "EvDataType": "ComponentData",
-            "EventCommand": "CCMD_FETCH",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
@@ -29,11 +29,11 @@
             "ValueOld": "invalid"
         },
         {
-            "AsRole": "client",
+            "Am at": "client",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
             "ComponentName": "FooComponent",
             "Entity": 0,
-            "EvDataType": "ComponentData",
-            "EventCommand": "CCMD_FETCH",
             "EventOrigin": "EO_FOREIGN",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
