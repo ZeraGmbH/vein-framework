@@ -1,0 +1,32 @@
+{
+    "VeinEvents": [
+        {
+            "AsRole": "server",
+            "ComponentName": "secondComponentName",
+            "Entity": 37,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "secondComponentInitialValue",
+            "ValueOld": "invalid"
+        },
+        {
+            "AsRole": "client",
+            "ComponentName": "secondComponentName",
+            "Entity": 37,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_ADD",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": "secondComponentInitialValue",
+            "ValueOld": "invalid"
+        }
+    ]
+}

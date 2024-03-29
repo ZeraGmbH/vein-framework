@@ -1,5 +1,6 @@
 <RCC>
     <qresource prefix="/">
+        <file>dumpEventsAddComponentClientSubscribed.json</file>
         <file>dumpEventsAddEntityComponent.json</file>
         <file>dumpEventsFetch.json</file>
         <file>dumpEventsFetchNonExistent.json</file>

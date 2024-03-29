@@ -134,6 +134,27 @@ void test_command_events::serverAddEntityAndComponent()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
+void test_command_events::serverAddComponentWithSubscribedClient()
+{
+    TestVeinServer* server = m_netServer->getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentInitialValue, false);
+    TimeMachineObject::feedEventLoop();
+
+    subscribeClient(testEntityId);
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+    server->addComponent(testEntityId, "secondComponentName", "secondComponentInitialValue", false);
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsAddComponentClientSubscribed.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
 void test_command_events::initTestCase()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
