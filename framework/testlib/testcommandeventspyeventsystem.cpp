@@ -70,6 +70,7 @@ void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJso
     ComponentData *cData = static_cast<ComponentData*>(evData);
     Q_ASSERT(cData != nullptr);
     jsonEventInfo.insert("EvDataType", "ComponentData");
+    jsonEventInfo.insert("ComponentName", cData->componentName());
     jsonEventInfo.insert("EventCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
     QVariant oldValue = cData->oldValue();
     if(oldValue.isValid())
