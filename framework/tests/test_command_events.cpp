@@ -25,6 +25,20 @@ void test_command_events::subscribeSystemEntity()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
+void test_command_events::subscribeNonExistingEntity()
+{
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    subscribeClient(42);
+
+    QFile file(":/dumpEventsSubscribeNonExistent.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
 void test_command_events::fetchSystemEntityComponent()
 {
     subscribeClient(systemEntityId);

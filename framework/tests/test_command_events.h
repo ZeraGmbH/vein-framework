@@ -12,6 +12,7 @@ class test_command_events : public QObject
     Q_OBJECT
 private slots:
     void subscribeSystemEntity();
+    void subscribeNonExistingEntity();
     void fetchSystemEntityComponent();
     void initTestCase();
     void init();
