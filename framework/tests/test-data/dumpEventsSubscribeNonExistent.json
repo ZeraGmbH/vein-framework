@@ -1,0 +1,25 @@
+{
+    "VeinEvents": [
+        {
+            "AsRole": "client",
+            "Entity": 42,
+            "EvDataType": "EntityData",
+            "EventCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "AsRole": "server",
+            "Entity": 42,
+            "EvDataType": "ErrorData",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true
+        }
+    ]
+}
