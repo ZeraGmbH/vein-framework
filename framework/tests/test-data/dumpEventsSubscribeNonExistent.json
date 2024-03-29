@@ -18,6 +18,14 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
+            "OriginalEventData": {
+                "Entity": 42,
+                "EvDataType": "EntityData",
+                "EventCommand": "ECMD_SUBSCRIBE",
+                "EventOrigin": "EO_LOCAL",
+                "EventTarget": "ET_ALL",
+                "Valid": true
+            },
             "Valid": true,
             "ValidPeer": true
         }

@@ -21,7 +21,8 @@ void TestCommandEventSpyEventSystem::processEvent(QEvent *event)
         Q_ASSERT(cEvent != nullptr);
         EventData *evData = cEvent->eventData();
         Q_ASSERT(evData != nullptr);
-        QJsonObject jsonEventInfo = commonInfo(cEvent, evData);
+        QJsonObject jsonEventInfo = baseInfoFromEventData(evData);
+        extendByEventInfo(cEvent, jsonEventInfo);
 
         switch(evData->type()) {
         case EntityData::dataType():
@@ -105,18 +106,53 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
     ErrorData *errData = static_cast<ErrorData*>(evData);
     Q_ASSERT(errData != nullptr);
     jsonEventInfo.insert("EvDataType", "ErrorData");
-    // TODO
+
+    QJsonObject origEventInfo = baseInfoFromEventData(errData);
+    int originalDataType = errData->originalDataType();
+    switch (originalDataType) {
+    case VCMP_COMPONENTDATA_DATATYPE: {
+        ComponentData data;
+        data.deserialize(errData->originalData());
+        handleComponentData(&data, origEventInfo);
+        break;
+    }
+    case VCMP_ENTITYDATA_DATATYPE: {
+        EntityData data;
+        data.deserialize(errData->originalData());
+        handleEntityData(&data, origEventInfo);
+        break;
+    }
+    case VCMP_INTROSPECTIONDATA_DATATYPE: {
+        IntrospectionData data;
+        data.deserialize(errData->originalData());
+        handleIntrospectionData(&data, origEventInfo);
+        break;
+    }
+    case VCMP_ERRORDATA_DATATYPE: // cannot be nested see ErrorData::setOriginalData
+        break;
+    case VCMP_REMOTEPROCEDUREDATA_DATATYPE: {
+        RemoteProcedureData data;
+        data.deserialize(errData->originalData());
+        handleRpcData(&data, origEventInfo);
+        break;
+    }
+    }
+    jsonEventInfo.insert("OriginalEventData", origEventInfo);
 }
 
-QJsonObject TestCommandEventSpyEventSystem::commonInfo(CommandEvent *cEvent, EventData *evData)
+void TestCommandEventSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
+{
+    jsonInfo.insert("AsRole", m_roleName);
+    jsonInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
+    jsonInfo.insert("ValidPeer", !cEvent->peerId().isNull());
+}
+
+QJsonObject TestCommandEventSpyEventSystem::baseInfoFromEventData(VeinEvent::EventData *evData)
 {
     QJsonObject jsonEntity( {
-        {"AsRole", m_roleName},
         {"Entity", evData->entityId()},
-        {"EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype())},
         {"EventOrigin", TestCommandEventStrings::strOrigin(qint8(evData->eventOrigin()))},
         {"EventTarget", TestCommandEventStrings::strTarget(qint8(evData->eventTarget()))},
-        {"ValidPeer", !cEvent->peerId().isNull()},
         {"Valid", evData->isValid()},
     } );
     return jsonEntity;

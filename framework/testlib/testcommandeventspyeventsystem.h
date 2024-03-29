@@ -20,7 +20,8 @@ private:
     void handleRpcData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleErrorData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
 
-    QJsonObject commonInfo(VeinEvent::CommandEvent *cEvent, VeinEvent::EventData *evData);
+    QJsonObject baseInfoFromEventData(VeinEvent::EventData *evData);
+    void extendByEventInfo(VeinEvent::CommandEvent *cEvent, QJsonObject &jsonInfo);
     void addJsonInfo(const QJsonObject& jsonEventInfo);
 
     QJsonObject *m_jsonEvents = nullptr;
