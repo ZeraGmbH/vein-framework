@@ -58,28 +58,31 @@ void test_client_command_events::subscribeSystemEntity()
 
 void test_client_command_events::fetchSystemEntity()
 {
-    VfCoreStackClient client;
+    VfCoreStackClient vfClient;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
-    client.addItem(entityItem);
-    QJsonObject jsonEvents;
-    TestCommandEventSpyEventSystem cmdEventSpy(&jsonEvents, "client");
-    client.appendEventSystem(&cmdEventSpy);
-    client.connectToServer("127.0.0.1", serverPort);
+    vfClient.addItem(entityItem);
+    vfClient.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
-    client.subscribeEntity(systemEntityId);
+    vfClient.subscribeEntity(systemEntityId);
     TimeMachineObject::feedEventLoop();
-    cmdEventSpy.clear();
+
+    QJsonObject jsonEvents;
+    TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
+    m_netServer->getServer()->appendEventSystem(&serverCmdEventSpy);
+    TestCommandEventSpyEventSystem clientCmdEventSpy(&jsonEvents, "client");
+    vfClient.appendEventSystem(&clientCmdEventSpy);
 
     std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
     TaskTemplatePtr fetcherTask = TaskClientComponentFetcher::create("EntityName", entityItem, value, stdTimeout);
     fetcherTask->start();
     TimeMachineObject::feedEventLoop();
+    QCOMPARE(*value, "_System");
 
     QFile file(":/dumpEventsFetch.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
-    QByteArray jsonDumped = cmdEventSpy.dumpToJson();
+    QByteArray jsonDumped = clientCmdEventSpy.dumpToJson();
     if(jsonExpected != jsonDumped) {
         qWarning("Expected events:");
         qInfo("%s", qPrintable(jsonExpected));
@@ -88,5 +91,3 @@ void test_client_command_events::fetchSystemEntity()
         QCOMPARE(jsonExpected, jsonDumped);
     }
 }
-
-

@@ -14,6 +14,19 @@
             "ValueOld": "invalid"
         },
         {
+            "AsRole": "server",
+            "Entity": 0,
+            "EvDataType": "ComponentData",
+            "EventCommand": "CCMD_FETCH",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": "_System",
+            "ValueOld": "invalid"
+        },
+        {
             "AsRole": "client",
             "Entity": 0,
             "EvDataType": "ComponentData",
