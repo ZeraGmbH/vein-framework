@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am at": "client",
+            "Am event in": "client",
             "Attached data": "EntityData",
             "Entity": 0,
             "EntityCommand": "ECMD_SUBSCRIBE",
@@ -12,7 +12,7 @@
             "ValidPeer": false
         },
         {
-            "Am at": "server",
+            "Am event in": "server",
             "Attached data": "IntrospectionData",
             "Entity": 0,
             "EventOrigin": "EO_LOCAL",
@@ -36,7 +36,7 @@
             "ValidPeer": true
         },
         {
-            "Am at": "client",
+            "Am event in": "client",
             "Attached data": "IntrospectionData",
             "Entity": 0,
             "EventOrigin": "EO_FOREIGN",
