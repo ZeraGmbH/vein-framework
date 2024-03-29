@@ -1,6 +1,5 @@
 #include "test_client_command_events.h"
 #include "testcommandeventspyeventsystem.h"
-#include "testveinserverwithnet.h"
 #include "vf_core_stack_client.h"
 #include "task_client_component_fetcher.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -18,18 +17,26 @@ void test_client_command_events::initTestCase()
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
 }
 
+void test_client_command_events::init()
+{
+    m_netServer = std::make_unique<TestVeinServerWithNet>(serverPort);
+    m_netServer->getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
+}
+
+void test_client_command_events::cleanup()
+{
+    m_netServer = nullptr;
+}
+
 void test_client_command_events::subscribeSystemEntity()
 {
-    TestVeinServerWithNet serverNet(serverPort);
-    serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
-
     VfCoreStackClient vfClient;
     vfClient.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
     QJsonObject jsonEvents;
     TestCommandEventSpyEventSystem serverCmdEventSpy(&jsonEvents, "server");
-    serverNet.getServer()->appendEventSystem(&serverCmdEventSpy);
+    m_netServer->getServer()->appendEventSystem(&serverCmdEventSpy);
     TestCommandEventSpyEventSystem clientCmdEventSpy(&jsonEvents, "client");
     vfClient.appendEventSystem(&clientCmdEventSpy);
 
@@ -51,9 +58,6 @@ void test_client_command_events::subscribeSystemEntity()
 
 void test_client_command_events::fetchSystemEntity()
 {
-    TestVeinServerWithNet serverNet(serverPort);
-    serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
-
     VfCoreStackClient client;
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     client.addItem(entityItem);
