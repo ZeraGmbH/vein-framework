@@ -26,3 +26,8 @@ VeinEvent::StorageSystem *TestVeinServerWithNet::getStorage()
 {
     return getServer()->getStorage();
 }
+
+int TestVeinServerWithNet::getSubscriberCount(int entityId)
+{
+    return m_netSystem.getSubscriberCount(entityId);
+}

@@ -13,6 +13,7 @@ class test_command_events : public QObject
 private slots:
     void clientSubscribeEntity();
     void clientSubscribeNonExistingEntity();
+    void clientSubscribeUnsubscribeEntity();
     void clientFetchComponent();
     void clientFetchNonExistingComponent();
     void clientSetComponent();

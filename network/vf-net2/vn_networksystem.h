@@ -26,6 +26,8 @@ public:
     };
     OperationMode operationMode() const;
     void setOperationMode(const OperationMode &operationMode);
+
+    int getSubscriberCount(int entityId) const;
 public:
     void processEvent(QEvent *event) override;
 private:
