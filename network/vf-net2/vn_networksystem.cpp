@@ -24,10 +24,6 @@ namespace VeinNet
 {
 class NetworkSystemPrivate
 {
-    // stands for QHash<"entity descriptor", QList<"network id"> *>
-    template <typename T>
-    using SubscriptionStorage = QHash<T, QList<QUuid>>;
-
     explicit NetworkSystemPrivate(NetworkSystem *t_qPtr) :
         q_ptr(t_qPtr)
     {
@@ -254,14 +250,8 @@ class NetworkSystemPrivate
     }
 
     NetworkSystem::OperationMode m_operationMode = NetworkSystem::VNOM_SUBSCRIPTION;
-
-    /**
-     * @brief stores current subscribers
-     */
-    SubscriptionStorage<int> m_subscriptions;
-
+    QHash<int, QList<QUuid>> m_subscriptions;
     flatbuffers::FlatBufferBuilder m_flatBufferBuilder;
-
     NetworkSystem *q_ptr;
 
     friend class NetworkSystem;
