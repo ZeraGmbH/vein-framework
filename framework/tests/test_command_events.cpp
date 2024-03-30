@@ -13,7 +13,7 @@ QTEST_MAIN(test_command_events)
 static constexpr int systemEntityId = 0;
 static constexpr int stdTimeout = 1000;
 
-void test_command_events::subscribeSystemEntity()
+void test_command_events::clientSubscribeEntity()
 {
     QJsonObject jsonEvents;
     setupSpy(jsonEvents);
@@ -27,7 +27,7 @@ void test_command_events::subscribeSystemEntity()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_command_events::subscribeNonExistingEntity()
+void test_command_events::clientSubscribeNonExistingEntity()
 {
     QJsonObject jsonEvents;
     setupSpy(jsonEvents);
@@ -41,7 +41,7 @@ void test_command_events::subscribeNonExistingEntity()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_command_events::fetchSystemEntityComponent()
+void test_command_events::clientFetchComponent()
 {
     subscribeClient(systemEntityId);
 
@@ -61,7 +61,7 @@ void test_command_events::fetchSystemEntityComponent()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
-void test_command_events::fetchSystemEntityNonExistingComponent()
+void test_command_events::clientFetchNonExistingComponent()
 {
     subscribeClient(systemEntityId);
 
@@ -93,7 +93,7 @@ void test_command_events::fetchSystemEntityNonExistingComponent()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
 }
 
-void test_command_events::setSystemEntityComponent()
+void test_command_events::clientSetComponent()
 {
     subscribeClient(systemEntityId);
 
@@ -109,6 +109,36 @@ void test_command_events::setSystemEntityComponent()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_command_events::clientSetNonExistingComponent()
+{
+    subscribeClient(systemEntityId);
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    TaskTemplatePtr setterTask = TaskClientComponentSetter::create(m_entityItem, "NonExisting", false, true, stdTimeout);
+    setterTask->start();
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsSetNonExistent.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+
+    // Unexpected result: Server just ignores. So check if component was
+    // accidentally created in server...
+    VeinEvent::StorageSystem* storage = m_netServer->getStorage();
+    QFile file2(":/dumpStorageInitial.json");
+    QVERIFY(file2.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected2 = file2.readAll();
+    QByteArray jsonDumped2;
+    QBuffer buff(&jsonDumped2);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
 }
 
 

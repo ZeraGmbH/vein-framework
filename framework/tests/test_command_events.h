@@ -11,11 +11,12 @@ class test_command_events : public QObject
 {
     Q_OBJECT
 private slots:
-    void subscribeSystemEntity();
-    void subscribeNonExistingEntity();
-    void fetchSystemEntityComponent();
-    void fetchSystemEntityNonExistingComponent();
-    void setSystemEntityComponent();
+    void clientSubscribeEntity();
+    void clientSubscribeNonExistingEntity();
+    void clientFetchComponent();
+    void clientFetchNonExistingComponent();
+    void clientSetComponent();
+    void clientSetNonExistingComponent();
 
     void serverAddEntityAndComponent();
     void serverAddComponentWithSubscribedClient();
