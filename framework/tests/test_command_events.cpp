@@ -1,6 +1,7 @@
 #include "test_command_events.h"
 #include "testcommandeventspyeventsystem.h"
 #include "testdumpreporter.h"
+#include "vf_client_entity_unsubscriber.h"
 #include "task_client_component_fetcher.h"
 #include "task_client_component_setter.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -34,7 +35,33 @@ void test_command_events::clientSubscribeNonExistingEntity()
 
     subscribeClient(42);
 
+    // Hey we see error event here!
     QFile file(":/dumpEventsSubscribeNonExistent.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_command_events::clientSubscribeUnsubscribeEntity()
+{
+    subscribeClient(systemEntityId);
+    QCOMPARE(m_netServer->getSubscriberCount(systemEntityId), 1);
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    VfClientEntityUnsubscriberPtr unsubscriber = VfClientEntityUnsubscriber::create(systemEntityId);
+    m_netClient->addItem(unsubscriber);
+    unsubscriber->sendUnsubscription();
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_netServer->getSubscriberCount(systemEntityId), 0);
+
+    // * NetworkSystemPrivate::processCmdEvents accepts unsubscribe event so we see no events from server
+    // * Unsunscribe is a fire and forget so testing unsubscribe on invalid or not sunscribed is a
+    //   mission impossible
+    QFile file(":/dumpEventsUnsubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);

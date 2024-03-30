@@ -152,6 +152,13 @@ class NetworkSystemPrivate
 
     }
 
+    int getSubscriberCount(int entityId) const
+    {
+        if(!m_subscriptions.contains(entityId))
+            return 0;
+        return m_subscriptions[entityId].count();
+    }
+
     bool tryHandleSubscription(VeinComponent::EntityData *eData, QUuid peerId)
     {
         Q_ASSERT(eData != nullptr);
@@ -283,6 +290,11 @@ NetworkSystem::OperationMode NetworkSystem::operationMode() const
 void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &operationMode)
 {
     d_ptr->m_operationMode = operationMode;
+}
+
+int NetworkSystem::getSubscriberCount(int entityId) const
+{
+    return d_ptr->getSubscriberCount(entityId);
 }
 
 void NetworkSystem::processEvent(QEvent *event)

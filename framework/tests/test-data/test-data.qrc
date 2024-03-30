@@ -7,6 +7,7 @@
         <file>dumpEventsSet.json</file>
         <file>dumpEventsSetNonExistent.json</file>
         <file>dumpEventsSubscribe.json</file>
+        <file>dumpEventsUnsubscribe.json</file>
         <file>dumpEventsSubscribeNonExistent.json</file>
         <file>dumpStorageEntityAdded.json</file>
         <file>dumpStorageInitial.json</file>
