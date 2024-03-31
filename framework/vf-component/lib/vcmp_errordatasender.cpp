@@ -22,5 +22,7 @@ void ErrorDataSender::errorOut(QString errorMessage, QEvent *event, VeinEvent::E
     event->accept();
 
     CommandEvent *errEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, errData);
+    errEvent->setPeerId(cEvent->peerId());
+
     emit eventSystem->sigSendEvent(errEvent);
 }
