@@ -9,9 +9,9 @@
         "LoggedComponents": {
         },
         "ModulesPaused": false,
-        "Session": "foo",
+        "Session": "session",
         "SessionsAvailable": [
-            "fooList"
+            "sessionList"
         ]
     }
 }

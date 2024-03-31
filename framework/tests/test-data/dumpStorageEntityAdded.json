@@ -16,7 +16,7 @@
         ]
     },
     "37": {
-        "EntityName": "foo",
-        "bar": "value"
+        "EntityName": "TestEntity",
+        "TestComponent": "TestInitialValue"
     }
 }

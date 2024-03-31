@@ -172,7 +172,7 @@ void test_command_events::clientSetNonExistingComponent()
 static constexpr int testEntityId = 37;
 static const char* entityName = "TestEntity";
 static const char* componentName = "TestComponent";
-static const char* componentInitialValue = "TestInitialValue";
+static const char* componentValue = "TestInitialValue";
 
 void test_command_events::serverAddEntityAndComponent()
 {
@@ -181,7 +181,7 @@ void test_command_events::serverAddEntityAndComponent()
 
     TestVeinServer* server = m_netServer->getServer();
     server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentInitialValue, false);
+    server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
 
     QFile file(":/dumpEventsAddEntityComponent.json");
@@ -195,7 +195,7 @@ void test_command_events::serverAddComponentWithSubscribedClient()
 {
     TestVeinServer* server = m_netServer->getServer();
     server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentInitialValue, false);
+    server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
 
     subscribeClient(testEntityId);
@@ -267,7 +267,7 @@ void test_command_events::init()
 {
     constexpr int serverPort = 4242;
     m_netServer = std::make_unique<TestVeinServerWithNet>(serverPort);
-    m_netServer->getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
+    m_netServer->getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     m_netClient = std::make_unique<VfCoreStackClient>();
     m_entityItem = VfEntityComponentEventItem::create(systemEntityId);

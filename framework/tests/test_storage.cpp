@@ -18,7 +18,7 @@ void test_storage::initTestCase()
 void test_storage::systemEntityOnly()
 {
     TestVeinServerWithNet serverNet(serverPort);
-    serverNet.getServer()->simulAllModulesLoaded(QString("foo"), QStringList() << "fooList");
+    serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     QFile file(":/dumpStorageInitial.json");
@@ -32,9 +32,9 @@ void test_storage::systemEntityOnly()
 }
 
 static constexpr int testEntityId = 37;
-static const char* entityName = "foo";
-static const char* componentName = "bar";
-static const char* componentValue = "value";
+static const char* entityName = "TestEntity";
+static const char* componentName = "TestComponent";
+static const char* componentValue = "TestInitialValue";
 
 void test_storage::addEntity()
 {
@@ -43,7 +43,7 @@ void test_storage::addEntity()
     server->addEntity(testEntityId, entityName);
     server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
-    serverNet.getServer()->simulAllModulesLoaded(QString("session"), QStringList() << "sessionList");
+    serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     QFile file(":/dumpStorageEntityAdded.json");
