@@ -32,6 +32,7 @@ public slots:
     void clearSubsystems();
 signals:
     void subsystemsChanged(QList<EventSystem*> subsystems);
+    void eventAccepted(VeinEvent::EventSystem* eventSystem, QEvent *event);
 protected:
     virtual void customEvent(QEvent *event) override;
 private:

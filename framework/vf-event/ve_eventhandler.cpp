@@ -50,13 +50,14 @@ void EventHandler::clearSubsystems()
 void EventHandler::customEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
-    /**
-     * @note some speed could be gained by using a subscription based n:m (entity:system) mapping so that systems only get notified about the entities they care about
-     * @todo maybe event processing can be accelerated with QtConcurrent / OpenMP?
-     */
-
-    for(int i=0; i < m_subsystems.count() && event->isAccepted()==false; ++i)
-        m_subsystems.at(i)->processEvent(event);
+    for(int i=0; i < m_subsystems.count(); ++i) {
+        EventSystem* eventSystem = m_subsystems.at(i);
+        eventSystem->processEvent(event);
+        if(event->isAccepted()) {
+            emit eventAccepted(eventSystem, event);
+            break;
+        }
+    }
 }
 
 void registerStreamOperators()
