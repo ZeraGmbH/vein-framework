@@ -61,7 +61,7 @@ void VeinHash::processComponentData(QEvent *event)
     case ComponentData::Command::CCMD_ADD:
     {
         if(!m_entityComponentData.contains(entityId))
-            ErrorDataSender::errorOut(QString("Cannot add value for invalid entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot add component for invalid entity id: %1").arg(entityId), event, this);
         else if(m_entityComponentData.value(entityId).contains(componentName))
             ErrorDataSender::errorOut(QString("Value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
@@ -70,7 +70,11 @@ void VeinHash::processComponentData(QEvent *event)
     }
     case ComponentData::Command::CCMD_REMOVE:
     {
-        if(m_entityComponentData.contains(entityId) && m_entityComponentData.value(entityId).contains(componentName))
+        if(!m_entityComponentData.contains(entityId))
+            ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), event, this);
+        else if(!m_entityComponentData.value(entityId).contains(componentName))
+            ErrorDataSender::errorOut(QString("Cannot remove non existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+        else
             m_entityComponentData[entityId].remove(componentName);
         break;
     }

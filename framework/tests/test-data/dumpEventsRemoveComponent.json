@@ -1,0 +1,18 @@
+{
+    "VeinEvents": [
+        {
+            "Am event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_REMOVE",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "InitialValue",
+            "ValueOld": "invalid"
+        }
+    ]
+}
