@@ -35,7 +35,6 @@ void test_command_events::clientSubscribeNonExistingEntity()
 
     subscribeClient(42);
 
-    // Hey we see error event here!
     QFile file(":/dumpEventsSubscribeNonExistent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();

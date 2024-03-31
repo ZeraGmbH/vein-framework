@@ -78,23 +78,8 @@ void IntrospectionSystem::processEvent(QEvent *event)
 
                         emit sigSendEvent(newEvent);
                     }
-                    else {
-                        QString tmpErrorString = tr("No introspection available for requested entity, entity id: %1").arg(entityId);
-                        event->accept();
-                        qCWarning(VEIN_NET_INTRO) << tmpErrorString;
-
-                        ErrorData *errData = new ErrorData();
-
-                        errData->setEntityId(entityId);
-                        errData->setOriginalData(eData);
-                        errData->setEventOrigin(EventData::EventOrigin::EO_LOCAL);
-                        errData->setEventTarget(eData->eventTarget());
-                        errData->setErrorDescription(tmpErrorString);
-
-                        CommandEvent *tmpCommandEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, errData);
-                        tmpCommandEvent->setPeerId(cEvent->peerId());
-                        emit sigSendEvent(tmpCommandEvent);
-                    }
+                    else
+                        ErrorDataSender::errorOut(QString("No introspection available for requested entity, entity id: %1").arg(entityId), event, this);
                     break;
                 }
                 default:
