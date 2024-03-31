@@ -22,7 +22,8 @@ private slots:
     void serverAddEntityAndComponent();
     void serverAddComponentWithSubscribedClient();
     void serverAddComponentForNomExistentEntity();
-
+    void serverRemoveComponent();
+    void serverRemoveNonExistingComponent();
     void serverRemoveComponentForNomExistentEntity();
 
     void initTestCase();

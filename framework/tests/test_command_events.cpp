@@ -235,6 +235,55 @@ void test_command_events::serverAddComponentForNomExistentEntity()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
+void test_command_events::serverRemoveComponent()
+{
+    TestVeinServer* server = m_netServer->getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(testEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_REMOVE);
+    cData->setComponentName(componentName);
+    cData->setNewValue("InitialValue");
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    server->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsRemoveComponent.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_command_events::serverRemoveNonExistingComponent()
+{
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(systemEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_REMOVE);
+    cData->setComponentName("NonExistent");
+    cData->setNewValue("InitialValue");
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    m_netServer->getServer()->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsRemoveNonExistingComponent.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
 void test_command_events::serverRemoveComponentForNomExistentEntity()
 {
     QJsonObject jsonEvents;
