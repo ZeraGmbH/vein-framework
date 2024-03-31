@@ -212,6 +212,52 @@ void test_command_events::serverAddComponentWithSubscribedClient()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 }
 
+void test_command_events::serverAddComponentForNomExistentEntity()
+{
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(testEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
+    cData->setComponentName(componentName);
+    cData->setNewValue("InitialValue");
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    m_netServer->getServer()->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsAddComponentNonExistingEntity.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_command_events::serverRemoveComponentForNomExistentEntity()
+{
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(testEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_REMOVE);
+    cData->setComponentName(componentName);
+    cData->setNewValue("InitialValue");
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    m_netServer->getServer()->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/dumpEventsRemoveComponentNonExistingEntity.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
 void test_command_events::initTestCase()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();

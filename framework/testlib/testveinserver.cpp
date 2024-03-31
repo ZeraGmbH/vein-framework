@@ -46,6 +46,11 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
 }
 
+void TestVeinServer::sendEvent(QEvent *event)
+{
+    emit m_storageSystem.sigSendEvent(event);
+}
+
 VeinEvent::StorageSystem *TestVeinServer::getStorage()
 {
     return &m_storageSystem;

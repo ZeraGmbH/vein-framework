@@ -18,6 +18,7 @@ public:
     void appendEventSystem(VeinEvent::EventSystem *system);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
+    void sendEvent(QEvent *event);
     VeinEvent::StorageSystem* getStorage();
     VeinEvent::EventHandler* getEventHandler();
 

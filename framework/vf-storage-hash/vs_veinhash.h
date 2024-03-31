@@ -30,9 +30,8 @@ public:
     bool hasEntity(int entityId) const override;
     QList<int> getEntityList() const override;
 private:
-    void processComponentData(VeinComponent::ComponentData *cData);
-    void processEntityData(VeinComponent::EntityData *eData);
-    void sendError(const QString &errorString, VeinEvent::EventData *data);
+    void processComponentData(QEvent *event);
+    void processEntityData(QEvent *event);
 
     QHash<int, QHash<QString, QVariant>> m_entityComponentData;
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins = {VeinEvent::EventData::EventOrigin::EO_LOCAL, VeinEvent::EventData::EventOrigin::EO_FOREIGN};

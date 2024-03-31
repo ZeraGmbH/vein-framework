@@ -1,15 +1,13 @@
 #include "vn_introspectionsystem.h"
-
-#include <QEvent>
-#include <QJsonArray>
-
 #include <ve_commandevent.h>
-
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
 #include <vcmp_errordata.h>
+#include <vcmp_errordatasender.h>
+#include <QEvent>
+#include <QJsonArray>
 
 Q_LOGGING_CATEGORY(VEIN_NET_INTRO, VEIN_DEBUGNAME_NET_INTRO)
 Q_LOGGING_CATEGORY(VEIN_NET_INTRO_VERBOSE, VEIN_DEBUGNAME_NET_INTRO_VERBOSE)
@@ -42,35 +40,32 @@ void IntrospectionSystem::processEvent(QEvent *event)
     Q_ASSERT(event != nullptr);
     if(event->type() == CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-        Q_ASSERT(cEvent != nullptr);
         EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
+        const int entityId = evData->entityId();
         if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
             switch(evData->type())
             {
             case EntityData::dataType():
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
-                Q_ASSERT(eData != nullptr);
-
                 switch(eData->eventCommand())
                 {
                 case EntityData::Command::ECMD_ADD:
                     if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
-                        if(m_introspectionData.contains(eData->entityId())) {
+                        if(m_introspectionData.contains(entityId)) {
                             //remove the old entry to prevent leaking
-                            delete m_introspectionData.value(eData->entityId());
+                            delete m_introspectionData.value(entityId);
                         }
-                        m_introspectionData.insert(eData->entityId(), new EntityIntrospection());
+                        m_introspectionData.insert(entityId, new EntityIntrospection());
                     }
                     break;
                 case EntityData::Command::ECMD_SUBSCRIBE:
                 {
-                    vCDebug(VEIN_NET_INTRO_VERBOSE) << "Processing command event:" << cEvent << "with command ECMD_SUBSCRIBE, entityId:" << eData->entityId();
-                    QJsonObject tmpObject = getJsonIntrospection(eData->entityId());
+                    vCDebug(VEIN_NET_INTRO_VERBOSE) << "Processing command event:" << cEvent << "with command ECMD_SUBSCRIBE, entityId:" << entityId;
+                    QJsonObject tmpObject = getJsonIntrospection(entityId);
                     if(tmpObject.isEmpty() == false) {
                         IntrospectionData *newData = new IntrospectionData();
-                        newData->setEntityId(eData->entityId());
+                        newData->setEntityId(entityId);
                         newData->setJsonData(tmpObject);
                         newData->setEventOrigin(IntrospectionData::EventOrigin::EO_LOCAL);
                         newData->setEventTarget(IntrospectionData::EventTarget::ET_ALL);
@@ -84,13 +79,13 @@ void IntrospectionSystem::processEvent(QEvent *event)
                         emit sigSendEvent(newEvent);
                     }
                     else {
-                        QString tmpErrorString = tr("No introspection available for requested entity, entity id: %1").arg(eData->entityId());
+                        QString tmpErrorString = tr("No introspection available for requested entity, entity id: %1").arg(entityId);
                         event->accept();
                         qCWarning(VEIN_NET_INTRO) << tmpErrorString;
 
                         ErrorData *errData = new ErrorData();
 
-                        errData->setEntityId(eData->entityId());
+                        errData->setEntityId(entityId);
                         errData->setOriginalData(eData);
                         errData->setEventOrigin(EventData::EventOrigin::EO_LOCAL);
                         errData->setEventTarget(eData->eventTarget());
@@ -110,17 +105,20 @@ void IntrospectionSystem::processEvent(QEvent *event)
             case ComponentData::dataType():
             {
                 ComponentData *cData = static_cast<ComponentData *>(evData);
-                Q_ASSERT(cData != nullptr);
                 if(cData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
                     switch(cData->eventCommand())
                     {
                     case ComponentData::Command::CCMD_ADD:
-                        Q_ASSERT(m_introspectionData.contains(cData->entityId()));
-                        m_introspectionData.value(cData->entityId())->m_components.insert(cData->componentName(), 0);
+                        if(m_introspectionData.contains(entityId))
+                            m_introspectionData.value(entityId)->m_components.insert(cData->componentName(), 0);
+                        else
+                            ErrorDataSender::errorOut(QString("Cannot add value for invalid entity id: %1").arg(entityId), event, this);
                         break;
                     case ComponentData::Command::CCMD_REMOVE:
-                        Q_ASSERT(m_introspectionData.contains(cData->entityId()));
-                        m_introspectionData.value(cData->entityId())->m_components.remove(cData->componentName());
+                        if(m_introspectionData.contains(entityId))
+                            m_introspectionData.value(entityId)->m_components.remove(cData->componentName());
+                        else
+                            ErrorDataSender::errorOut(QString("Cannot remove value for invalid entity id: %1").arg(entityId), event, this);
                         break;
                     default:
                         break;
@@ -131,11 +129,10 @@ void IntrospectionSystem::processEvent(QEvent *event)
             case RemoteProcedureData::dataType():
             {
                 RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(evData);
-                Q_ASSERT(rpcData != nullptr);
                 if(rpcData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
                     if(rpcData->command() == RemoteProcedureData::Command::RPCMD_REGISTER) {
-                        Q_ASSERT(m_introspectionData.contains(rpcData->entityId()));
-                        m_introspectionData.value(rpcData->entityId())->m_procedures.insert(rpcData->procedureName(), 0);
+                        Q_ASSERT(m_introspectionData.contains(entityId));
+                        m_introspectionData.value(entityId)->m_procedures.insert(rpcData->procedureName(), 0);
                     }
                 }
             }
