@@ -240,6 +240,8 @@ void test_command_events::cleanup()
 void test_command_events::setupSpy(QJsonObject &jsonEvents)
 {
     m_serverCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "server");
+    connect(m_netServer->getServer()->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
+            m_serverCmdEventSpy.get(), &TestCommandEventSpyEventSystem::onEventAccepted);
     m_netServer->getServer()->appendEventSystem(m_serverCmdEventSpy.get());
     m_clientCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "client");
     m_netClient->appendEventSystem(m_clientCmdEventSpy.get());

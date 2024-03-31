@@ -51,6 +51,11 @@ VeinEvent::StorageSystem *TestVeinServer::getStorage()
     return &m_storageSystem;
 }
 
+VeinEvent::EventHandler *TestVeinServer::getEventHandler()
+{
+    return m_vfEventHandler;
+}
+
 QList<int> TestVeinServer::getEntityAddList() const
 {
     return m_vfEntityAddSpy.getEntityList();

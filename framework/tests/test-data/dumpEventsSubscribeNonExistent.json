@@ -12,6 +12,18 @@
             "ValidPeer": false
         },
         {
+            "Accepted (finalized) by": "VeinNet::IntrospectionSystem",
+            "Am event in": "server",
+            "Attached data": "EntityData",
+            "Entity": 42,
+            "EntityCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
             "Am event in": "server",
             "Attached data": "ErrorData",
             "Entity": 42,

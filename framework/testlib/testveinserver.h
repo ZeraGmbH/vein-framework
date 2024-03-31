@@ -19,6 +19,7 @@ public:
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
     VeinEvent::StorageSystem* getStorage();
+    VeinEvent::EventHandler* getEventHandler();
 
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
