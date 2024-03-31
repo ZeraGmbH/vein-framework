@@ -10,6 +10,18 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false
+        },
+        {
+            "Accepted (finalized) by": "VeinNet::NetworkSystem",
+            "Am event in": "server",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_UNSUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true
         }
     ]
 }

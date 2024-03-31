@@ -8,12 +8,16 @@
 
 class TestCommandEventSpyEventSystem : public VeinEvent::EventSystem
 {
+    Q_OBJECT
 public:
     TestCommandEventSpyEventSystem(QJsonObject *jsonEvents, QString roleName);
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
+public slots:
+    void onEventAccepted(VeinEvent::EventSystem* eventSystem, QEvent *event);
 private:
+    QJsonObject eventToJsonInfo(QEvent *event);
     void handleEntityData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleComponentData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);

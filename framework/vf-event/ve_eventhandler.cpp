@@ -54,7 +54,7 @@ void EventHandler::customEvent(QEvent *event)
         EventSystem* eventSystem = m_subsystems.at(i);
         eventSystem->processEvent(event);
         if(event->isAccepted()) {
-            emit eventAccepted(eventSystem, event);
+            emit sigEventAccepted(eventSystem, event);
             break;
         }
     }

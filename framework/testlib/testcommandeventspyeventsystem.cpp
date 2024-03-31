@@ -16,35 +16,9 @@ TestCommandEventSpyEventSystem::TestCommandEventSpyEventSystem(QJsonObject *json
 
 void TestCommandEventSpyEventSystem::processEvent(QEvent *event)
 {
-    if(event->type() == CommandEvent::getQEventType()) {
-        CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-        Q_ASSERT(cEvent != nullptr);
-        EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-        QJsonObject jsonEventInfo = baseInfoFromEventData(evData);
-        extendByEventInfo(cEvent, jsonEventInfo);
-
-        switch(evData->type()) {
-        case EntityData::dataType():
-            handleEntityData(evData, jsonEventInfo);
-            break;
-        case ComponentData::dataType():
-            handleComponentData(evData, jsonEventInfo);
-            break;
-        case IntrospectionData::dataType():
-            handleIntrospectionData(evData, jsonEventInfo);
-            break;
-        case RemoteProcedureData::dataType():
-            handleRpcData(evData, jsonEventInfo);
-            break;
-        case ErrorData::dataType():
-            handleErrorData(evData, jsonEventInfo);
-            break;
-        default:
-            qFatal("Unknown event data!");
-        }
+    QJsonObject jsonEventInfo = eventToJsonInfo(event);
+    if(!jsonEventInfo.isEmpty())
         addJsonInfo(jsonEventInfo);
-    }
 }
 
 void TestCommandEventSpyEventSystem::clear()
@@ -55,6 +29,47 @@ void TestCommandEventSpyEventSystem::clear()
 bool TestCommandEventSpyEventSystem::isEmpty() const
 {
    return m_jsonEvents->isEmpty();
+}
+
+void TestCommandEventSpyEventSystem::onEventAccepted(EventSystem *eventSystem, QEvent *event)
+{
+   QJsonObject jsonEventInfo = eventToJsonInfo(event);
+   jsonEventInfo.insert("Accepted (finalized) by", eventSystem->metaObject()->className());
+   addJsonInfo(jsonEventInfo);
+}
+
+QJsonObject TestCommandEventSpyEventSystem::eventToJsonInfo(QEvent *event)
+{
+   QJsonObject jsonEventInfo;
+   if(event->type() == CommandEvent::getQEventType()) {
+       CommandEvent *cEvent = static_cast<CommandEvent *>(event);
+       Q_ASSERT(cEvent != nullptr);
+       EventData *evData = cEvent->eventData();
+       Q_ASSERT(evData != nullptr);
+       jsonEventInfo = baseInfoFromEventData(evData);
+       extendByEventInfo(cEvent, jsonEventInfo);
+
+       switch(evData->type()) {
+       case EntityData::dataType():
+           handleEntityData(evData, jsonEventInfo);
+           break;
+       case ComponentData::dataType():
+           handleComponentData(evData, jsonEventInfo);
+           break;
+       case IntrospectionData::dataType():
+           handleIntrospectionData(evData, jsonEventInfo);
+           break;
+       case RemoteProcedureData::dataType():
+           handleRpcData(evData, jsonEventInfo);
+           break;
+       case ErrorData::dataType():
+           handleErrorData(evData, jsonEventInfo);
+           break;
+       default:
+           qFatal("Unknown event data!");
+       }
+   }
+   return jsonEventInfo;
 }
 
 void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &jsonEventInfo)
