@@ -10,8 +10,8 @@
 
 namespace VeinEvent
 {
-EventHandler::EventHandler(QObject *t_parent) :
-    QObject(t_parent)
+EventHandler::EventHandler(QObject *parent) :
+    QObject(parent)
 {
     vCDebug(VEIN_EVENT) << "Created event handler";
 }
@@ -21,21 +21,21 @@ QList<EventSystem *> EventHandler::subsystems() const
     return m_subsystems;
 }
 
-void EventHandler::setSubsystems(QList<EventSystem *> t_subsystems)
+void EventHandler::setSubsystems(QList<EventSystem *> subsystems)
 {
-    if(m_subsystems != t_subsystems) {
-        m_subsystems = t_subsystems;
+    if(m_subsystems != subsystems) {
+        m_subsystems = subsystems;
         for(EventSystem *tmpSystem : qAsConst(m_subsystems))
             tmpSystem->attach(this);
         emit subsystemsChanged(m_subsystems);
     }
 }
 
-void EventHandler::addSubsystem(EventSystem *t_subsystem)
+void EventHandler::addSubsystem(EventSystem *subsystem)
 {
-    Q_ASSERT(m_subsystems.contains(t_subsystem) == false);
-    m_subsystems.append(t_subsystem);
-    t_subsystem->attach(this);
+    Q_ASSERT(m_subsystems.contains(subsystem) == false);
+    m_subsystems.append(subsystem);
+    subsystem->attach(this);
     emit subsystemsChanged(m_subsystems);
 }
 
@@ -47,16 +47,16 @@ void EventHandler::clearSubsystems()
     }
 }
 
-void EventHandler::customEvent(QEvent *t_event)
+void EventHandler::customEvent(QEvent *event)
 {
-    Q_ASSERT(t_event != nullptr);
+    Q_ASSERT(event != nullptr);
     /**
      * @note some speed could be gained by using a subscription based n:m (entity:system) mapping so that systems only get notified about the entities they care about
      * @todo maybe event processing can be accelerated with QtConcurrent / OpenMP?
      */
 
-    for(int i=0; i < m_subsystems.count() && t_event->isAccepted()==false; ++i)
-        m_subsystems.at(i)->processEvent(t_event);
+    for(int i=0; i < m_subsystems.count() && event->isAccepted()==false; ++i)
+        m_subsystems.at(i)->processEvent(event);
 }
 
 void registerStreamOperators()
