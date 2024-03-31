@@ -1,9 +1,11 @@
 <RCC>
     <qresource prefix="/">
         <file>dumpEventsAddComponentClientSubscribed.json</file>
+        <file>dumpEventsAddComponentNonExistingEntity.json</file>
         <file>dumpEventsAddEntityComponent.json</file>
         <file>dumpEventsFetch.json</file>
         <file>dumpEventsFetchNonExistent.json</file>
+        <file>dumpEventsRemoveComponentNonExistingEntity.json</file>
         <file>dumpEventsSet.json</file>
         <file>dumpEventsSetNonExistent.json</file>
         <file>dumpEventsSubscribe.json</file>

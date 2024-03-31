@@ -2,6 +2,7 @@
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_errordata.h>
+#include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>
 #include <QEvent>
 #include <QJsonDocument>
@@ -34,12 +35,12 @@ void VeinHash::processEvent(QEvent *event)
                     event->accept();
                 }
                 else
-                    processComponentData(cData);
+                    processComponentData(event);
                 break;
             }
             case EntityData::dataType():
             {
-                processEntityData(static_cast<EntityData *>(evData));
+                processEntityData(event);
                 break;
             }
             default:
@@ -49,8 +50,10 @@ void VeinHash::processEvent(QEvent *event)
     }
 }
 
-void VeinHash::processComponentData(ComponentData *cData)
+void VeinHash::processComponentData(QEvent *event)
 {
+    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
+    ComponentData *cData = static_cast<ComponentData *>(cEvent->eventData());
     const QString componentName= cData->componentName();
     const int entityId = cData->entityId();
     switch(cData->eventCommand())
@@ -58,9 +61,9 @@ void VeinHash::processComponentData(ComponentData *cData)
     case ComponentData::Command::CCMD_ADD:
     {
         if(!m_entityComponentData.contains(entityId))
-            sendError(QString("can not add value for invalid entity id: %1").arg(entityId), cData);
+            ErrorDataSender::errorOut(QString("Cannot add value for invalid entity id: %1").arg(entityId), event, this);
         else if(m_entityComponentData.value(entityId).contains(componentName))
-            sendError(QString("value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), cData);
+            ErrorDataSender::errorOut(QString("Value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
             m_entityComponentData[entityId].insert(componentName, cData->newValue());
         break;
@@ -74,9 +77,9 @@ void VeinHash::processComponentData(ComponentData *cData)
     case ComponentData::Command::CCMD_SET:
     {
         if(!m_entityComponentData.contains(entityId))
-            sendError(QString("can not set value for nonexistant entity id: %1").arg(entityId), cData);
+            ErrorDataSender::errorOut(QString("Cannot set value for nonexistant entity id: %1").arg(entityId), event, this);
         else if(!m_entityComponentData[entityId].contains(componentName))
-            sendError(QString("can not set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName()), cData);
+            ErrorDataSender::errorOut(QString("Cannot set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
             m_entityComponentData[entityId][componentName] = cData->newValue();
         break;
@@ -94,8 +97,10 @@ void VeinHash::processComponentData(ComponentData *cData)
     }
 }
 
-void VeinHash::processEntityData(EntityData *eData)
+void VeinHash::processEntityData(QEvent *event)
 {
+    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
+    EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
     switch(eData->eventCommand())
     {
     case EntityData::Command::ECMD_ADD:
@@ -103,7 +108,7 @@ void VeinHash::processEntityData(EntityData *eData)
         if(!m_entityComponentData.contains(eData->entityId()))
             m_entityComponentData.insert(eData->entityId(), QHash<QString, QVariant>());
         else
-            sendError(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), eData);
+            ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), event, this);
         break;
     }
     case EntityData::Command::ECMD_REMOVE:
@@ -111,7 +116,7 @@ void VeinHash::processEntityData(EntityData *eData)
         if(m_entityComponentData.contains(eData->entityId()))
             m_entityComponentData.remove(eData->entityId());
         else
-            sendError(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), eData);
+            ErrorDataSender::errorOut(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), event, this);
         break;
     }
     default: //ECMD_SUBSCRIBE etc. is handled by the networksystem
@@ -158,20 +163,6 @@ bool VeinHash::hasEntity(int entityId) const
 QList<int> VeinHash::getEntityList() const
 {
     return m_entityComponentData.keys();
-}
-
-void VeinHash::sendError(const QString &errorString, EventData *data)
-{
-    qWarning() << errorString;
-    ErrorData *errData = new ErrorData();
-    errData->setEntityId(data->entityId());
-    errData->setOriginalData(data);
-    errData->setEventOrigin(EventData::EventOrigin::EO_LOCAL);
-    errData->setEventTarget(data->eventTarget());
-    errData->setErrorDescription(errorString);
-
-    CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, errData);
-    emit sigSendEvent(cEvent);
 }
 
 void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
