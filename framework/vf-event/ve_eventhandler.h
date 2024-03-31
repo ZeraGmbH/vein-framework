@@ -19,7 +19,7 @@ class VFEVENT_EXPORT EventHandler : public QObject
     Q_OBJECT
     Q_PROPERTY(QList<EventSystem*> subsystems READ subsystems WRITE setSubsystems NOTIFY subsystemsChanged)
 public:
-    explicit EventHandler(QObject *t_parent=nullptr);
+    explicit EventHandler(QObject *parent=nullptr);
     ~EventHandler() {m_subsystems.clear();}
     QList<EventSystem*> subsystems() const;
 public slots:
@@ -27,13 +27,13 @@ public slots:
      * @brief Sets up the list of EventSystem
      * @warning the EventHandler is not responsible for deleting subsystems
      */
-    void setSubsystems(QList<EventSystem*> t_subsystems);
-    void addSubsystem(EventSystem* t_subsystem);
+    void setSubsystems(QList<EventSystem*> subsystems);
+    void addSubsystem(VeinEvent::EventSystem* subsystem);
     void clearSubsystems();
 signals:
-    void subsystemsChanged(QList<EventSystem*> t_subsystems);
+    void subsystemsChanged(QList<EventSystem*> subsystems);
 protected:
-    virtual void customEvent(QEvent *t_event) override;
+    virtual void customEvent(QEvent *event) override;
 private:
     /**
      * @brief Ordered list of event system that is reprenstable for the event processing order
