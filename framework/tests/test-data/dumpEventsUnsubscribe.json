@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "client",
+            "Am command event in": "client-enter",
             "Attached data": "EntityData",
             "Entity": 0,
             "EntityCommand": "ECMD_UNSUBSCRIBE",
@@ -12,8 +12,30 @@
             "ValidPeer": false
         },
         {
+            "Am command event in": "client-fallthrough",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_UNSUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_UNSUBSCRIBE",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
             "Accepted (finalized) by": "VeinNet::NetworkSystem",
-            "Am event in": "server",
+            "Am command event in": "server-fallthrough",
             "Attached data": "EntityData",
             "Entity": 0,
             "EntityCommand": "ECMD_UNSUBSCRIBE",

@@ -18,7 +18,9 @@ public:
     void subscribeEntity(int entityId); // this should go once we got tasks
 
     void appendEventSystem(VeinEvent::EventSystem* system);
+    void prependEventSystem(VeinEvent::EventSystem* system);
     void addItem(VfCmdEventItemPtr item);
+    VeinEvent::EventHandler *getEventHandler();
     VfCmdEventHandlerSystemPtr getCmdEventHandlerSystem();
 signals:
     void sigConnnectionEstablished();

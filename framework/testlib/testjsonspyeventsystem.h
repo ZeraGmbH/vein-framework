@@ -4,13 +4,14 @@
 #include <ve_eventsystem.h>
 #include <ve_eventdata.h>
 #include "ve_commandevent.h"
+#include <vn_protocolevent.h>
 #include "QJsonObject"
 
 class TestJsonSpyEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName);
+    TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName, bool handleProtocolEvents = false);
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
@@ -23,13 +24,15 @@ private:
     void handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleRpcData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleErrorData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
+    void handleProtocolEvent(VeinNet::ProtocolEvent *pEvent, QJsonObject &jsonEventInfo);
 
-    QJsonObject baseInfoFromEventData(VeinEvent::EventData *evData);
-    void extendByEventInfo(VeinEvent::CommandEvent *cEvent, QJsonObject &jsonInfo);
+    void baseInfoFromEventData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo);
+    void extendByCommandEventInfo(VeinEvent::CommandEvent *cEvent, QJsonObject &jsonEventInfo);
     void addJsonInfo(const QJsonObject& jsonEventInfo);
 
     QJsonObject *m_jsonEvents = nullptr;
     QString m_roleName;
+    bool m_handleProtocolEvents;
 };
 
 #endif // TESTJSONSPYEVENTSYSTEM_H

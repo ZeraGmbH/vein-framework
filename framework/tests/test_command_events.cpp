@@ -106,7 +106,7 @@ void test_command_events::clientFetchNonExistingComponent()
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected1, jsonDumped1));
 }
 
-void test_command_events::clientSetComponent()
+void test_command_events::clientSetSytemEnttityComponent()
 {
     subscribeClient(systemEntityId);
 
@@ -141,7 +141,9 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 
-    //TODO
+    // TODO??: This time it is SystemModuleEventSystem missing error handling... How shall we test/handle
+    // gazillions of error handling implementations: SystemModuleEventSystem/StorageSystem/IntrospectionSystem/VfCpp/zera-classes modules???
+
     // Unexpected result: Server just ignores. So check if component was
     // accidentally created in server...
     VeinEvent::StorageSystem* storage = m_netServer->getStorage();
@@ -320,12 +322,21 @@ void test_command_events::cleanup()
 
 void test_command_events::setupSpy(QJsonObject &jsonEvents)
 {
-    m_serverCmdEventSpy = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server");
+    m_serverCmdEventSpyTop = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server-enter");
+    m_netServer->getServer()->prependEventSystem(m_serverCmdEventSpyTop.get());
+
+    m_serverCmdEventSpyBottom = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server-fallthrough");
     connect(m_netServer->getServer()->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
-            m_serverCmdEventSpy.get(), &TestJsonSpyEventSystem::onEventAccepted);
-    m_netServer->getServer()->appendEventSystem(m_serverCmdEventSpy.get());
-    m_clientCmdEventSpy = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client");
-    m_netClient->appendEventSystem(m_clientCmdEventSpy.get());
+            m_serverCmdEventSpyBottom.get(), &TestJsonSpyEventSystem::onEventAccepted);
+    m_netServer->getServer()->appendEventSystem(m_serverCmdEventSpyBottom.get());
+
+    m_clientCmdEventSpyTop = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client-enter");
+    m_netClient->prependEventSystem(m_clientCmdEventSpyTop.get());
+
+    m_clientCmdEventSpyBottom = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client-fallthrough");
+    connect(m_netClient->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
+            m_clientCmdEventSpyBottom.get(), &TestJsonSpyEventSystem::onEventAccepted);
+    m_netClient->appendEventSystem(m_clientCmdEventSpyBottom.get());
 }
 
 void test_command_events::subscribeClient(int entityId)

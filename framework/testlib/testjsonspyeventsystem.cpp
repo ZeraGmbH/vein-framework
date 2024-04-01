@@ -7,10 +7,12 @@
 
 using namespace VeinEvent;
 using namespace VeinComponent;
+using namespace VeinNet;
 
-TestJsonSpyEventSystem::TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName) :
+TestJsonSpyEventSystem::TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName, bool handleProtocolEvents) :
     m_jsonEvents(jsonEvents),
-    m_roleName(roleName)
+    m_roleName(roleName),
+    m_handleProtocolEvents(handleProtocolEvents)
 {
 }
 
@@ -42,12 +44,10 @@ QJsonObject TestJsonSpyEventSystem::eventToJsonInfo(QEvent *event)
 {
    QJsonObject jsonEventInfo;
    if(event->type() == CommandEvent::getQEventType()) {
-       CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-       Q_ASSERT(cEvent != nullptr);
+       CommandEvent *cEvent = static_cast<CommandEvent*>(event);
        EventData *evData = cEvent->eventData();
-       Q_ASSERT(evData != nullptr);
-       jsonEventInfo = baseInfoFromEventData(evData);
-       extendByEventInfo(cEvent, jsonEventInfo);
+       baseInfoFromEventData(evData, jsonEventInfo);
+       extendByCommandEventInfo(cEvent, jsonEventInfo);
 
        switch(evData->type()) {
        case EntityData::dataType():
@@ -69,13 +69,16 @@ QJsonObject TestJsonSpyEventSystem::eventToJsonInfo(QEvent *event)
            qFatal("Unknown event data!");
        }
    }
+   else if(m_handleProtocolEvents && event->type() == ProtocolEvent::getQEventType()) {
+       ProtocolEvent *pEvent = static_cast<ProtocolEvent*>(event);
+       handleProtocolEvent(pEvent, jsonEventInfo);
+   }
    return jsonEventInfo;
 }
 
 void TestJsonSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     EntityData *eData = static_cast<EntityData*>(evData);
-    Q_ASSERT(eData != nullptr);
     jsonEventInfo.insert("Attached data", "EntityData");
     jsonEventInfo.insert("EntityCommand", TestCommandEventStrings::strEntityCommand(eData->eventCommand()));
 }
@@ -83,7 +86,6 @@ void TestJsonSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &js
 void TestJsonSpyEventSystem::handleComponentData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     ComponentData *cData = static_cast<ComponentData*>(evData);
-    Q_ASSERT(cData != nullptr);
     jsonEventInfo.insert("Attached data", "ComponentData");
     jsonEventInfo.insert("ComponentName", cData->componentName());
     jsonEventInfo.insert("ComponentCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
@@ -102,7 +104,6 @@ void TestJsonSpyEventSystem::handleComponentData(EventData *evData, QJsonObject 
 void TestJsonSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     IntrospectionData *iData = static_cast<IntrospectionData*>(evData);
-    Q_ASSERT(iData != nullptr);
     jsonEventInfo.insert("Attached data", "IntrospectionData");
     QJsonObject jsonIntrospection = iData->jsonData();
     jsonIntrospection = QJsonObject::fromVariantMap(jsonIntrospection.toVariantMap());
@@ -112,7 +113,6 @@ void TestJsonSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evDat
 void TestJsonSpyEventSystem::handleRpcData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData*>(evData);
-    Q_ASSERT(rpcData != nullptr);
     jsonEventInfo.insert("Attached data", "RemoteProcedureData");
     // TODO
 }
@@ -120,10 +120,10 @@ void TestJsonSpyEventSystem::handleRpcData(VeinEvent::EventData *evData, QJsonOb
 void TestJsonSpyEventSystem::handleErrorData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     ErrorData *errData = static_cast<ErrorData*>(evData);
-    Q_ASSERT(errData != nullptr);
     jsonEventInfo.insert("Attached data", "ErrorData");
 
-    QJsonObject origEventInfo = baseInfoFromEventData(errData);
+    QJsonObject origEventInfo;
+    baseInfoFromEventData(errData, origEventInfo);
     int originalDataType = errData->originalDataType();
     switch (originalDataType) {
     case VCMP_COMPONENTDATA_DATATYPE: {
@@ -156,22 +156,27 @@ void TestJsonSpyEventSystem::handleErrorData(VeinEvent::EventData *evData, QJson
     jsonEventInfo.insert("OriginalEventData", origEventInfo);
 }
 
-void TestJsonSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
+void TestJsonSpyEventSystem::handleProtocolEvent(ProtocolEvent *pEvent, QJsonObject &jsonEventInfo)
 {
-    jsonInfo.insert("Am event in", m_roleName);
-    jsonInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
-    jsonInfo.insert("ValidPeer", !cEvent->peerId().isNull());
+    jsonEventInfo.insert("Am protocol event in", m_roleName);
+    jsonEventInfo.insert("ReceiversCount", pEvent->receivers().count());
+    jsonEventInfo.insert("LocalOrigin", pEvent->isOfLocalOrigin());
+    jsonEventInfo.insert("ValidPeer", !pEvent->peerId().isNull());
 }
 
-QJsonObject TestJsonSpyEventSystem::baseInfoFromEventData(VeinEvent::EventData *evData)
+void TestJsonSpyEventSystem::extendByCommandEventInfo(CommandEvent *cEvent, QJsonObject &jsonEventInfo)
 {
-    QJsonObject jsonEntity( {
-        {"Entity", evData->entityId()},
-        {"EventOrigin", TestCommandEventStrings::strOrigin(qint8(evData->eventOrigin()))},
-        {"EventTarget", TestCommandEventStrings::strTarget(qint8(evData->eventTarget()))},
-        {"Valid", evData->isValid()},
-    } );
-    return jsonEntity;
+    jsonEventInfo.insert("Am command event in", m_roleName);
+    jsonEventInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
+    jsonEventInfo.insert("ValidPeer", !cEvent->peerId().isNull());
+}
+
+void TestJsonSpyEventSystem::baseInfoFromEventData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
+{
+    jsonEventInfo.insert("Entity", evData->entityId());
+    jsonEventInfo.insert("EventOrigin", TestCommandEventStrings::strOrigin(qint8(evData->eventOrigin())));
+    jsonEventInfo.insert("EventTarget", TestCommandEventStrings::strTarget(qint8(evData->eventTarget())));
+    jsonEventInfo.insert("Valid", evData->isValid());
 }
 
 void TestJsonSpyEventSystem::addJsonInfo(const QJsonObject &jsonEventInfo)

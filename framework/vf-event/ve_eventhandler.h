@@ -29,6 +29,7 @@ public slots:
      */
     void setSubsystems(QList<EventSystem*> subsystems);
     void addSubsystem(VeinEvent::EventSystem* subsystem);
+    void prependSubsystem(VeinEvent::EventSystem* subsystem);
     void clearSubsystems();
 signals:
     void subsystemsChanged(QList<EventSystem*> subsystems);

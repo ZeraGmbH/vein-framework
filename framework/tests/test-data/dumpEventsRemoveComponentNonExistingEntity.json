@@ -1,8 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Accepted (finalized) by": "VeinNet::IntrospectionSystem",
-            "Am event in": "server",
+            "Am command event in": "server-enter",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_REMOVE",
             "ComponentName": "TestComponent",
@@ -16,7 +15,43 @@
             "ValueOld": "invalid"
         },
         {
-            "Am event in": "server",
+            "Accepted (finalized) by": "VeinNet::IntrospectionSystem",
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_REMOVE",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "InitialValue",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ErrorData",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "OriginalEventData": {
+                "Attached data": "ComponentData",
+                "ComponentCommand": "CCMD_REMOVE",
+                "ComponentName": "TestComponent",
+                "Entity": 37,
+                "EventOrigin": "EO_LOCAL",
+                "EventTarget": "ET_ALL",
+                "Valid": true,
+                "ValueNew": "InitialValue",
+                "ValueOld": "invalid"
+            },
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server-fallthrough",
             "Attached data": "ErrorData",
             "Entity": 37,
             "EventOrigin": "EO_LOCAL",

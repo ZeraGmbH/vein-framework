@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "client",
+            "Am command event in": "client-enter",
             "Attached data": "EntityData",
             "Entity": 42,
             "EntityCommand": "ECMD_SUBSCRIBE",
@@ -12,8 +12,30 @@
             "ValidPeer": false
         },
         {
+            "Am command event in": "client-fallthrough",
+            "Attached data": "EntityData",
+            "Entity": 42,
+            "EntityCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "EntityData",
+            "Entity": 42,
+            "EntityCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
             "Accepted (finalized) by": "VeinNet::IntrospectionSystem",
-            "Am event in": "server",
+            "Am command event in": "server-fallthrough",
             "Attached data": "EntityData",
             "Entity": 42,
             "EntityCommand": "ECMD_SUBSCRIBE",
@@ -24,7 +46,25 @@
             "ValidPeer": true
         },
         {
-            "Am event in": "server",
+            "Am command event in": "server-enter",
+            "Attached data": "ErrorData",
+            "Entity": 42,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "OriginalEventData": {
+                "Attached data": "EntityData",
+                "Entity": 42,
+                "EntityCommand": "ECMD_SUBSCRIBE",
+                "EventOrigin": "EO_LOCAL",
+                "EventTarget": "ET_ALL",
+                "Valid": true
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "server-fallthrough",
             "Attached data": "ErrorData",
             "Entity": 42,
             "EventOrigin": "EO_LOCAL",

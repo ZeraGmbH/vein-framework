@@ -32,9 +32,19 @@ void VfCoreStackClient::appendEventSystem(VeinEvent::EventSystem *system)
     m_eventHandler.addSubsystem(system);
 }
 
+void VfCoreStackClient::prependEventSystem(VeinEvent::EventSystem *system)
+{
+    m_eventHandler.prependSubsystem(system);
+}
+
 void VfCoreStackClient::addItem(VfCmdEventItemPtr item)
 {
     m_cmdEventHandlerSystem->addItem(item);
+}
+
+VeinEvent::EventHandler *VfCoreStackClient::getEventHandler()
+{
+    return &m_eventHandler;
 }
 
 VfCmdEventHandlerSystemPtr VfCoreStackClient::getCmdEventHandlerSystem()
