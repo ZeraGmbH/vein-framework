@@ -99,24 +99,11 @@ void test_command_events::clientFetchNonExistingComponent()
     fetcherTask->start();
     TimeMachineObject::feedEventLoop();
 
-    QFile file1(":/dumpEventsFetchNonExistent.json");
+    QFile file1(":/dumpEventsFetchNonExistentComponent.json");
     QVERIFY(file1.open(QFile::ReadOnly));
     QByteArray jsonExpected1 = file1.readAll();
     QByteArray jsonDumped1 = TestDumpReporter::dump(jsonEvents);
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected1, jsonDumped1));
-
-    // Unexpected result: We just fetch invalid old/new data - other
-    // parameters are same as valid fetch. So check if component was
-    // accidentally created in server...
-    VeinEvent::StorageSystem* storage = m_netServer->getStorage();
-    QFile file2(":/dumpStorageInitial.json");
-    QVERIFY(file2.open(QFile::ReadOnly));
-
-    QByteArray jsonExpected2 = file2.readAll();
-    QByteArray jsonDumped2;
-    QBuffer buff(&jsonDumped2);
-    storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
 }
 
 void test_command_events::clientSetComponent()
@@ -166,7 +153,6 @@ void test_command_events::clientSetNonExistingComponent()
     storage->dumpToFile(&buff, QList<int>());
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected2, jsonDumped2));
 }
-
 
 static constexpr int testEntityId = 37;
 static const char* entityName = "TestEntity";

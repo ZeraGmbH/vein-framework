@@ -73,7 +73,7 @@ void VeinHash::processComponentData(QEvent *event)
         if(!m_entityComponentData.contains(entityId))
             ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), event, this);
         else if(!m_entityComponentData.value(entityId).contains(componentName))
-            ErrorDataSender::errorOut(QString("Cannot remove non existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot remove not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
             m_entityComponentData[entityId].remove(componentName);
         break;
@@ -81,19 +81,25 @@ void VeinHash::processComponentData(QEvent *event)
     case ComponentData::Command::CCMD_SET:
     {
         if(!m_entityComponentData.contains(entityId))
-            ErrorDataSender::errorOut(QString("Cannot set value for nonexistant entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot set component for not existing entity id: %1").arg(entityId), event, this);
         else if(!m_entityComponentData[entityId].contains(componentName))
-            ErrorDataSender::errorOut(QString("Cannot set value for nonexistant component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot set not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
             m_entityComponentData[entityId][componentName] = cData->newValue();
         break;
     }
     case ComponentData::Command::CCMD_FETCH:
     {
-        ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
-        cData->setNewValue(getStoredValue(entityId, componentName));
-        cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
-        cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+        if(!m_entityComponentData.contains(entityId))
+            ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), event, this);
+        else if(!m_entityComponentData[entityId].contains(componentName))
+            ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+        else {
+            ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
+            cData->setNewValue(getStoredValue(entityId, componentName));
+            cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+            cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+        }
         break;
     }
     default:

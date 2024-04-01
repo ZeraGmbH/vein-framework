@@ -4,7 +4,7 @@
         <file>dumpEventsAddComponentNonExistingEntity.json</file>
         <file>dumpEventsAddEntityComponent.json</file>
         <file>dumpEventsFetch.json</file>
-        <file>dumpEventsFetchNonExistent.json</file>
+        <file>dumpEventsFetchNonExistentComponent.json</file>
         <file>dumpEventsRemoveComponent.json</file>
         <file>dumpEventsRemoveComponentNonExistingEntity.json</file>
         <file>dumpEventsRemoveNonExistingComponent.json</file>
