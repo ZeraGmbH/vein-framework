@@ -39,7 +39,7 @@ void ModuleManagerSetupFacade::clearModuleSystems()
     m_eventHandler.clearModuleSystems();
 }
 
-SystemModuleEventSystem *ModuleManagerSetupFacade::getModuleManagerController()
+SystemModuleEventSystem *ModuleManagerSetupFacade::getSystemModuleEventSystem()
 {
     return &m_systemModuleSystem;
 }

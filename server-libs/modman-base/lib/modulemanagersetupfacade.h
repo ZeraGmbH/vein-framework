@@ -16,7 +16,7 @@ public:
     void addSubsystem(VeinEvent::EventSystem* subsystem);
     void addModuleSystem(VeinEvent::EventSystem* system);
     void clearModuleSystems();
-    SystemModuleEventSystem *getModuleManagerController();
+    SystemModuleEventSystem *getSystemModuleEventSystem();
     VeinEvent::StorageSystem *getStorageSystem();
     LicenseSystemInterface *getLicenseSystem();
 private:
