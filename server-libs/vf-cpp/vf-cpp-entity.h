@@ -26,7 +26,6 @@ private:
     void processEvent(QEvent *event) override;
     void handleComponents(VeinEvent::CommandEvent *cmdEvent);
     void handleRpcs(VeinEvent::CommandEvent *cmdEvent);
-    void handleUnknownRpc(VeinEvent::CommandEvent *cmdEvent);
     int m_entityId;
     QMap<QString,VfCppComponent::Ptr> m_componentList;
     QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
