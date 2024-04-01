@@ -1,16 +1,16 @@
-#ifndef TESTCOMMANDEVENTSPYEVENTSYSTEM_H
-#define TESTCOMMANDEVENTSPYEVENTSYSTEM_H
+#ifndef TESTJSONSPYEVENTSYSTEM_H
+#define TESTJSONSPYEVENTSYSTEM_H
 
 #include <ve_eventsystem.h>
 #include <ve_eventdata.h>
 #include "ve_commandevent.h"
 #include "QJsonObject"
 
-class TestCommandEventSpyEventSystem : public VeinEvent::EventSystem
+class TestJsonSpyEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    TestCommandEventSpyEventSystem(QJsonObject *jsonEvents, QString roleName);
+    TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName);
     void processEvent(QEvent *event) override;
     void clear();
     bool isEmpty() const;
@@ -32,4 +32,4 @@ private:
     QString m_roleName;
 };
 
-#endif // TESTCOMMANDEVENTSPYEVENTSYSTEM_H
+#endif // TESTJSONSPYEVENTSYSTEM_H

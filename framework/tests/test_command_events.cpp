@@ -1,5 +1,5 @@
 #include "test_command_events.h"
-#include "testcommandeventspyeventsystem.h"
+#include "testjsonspyeventsystem.h"
 #include "testdumpreporter.h"
 #include "vf_client_entity_unsubscriber.h"
 #include "task_client_component_fetcher.h"
@@ -141,6 +141,7 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
     QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
 
+    //TODO
     // Unexpected result: Server just ignores. So check if component was
     // accidentally created in server...
     VeinEvent::StorageSystem* storage = m_netServer->getStorage();
@@ -319,11 +320,11 @@ void test_command_events::cleanup()
 
 void test_command_events::setupSpy(QJsonObject &jsonEvents)
 {
-    m_serverCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "server");
+    m_serverCmdEventSpy = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server");
     connect(m_netServer->getServer()->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
-            m_serverCmdEventSpy.get(), &TestCommandEventSpyEventSystem::onEventAccepted);
+            m_serverCmdEventSpy.get(), &TestJsonSpyEventSystem::onEventAccepted);
     m_netServer->getServer()->appendEventSystem(m_serverCmdEventSpy.get());
-    m_clientCmdEventSpy = std::make_unique<TestCommandEventSpyEventSystem>(&jsonEvents, "client");
+    m_clientCmdEventSpy = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client");
     m_netClient->appendEventSystem(m_clientCmdEventSpy.get());
 }
 
