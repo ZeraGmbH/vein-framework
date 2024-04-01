@@ -1,7 +1,6 @@
 #include "systemmoduleeventsystem.h"
 #include <ve_eventdata.h>
 #include <ve_commandevent.h>
-#include <ve_storagesystem.h>
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
@@ -26,7 +25,7 @@ SystemModuleEventSystem::SystemModuleEventSystem(QObject *t_parent, bool devMode
 
 constexpr int SystemModuleEventSystem::getEntityId()
 {
-    return s_entityId;
+    return 0;
 }
 
 VeinEvent::StorageSystem *SystemModuleEventSystem::getStorageSystem() const
@@ -64,7 +63,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) /// @todo maybe add roles/views later
                     validated = true;
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
-                        cData->entityId() == s_entityId) {
+                        cData->entityId() == getEntityId()) {
                     // validate set event for _System.Session
                     if(cData->componentName() == sessionComponentName) {
                         m_currentSession = cData->newValue().toString();
@@ -109,7 +108,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
 
         initData = new VeinComponent::ComponentData();
-        initData->setEntityId(s_entityId);
+        initData->setEntityId(getEntityId());
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
         initData->setComponentName(entitiesComponentName);
         initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
@@ -123,7 +122,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
 
         initData = new VeinComponent::ComponentData();
-        initData->setEntityId(s_entityId);
+        initData->setEntityId(getEntityId());
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
         initData->setComponentName(sessionComponentName);
         initData->setNewValue(QVariant(m_currentSession));
@@ -135,7 +134,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
 
         initData = new VeinComponent::ComponentData();
-        initData->setEntityId(s_entityId);
+        initData->setEntityId(getEntityId());
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
         initData->setComponentName(sessionsAvailableComponentName);
         initData->setNewValue(QVariant(m_availableSessions));
@@ -146,7 +145,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
 
         initData = new VeinComponent::ComponentData();
-        initData->setEntityId(s_entityId);
+        initData->setEntityId(getEntityId());
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
         initData->setComponentName(devModeComponentName);
         initData->setNewValue(QVariant(m_devMode));
@@ -167,7 +166,7 @@ void SystemModuleEventSystem::initOnce()
     {
         VeinComponent::EntityData *systemData = new VeinComponent::EntityData();
         systemData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
-        systemData->setEntityId(s_entityId);
+        systemData->setEntityId(getEntityId());
 
         emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, systemData));
 
@@ -185,7 +184,7 @@ void SystemModuleEventSystem::initOnce()
         for(const QString &compName : componentData.keys())
         {
             initialData = new VeinComponent::ComponentData();
-            initialData->setEntityId(s_entityId);
+            initialData->setEntityId(getEntityId());
             initialData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
             initialData->setComponentName(compName);
             initialData->setNewValue(componentData.value(compName));
@@ -212,7 +211,7 @@ void SystemModuleEventSystem::handleNotificationMessage(QJsonObject t_message)
     Q_ASSERT(t_message.isEmpty() == false);
     VeinComponent::ComponentData *notificationMessagesData = new VeinComponent::ComponentData();
     VeinEvent::CommandEvent *emDataEvent = nullptr;
-    notificationMessagesData->setEntityId(s_entityId);
+    notificationMessagesData->setEntityId(getEntityId());
     notificationMessagesData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
     notificationMessagesData->setComponentName(notificationMessagesComponentName);
     notificationMessagesData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
