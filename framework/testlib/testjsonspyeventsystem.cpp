@@ -1,4 +1,4 @@
-#include "testcommandeventspyeventsystem.h"
+#include "testjsonspyeventsystem.h"
 #include "testcommandeventstrings.h"
 #include <vcmp_errordata.h>
 #include <vcmp_introspectiondata.h>
@@ -8,37 +8,37 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-TestCommandEventSpyEventSystem::TestCommandEventSpyEventSystem(QJsonObject *jsonEvents, QString roleName) :
+TestJsonSpyEventSystem::TestJsonSpyEventSystem(QJsonObject *jsonEvents, QString roleName) :
     m_jsonEvents(jsonEvents),
     m_roleName(roleName)
 {
 }
 
-void TestCommandEventSpyEventSystem::processEvent(QEvent *event)
+void TestJsonSpyEventSystem::processEvent(QEvent *event)
 {
     QJsonObject jsonEventInfo = eventToJsonInfo(event);
     if(!jsonEventInfo.isEmpty())
         addJsonInfo(jsonEventInfo);
 }
 
-void TestCommandEventSpyEventSystem::clear()
+void TestJsonSpyEventSystem::clear()
 {
    *m_jsonEvents = QJsonObject();
 }
 
-bool TestCommandEventSpyEventSystem::isEmpty() const
+bool TestJsonSpyEventSystem::isEmpty() const
 {
    return m_jsonEvents->isEmpty();
 }
 
-void TestCommandEventSpyEventSystem::onEventAccepted(EventSystem *eventSystem, QEvent *event)
+void TestJsonSpyEventSystem::onEventAccepted(EventSystem *eventSystem, QEvent *event)
 {
    QJsonObject jsonEventInfo = eventToJsonInfo(event);
    jsonEventInfo.insert("Accepted (finalized) by", eventSystem->metaObject()->className());
    addJsonInfo(jsonEventInfo);
 }
 
-QJsonObject TestCommandEventSpyEventSystem::eventToJsonInfo(QEvent *event)
+QJsonObject TestJsonSpyEventSystem::eventToJsonInfo(QEvent *event)
 {
    QJsonObject jsonEventInfo;
    if(event->type() == CommandEvent::getQEventType()) {
@@ -72,7 +72,7 @@ QJsonObject TestCommandEventSpyEventSystem::eventToJsonInfo(QEvent *event)
    return jsonEventInfo;
 }
 
-void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::handleEntityData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     EntityData *eData = static_cast<EntityData*>(evData);
     Q_ASSERT(eData != nullptr);
@@ -80,7 +80,7 @@ void TestCommandEventSpyEventSystem::handleEntityData(EventData *evData, QJsonOb
     jsonEventInfo.insert("EntityCommand", TestCommandEventStrings::strEntityCommand(eData->eventCommand()));
 }
 
-void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::handleComponentData(EventData *evData, QJsonObject &jsonEventInfo)
 {
     ComponentData *cData = static_cast<ComponentData*>(evData);
     Q_ASSERT(cData != nullptr);
@@ -99,7 +99,7 @@ void TestCommandEventSpyEventSystem::handleComponentData(EventData *evData, QJso
         jsonEventInfo.insert("ValueNew", "invalid");
 }
 
-void TestCommandEventSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     IntrospectionData *iData = static_cast<IntrospectionData*>(evData);
     Q_ASSERT(iData != nullptr);
@@ -109,7 +109,7 @@ void TestCommandEventSpyEventSystem::handleIntrospectionData(VeinEvent::EventDat
     jsonEventInfo.insert("IntrospectionData", jsonIntrospection);
 }
 
-void TestCommandEventSpyEventSystem::handleRpcData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::handleRpcData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData*>(evData);
     Q_ASSERT(rpcData != nullptr);
@@ -117,7 +117,7 @@ void TestCommandEventSpyEventSystem::handleRpcData(VeinEvent::EventData *evData,
     // TODO
 }
 
-void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::handleErrorData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
 {
     ErrorData *errData = static_cast<ErrorData*>(evData);
     Q_ASSERT(errData != nullptr);
@@ -156,14 +156,14 @@ void TestCommandEventSpyEventSystem::handleErrorData(VeinEvent::EventData *evDat
     jsonEventInfo.insert("OriginalEventData", origEventInfo);
 }
 
-void TestCommandEventSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
+void TestJsonSpyEventSystem::extendByEventInfo(CommandEvent *cEvent, QJsonObject &jsonInfo)
 {
     jsonInfo.insert("Am event in", m_roleName);
     jsonInfo.insert("EventSubtype", TestCommandEventStrings::strSubtype(cEvent->eventSubtype()));
     jsonInfo.insert("ValidPeer", !cEvent->peerId().isNull());
 }
 
-QJsonObject TestCommandEventSpyEventSystem::baseInfoFromEventData(VeinEvent::EventData *evData)
+QJsonObject TestJsonSpyEventSystem::baseInfoFromEventData(VeinEvent::EventData *evData)
 {
     QJsonObject jsonEntity( {
         {"Entity", evData->entityId()},
@@ -174,7 +174,7 @@ QJsonObject TestCommandEventSpyEventSystem::baseInfoFromEventData(VeinEvent::Eve
     return jsonEntity;
 }
 
-void TestCommandEventSpyEventSystem::addJsonInfo(const QJsonObject &jsonEventInfo)
+void TestJsonSpyEventSystem::addJsonInfo(const QJsonObject &jsonEventInfo)
 {
     QJsonArray jsonArray;
     if(!m_jsonEvents->isEmpty())

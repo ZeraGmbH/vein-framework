@@ -9,7 +9,7 @@ file(GLOB HEADER
 add_library(VfFrameworkTest STATIC
     ${SOURCES}
     ${HEADER}
-    )
+)
 
 target_link_libraries(VfFrameworkTest
     PUBLIC
