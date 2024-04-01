@@ -63,23 +63,6 @@ void VfCppEntity::processEvent(QEvent *event)
     }
 }
 
-void VfCppEntity::watchComponent(int entityId, const QString &componentName)
-{
-    m_watchList[entityId].insert(componentName);
-}
-
-bool VfCppEntity::unWatchComponent(int entityId, const QString &componentName)
-{
-    bool retVal = false;
-    if(m_watchList.contains(entityId)) {
-        if(m_watchList[entityId].contains(componentName)) {
-            m_watchList[entityId].remove(componentName);
-            retVal = true;
-        }
-    }
-    return retVal;
-}
-
 void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
 {
     // handle components
@@ -87,20 +70,12 @@ void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
         VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (cmdEvent->eventData());
         QString cName = cData->componentName();
         int entityId = cData->entityId();
-        // managed by this entity
         if (cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
             if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
                 if(m_componentList.contains(cName) && entityId == m_entityId) {
                     m_componentList[cName]->setValueByEvent(cData->newValue());
                     cmdEvent->accept();
                 }
-            }
-        }
-        // managed by other entites
-        else if(cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) {
-            if(m_watchList.contains(entityId)) {
-                if(m_watchList[entityId].contains(cName))
-                    emit sigWatchedComponentChanged(entityId,cName,cData->newValue());
             }
         }
     }
