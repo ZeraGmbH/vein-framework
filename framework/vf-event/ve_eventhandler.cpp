@@ -39,6 +39,14 @@ void EventHandler::addSubsystem(EventSystem *subsystem)
     emit subsystemsChanged(m_subsystems);
 }
 
+void EventHandler::prependSubsystem(EventSystem *subsystem)
+{
+    Q_ASSERT(m_subsystems.contains(subsystem) == false);
+    m_subsystems.prepend(subsystem);
+    subsystem->attach(this);
+    emit subsystemsChanged(m_subsystems);
+}
+
 void EventHandler::clearSubsystems()
 {
     if(m_subsystems.isEmpty() == false) {

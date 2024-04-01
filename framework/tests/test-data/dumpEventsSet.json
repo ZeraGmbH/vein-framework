@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "client",
+            "Am command event in": "client-enter",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_SET",
             "ComponentName": "ModulesPaused",
@@ -15,7 +15,35 @@
             "ValueOld": false
         },
         {
-            "Am event in": "server",
+            "Am command event in": "client-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": true,
+            "ValueOld": false
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": true,
+            "ValueOld": false
+        },
+        {
+            "Am command event in": "server-fallthrough",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_SET",
             "ComponentName": "ModulesPaused",
@@ -29,7 +57,21 @@
             "ValueOld": false
         },
         {
-            "Am event in": "client",
+            "Am command event in": "client-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "ModulesPaused",
+            "Entity": 0,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": true,
+            "ValueOld": false
+        },
+        {
+            "Am command event in": "client-fallthrough",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_SET",
             "ComponentName": "ModulesPaused",

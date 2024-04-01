@@ -16,7 +16,7 @@ private slots:
     void clientSubscribeUnsubscribeEntity();
     void clientFetchComponent();
     void clientFetchNonExistingComponent();
-    void clientSetComponent();
+    void clientSetSytemEnttityComponent();
     void clientSetNonExistingComponent();
 
     void serverAddEntityAndComponent();
@@ -35,8 +35,10 @@ private:
     std::unique_ptr<TestVeinServerWithNet> m_netServer;
     std::unique_ptr<VfCoreStackClient> m_netClient;
     VfCmdEventItemEntityPtr m_entityItem;
-    std::unique_ptr<TestJsonSpyEventSystem> m_clientCmdEventSpy;
-    std::unique_ptr<TestJsonSpyEventSystem> m_serverCmdEventSpy;
+    std::unique_ptr<TestJsonSpyEventSystem> m_clientCmdEventSpyTop;
+    std::unique_ptr<TestJsonSpyEventSystem> m_clientCmdEventSpyBottom;
+    std::unique_ptr<TestJsonSpyEventSystem> m_serverCmdEventSpyTop;
+    std::unique_ptr<TestJsonSpyEventSystem> m_serverCmdEventSpyBottom;
 };
 
 #endif // TEST_CLIENT_COMMAND_EVENTS_H

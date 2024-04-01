@@ -23,6 +23,11 @@ TestVeinServer::TestVeinServer(VeinEvent::EventHandler *eventHandler) :
     m_systemModuleSystem.initOnce();
 }
 
+void TestVeinServer::prependEventSystem(VeinEvent::EventSystem *system)
+{
+    m_vfEventHandler->prependSubsystem(system);
+}
+
 void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
 {
     m_vfEventHandler->addSubsystem(system);

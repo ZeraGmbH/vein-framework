@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "client",
+            "Am command event in": "client-enter",
             "Attached data": "EntityData",
             "Entity": 0,
             "EntityCommand": "ECMD_SUBSCRIBE",
@@ -12,8 +12,30 @@
             "ValidPeer": false
         },
         {
+            "Am command event in": "client-fallthrough",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_SUBSCRIBE",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
             "Accepted (finalized) by": "VeinNet::NetworkSystem",
-            "Am event in": "server",
+            "Am command event in": "server-fallthrough",
             "Attached data": "EntityData",
             "Entity": 0,
             "EntityCommand": "ECMD_SUBSCRIBE",
@@ -24,7 +46,7 @@
             "ValidPeer": true
         },
         {
-            "Am event in": "server",
+            "Am command event in": "server-enter",
             "Attached data": "IntrospectionData",
             "Entity": 0,
             "EventOrigin": "EO_LOCAL",
@@ -48,7 +70,55 @@
             "ValidPeer": true
         },
         {
-            "Am event in": "client",
+            "Am command event in": "server-fallthrough",
+            "Attached data": "IntrospectionData",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "IntrospectionData": {
+                "components": [
+                    "DevMode",
+                    "Entities",
+                    "EntityName",
+                    "Error_Messages",
+                    "LoggedComponents",
+                    "ModulesPaused",
+                    "Session",
+                    "SessionsAvailable"
+                ],
+                "procedures": [
+                ]
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "client-enter",
+            "Attached data": "IntrospectionData",
+            "Entity": 0,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "IntrospectionData": {
+                "components": [
+                    "DevMode",
+                    "Entities",
+                    "EntityName",
+                    "Error_Messages",
+                    "LoggedComponents",
+                    "ModulesPaused",
+                    "Session",
+                    "SessionsAvailable"
+                ],
+                "procedures": [
+                ]
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "client-fallthrough",
             "Attached data": "IntrospectionData",
             "Entity": 0,
             "EventOrigin": "EO_FOREIGN",

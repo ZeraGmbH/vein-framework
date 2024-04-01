@@ -1,7 +1,21 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "server",
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_REMOVE",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "InitialValue",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_REMOVE",
             "ComponentName": "TestComponent",

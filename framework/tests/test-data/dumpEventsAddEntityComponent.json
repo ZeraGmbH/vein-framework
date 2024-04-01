@@ -1,7 +1,7 @@
 {
     "VeinEvents": [
         {
-            "Am event in": "server",
+            "Am command event in": "server-enter",
             "Attached data": "EntityData",
             "Entity": 37,
             "EntityCommand": "ECMD_ADD",
@@ -12,7 +12,18 @@
             "ValidPeer": false
         },
         {
-            "Am event in": "server",
+            "Am command event in": "server-fallthrough",
+            "Attached data": "EntityData",
+            "Entity": 37,
+            "EntityCommand": "ECMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server-enter",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_ADD",
             "ComponentName": "EntityName",
@@ -26,7 +37,35 @@
             "ValueOld": "invalid"
         },
         {
-            "Am event in": "server",
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_ADD",
+            "ComponentName": "EntityName",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "TestEntity",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_ADD",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "TestInitialValue",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_ADD",
             "ComponentName": "TestComponent",
