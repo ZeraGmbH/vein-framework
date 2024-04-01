@@ -54,44 +54,43 @@ void VfCppEntity::initModule()
 void VfCppEntity::processEvent(QEvent *event)
 {
     if(event->type()==VeinEvent::CommandEvent::getQEventType()) {
-        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(event);
-        Q_ASSERT(cEvent != nullptr);
-        VeinEvent::EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-        if(evData->entityId() == m_entityId)
-            processCommandEvent(cEvent);
+        VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
+        VeinEvent::EventData *evData = cmdEvent->eventData();
+        if(evData->entityId() == m_entityId) {
+            if (cmdEvent->eventData()->type() == VeinComponent::ComponentData::dataType())
+                handleComponents(cmdEvent);
+            else if(cmdEvent->eventData()->type() == VeinComponent::RemoteProcedureData::dataType())
+                handleRpcs(cmdEvent);
+        }
     }
 }
 
-void VfCppEntity::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
+void VfCpp::VfCppEntity::handleComponents(VeinEvent::CommandEvent *cmdEvent)
 {
-    // handle components
-    if (cmdEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
-        VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (cmdEvent->eventData());
-        QString cName = cData->componentName();
-        int entityId = cData->entityId();
-        if (cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
-            if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
-                if(m_componentList.contains(cName) && entityId == m_entityId) {
-                    m_componentList[cName]->setValueByEvent(cData->newValue());
-                    cmdEvent->accept();
-                }
+    VeinComponent::ComponentData* cData = static_cast<VeinComponent::ComponentData*> (cmdEvent->eventData());
+    if (cmdEvent->eventSubtype() == VeinEvent::CommandEvent::EventSubtype::TRANSACTION) {
+        if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
+            QString cName = cData->componentName();
+            if(m_componentList.contains(cName)) {
+                m_componentList[cName]->setValueByEvent(cData->newValue());
+                cmdEvent->accept();
             }
         }
     }
-    // handle rpcs
-    else if(cmdEvent->eventData()->type() == VeinComponent::RemoteProcedureData::dataType()) {
-        VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
-        if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
-            if(m_rpcList.contains(rpcData->procedureName())) {
-                const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
-                Q_ASSERT(callId.isNull() == false);
-                m_rpcList[rpcData->procedureName()]->callFunction(callId,cmdEvent->peerId(),rpcData->invokationData());
-                cmdEvent->accept();
-            }
-            else
-                handleUnknownRpc(cmdEvent);
+}
+
+void VfCpp::VfCppEntity::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
+{
+    VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
+    if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
+        if(m_rpcList.contains(rpcData->procedureName())) {
+            const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
+            Q_ASSERT(!callId.isNull());
+            m_rpcList[rpcData->procedureName()]->callFunction(callId,cmdEvent->peerId(),rpcData->invokationData());
+            cmdEvent->accept();
         }
+        else
+            handleUnknownRpc(cmdEvent);
     }
 }
 
