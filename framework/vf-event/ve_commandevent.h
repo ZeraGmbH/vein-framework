@@ -4,7 +4,6 @@
 #include "vfevent_export.h"
 #include <QEvent>
 #include <QUuid>
-#include <memory>
 
 namespace VeinEvent
 {
@@ -19,17 +18,16 @@ public:
         TRANSACTION = 1 /**< The event requires to be inspected about its authoritative status */
     };
 
-    explicit CommandEvent(EventSubtype subtype, EventData *data);
+    explicit CommandEvent(EventSubtype t_subtype, EventData *t_data);
     ~CommandEvent();
-    void mutateInto(std::unique_ptr<VeinEvent::CommandEvent> otherCmdEvent);
 
     static int getQEventType();
 
     QUuid peerId() const;
-    void setPeerId(QUuid pPeerId);
+    void setPeerId(QUuid t_pPeerId);
 
     EventSubtype eventSubtype() const;
-    void setEventSubtype(EventSubtype newType);
+    void setEventSubtype(EventSubtype t_newType);
 
     EventData *eventData() const;
 
@@ -43,8 +41,6 @@ private:
     QUuid m_peerId;
     EventSubtype m_subtype;
     EventData *m_eventData;
-    std::unique_ptr<VeinEvent::CommandEvent> m_mutationCmdEvent;
-    VeinEvent::CommandEvent* m_activeEvent;
 };
 }
 #endif // VE_COMMANDEVENT_H
