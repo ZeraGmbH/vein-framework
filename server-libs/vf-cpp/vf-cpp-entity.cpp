@@ -73,7 +73,7 @@ void VfCpp::VfCppEntity::handleComponents(VeinEvent::CommandEvent *cmdEvent)
         if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
             QString cName = cData->componentName();
             if(m_componentList.contains(cName)) {
-                m_componentList[cName]->setValueByEvent(cData->newValue());
+                m_componentList[cName]->setValueFromVein(cData->newValue());
                 cmdEvent->accept();
             }
         }

@@ -36,7 +36,7 @@ void VfCppComponent::setValue(QVariant value)
     sendNotification(VeinComponent::ComponentData::Command::CCMD_SET);
 }
 
-void VfCppComponent::setValueByEvent(QVariant value)
+void VfCppComponent::setValueFromVein(QVariant value)
 {
     if(value != getValue()) {
         if(!m_readOnly)

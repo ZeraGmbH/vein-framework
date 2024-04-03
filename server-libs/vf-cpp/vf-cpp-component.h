@@ -19,7 +19,7 @@ public:
     QString getName();
 
     void setValue(QVariant value); // spawn vein event
-    void setValueByEvent(QVariant value); // just for VfCppEntity...
+    void setValueFromVein(QVariant value); // just for VfCppEntity...
 signals:
     void sigValueChanged(QVariant);
 
