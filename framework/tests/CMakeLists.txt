@@ -1,6 +1,7 @@
 SETUP_TESTS(
     test_storage
     test_command_events
+    test_storage_notification
 )
 
 target_sources(test_storage

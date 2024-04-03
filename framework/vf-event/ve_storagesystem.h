@@ -9,6 +9,14 @@ Q_DECLARE_LOGGING_CATEGORY(VEIN_STORAGE)
 
 namespace VeinEvent
 {
+class VFEVENT_EXPORT ComponentChangeSignalizer : public QObject
+{
+    Q_OBJECT
+signals:
+    void sigValueChange(QVariant newValue);
+};
+
+
 class VFEVENT_EXPORT StorageSystem : public EventSystem
 {
     Q_OBJECT
@@ -21,6 +29,7 @@ public:
     virtual QList<QString> getEntityComponents(int t_entityId) const = 0;
     virtual bool hasEntity(int t_entityId) const = 0;
     virtual QList<int> getEntityList() const = 0;
+    virtual VeinEvent::ComponentChangeSignalizer* getChangeSignalizer(int entityId, const QString &componentName) const = 0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;
 };
