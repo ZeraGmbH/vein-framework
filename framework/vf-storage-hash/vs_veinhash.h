@@ -3,14 +3,8 @@
 
 #include "vfstoragehash_export.h"
 #include <ve_storagesystem.h>
+#include <vcmp_componentdata.h>
 #include <ve_eventdata.h>
-#include <QHash>
-
-namespace VeinComponent
-{
-class ComponentData;
-class EntityData;
-}
 
 namespace VeinStorage
 {
@@ -42,7 +36,11 @@ private:
     void processEntityData(QEvent *event);
 
     VeinHashPrivate* m_privHash;
-    QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins = {VeinEvent::EventData::EventOrigin::EO_LOCAL, VeinEvent::EventData::EventOrigin::EO_FOREIGN};
+    QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
+        {
+            VeinEvent::EventData::EventOrigin::EO_LOCAL,
+            VeinEvent::EventData::EventOrigin::EO_FOREIGN
+        };
 };
 }
 
