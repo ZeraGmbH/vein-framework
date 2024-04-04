@@ -17,9 +17,6 @@ public:
     explicit VeinHash(QObject *parent = nullptr);
     virtual ~VeinHash();
 
-    void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins);
-    const QList<VeinEvent::EventData::EventOrigin> &getAcceptableOrigin() const;
-
     void processEvent(QEvent *event) override;
 
     bool hasEntity(int entityId) const override;
@@ -27,10 +24,13 @@ public:
 
     Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
-    VeinEvent::ComponentChangeSignalizer* getChangeSignalizer(int entityId, const QString &componentName) const override;
     QList<QString> getEntityComponents(int entityId) const override;
+    VeinEvent::ComponentChangeSignalizer* getChangeSignalizer(int entityId, const QString &componentName) const override;
 
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
+
+    void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins); // Not too many users (yet)
+
 private:
     void processComponentData(QEvent *event);
     void processEntityData(QEvent *event);

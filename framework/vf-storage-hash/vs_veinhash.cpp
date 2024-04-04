@@ -138,11 +138,6 @@ void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
     m_acceptableOrigins = origins;
 }
 
-const QList<EventData::EventOrigin> &VeinHash::getAcceptableOrigin() const
-{
-    return m_acceptableOrigins;
-}
-
 QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
 {
     StorageComponent* component = m_privHash->findComponent(entityId, componentName);
