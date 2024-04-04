@@ -2,6 +2,7 @@
 #include "testveinserverwithnet.h"
 #include "testdumpreporter.h"
 #include "vtcp_workerfactorymethodstest.h"
+#include "task_client_component_fetcher.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>
@@ -41,12 +42,118 @@ void test_storage::addEntity()
     TestVeinServerWithNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     QFile file(":/dumpStorageEntityAdded.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_storage::addEntityAndComponent()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+    serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    QFile file(":/dumpStorageEntityComponentAdd.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_storage::addRemoveEntity()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+
+    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
+    eData->setEntityId(testEntityId);
+    eData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    eData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    eData->setCommand(VeinComponent::EntityData::Command::ECMD_REMOVE);
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
+    server->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    QFile file(":/dumpStorageEntityAddRemove.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_storage::addRemoveComponent()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(testEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_REMOVE);
+    cData->setComponentName(componentName);
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    server->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    QFile file(":/dumpStorageComponentAddRemove.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    storage->dumpToFile(&buff, QList<int>());
+    QVERIFY(TestDumpReporter::reportOnFail(jsonExpected, jsonDumped));
+}
+
+void test_storage::setComponent()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    server->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+
+    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
+    cData->setEntityId(testEntityId);
+    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
+    cData->setComponentName(componentName);
+    cData->setNewValue("SetTestValue");
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
+    server->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    QFile file(":/dumpStorageComponentSet.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();

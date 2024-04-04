@@ -16,6 +16,7 @@
         ]
     },
     "37": {
-        "EntityName": "TestEntity"
+        "EntityName": "TestEntity",
+        "TestComponent": "TestInitialValue"
     }
 }
