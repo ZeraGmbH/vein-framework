@@ -1,11 +1,8 @@
 #include "vs_veinhash.h"
 #include "vs_veinhashprivate.h"
-#include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
-#include <vcmp_errordata.h>
 #include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>
-#include <QEvent>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
