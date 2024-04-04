@@ -48,10 +48,8 @@ void VeinHash::processEvent(QEvent *event)
                 break;
             }
             case EntityData::dataType():
-            {
                 processEntityData(event);
                 break;
-            }
             default:
                 break;
             }
@@ -71,7 +69,6 @@ void VeinHash::processComponentData(QEvent *event)
     switch(cData->eventCommand())
     {
     case ComponentData::Command::CCMD_ADD:
-    {
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot add component for invalid entity id: %1").arg(entityId), event, this);
         else if(component)
@@ -79,9 +76,7 @@ void VeinHash::processComponentData(QEvent *event)
         else
             m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;
-    }
     case ComponentData::Command::CCMD_REMOVE:
-    {
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), event, this);
         else if(!component)
@@ -89,9 +84,7 @@ void VeinHash::processComponentData(QEvent *event)
         else
             m_privHash->removeComponentValue(entity, componentName);
         break;
-    }
     case ComponentData::Command::CCMD_SET:
-    {
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot set component for not existing entity id: %1").arg(entityId), event, this);
         else if(!component)
@@ -99,9 +92,7 @@ void VeinHash::processComponentData(QEvent *event)
         else
             m_privHash->changeComponentValue(component, cData->newValue());
         break;
-    }
     case ComponentData::Command::CCMD_FETCH:
-    {
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), event, this);
         else if(!component)
@@ -113,7 +104,6 @@ void VeinHash::processComponentData(QEvent *event)
             cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         }
         break;
-    }
     default:
         break;
     }
@@ -128,13 +118,11 @@ void VeinHash::processEntityData(QEvent *event)
     switch(eData->eventCommand())
     {
     case EntityData::Command::ECMD_ADD:
-    {
         if(entityMap)
             ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), event, this);
         else
             m_privHash->insertEntity(entityId);
         break;
-    }
     case EntityData::Command::ECMD_REMOVE:
     {
         if(!entityMap)
