@@ -12,8 +12,12 @@
         <file>dumpEventsSetNonExistent.json</file>
         <file>dumpEventsSubscribe.json</file>
         <file>dumpEventsUnsubscribe.json</file>
+        <file>dumpStorageComponentAddRemove.json</file>
         <file>dumpEventsSubscribeNonExistent.json</file>
         <file>dumpStorageEntityAdded.json</file>
+        <file>dumpStorageEntityAddRemove.json</file>
+        <file>dumpStorageComponentSet.json</file>
+        <file>dumpStorageEntityComponentAdd.json</file>
         <file>dumpStorageInitial.json</file>
     </qresource>
 </RCC>

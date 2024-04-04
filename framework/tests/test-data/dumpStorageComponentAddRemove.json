@@ -1,18 +1,14 @@
 {
     "0": {
         "DevMode": false,
-        "Entities": [
-            0,
-            37
-        ],
+        "Entities": null,
         "EntityName": "_System",
         "Error_Messages": null,
         "LoggedComponents": {
         },
         "ModulesPaused": false,
-        "Session": "session",
+        "Session": "",
         "SessionsAvailable": [
-            "sessionList"
         ]
     },
     "37": {
