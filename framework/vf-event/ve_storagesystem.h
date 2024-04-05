@@ -8,11 +8,13 @@
 namespace VeinEvent
 {
 
-class VFEVENT_EXPORT ComponentChangeSignalizer : public QObject
+class VFEVENT_EXPORT StorageComponentInterface : public QObject
 {
     Q_OBJECT
 signals:
     void sigValueChange(QVariant newValue);
+public:
+    virtual QVariant getValue() const = 0;
 };
 
 class VFEVENT_EXPORT StorageSystem : public EventSystem
@@ -27,7 +29,7 @@ public:
     virtual bool hasStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QList<QString> getEntityComponents(int t_entityId) const = 0;
-    virtual VeinEvent::ComponentChangeSignalizer* getChangeSignalizer(int entityId, const QString &componentName) const = 0;
+    virtual VeinEvent::StorageComponentInterface* getComponent(int entityId, const QString &componentName) const = 0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;
 };

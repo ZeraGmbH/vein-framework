@@ -3,25 +3,27 @@
 
 #include "ve_storagesystem.h"
 #include <QObject>
-#include <QHash>
+#include <unordered_map>
 
 namespace VeinStorage
 {
 
-class StorageComponent
+class StorageComponent : public VeinEvent::StorageComponentInterface
 {
+    Q_OBJECT
 public:
+    StorageComponent();
     StorageComponent(QVariant value);
-    virtual ~StorageComponent();
-    QVariant getValue() const;
-    void setValue(QVariant value);
-    VeinEvent::ComponentChangeSignalizer* getChangeSignalizer();
+    StorageComponent &operator = (const StorageComponent& other);
+    StorageComponent(StorageComponent &other);
+    QVariant getValue() const override;
 private:
+    friend class VeinHashPrivate;
+    void setValue(QVariant value);
     QVariant m_value;
-    VeinEvent::ComponentChangeSignalizer *m_changeSignalizer = nullptr; // maybe a list??
 };
 
-typedef QHash<QString, StorageComponent> EntityMap;
+typedef std::unordered_map<QString, StorageComponent> EntityMap;
 
 class VeinHashPrivate
 {
@@ -39,7 +41,7 @@ public:
     StorageComponent* findComponent(EntityMap *entityMap, const QString &componentName);
     StorageComponent* findComponent(const int entityId, const QString &componentName);
 private:
-    QHash<int, EntityMap> m_entityComponentData;
+    std::unordered_map<int, EntityMap> m_entityComponentData;
 };
 
 }

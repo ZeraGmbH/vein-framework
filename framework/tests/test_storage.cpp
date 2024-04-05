@@ -2,7 +2,6 @@
 #include "testveinserverwithnet.h"
 #include "testdumpreporter.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include "task_client_component_fetcher.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>

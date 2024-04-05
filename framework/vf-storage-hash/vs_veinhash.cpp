@@ -167,11 +167,11 @@ QList<int> VeinHash::getEntityList() const
     return m_privHash->getEntityList();
 }
 
-ComponentChangeSignalizer *VeinHash::getChangeSignalizer(int entityId, const QString &componentName) const
+StorageComponentInterface *VeinHash::getComponent(int entityId, const QString &componentName) const
 {
     StorageComponent* component = m_privHash->findComponent(entityId, componentName);
     if(component)
-        return component->getChangeSignalizer();
+        return component;
     qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
     return nullptr;
 }
