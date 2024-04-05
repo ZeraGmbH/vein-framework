@@ -2,6 +2,7 @@
 #define VEINEVENTHANDLER_H
 
 #include "vfevent_export.h"
+#include <timertemplateqt.h>
 #include <QObject>
 #include <QList>
 
@@ -20,7 +21,7 @@ class VFEVENT_EXPORT EventHandler : public QObject
     Q_PROPERTY(QList<EventSystem*> subsystems READ subsystems WRITE setSubsystems NOTIFY subsystemsChanged)
 public:
     explicit EventHandler(QObject *parent=nullptr);
-    ~EventHandler() {m_subsystems.clear();}
+    ~EventHandler();
     QList<EventSystem*> subsystems() const;
 public slots:
     /**
@@ -36,10 +37,11 @@ signals:
     void sigEventAccepted(VeinEvent::EventSystem* eventSystem, QEvent *event);
 protected:
     virtual void customEvent(QEvent *event) override;
+    TimerTemplateQtPtr m_waitForAddSilenceToLogTimer;
 private:
+    void onAddSilence();
     /**
      * @brief Ordered list of event system that is reprenstable for the event processing order
-     * @todo add partitioning of event systems by event type to reduce overhead in event processing
      */
     QList<EventSystem*> m_subsystems;
 };

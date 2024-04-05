@@ -1,19 +1,24 @@
 #include "ve_eventhandler.h"
-
 #include "ve_eventsystem.h"
-#include <QEvent>
-#include "vh_logging.h"
-
+#include <timerfactoryqt.h>
 #include <QCoreApplication>
+#include <QEvent>
 #include <QList>
 #include <QDataStream>
 
 namespace VeinEvent
 {
 EventHandler::EventHandler(QObject *parent) :
-    QObject(parent)
+    QObject(parent),
+    m_waitForAddSilenceToLogTimer(TimerFactoryQt::createSingleShot(1000))
 {
-    vCDebug(VEIN_EVENT) << "Created event handler";
+    connect(m_waitForAddSilenceToLogTimer.get(), &TimerTemplateQt::sigExpired,
+            this, &EventHandler::onAddSilence);
+}
+
+EventHandler::~EventHandler()
+{
+    m_subsystems.clear();
 }
 
 QList<EventSystem *> EventHandler::subsystems() const
@@ -24,6 +29,7 @@ QList<EventSystem *> EventHandler::subsystems() const
 void EventHandler::setSubsystems(QList<EventSystem *> subsystems)
 {
     if(m_subsystems != subsystems) {
+        m_waitForAddSilenceToLogTimer->start();
         m_subsystems = subsystems;
         for(EventSystem *tmpSystem : qAsConst(m_subsystems))
             tmpSystem->attach(this);
@@ -34,6 +40,7 @@ void EventHandler::setSubsystems(QList<EventSystem *> subsystems)
 void EventHandler::addSubsystem(EventSystem *subsystem)
 {
     Q_ASSERT(m_subsystems.contains(subsystem) == false);
+    m_waitForAddSilenceToLogTimer->start();
     m_subsystems.append(subsystem);
     subsystem->attach(this);
     emit subsystemsChanged(m_subsystems);
@@ -42,6 +49,7 @@ void EventHandler::addSubsystem(EventSystem *subsystem)
 void EventHandler::prependSubsystem(EventSystem *subsystem)
 {
     Q_ASSERT(m_subsystems.contains(subsystem) == false);
+    m_waitForAddSilenceToLogTimer->start();
     m_subsystems.prepend(subsystem);
     subsystem->attach(this);
     emit subsystemsChanged(m_subsystems);
@@ -66,6 +74,11 @@ void EventHandler::customEvent(QEvent *event)
             break;
         }
     }
+}
+
+void EventHandler::onAddSilence()
+{
+    qInfo("Core event systems: %i", m_subsystems.count());
 }
 
 void registerStreamOperators()

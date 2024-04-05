@@ -22,6 +22,7 @@ target_link_libraries(VfEvent
     PUBLIC
     Qt5::Core
     VfHelpers
+    Zera::zera-timers
     )
 
 set_target_properties(VfEvent PROPERTIES VERSION ${PROJECT_VERSION})

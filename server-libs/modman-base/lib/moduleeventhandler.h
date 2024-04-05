@@ -15,6 +15,7 @@ public:
 protected:
     void customEvent(QEvent *event) override;
 private:
+    void onAddSilence();
     // Modules' event systems are processed first
     QList<VeinEvent::EventSystem *> m_moduleSystems;
 };
