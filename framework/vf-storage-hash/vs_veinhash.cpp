@@ -61,7 +61,7 @@ void VeinHash::processComponentData(QEvent *event)
     const QString componentName = cData->componentName();
     const int entityId = cData->entityId();
     EntityMap* entity = m_privHash->findEntity(entityId);
-    StorageComponent *component = m_privHash->findComponent(entity, componentName);
+    StorageComponentPtr component = m_privHash->findComponent(entity, componentName);
 
     switch(cData->eventCommand())
     {
@@ -140,7 +140,7 @@ void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
 
 QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
 {
-    StorageComponent* component = m_privHash->findComponent(entityId, componentName);
+    StorageComponentPtr component = m_privHash->findComponent(entityId, componentName);
     if(component)
         return component->getValue();
     qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
@@ -167,13 +167,12 @@ QList<int> VeinHash::getEntityList() const
     return m_privHash->getEntityList();
 }
 
-StorageComponentInterface *VeinHash::getComponent(int entityId, const QString &componentName) const
+StorageComponentInterfacePtr VeinHash::getComponent(int entityId, const QString &componentName) const
 {
-    StorageComponent* component = m_privHash->findComponent(entityId, componentName);
-    if(component)
-        return component;
-    qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
-    return nullptr;
+    StorageComponentInterfacePtr component = m_privHash->findComponent(entityId, componentName);
+    if(!component)
+        qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
+    return component;
 }
 
 void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const

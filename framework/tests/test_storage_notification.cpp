@@ -48,8 +48,8 @@ void test_storage_notification::getNotifierForTwoExisting()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
 
-    VeinEvent::StorageComponentInterface *component1 = storage->getComponent(0, "EntityName");
-    VeinEvent::StorageComponentInterface *component2 = storage->getComponent(0, "Session");
+    VeinEvent::StorageComponentInterfacePtr component1 = storage->getComponent(0, "EntityName");
+    VeinEvent::StorageComponentInterfacePtr component2 = storage->getComponent(0, "Session");
     QVERIFY(component1);
     QVERIFY(component2);
     QVERIFY(component1 != component2);
@@ -70,9 +70,9 @@ void test_storage_notification::receiveOneSignalOnChangeByVein()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    VeinEvent::StorageComponentInterface *component = storage->getComponent(testEntityId, componentName);
+    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
 
-    QSignalSpy spy(component, &VeinEvent::StorageComponentInterface::sigValueChange);
+    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(testEntityId);
     cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
@@ -99,9 +99,9 @@ void test_storage_notification::receiveNoSignalOnSameValueByVein()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    VeinEvent::StorageComponentInterface *component = storage->getComponent(testEntityId, componentName);
+    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
 
-    QSignalSpy spy(component, &VeinEvent::StorageComponentInterface::sigValueChange);
+    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(testEntityId);
     cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
