@@ -39,35 +39,30 @@ void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked,
 
 void VeinHashPrivate::removeComponentValue(EntityMap *entityChecked, const QString &componentName)
 {
-    entityChecked->erase(componentName);
+    entityChecked->remove(componentName);
 }
 
 void VeinHashPrivate::insertEntity(const int entityId)
 {
-    m_entityComponentData.insert(std::pair(entityId, EntityMap()));
+    m_entityComponentData.insert(entityId, EntityMap());
 }
 
 void VeinHashPrivate::removeEntity(const int entityId)
 {
-    m_entityComponentData.erase(entityId);
+    m_entityComponentData.remove(entityId);
 }
 
 QList<int> VeinHashPrivate::getEntityList() const
 {
-    QList<int> entities;
-    for(auto iter=m_entityComponentData.cbegin(); iter!=m_entityComponentData.cend(); iter++)
-        entities.append(iter->first);
-    return entities;
+    return m_entityComponentData.keys();
 }
 
 QList<QString> VeinHashPrivate::getComponentList(int entityId)
 {
     QList<QString> componentList;
     EntityMap *entity = findEntity(entityId);
-    if(entity) {
-        for(auto iter=entity->cbegin(); iter!=entity->cend(); iter++)
-            componentList.append(iter->first);
-    }
+    if(entity)
+        componentList = entity->keys();
     return componentList;
 }
 
@@ -76,7 +71,7 @@ EntityMap *VeinHashPrivate::findEntity(const int entityId)
     auto iter = m_entityComponentData.find(entityId);
     if(iter == m_entityComponentData.end())
         return nullptr;
-    return &(iter->second);
+    return &(iter.value());
 }
 
 StorageComponentPtr VeinHashPrivate::findComponent(EntityMap *entityMap, const QString &componentName)
@@ -86,7 +81,7 @@ StorageComponentPtr VeinHashPrivate::findComponent(EntityMap *entityMap, const Q
     auto iter = entityMap->find(componentName);
     if(iter == entityMap->end())
         return nullptr;
-    return iter->second;
+    return iter.value();
 }
 
 StorageComponentPtr VeinHashPrivate::findComponent(const int entityId, const QString &componentName)
