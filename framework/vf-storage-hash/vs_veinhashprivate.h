@@ -3,7 +3,7 @@
 
 #include "ve_storagesystem.h"
 #include <QObject>
-#include <unordered_map>
+#include <QHash>
 
 namespace VeinStorage
 {
@@ -21,7 +21,7 @@ private:
 };
 
 typedef std::shared_ptr<StorageComponent> StorageComponentPtr;
-typedef std::unordered_map<QString, StorageComponentPtr> EntityMap;
+typedef QHash<QString, StorageComponentPtr> EntityMap;
 
 class VeinHashPrivate
 {
@@ -39,7 +39,7 @@ public:
     StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName);
     StorageComponentPtr findComponent(const int entityId, const QString &componentName);
 private:
-    std::unordered_map<int, EntityMap> m_entityComponentData;
+    QHash<int, EntityMap> m_entityComponentData;
 };
 
 }
