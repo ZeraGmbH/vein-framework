@@ -3,6 +3,7 @@
 
 #include "vfevent_export.h"
 #include "ve_eventsystem.h"
+#include <memory>
 #include <QIODevice>
 
 namespace VeinEvent
@@ -17,6 +18,8 @@ public:
     virtual QVariant getValue() const = 0;
 };
 
+typedef std::shared_ptr<StorageComponentInterface> StorageComponentInterfacePtr;
+
 class VFEVENT_EXPORT StorageSystem : public EventSystem
 {
     Q_OBJECT
@@ -29,7 +32,7 @@ public:
     virtual bool hasStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QList<QString> getEntityComponents(int t_entityId) const = 0;
-    virtual VeinEvent::StorageComponentInterface* getComponent(int entityId, const QString &componentName) const = 0;
+    virtual StorageComponentInterfacePtr getComponent(int entityId, const QString &componentName) const = 0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;
 };

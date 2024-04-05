@@ -44,11 +44,10 @@ VeinHashPrivate::VeinHashPrivate()
 
 void VeinHashPrivate::insertComponentValue(EntityMap *entityChecked, const QString &componentName, QVariant value)
 {
-    const StorageComponent storage(value);
-    (*entityChecked)[componentName] = storage;
+    (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
 }
 
-void VeinHashPrivate::changeComponentValue(StorageComponent *componentChecked, QVariant value)
+void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
 {
     componentChecked->setValue(value);
 }
@@ -95,17 +94,17 @@ EntityMap *VeinHashPrivate::findEntity(const int entityId)
     return &(iter->second);
 }
 
-StorageComponent *VeinHashPrivate::findComponent(EntityMap *entityMap, const QString &componentName)
+StorageComponentPtr VeinHashPrivate::findComponent(EntityMap *entityMap, const QString &componentName)
 {
     if(!entityMap)
         return nullptr;
     auto iter = entityMap->find(componentName);
     if(iter == entityMap->end())
         return nullptr;
-    return &(iter->second);
+    return iter->second;
 }
 
-StorageComponent *VeinHashPrivate::findComponent(const int entityId, const QString &componentName)
+StorageComponentPtr VeinHashPrivate::findComponent(const int entityId, const QString &componentName)
 {
     return findComponent(findEntity(entityId), componentName);
 }
