@@ -12,10 +12,7 @@ class StorageComponent : public VeinEvent::StorageComponentInterface
 {
     Q_OBJECT
 public:
-    StorageComponent();
     StorageComponent(QVariant value);
-    StorageComponent &operator = (const StorageComponent& other);
-    StorageComponent(StorageComponent &other);
     QVariant getValue() const override;
 private:
     friend class VeinHashPrivate;

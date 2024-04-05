@@ -5,24 +5,9 @@ using namespace VeinEvent;
 namespace VeinStorage
 {
 
-StorageComponent::StorageComponent()
-{
-}
-
 StorageComponent::StorageComponent(QVariant value) :
     m_value(value)
 {
-}
-
-StorageComponent &StorageComponent::operator =(const StorageComponent &other)
-{
-    m_value = other.m_value;
-    return *this;
-}
-
-StorageComponent::StorageComponent(StorageComponent &other)
-{
-    m_value = other.m_value;
 }
 
 QVariant StorageComponent::getValue() const
