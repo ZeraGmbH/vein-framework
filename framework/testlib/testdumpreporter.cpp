@@ -2,13 +2,13 @@
 #include <QString>
 #include <QJsonDocument>
 
-bool TestDumpReporter::reportOnFail(QByteArray jsonExpected, QByteArray jsonDumped)
+bool TestDumpReporter::compareAndLogOnDiff(QByteArray expected, QByteArray dumped)
 {
-    if(jsonExpected != jsonDumped) {
+    if(expected != dumped) {
         qWarning("Expected:");
-        qInfo("%s", qPrintable(jsonExpected));
+        qInfo("%s", qPrintable(expected));
         qWarning("Dumped:");
-        qInfo("%s", qPrintable(jsonDumped));
+        qInfo("%s", qPrintable(dumped));
         return false;
     }
     return true;
