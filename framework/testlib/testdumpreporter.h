@@ -7,7 +7,7 @@
 class TestDumpReporter
 {
 public:
-    static bool reportOnFail(QByteArray jsonExpected, QByteArray jsonDumped);
+    static bool compareAndLogOnDiff(QByteArray expected, QByteArray dumped);
     static QByteArray dump(QJsonObject json);
 };
 
