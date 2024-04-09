@@ -7,6 +7,7 @@ class TestLicenseSystem : public LicenseSystemInterface
 {
     Q_OBJECT
 public:
+    void setDeviceSerial(const QString &serialNumber) override;
     bool isSystemLicensed(const QString &uniqueModuleName) override;
     bool serialNumberIsInitialized() const  override;
     void processEvent(QEvent *event) override;

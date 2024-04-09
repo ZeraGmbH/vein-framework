@@ -11,6 +11,12 @@ bool TestLicenseSystem::serialNumberIsInitialized() const
     return true;
 }
 
+void TestLicenseSystem::setDeviceSerial(const QString &serialNumber)
+{
+    if(!serialNumber.isEmpty())
+        emit sigSerialNumberInitialized();
+}
+
 void TestLicenseSystem::processEvent(QEvent *event)
 {
     Q_UNUSED(event)
