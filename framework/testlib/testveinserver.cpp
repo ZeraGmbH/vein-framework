@@ -4,8 +4,7 @@
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
 
-TestVeinServer::TestVeinServer(VeinEvent::EventHandler *eventHandler) :
-    m_vfEventHandler(eventHandler),
+TestVeinServer::TestVeinServer() :
     m_vfEntityAddSpy(EntityData::Command::ECMD_ADD),
     m_vfComponentAddSpy(ComponentData::Command::CCMD_ADD),
     m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET)
@@ -13,24 +12,24 @@ TestVeinServer::TestVeinServer(VeinEvent::EventHandler *eventHandler) :
 {
     m_systemModuleSystem.setStorage(&m_storageSystem);
 
-    m_vfEventHandler->addSubsystem(&m_vfEntityAddSpy);
-    m_vfEventHandler->addSubsystem(&m_vfComponentAddSpy);
-    m_vfEventHandler->addSubsystem(&m_vfComponentChangeSpy);
-    m_vfEventHandler->addSubsystem(&m_systemModuleSystem);
-    m_vfEventHandler->addSubsystem(&m_introspectionSystem);
-    m_vfEventHandler->addSubsystem(&m_storageSystem);
+    m_vfEventHandler.addSubsystem(&m_vfEntityAddSpy);
+    m_vfEventHandler.addSubsystem(&m_vfComponentAddSpy);
+    m_vfEventHandler.addSubsystem(&m_vfComponentChangeSpy);
+    m_vfEventHandler.addSubsystem(&m_systemModuleSystem);
+    m_vfEventHandler.addSubsystem(&m_introspectionSystem);
+    m_vfEventHandler.addSubsystem(&m_storageSystem);
 
     m_systemModuleSystem.initOnce();
 }
 
 void TestVeinServer::prependEventSystem(VeinEvent::EventSystem *system)
 {
-    m_vfEventHandler->prependSubsystem(system);
+    m_vfEventHandler.prependSubsystem(system);
 }
 
 void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
 {
-    m_vfEventHandler->addSubsystem(system);
+    m_vfEventHandler.addSubsystem(system);
 }
 
 void TestVeinServer::addEntity(int entityId, QString entityName)
@@ -39,7 +38,7 @@ void TestVeinServer::addEntity(int entityId, QString entityName)
         qFatal("Entity ID %i already inserted!", entityId);
     }
     m_entities[entityId] = std::make_unique<VfCpp::VfCppEntity>(entityId);
-    m_vfEventHandler->addSubsystem(m_entities[entityId].get());
+    m_vfEventHandler.addSubsystem(m_entities[entityId].get());
     m_entities[entityId]->initModule();
     m_entities[entityId]->createComponent("EntityName", entityName, true);
 }
@@ -63,7 +62,7 @@ VeinEvent::StorageSystem *TestVeinServer::getStorage()
 
 VeinEvent::EventHandler *TestVeinServer::getEventHandler()
 {
-    return m_vfEventHandler;
+    return &m_vfEventHandler;
 }
 
 QList<int> TestVeinServer::getEntityAddList() const

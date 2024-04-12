@@ -19,10 +19,9 @@ static constexpr int serverPort = 4242;
 
 void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 {
-    VeinEvent::EventHandler eventHandler;
-    TestVeinServer testServer(&eventHandler);
+    TestVeinServer testServer;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    testServer.appendEventSystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
     QList<int> entities = testServer.getEntityAddList();
     QCOMPARE(entities.size(), 1);
@@ -89,10 +88,9 @@ void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 
 void test_client_entity_subscriber::trySubscribeOnNonExistantEntity()
 {
-    VeinEvent::EventHandler eventHandler;
-    TestVeinServer testServer(&eventHandler);
+    TestVeinServer testServer;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    testServer.appendEventSystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
     
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(noneExistentEnitityId);
@@ -112,10 +110,9 @@ using namespace VeinComponent;
 
 void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithOtherError()
 {
-    VeinEvent::EventHandler eventHandler;
-    TestVeinServer testServer(&eventHandler);
+    TestVeinServer testServer;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    testServer.appendEventSystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
 
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(noneExistentEnitityId);
@@ -143,10 +140,9 @@ void test_client_entity_subscriber::trySubscribeOnNonExistantEntityTogetherwithO
 
 void test_client_entity_subscriber::introspectComponentNames()
 {
-    VeinEvent::EventHandler eventHandler;
-    TestVeinServer testServer(&eventHandler);
+    TestVeinServer testServer;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    testServer.appendEventSystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
     
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);

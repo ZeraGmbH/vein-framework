@@ -17,13 +17,11 @@ static constexpr int serverPort = 4242;
 
 struct ServerNoNet
 {
-    VeinEvent::EventHandler eventHandler;
     TestVeinServer server;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    ServerNoNet() :
-        server(&eventHandler)
+    ServerNoNet()
     {
-        eventHandler.addSubsystem(&cmdEventHandlerSystem);
+        server.appendEventSystem(&cmdEventHandlerSystem);
     }
 };
 

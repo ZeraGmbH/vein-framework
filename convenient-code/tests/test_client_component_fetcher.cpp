@@ -19,10 +19,9 @@ struct ServerNoNet
     VeinEvent::EventHandler eventHandler;
     TestVeinServer server;
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    ServerNoNet() :
-        server(&eventHandler)
+    ServerNoNet()
     {
-        eventHandler.addSubsystem(&cmdEventHandlerSystem);
+        server.appendEventSystem(&cmdEventHandlerSystem);
     }
 };
 
@@ -146,11 +145,10 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 void test_client_component_fetcher::getTwoDifferentComponent()
 {
     // just server / no subscription
-    VeinEvent::EventHandler eventHandler;
-    TestVeinServer server(&eventHandler);
+    TestVeinServer server;
     server.simulAllModulesLoaded("fooPath", QStringList() << "fooPath");
     VfCmdEventHandlerSystem cmdEventHandlerSystem;
-    eventHandler.addSubsystem(&cmdEventHandlerSystem);
+    server.appendEventSystem(&cmdEventHandlerSystem);
     TimeMachineObject::feedEventLoop();
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
