@@ -14,7 +14,6 @@ public:
     VeinEvent::StorageSystem* getStorage();
     int getSubscriberCount(int entityId);
 private:
-    VeinEvent::EventHandler m_eventHandler;
     VeinNet::NetworkSystem m_netSystem;
     VeinNet::TcpSystem m_tcpSystem;
     TestVeinServer m_server;

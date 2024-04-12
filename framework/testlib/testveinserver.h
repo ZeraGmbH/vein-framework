@@ -14,7 +14,7 @@
 class TestVeinServer
 {
 public:
-    explicit TestVeinServer(VeinEvent::EventHandler *eventHandler);
+    explicit TestVeinServer();
     void prependEventSystem(VeinEvent::EventSystem *system);
     void appendEventSystem(VeinEvent::EventSystem *system);
     void addEntity(int entityId, QString entityName);
@@ -31,7 +31,7 @@ public:
 
     void resetLists();
 private:
-    VeinEvent::EventHandler* m_vfEventHandler;
+    VeinEvent::EventHandler m_vfEventHandler;
     VfTestEntitySpy m_vfEntityAddSpy;
     VfTestComponentSpy m_vfComponentAddSpy;
     VfTestComponentSpy m_vfComponentChangeSpy;
