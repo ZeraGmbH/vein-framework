@@ -1,4 +1,5 @@
 #include "testveinserver.h"
+#include "vf_client_component_setter.h"
 #include <timemachineobject.h>
 
 using VeinComponent::EntityData;
@@ -48,6 +49,17 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     if(m_entities.find(entityId) == m_entities.end())
         qFatal("Entity with ID %i was not added by addEntity!", entityId);
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
+}
+
+void TestVeinServer::setComponent(int entityId, QString componentName, QVariant newValue)
+{
+    if(!m_storageSystem.hasStoredValue(entityId, componentName))
+        qFatal("No entity/component with ID %i / Name %s available!", entityId, qPrintable(componentName));
+
+    QVariant oldValue = m_storageSystem.getStoredValue(entityId, componentName);
+    QEvent* event = VfClientComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
+    sendEvent(event);
+    TimeMachineObject::feedEventLoop();
 }
 
 void TestVeinServer::sendEvent(QEvent *event)
