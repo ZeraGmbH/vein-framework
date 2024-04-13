@@ -15,6 +15,27 @@ VfClientComponentSetter::VfClientComponentSetter(QString componentName, VfCmdEve
 using namespace VeinEvent;
 using namespace VeinComponent;
 
+QEvent *VfClientComponentSetter::generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue)
+{
+    ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_SET);
+    cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+    cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+    cData->setComponentName(componentName);
+
+    // The following magic was stolen from vf-qml
+    if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
+        cData->setNewValue(newValue.toList());
+    else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
+        cData->setNewValue(newValue.toMap());
+    else
+        cData->setNewValue(newValue);
+    cData->setOldValue(oldValue);
+
+    // connected client requires TRANSACTION - that is what servers listen to
+    return new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
+}
+
+
 void VfClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newValue)
 {
     if(!newValue.isValid())
@@ -22,22 +43,7 @@ void VfClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newV
     else if(oldValue == newValue)
         emitSigSetFinish(true);
     else {
-        ComponentData *cData = new ComponentData(getEntityId(), ComponentData::Command::CCMD_SET);
-        cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
-        cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-        cData->setComponentName(getComponentName());
-
-        // The following magic was stolen from vf-qml
-        if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
-            cData->setNewValue(newValue.toList());
-        else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
-            cData->setNewValue(newValue.toMap());
-        else
-            cData->setNewValue(newValue);
-        cData->setOldValue(oldValue);
-
-        // connected client requires TRANSACTION - that is what servers listen to
-        CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
+        QEvent *cEvent = generateEvent(getEntityId(), getComponentName(), oldValue, newValue);
         sendEvent(cEvent);
     }
 }

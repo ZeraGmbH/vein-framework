@@ -11,6 +11,7 @@ public:
     static std::shared_ptr<VfClientComponentSetter> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
     VfClientComponentSetter(QString componentName, VfCmdEventItemEntityPtr entityItem);
 
+    static QEvent *generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue);
     void startSetComponent(QVariant oldValue, QVariant newValue);
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
