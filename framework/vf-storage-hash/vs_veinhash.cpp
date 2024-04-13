@@ -86,8 +86,13 @@ void VeinHash::processComponentData(QEvent *event)
             ErrorDataSender::errorOut(QString("Cannot set component for not existing entity id: %1").arg(entityId), event, this);
         else if(!component)
             ErrorDataSender::errorOut(QString("Cannot set not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
-        else
+        else {
+            if(component->getValue().isValid() && component->getValue().type() != cData->newValue().type())
+                qWarning("QVariant type change detected on entity %i / component %s: Old %s / new %s",
+                         entityId, qPrintable(componentName),
+                         qPrintable(component->getValue().typeName()), qPrintable(cData->newValue().typeName()));
             m_privHash->changeComponentValue(component, cData->newValue());
+        }
         break;
     case ComponentData::Command::CCMD_FETCH:
         if(!entity)
