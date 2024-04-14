@@ -231,7 +231,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
                     else
                         toInsert = QJsonValue::fromVariant(tmpData);
                 }
-                if(toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
+                if(!tmpData.isNull() && toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
                     qWarning() << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
                 tmpEntityObject.insert(tmpComponentName, toInsert);
             }
