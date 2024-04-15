@@ -13,7 +13,6 @@ static const char *entitiesComponentName =             "Entities";
 static const char *sessionComponentName =              "Session";
 static const char *sessionsAvailableComponentName =    "SessionsAvailable";
 static const char *notificationMessagesComponentName = "Error_Messages";
-static const char *loggedComponentsComponentName =     "LoggedComponents";
 static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
 
@@ -77,8 +76,6 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         handleNotificationMessage(cData->newValue().toJsonObject());
                         t_event->accept();
                     }
-                    else if(cData->componentName() == loggedComponentsComponentName)
-                        validated = true;
                     else if(cData->componentName() == modulesPausedComponentName) {
                         validated = true;
                         setModulesPaused(cData->newValue().toBool());
@@ -176,7 +173,6 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(sessionComponentName, QVariant(m_currentSession));
         componentData.insert(sessionsAvailableComponentName, QVariant(m_availableSessions));
         componentData.insert(notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
-        componentData.insert(loggedComponentsComponentName, QVariantMap());
         componentData.insert(modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
 
