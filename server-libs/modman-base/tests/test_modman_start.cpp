@@ -30,7 +30,6 @@ void test_modman_start::emptyModman()
     QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once SystemModuleEventSystem::initializeEntity is called
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "ModulesPaused"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Error_Messages"));
-    QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "LoggedComponents"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "DevMode"));
 
     QCOMPARE(vfTestServer.getComponentChangeList().size(), 0);

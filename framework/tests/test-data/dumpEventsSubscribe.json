@@ -58,7 +58,6 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
-                    "LoggedComponents",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -82,7 +81,6 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
-                    "LoggedComponents",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -106,7 +104,6 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
-                    "LoggedComponents",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -130,7 +127,6 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
-                    "LoggedComponents",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
