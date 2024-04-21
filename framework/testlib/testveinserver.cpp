@@ -33,11 +33,23 @@ void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
     m_vfEventHandler.addSubsystem(system);
 }
 
+void TestVeinServer::addTestEntities(int entityCount, int componentCount, const int baseEntityId, int baseComponentNum)
+{
+    for(int entityId = baseEntityId; entityId<baseEntityId+entityCount; entityId++) {
+        QString entityName = QString("EntityName%1").arg(entityId);
+        addEntity(entityId, entityName);
+        for(int component=baseComponentNum; component<baseComponentNum+componentCount; component++) {
+            QString componentName = QString("ComponentName%1").arg(component);
+            addComponent(entityId, componentName, QVariant(), false);
+        }
+    }
+}
+
 void TestVeinServer::addEntity(int entityId, QString entityName)
 {
-    if(m_entities.find(entityId) != m_entities.end()) {
+    if(m_entities.find(entityId) != m_entities.end())
         qFatal("Entity ID %i already inserted!", entityId);
-    }
+
     m_entities[entityId] = std::make_unique<VfCpp::VfCppEntity>(entityId);
     m_vfEventHandler.addSubsystem(m_entities[entityId].get());
     m_entities[entityId]->initModule();
@@ -60,6 +72,28 @@ void TestVeinServer::setComponent(int entityId, QString componentName, QVariant 
     QEvent* event = VfClientComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
     sendEvent(event);
     TimeMachineObject::feedEventLoop();
+}
+
+void TestVeinServer::removeEntitiesAdded()
+{
+    for(const auto &entity : m_entities) {
+        entity.second->prepareRemove();
+        m_vfEventHandler.removeSubsystem(entity.second.get());
+    }
+    m_entities.clear();
+    TimeMachineObject::feedEventLoop();
+}
+
+QMap<int, QList<QString>> TestVeinServer::getTestEntityComponentInfo()
+{
+    QMap<int, QList<QString>> info;
+    for(const auto &entity : m_entities) {
+        int entityId = entity.first;
+        QMap<QString, VfCpp::VfCppComponent::Ptr> componentList = entity.second->getComponents();
+        QStringList componentNames = componentList.keys();
+        info[entityId] = componentNames;
+    }
+    return info;
 }
 
 void TestVeinServer::sendEvent(QEvent *event)

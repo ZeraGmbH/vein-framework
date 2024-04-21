@@ -15,20 +15,26 @@ class TestVeinServer
 {
 public:
     explicit TestVeinServer();
+
     void prependEventSystem(VeinEvent::EventSystem *system);
     void appendEventSystem(VeinEvent::EventSystem *system);
+    void simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList);
+
+    void addTestEntities(int entityCount=2, int componentCount=2, const int baseEntityId = 10, int baseComponentNum = 1);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
     void setComponent(int entityId, QString componentName, QVariant newValue);
-    void sendEvent(QEvent *event);
+    void removeEntitiesAdded();
+    QMap<int, QList<QString>> getTestEntityComponentInfo();
+
     VeinEvent::StorageSystem* getStorage();
     VeinEvent::EventHandler* getEventHandler();
+    void sendEvent(QEvent *event);
 
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
 
-    void simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList);
 
     void resetLists();
 private:
