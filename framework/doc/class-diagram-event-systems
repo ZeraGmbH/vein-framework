@@ -2,10 +2,21 @@
 
 class EventHandler {
     QList<EventSystem*> subsystems
-    #void customEvent(QEvent *t_event) override
-    void addSubsystem(EventSystem* t_subsystem)
+    void addSubsystem(EventSystem* subsystem)
+    void prependSubsystem(VeinEvent::EventSystem* subsystem)
+    void removeSubsystem(VeinEvent::EventSystem* subsystem)
     void clearSubsystems()
+    #void customEvent(QEvent *event) override
 }
+
+class ModuleEventHandler {
+    QList<VeinEvent::EventSystem *> moduleSystems
+    void addModuleSystem(VeinEvent::EventSystem *eventSystem)
+    void clearModuleSystems()
+}
+note top
+    Modules' event systems are processed first
+end note
 
 abstract class EventSystem {
     signal void sigSendEvent(QEvent *event)
@@ -33,6 +44,7 @@ class SystemModuleEventSystem {
     void setModulesPaused(bool t_paused)
 }
 
+EventHandler <|-- ModuleEventHandler
 EventHandler o-- "0..*" EventSystem : forwards events to >
 
 
