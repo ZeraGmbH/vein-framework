@@ -55,6 +55,11 @@ void EventHandler::prependSubsystem(EventSystem *subsystem)
     emit subsystemsChanged(m_subsystems);
 }
 
+void EventHandler::removeSubsystem(EventSystem *subsystem)
+{
+    m_subsystems.removeAll(subsystem);
+}
+
 void EventHandler::clearSubsystems()
 {
     if(m_subsystems.isEmpty() == false) {

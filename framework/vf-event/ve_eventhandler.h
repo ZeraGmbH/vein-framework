@@ -13,7 +13,6 @@ class EventSystem;
 /**
    * @brief A simple event handler for QEvent based types, operates with VeinEvent::EventSystem
    * @note if you want to capture events, eg. for replay, please note that the QEvent::type (see http://doc.qt.io/qt-5/qevent.html#type) of most events is not initialized in a deterministic manner
-   * @todo maybe implement specialized groups of systems with the strategy pattern, or in a hash table with QEvent::type() as key
    */
 class VFEVENT_EXPORT EventHandler : public QObject
 {
@@ -24,13 +23,11 @@ public:
     ~EventHandler();
     QList<EventSystem*> subsystems() const;
 public slots:
-    /**
-     * @brief Sets up the list of EventSystem
-     * @warning the EventHandler is not responsible for deleting subsystems
-     */
+    // EventHandler is not owner and therefore not responsible for deleting subsystems
     void setSubsystems(QList<EventSystem*> subsystems);
     void addSubsystem(VeinEvent::EventSystem* subsystem);
     void prependSubsystem(VeinEvent::EventSystem* subsystem);
+    void removeSubsystem(VeinEvent::EventSystem* subsystem);
     void clearSubsystems();
 signals:
     void subsystemsChanged(QList<EventSystem*> subsystems);
