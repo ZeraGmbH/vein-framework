@@ -12,12 +12,17 @@ class VfCppEntity : public VeinEvent::EventSystem
     Q_OBJECT
 public:
     VfCppEntity(int entityId);
+
     VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false);
+    void prepareRemove();
     bool hasComponent(const QString name);
+    QMap<QString,VfCppComponent::Ptr> getComponents() const;
+
     // Notes
     // * parameter: the expected parameters key: name / value: metatype: e.g "int"
     // * There is no reason to use the rpc handler object
     cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true);
+
     void initModule();
 signals:
     void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value);

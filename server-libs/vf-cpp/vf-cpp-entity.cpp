@@ -14,6 +14,11 @@ bool VfCppEntity::hasComponent(const QString name)
     return m_componentList.contains(name);
 }
 
+QMap<QString, VfCppComponent::Ptr> VfCppEntity::getComponents() const
+{
+    return m_componentList;
+}
+
 VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval, bool readOnly)
 {
     if(!hasComponent(name)) {
@@ -27,6 +32,17 @@ VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval,
     }
     else
         qFatal("VfCppEntity::createComponent: A component %s already exists", qPrintable(name));
+}
+
+void VfCppEntity::prepareRemove()
+{
+    m_componentList.clear();
+
+    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
+    eData->setCommand(VeinComponent::EntityData::Command::ECMD_REMOVE);
+    eData->setEntityId(m_entityId);
+    VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
+    emit sigSendEvent(tmpEvent);
 }
 
 
