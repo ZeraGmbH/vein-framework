@@ -50,7 +50,7 @@ void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
     m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyBottom);
 }
 
-void TestVeinServer::addTestEntities(int entityCount, int componentCount, const int baseEntityId, int baseComponentNum)
+void TestVeinServer::addTestEntities(int entityCount, int componentCount, int baseEntityId, int baseComponentNum)
 {
     for(int entityId = baseEntityId; entityId<baseEntityId+entityCount; entityId++) {
         QString entityName = QString("EntityName%1").arg(entityId);
@@ -160,7 +160,22 @@ QList<VfTestComponentSpy::TComponentInfo> TestVeinServer::getComponentChangeList
 
 void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList)
 {
+    m_sessionList = sessionList;
     m_systemModuleSystem.initializeEntity(sessionPath, sessionList);
+    TimeMachineObject::feedEventLoop();
+}
+
+void TestVeinServer::changeSession(const QString &sessionPath, int baseEntityId)
+{
+    if(!m_sessionList.contains(sessionPath))
+        qFatal("Session %s is not available", qPrintable(sessionPath));
+    QEvent *event = VfClientComponentSetter::generateEvent(0, "Session", QVariant(), sessionPath);
+    emit m_systemModuleSystem.sigSendEvent(event);
+    connect(&m_systemModuleSystem, &SystemModuleEventSystem::sigChangeSession, this, [=](QString session) {
+        removeEntitiesAdded();
+        addTestEntities(2, 2, baseEntityId);
+        m_systemModuleSystem.initializeEntity(session, m_sessionList);;
+        });
     TimeMachineObject::feedEventLoop();
 }
 

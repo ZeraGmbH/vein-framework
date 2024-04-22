@@ -12,16 +12,18 @@
 #include <memory>
 #include <unordered_map>
 
-class TestVeinServer
+class TestVeinServer : public QObject
 {
+    Q_OBJECT
 public:
     explicit TestVeinServer();
 
     void prependEventSystem(VeinEvent::EventSystem *system);
     void appendEventSystem(VeinEvent::EventSystem *system);
     void simulAllModulesLoaded(const QString &sessionPath, const QStringList &sessionList);
+    void changeSession(const QString &sessionPath, int baseEntityId = 20);
 
-    void addTestEntities(int entityCount=2, int componentCount=2, const int baseEntityId = 10, int baseComponentNum = 1);
+    void addTestEntities(int entityCount=2, int componentCount=2, int baseEntityId = 10, int baseComponentNum = 1);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
     void setComponent(int entityId, QString componentName, QVariant newValue);
@@ -53,6 +55,7 @@ private:
     VeinStorage::VeinHash m_storageSystem;
 
     std::unordered_map<int, std::unique_ptr<VfCpp::VfCppEntity>> m_entities;
+    QStringList m_sessionList;
 };
 
 #endif // TESTVEINSERVER_H

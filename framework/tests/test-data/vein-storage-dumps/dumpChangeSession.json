@@ -1,0 +1,28 @@
+{
+    "0": {
+        "DevMode": false,
+        "Entities": [
+            0,
+            20,
+            21
+        ],
+        "EntityName": "_System",
+        "Error_Messages": null,
+        "ModulesPaused": false,
+        "Session": "test_session2.json",
+        "SessionsAvailable": [
+            "test_session1.json",
+            "test_session2.json"
+        ]
+    },
+    "20": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName20"
+    },
+    "21": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName21"
+    }
+}
