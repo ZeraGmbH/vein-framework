@@ -14,6 +14,7 @@ private slots:
 
     void unfinishedSession();
     void completeSession();
+    void changeSession();
 private:
     std::unique_ptr<TestVeinServer> m_server;
 };
