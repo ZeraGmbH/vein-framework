@@ -1,0 +1,22 @@
+{
+    "0": {
+        "DevMode": false,
+        "Entities": null,
+        "EntityName": "_System",
+        "Error_Messages": null,
+        "ModulesPaused": false,
+        "Session": "",
+        "SessionsAvailable": [
+        ]
+    },
+    "10": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName10"
+    },
+    "11": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName11"
+    }
+}
