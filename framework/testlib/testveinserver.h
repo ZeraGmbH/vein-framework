@@ -34,9 +34,7 @@ public:
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
-
-
-    void resetLists();
+    void resetSpyLists();
 private:
     VeinEvent::EventHandler m_vfEventHandler;
     VfTestEntitySpy m_vfEntityAddSpy;
