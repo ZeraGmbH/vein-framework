@@ -21,7 +21,7 @@ void test_storage::systemEntityOnly()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageInitial.json");
+    QFile file(":/vein-storage-dumps/dumpStorageInitial.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -45,7 +45,7 @@ void test_storage::addEntity()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageEntityAdded.json");
+    QFile file(":/vein-storage-dumps/dumpStorageEntityAdded.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -65,7 +65,7 @@ void test_storage::addEntityAndComponent()
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageEntityComponentAdd.json");
+    QFile file(":/vein-storage-dumps/dumpStorageEntityComponentAdd.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -93,7 +93,7 @@ void test_storage::addRemoveEntity()
     TimeMachineObject::feedEventLoop();
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageEntityAddRemove.json");
+    QFile file(":/vein-storage-dumps/dumpStorageEntityAddRemove.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -122,7 +122,7 @@ void test_storage::addRemoveComponent()
     TimeMachineObject::feedEventLoop();
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageComponentAddRemove.json");
+    QFile file(":/vein-storage-dumps/dumpStorageComponentAddRemove.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();
@@ -152,7 +152,7 @@ void test_storage::setComponent()
     TimeMachineObject::feedEventLoop();
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
-    QFile file(":/dumpStorageComponentSet.json");
+    QFile file(":/vein-storage-dumps/dumpStorageComponentSet.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
     QByteArray jsonExpected = file.readAll();

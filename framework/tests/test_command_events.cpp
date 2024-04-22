@@ -21,7 +21,7 @@ void test_command_events::clientSubscribeEntity()
 
     subscribeClient(systemEntityId);
 
-    QFile file(":/dumpEventsSubscribe.json");
+    QFile file(":/vein-event-dumps/dumpEventsSubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -35,7 +35,7 @@ void test_command_events::clientSubscribeNonExistingEntity()
 
     subscribeClient(42);
 
-    QFile file(":/dumpEventsSubscribeNonExistent.json");
+    QFile file(":/vein-event-dumps/dumpEventsSubscribeNonExistent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -60,7 +60,7 @@ void test_command_events::clientSubscribeUnsubscribeEntity()
     // * NetworkSystemPrivate::processCmdEvents accepts unsubscribe event so we see no events from server
     // * Unsunscribe is a fire and forget so testing unsubscribe on invalid or not sunscribed is a
     //   mission impossible
-    QFile file(":/dumpEventsUnsubscribe.json");
+    QFile file(":/vein-event-dumps/dumpEventsUnsubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -80,7 +80,7 @@ void test_command_events::clientFetchComponent()
     TimeMachineObject::feedEventLoop();
     QCOMPARE(*value, "_System");
 
-    QFile file(":/dumpEventsFetch.json");
+    QFile file(":/vein-event-dumps/dumpEventsFetch.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -99,7 +99,7 @@ void test_command_events::clientFetchNonExistingComponent()
     fetcherTask->start();
     TimeMachineObject::feedEventLoop();
 
-    QFile file1(":/dumpEventsFetchNonExistentComponent.json");
+    QFile file1(":/vein-event-dumps/dumpEventsFetchNonExistentComponent.json");
     QVERIFY(file1.open(QFile::ReadOnly));
     QByteArray jsonExpected1 = file1.readAll();
     QByteArray jsonDumped1 = TestDumpReporter::dump(jsonEvents);
@@ -117,7 +117,7 @@ void test_command_events::clientSetSytemEnttityComponent()
     setterTask->start();
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsSet.json");
+    QFile file(":/vein-event-dumps/dumpEventsSet.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -135,7 +135,7 @@ void test_command_events::clientSetNonExistingComponent()
     setterTask->start();
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsSetNonExistent.json");
+    QFile file(":/vein-event-dumps/dumpEventsSetNonExistent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -147,7 +147,7 @@ void test_command_events::clientSetNonExistingComponent()
     // Unexpected result: Server just ignores. So check if component was
     // accidentally created in server...
     VeinEvent::StorageSystem* storage = m_netServer->getStorage();
-    QFile file2(":/dumpStorageInitial.json");
+    QFile file2(":/vein-storage-dumps/dumpStorageInitial.json");
     QVERIFY(file2.open(QFile::ReadOnly));
 
     QByteArray jsonExpected2 = file2.readAll();
@@ -172,7 +172,7 @@ void test_command_events::serverAddEntityAndComponent()
     server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsAddEntityComponent.json");
+    QFile file(":/vein-event-dumps/dumpEventsAddEntityComponent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -193,7 +193,7 @@ void test_command_events::serverAddComponentWithSubscribedClient()
     server->addComponent(testEntityId, "secondComponentName", "secondComponentInitialValue", false);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsAddComponentClientSubscribed.json");
+    QFile file(":/vein-event-dumps/dumpEventsAddComponentClientSubscribed.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -216,7 +216,7 @@ void test_command_events::serverAddComponentForNomExistentEntity()
     m_netServer->getServer()->sendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsAddComponentNonExistingEntity.json");
+    QFile file(":/vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -243,7 +243,7 @@ void test_command_events::serverRemoveComponent()
     server->sendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsRemoveComponent.json");
+    QFile file(":/vein-event-dumps/dumpEventsRemoveComponent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -265,7 +265,7 @@ void test_command_events::serverRemoveNonExistingComponent()
     m_netServer->getServer()->sendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsRemoveNonExistingComponent.json");
+    QFile file(":/vein-event-dumps/dumpEventsRemoveNonExistingComponent.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
@@ -288,7 +288,7 @@ void test_command_events::serverRemoveComponentForNomExistentEntity()
     m_netServer->getServer()->sendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    QFile file(":/dumpEventsRemoveComponentNonExistingEntity.json");
+    QFile file(":/vein-event-dumps/dumpEventsRemoveComponentNonExistingEntity.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestDumpReporter::dump(jsonEvents);
