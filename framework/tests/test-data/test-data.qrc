@@ -1,26 +1,26 @@
 <RCC>
     <qresource prefix="/">
-        <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
-        <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
+        <file>vein-event-dumps/dumpEventsAddComponentClientSubscribed.json</file>
+        <file>vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json</file>
+        <file>vein-event-dumps/dumpEventsAddEntityComponent.json</file>
+        <file>vein-event-dumps/dumpEventsFetch.json</file>
+        <file>vein-event-dumps/dumpEventsFetchNonExistentComponent.json</file>
+        <file>vein-event-dumps/dumpEventsRemoveComponent.json</file>
+        <file>vein-event-dumps/dumpEventsRemoveComponentNonExistingEntity.json</file>
+        <file>vein-event-dumps/dumpEventsRemoveNonExistingComponent.json</file>
+        <file>vein-event-dumps/dumpEventsSet.json</file>
+        <file>vein-event-dumps/dumpEventsSetNonExistent.json</file>
+        <file>vein-event-dumps/dumpEventsSubscribe.json</file>
+        <file>vein-event-dumps/dumpEventsUnsubscribe.json</file>
+        <file>vein-event-dumps/dumpEventsSubscribeNonExistent.json</file>
 
-        <file>dumpEventsAddComponentClientSubscribed.json</file>
-        <file>dumpEventsAddComponentNonExistingEntity.json</file>
-        <file>dumpEventsAddEntityComponent.json</file>
-        <file>dumpEventsFetch.json</file>
-        <file>dumpEventsFetchNonExistentComponent.json</file>
-        <file>dumpEventsRemoveComponent.json</file>
-        <file>dumpEventsRemoveComponentNonExistingEntity.json</file>
-        <file>dumpEventsRemoveNonExistingComponent.json</file>
-        <file>dumpEventsSet.json</file>
-        <file>dumpEventsSetNonExistent.json</file>
-        <file>dumpEventsSubscribe.json</file>
-        <file>dumpEventsUnsubscribe.json</file>
-        <file>dumpStorageComponentAddRemove.json</file>
-        <file>dumpEventsSubscribeNonExistent.json</file>
-        <file>dumpStorageEntityAdded.json</file>
-        <file>dumpStorageEntityAddRemove.json</file>
-        <file>dumpStorageComponentSet.json</file>
-        <file>dumpStorageEntityComponentAdd.json</file>
-        <file>dumpStorageInitial.json</file>
+        <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
+        <file>vein-storage-dumps/dumpStorageComponentAddRemove.json</file>
+        <file>vein-storage-dumps/dumpStorageComponentSet.json</file>
+        <file>vein-storage-dumps/dumpStorageEntityAdded.json</file>
+        <file>vein-storage-dumps/dumpStorageEntityAddRemove.json</file>
+        <file>vein-storage-dumps/dumpStorageEntityComponentAdd.json</file>
+        <file>vein-storage-dumps/dumpStorageInitial.json</file>
+        <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
     </qresource>
 </RCC>
