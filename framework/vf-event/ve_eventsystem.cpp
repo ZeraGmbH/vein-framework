@@ -8,22 +8,31 @@ Q_LOGGING_CATEGORY(VEIN_SCRIPTEVENT, VEIN_DEBUGNAME_SCRIPT)
 
 namespace VeinEvent
 {
-EventSystem::EventSystem(QObject *t_parent) :
-    QObject(t_parent)
+EventSystem::EventSystem(QObject *parent) :
+    QObject(parent)
 {
 }
 
-void EventSystem::attach(EventHandler *t_eventHandler)
+void EventSystem::attach(EventHandler *eventHandler)
 {
-    Q_ASSERT(t_eventHandler != nullptr);
-    VF_ASSERT(m_attached == false, "EventSystem already attached");
+    Q_ASSERT(eventHandler != nullptr);
+    VF_ASSERT(!m_eventHandler, "EventSystem already attached");
 
-    QObject::connect(this,&VeinEvent::EventSystem::sigSendEvent,[=](QEvent *ev)
-    {
-        /// @todo add multithreaded event sending support
-        QCoreApplication::instance()->postEvent(t_eventHandler, ev);
-    });
-    m_attached = true;
+    connect(this, &VeinEvent::EventSystem::sigSendEvent,
+            this, &VeinEvent::EventSystem::onSendEvent);
+    m_eventHandler = eventHandler;
     emit sigAttached();
+}
+
+void EventSystem::detach()
+{
+    disconnect(this, &VeinEvent::EventSystem::sigSendEvent,
+               this, &VeinEvent::EventSystem::onSendEvent);
+    m_eventHandler = nullptr;
+}
+
+void EventSystem::onSendEvent(QEvent *event)
+{
+    QCoreApplication::instance()->postEvent(m_eventHandler, event);
 }
 }

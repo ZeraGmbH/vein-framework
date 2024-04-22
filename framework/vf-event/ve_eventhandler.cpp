@@ -57,6 +57,7 @@ void EventHandler::prependSubsystem(EventSystem *subsystem)
 
 void EventHandler::removeSubsystem(EventSystem *subsystem)
 {
+    subsystem->detach();
     m_subsystems.removeAll(subsystem);
 }
 
