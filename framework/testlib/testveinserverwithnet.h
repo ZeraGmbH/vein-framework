@@ -9,7 +9,6 @@ class TestVeinServerWithNet
 {
 public:
     TestVeinServerWithNet(int serverPort, QList<VeinEvent::EventSystem*> aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
-    VeinEvent::EventHandler* getEventHandler();
     TestVeinServer* getServer();
     VeinEvent::StorageSystem* getStorage();
     int getSubscriberCount(int entityId);

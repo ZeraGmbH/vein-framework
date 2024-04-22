@@ -11,11 +11,6 @@ TestVeinServerWithNet::TestVeinServerWithNet(int serverPort, QList<VeinEvent::Ev
     TimeMachineObject::feedEventLoop();
 }
 
-VeinEvent::EventHandler *TestVeinServerWithNet::getEventHandler()
-{
-    return m_server.getEventHandler();
-}
-
 TestVeinServer *TestVeinServerWithNet::getServer()
 {
     return &m_server;
