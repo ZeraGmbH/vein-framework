@@ -1,6 +1,8 @@
 #include "testveinserver.h"
 #include "vf_client_component_setter.h"
+#include "modulemanagersetupfacade.h"
 #include <timemachineobject.h>
+#include <QBuffer>
 
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
@@ -11,6 +13,8 @@ TestVeinServer::TestVeinServer() :
     m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET)
 
 {
+    ModuleManagerSetupFacade::registerMetaTypeStreamOperators();
+
     m_systemModuleSystem.setStorage(&m_storageSystem);
 
     m_vfEventHandler.addSubsystem(&m_vfEntityAddSpy);
@@ -54,6 +58,7 @@ void TestVeinServer::addEntity(int entityId, QString entityName)
     m_vfEventHandler.addSubsystem(m_entities[entityId].get());
     m_entities[entityId]->initModule();
     m_entities[entityId]->createComponent("EntityName", entityName, true);
+    TimeMachineObject::feedEventLoop();
 }
 
 void TestVeinServer::addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly)
@@ -61,6 +66,7 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     if(m_entities.find(entityId) == m_entities.end())
         qFatal("Entity with ID %i was not added by addEntity!", entityId);
     m_entities[entityId]->createComponent(componentName, initialValue, readOnly);
+    TimeMachineObject::feedEventLoop();
 }
 
 void TestVeinServer::setComponent(int entityId, QString componentName, QVariant newValue)
@@ -104,6 +110,14 @@ void TestVeinServer::sendEvent(QEvent *event)
 VeinEvent::StorageSystem *TestVeinServer::getStorage()
 {
     return &m_storageSystem;
+}
+
+QByteArray TestVeinServer::dumpStorage(QList<int> entities)
+{
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    m_storageSystem.dumpToFile(&buff, entities);
+    return jsonDumped;
 }
 
 VeinEvent::EventHandler *TestVeinServer::getEventHandler()

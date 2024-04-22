@@ -28,6 +28,7 @@ public:
     QMap<int, QList<QString>> getTestEntityComponentInfo();
 
     VeinEvent::StorageSystem* getStorage();
+    QByteArray dumpStorage(QList<int> entities);
     VeinEvent::EventHandler* getEventHandler();
     void sendEvent(QEvent *event);
 

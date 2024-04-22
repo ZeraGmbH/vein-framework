@@ -1,5 +1,8 @@
 <RCC>
     <qresource prefix="/">
+        <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
+        <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
+
         <file>dumpEventsAddComponentClientSubscribed.json</file>
         <file>dumpEventsAddComponentNonExistingEntity.json</file>
         <file>dumpEventsAddEntityComponent.json</file>
