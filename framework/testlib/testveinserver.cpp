@@ -132,7 +132,7 @@ void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QSt
     TimeMachineObject::feedEventLoop();
 }
 
-void TestVeinServer::resetLists()
+void TestVeinServer::resetSpyLists()
 {
     m_vfEntityAddSpy.reset();
     m_vfComponentAddSpy.reset();
