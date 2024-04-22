@@ -108,7 +108,7 @@ void test_modman_start::modmanPlusOneEntityModulesLoaded()
     vfTestServer.addComponent(entityId, "Foo", "FooVal", false);
     TimeMachineObject::feedEventLoop();
 
-    vfTestServer.resetSpyLists();
+    vfTestServer.resetEventSpyData();
     vfTestServer.simulAllModulesLoaded(QString("fooSession"), QStringList() << "fooSession" << "barSession");
 
     QCOMPARE(vfTestServer.getEntityAddList().size(), 0);

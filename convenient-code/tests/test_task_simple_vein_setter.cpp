@@ -31,7 +31,7 @@ void test_task_simple_vein_setter::setValid()
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getServer()->appendEventSystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
@@ -77,7 +77,7 @@ void test_task_simple_vein_setter::setInvalid()
     TimeMachineObject::feedEventLoop();
 
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getServer()->appendEventSystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

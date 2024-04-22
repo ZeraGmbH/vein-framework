@@ -2,6 +2,7 @@
 #define TESTVEINSERVER_H
 
 #include "systemmoduleeventsystem.h"
+#include "testjsonspyeventsystem.h"
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
 #include "vn_introspectionsystem.h"
@@ -27,20 +28,26 @@ public:
     void removeEntitiesAdded();
     QMap<int, QList<QString>> getTestEntityComponentInfo();
 
+    VeinEvent::EventHandler* getEventHandler();
     VeinEvent::StorageSystem* getStorage();
     QByteArray dumpStorage(QList<int> entities);
-    VeinEvent::EventHandler* getEventHandler();
+    QByteArray dumpEvents();
     void sendEvent(QEvent *event);
 
     QList<int> getEntityAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
-    void resetSpyLists();
+    void resetEventSpyData();
 private:
     VeinEvent::EventHandler m_vfEventHandler;
+
     VfTestEntitySpy m_vfEntityAddSpy;
     VfTestComponentSpy m_vfComponentAddSpy;
     VfTestComponentSpy m_vfComponentChangeSpy;
+    QJsonObject m_JsonEventLog;
+    TestJsonSpyEventSystem m_serverCmdEventSpyTop;
+    TestJsonSpyEventSystem m_serverCmdEventSpyBottom;
+
     SystemModuleEventSystem m_systemModuleSystem;
     VeinNet::IntrospectionSystem m_introspectionSystem;
     VeinStorage::VeinHash m_storageSystem;

@@ -1,6 +1,7 @@
 #include "testveinserver.h"
 #include "vf_client_component_setter.h"
 #include "modulemanagersetupfacade.h"
+#include "testdumpreporter.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 
@@ -10,19 +11,25 @@ using VeinComponent::ComponentData;
 TestVeinServer::TestVeinServer() :
     m_vfEntityAddSpy(EntityData::Command::ECMD_ADD),
     m_vfComponentAddSpy(ComponentData::Command::CCMD_ADD),
-    m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET)
+    m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET),
+    m_serverCmdEventSpyTop(&m_JsonEventLog, "server-enter"),
+    m_serverCmdEventSpyBottom(&m_JsonEventLog, "server-fallthrough")
 
 {
     ModuleManagerSetupFacade::registerMetaTypeStreamOperators();
 
     m_systemModuleSystem.setStorage(&m_storageSystem);
 
+    m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyTop);
     m_vfEventHandler.addSubsystem(&m_vfEntityAddSpy);
     m_vfEventHandler.addSubsystem(&m_vfComponentAddSpy);
     m_vfEventHandler.addSubsystem(&m_vfComponentChangeSpy);
     m_vfEventHandler.addSubsystem(&m_systemModuleSystem);
     m_vfEventHandler.addSubsystem(&m_introspectionSystem);
     m_vfEventHandler.addSubsystem(&m_storageSystem);
+    m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyBottom);
+    QObject::connect(&m_vfEventHandler, &VeinEvent::EventHandler::sigEventAccepted,
+                     &m_serverCmdEventSpyBottom, &TestJsonSpyEventSystem::onEventAccepted);
 
     m_systemModuleSystem.initOnce();
 }
@@ -30,11 +37,17 @@ TestVeinServer::TestVeinServer() :
 void TestVeinServer::prependEventSystem(VeinEvent::EventSystem *system)
 {
     m_vfEventHandler.prependSubsystem(system);
+    // Ensure topmost
+    m_vfEventHandler.removeSubsystem(&m_serverCmdEventSpyTop);
+    m_vfEventHandler.prependSubsystem(&m_serverCmdEventSpyTop);
 }
 
 void TestVeinServer::appendEventSystem(VeinEvent::EventSystem *system)
 {
     m_vfEventHandler.addSubsystem(system);
+    // Ensure bottommost
+    m_vfEventHandler.removeSubsystem(&m_serverCmdEventSpyBottom);
+    m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyBottom);
 }
 
 void TestVeinServer::addTestEntities(int entityCount, int componentCount, const int baseEntityId, int baseComponentNum)
@@ -55,7 +68,7 @@ void TestVeinServer::addEntity(int entityId, QString entityName)
         qFatal("Entity ID %i already inserted!", entityId);
 
     m_entities[entityId] = std::make_unique<VfCpp::VfCppEntity>(entityId);
-    m_vfEventHandler.addSubsystem(m_entities[entityId].get());
+    appendEventSystem(m_entities[entityId].get());
     m_entities[entityId]->initModule();
     m_entities[entityId]->createComponent("EntityName", entityName, true);
     TimeMachineObject::feedEventLoop();
@@ -102,6 +115,11 @@ QMap<int, QList<QString>> TestVeinServer::getTestEntityComponentInfo()
     return info;
 }
 
+VeinEvent::EventHandler *TestVeinServer::getEventHandler()
+{
+    return &m_vfEventHandler;
+}
+
 void TestVeinServer::sendEvent(QEvent *event)
 {
     emit m_storageSystem.sigSendEvent(event);
@@ -120,9 +138,9 @@ QByteArray TestVeinServer::dumpStorage(QList<int> entities)
     return jsonDumped;
 }
 
-VeinEvent::EventHandler *TestVeinServer::getEventHandler()
+QByteArray TestVeinServer::dumpEvents()
 {
-    return &m_vfEventHandler;
+    return TestDumpReporter::dump(m_JsonEventLog);
 }
 
 QList<int> TestVeinServer::getEntityAddList() const
@@ -146,9 +164,10 @@ void TestVeinServer::simulAllModulesLoaded(const QString &sessionPath, const QSt
     TimeMachineObject::feedEventLoop();
 }
 
-void TestVeinServer::resetSpyLists()
+void TestVeinServer::resetEventSpyData()
 {
     m_vfEntityAddSpy.reset();
     m_vfComponentAddSpy.reset();
     m_vfComponentChangeSpy.reset();
+    m_JsonEventLog = QJsonObject();
 }

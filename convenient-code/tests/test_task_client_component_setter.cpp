@@ -28,7 +28,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
     
     TestVeinServerWithNet serverNet(serverPort);
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
-    serverNet.getEventHandler()->addSubsystem(&serverAdditionalEntity);
+    serverNet.getServer()->appendEventSystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();

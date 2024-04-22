@@ -1,0 +1,120 @@
+{
+    "VeinEvents": [
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "Entities",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "Entities",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "Session",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "test_session1.json",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "Session",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "test_session1.json",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "SessionsAvailable",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": [
+                "test_session1.json",
+                "test_session2.json"
+            ],
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "SessionsAvailable",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": [
+                "test_session1.json",
+                "test_session2.json"
+            ],
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "DevMode",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": false,
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "DevMode",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": false,
+            "ValueOld": "invalid"
+        }
+    ]
+}
