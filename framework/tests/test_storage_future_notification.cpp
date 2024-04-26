@@ -3,6 +3,7 @@
 #include "vs_veinhash.h"
 #include "vf_server_component_setter.cpp"
 #include <timemachineobject.h>
+#include <QSignalSpy>
 #include <QTest>
 
 QTEST_MAIN(test_storage_future_notification)
@@ -104,4 +105,25 @@ void test_storage_future_notification::getFutureComponentAlreadyStored()
 
     VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, "ComponentName1");
     QCOMPARE(futureComponent, component);
+}
+
+void test_storage_future_notification::checkChangeSignals()
+{
+    TestVeinServer server;
+    TimeMachineObject::feedEventLoop();
+
+    VeinEvent::StorageSystem* storage = server.getStorage();
+    VeinEvent::StorageComponentInterfacePtr component = storage->getFutureComponent(testEntityId, "ComponentName1");
+    QSignalSpy spy(component.get(), &StorageComponentInterface::sigValueChange);
+
+    // addTestEntities sets QVariant() so addEntity + addComponent
+    server.addEntity(testEntityId, "TestEntityName");
+    QCOMPARE(spy.count(), 0);
+
+    server.addComponent(testEntityId, "ComponentName1", 42, false);
+    QCOMPARE(spy.count(), 1);
+
+    emit storage->sigSendEvent( VfServerComponentSetter::generateEvent(testEntityId, "ComponentName1", QVariant(), 37) );
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spy.count(), 2);
 }
