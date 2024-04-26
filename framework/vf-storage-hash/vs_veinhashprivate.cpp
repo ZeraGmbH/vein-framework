@@ -48,7 +48,7 @@ void VeinHashPrivate::insertComponentValue(EntityMap *entityChecked, const QStri
 void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value)
 {
     Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
-    component->m_value = value;
+    component->setValue(value);
     m_entityComponentData[entityId][componentName] = component;
 }
 

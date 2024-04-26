@@ -12,6 +12,7 @@ private slots:
     void getComponentsAddedLaterIdentity();
     void getComponentAddedLaterIdentity();
     void getFutureComponentAlreadyStored();
+    void checkChangeSignals();
 };
 
 #endif // TEST_STORAGE_FUTURE_NOTIFICATION_H
