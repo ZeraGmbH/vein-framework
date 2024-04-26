@@ -9,7 +9,7 @@ class test_storage_future_notification : public QObject
 private slots:
     void getComponentOnEmptyHash();
     void getComponentAddedLater();
-    void getComponentsAddedLaterIdentity();
+    void getComponentsAddedLater();
     void getComponentAddedLaterIdentity();
     void getFutureComponentAlreadyStored();
     void checkChangeSignals();
