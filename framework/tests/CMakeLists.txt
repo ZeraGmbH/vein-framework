@@ -20,8 +20,3 @@ target_sources(test_test_vein_server
   PRIVATE
     test-data/test-data.qrc
 )
-
-target_sources(test_storage_future_notification
-  PRIVATE
-    test-data/test-data.qrc
-)
