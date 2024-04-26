@@ -65,14 +65,18 @@ void VeinHash::processComponentData(QEvent *event)
 
     switch(cData->eventCommand())
     {
-    case ComponentData::Command::CCMD_ADD:
-        if(!entity)
+    case ComponentData::Command::CCMD_ADD: {
+        StorageComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
+        if(futureComponent)
+            m_privHash->insertFutureComponent(entityId, componentName, futureComponent, cData->newValue());
+        else if(!entity)
             ErrorDataSender::errorOut(QString("Cannot add component for invalid entity id: %1").arg(entityId), event, this);
         else if(component)
             ErrorDataSender::errorOut(QString("Value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
             m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;
+    }
     case ComponentData::Command::CCMD_REMOVE:
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), event, this);
@@ -180,6 +184,11 @@ StorageComponentInterfacePtr VeinHash::getComponent(int entityId, const QString 
     return component;
 }
 
+StorageComponentInterfacePtr VeinHash::getFutureComponent(int entityId, const QString &componentName)
+{
+    return m_privHash->getFutureComponent(entityId, componentName);
+}
+
 void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
@@ -249,6 +258,11 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
 
     if(outputFileDevice->isOpen())
         outputFileDevice->close();
+}
+
+bool VeinHash::areFutureComponentsEmpty()
+{
+    return m_privHash->areFutureComponentsEmpty();
 }
 
 }
