@@ -39,7 +39,7 @@ void test_storage_future_notification::getComponentAddedLater()
     QVERIFY(storage->areFutureComponentsEmpty());
 }
 
-void test_storage_future_notification::getComponentsAddedLaterIdentity()
+void test_storage_future_notification::getComponentsAddedLater()
 {
     TestVeinServer server;
     TimeMachineObject::feedEventLoop();
