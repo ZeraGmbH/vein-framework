@@ -1,6 +1,6 @@
 #include "test_storage.h"
 #include "testveinserverwithnet.h"
-#include "testdumpreporter.h"
+#include "testloghelpers.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QBuffer>
@@ -28,7 +28,7 @@ void test_storage::systemEntityOnly()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 static constexpr int testEntityId = 37;
@@ -52,7 +52,7 @@ void test_storage::addEntity()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_storage::addEntityAndComponent()
@@ -72,7 +72,7 @@ void test_storage::addEntityAndComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_storage::addRemoveEntity()
@@ -100,7 +100,7 @@ void test_storage::addRemoveEntity()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_storage::addRemoveComponent()
@@ -129,7 +129,7 @@ void test_storage::addRemoveComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_storage::setComponent()
@@ -159,5 +159,5 @@ void test_storage::setComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     storage->dumpToFile(&buff, QList<int>());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
