@@ -45,6 +45,11 @@ void VfCppComponent::setValueFromVein(QVariant value)
     }
 }
 
+void VfCppComponent::changeComponentReadWriteType(bool readWrite)
+{
+    m_readOnly = readWrite;
+}
+
 void VfCppComponent::sendNotification(VeinComponent::ComponentData::Command vcmd)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();

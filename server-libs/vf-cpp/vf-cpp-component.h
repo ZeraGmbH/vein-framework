@@ -20,6 +20,8 @@ public:
 
     void setValue(QVariant value); // spawn vein event
     void setValueFromVein(QVariant value); // just for VfCppEntity...
+    void changeComponentReadWriteType(bool readWrite);
+
 signals:
     void sigValueChanged(QVariant);
 
