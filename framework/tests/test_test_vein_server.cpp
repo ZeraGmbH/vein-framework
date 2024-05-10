@@ -1,5 +1,5 @@
 #include "test_test_vein_server.h"
-#include "testdumpreporter.h"
+#include "testloghelpers.h"
 #include <timemachineobject.h>
 #include <QTest>
 
@@ -25,13 +25,13 @@ void test_test_vein_server::unfinishedSession()
     QVERIFY(fileEvents.open(QFile::ReadOnly));
     QByteArray jsonExpected = fileEvents.readAll();
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 
     QFile fileStorage(":/vein-storage-dumps/dumpUnfinishedSession.json");
     QVERIFY(fileStorage.open(QFile::ReadOnly));
     jsonExpected = fileStorage.readAll();
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_test_vein_server::completeSession()
@@ -44,13 +44,13 @@ void test_test_vein_server::completeSession()
     QVERIFY(fileEvents.open(QFile::ReadOnly));
     QByteArray jsonExpected = fileEvents.readAll();
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 
     QFile fileStorage(":/vein-storage-dumps/dumpCompleteSessionSession.json");
     QVERIFY(fileStorage.open(QFile::ReadOnly));
     jsonExpected = fileStorage.readAll();
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_test_vein_server::changeSession()
@@ -65,11 +65,11 @@ void test_test_vein_server::changeSession()
     QVERIFY(fileEvents.open(QFile::ReadOnly));
     QByteArray jsonExpected = fileEvents.readAll();
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 
     QFile fileStorage(":/vein-storage-dumps/dumpChangeSession.json");
     QVERIFY(fileStorage.open(QFile::ReadOnly));
     jsonExpected = fileStorage.readAll();
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestDumpReporter::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }

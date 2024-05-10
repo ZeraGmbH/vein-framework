@@ -1,7 +1,7 @@
 #include "testveinserver.h"
 #include "vf_client_component_setter.h"
 #include "modulemanagersetupfacade.h"
-#include "testdumpreporter.h"
+#include "testloghelpers.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 
@@ -140,7 +140,7 @@ QByteArray TestVeinServer::dumpStorage(QList<int> entities)
 
 QByteArray TestVeinServer::dumpEvents()
 {
-    return TestDumpReporter::dump(m_JsonEventLog);
+    return TestLogHelpers::dump(m_JsonEventLog);
 }
 
 QList<int> TestVeinServer::getEntityAddList() const

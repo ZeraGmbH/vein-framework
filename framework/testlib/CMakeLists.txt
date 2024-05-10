@@ -17,6 +17,7 @@ target_link_libraries(VfFrameworkTest
     VfEvent
     VfTcp
     VfConvenientCode
+    Zera::testlib-common
     veinserver-testlib
     )
 
