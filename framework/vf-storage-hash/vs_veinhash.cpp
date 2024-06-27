@@ -6,6 +6,7 @@
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
+#include <QDateTime>
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -95,7 +96,8 @@ void VeinHash::processComponentData(QEvent *event)
                 qWarning("QVariant type change detected on entity %i / component %s: Old %s / new %s",
                          entityId, qPrintable(componentName),
                          qPrintable(component->getValue().typeName()), qPrintable(cData->newValue().typeName()));
-            m_privHash->changeComponentValue(component, cData->newValue());
+            QDateTime now = QDateTime::currentDateTime();
+            m_privHash->changeComponentValue(component, cData->newValue(), now.toString("dd-MM-yyyy hh:mm:ss"));
         }
         break;
     case ComponentData::Command::CCMD_FETCH:
