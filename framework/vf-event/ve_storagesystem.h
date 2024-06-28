@@ -16,7 +16,7 @@ signals:
     void sigValueChange(QVariant newValue);
 public:
     virtual QVariant getValue() const = 0;
-    virtual QString getTime() const = 0;
+    virtual QString getTimestamp() const = 0;
 };
 
 typedef std::shared_ptr<StorageComponentInterface> StorageComponentInterfacePtr;

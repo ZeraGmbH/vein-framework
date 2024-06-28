@@ -15,9 +15,9 @@ QVariant StorageComponent::getValue() const
     return m_value;
 }
 
-QString StorageComponent::getTime() const
+QString StorageComponent::getTimestamp() const
 {
-    return m_time;
+    return m_timestamp;
 }
 
 void StorageComponent::setValue(QVariant value)
@@ -28,9 +28,9 @@ void StorageComponent::setValue(QVariant value)
     }
 }
 
-void StorageComponent::setTime(QString time)
+void StorageComponent::setTimestamp(QString timestamp)
 {
-    m_time = time;
+    m_timestamp = timestamp;
 }
 
 VeinHashPrivate::VeinHashPrivate()
@@ -62,9 +62,9 @@ void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName,
     m_entityComponentData[entityId][componentName] = component;
 }
 
-void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value, QString time)
+void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value, QString timestamp)
 {
-    componentChecked->setTime(time);
+    componentChecked->setTimestamp(timestamp);
     componentChecked->setValue(value);
 }
 
