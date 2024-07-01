@@ -98,7 +98,7 @@ void VeinHash::processComponentData(QEvent *event)
                          entityId, qPrintable(componentName),
                          qPrintable(component->getValue().typeName()), qPrintable(cData->newValue().typeName()));
             QDateTime now = TimerFactoryQt::getCurrentTime();
-            m_privHash->changeComponentValue(component, cData->newValue(), now.toString("dd-MM-yyyy hh:mm:ss"));
+            m_privHash->changeComponentValue(component, cData->newValue(), now);
         }
         break;
     case ComponentData::Command::CCMD_FETCH:
