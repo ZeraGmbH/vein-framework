@@ -1,3 +1,5 @@
+#include <QDateTime>
+#include <timerfactoryqt.h>
 #include "vs_veinhashprivate.h"
 
 using namespace VeinEvent;
@@ -62,9 +64,10 @@ void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName,
     m_entityComponentData[entityId][componentName] = component;
 }
 
-void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value, QDateTime timestamp)
+void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
 {
-    componentChecked->setTimestamp(timestamp);
+    QDateTime now = TimerFactoryQt::getCurrentTime();
+    componentChecked->setTimestamp(now);
     componentChecked->setValue(value);
 }
 
