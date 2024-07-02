@@ -3,11 +3,9 @@
 #include <vcmp_entitydata.h>
 #include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>
-#include <timerfactoryqt.h>
 #include <QJsonDocument>
 #include <QJsonObject>
 #include <QJsonArray>
-#include <QDateTime>
 
 using namespace VeinEvent;
 using namespace VeinComponent;
@@ -97,8 +95,7 @@ void VeinHash::processComponentData(QEvent *event)
                 qWarning("QVariant type change detected on entity %i / component %s: Old %s / new %s",
                          entityId, qPrintable(componentName),
                          qPrintable(component->getValue().typeName()), qPrintable(cData->newValue().typeName()));
-            QDateTime now = TimerFactoryQt::getCurrentTime();
-            m_privHash->changeComponentValue(component, cData->newValue(), now);
+            m_privHash->changeComponentValue(component, cData->newValue());
         }
         break;
     case ComponentData::Command::CCMD_FETCH:
