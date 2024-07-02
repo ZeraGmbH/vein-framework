@@ -34,7 +34,7 @@ public:
     StorageComponentPtr getFutureComponent(int entityId, const QString &componentName);
     void insertComponentValue(EntityMap* entityChecked, const QString &componentName, QVariant value);
     void insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value);
-    void changeComponentValue(StorageComponentPtr componentChecked, QVariant value, QDateTime timestamp);
+    void changeComponentValue(StorageComponentPtr componentChecked, QVariant value);
     void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
     void insertEntity(const int entityId);
     void removeEntity(const int entityId);
