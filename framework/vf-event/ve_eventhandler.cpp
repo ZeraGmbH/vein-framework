@@ -72,13 +72,11 @@ void EventHandler::clearSubsystems()
 void EventHandler::customEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
-    for(int i=0; i < m_subsystems.count(); ++i) {
+    for(int i=0; i < m_subsystems.count() && event->isAccepted()==false; ++i) {
         EventSystem* eventSystem = m_subsystems.at(i);
         eventSystem->processEvent(event);
-        if(event->isAccepted()) {
+        if(event->isAccepted())
             emit sigEventAccepted(eventSystem, event);
-            break;
-        }
     }
 }
 
