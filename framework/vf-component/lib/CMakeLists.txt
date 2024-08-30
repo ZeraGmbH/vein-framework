@@ -23,6 +23,7 @@ target_link_libraries(VfComponent
     Qt5::Core
     VfHelpers
     VfEvent
+    validators
     )
 
 set_target_properties(VfComponent PROPERTIES VERSION ${PROJECT_VERSION})

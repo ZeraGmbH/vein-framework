@@ -75,6 +75,33 @@ void ComponentData::setOldValue(const QVariant &t_oldValue)
         m_oldValue=t_oldValue;
 }
 
+void ComponentData::setSCPIInfo(cSCPIInfo *scpiinfo)
+{
+    m_scpiinfo = scpiinfo;
+}
+
+void ComponentData::exportSCPIInfo(QJsonArray &jsArr)
+{
+    if (m_scpiinfo)
+        m_scpiinfo->appendSCPIInfo(jsArr);
+}
+
+void ComponentData::exportMetaData(QJsonObject &jsonObj)
+{
+    if (m_pValidator != nullptr) {
+        QJsonObject jsonObj2;
+        m_pValidator->exportMetaData(jsonObj2);
+        jsonObj.insert("Validation", jsonObj2);
+    }
+}
+
+void ComponentData::setValidator(ValidatorInterface *validator)
+{
+    if(m_pValidator)
+        delete m_pValidator;
+    m_pValidator = validator;
+}
+
 bool ComponentData::isValid() const
 {
     bool retVal = false;
