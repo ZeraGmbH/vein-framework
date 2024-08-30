@@ -97,8 +97,6 @@ void ComponentData::exportMetaData(QJsonObject &jsonObj)
 
 void ComponentData::setValidator(ValidatorInterface *validator)
 {
-    if(m_pValidator)
-        delete m_pValidator;
     m_pValidator = validator;
 }
 

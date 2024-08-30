@@ -58,6 +58,7 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
+                    "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -81,6 +82,7 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
+                    "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -104,6 +106,7 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
+                    "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"
@@ -127,6 +130,7 @@
                     "Entities",
                     "EntityName",
                     "Error_Messages",
+                    "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
                     "SessionsAvailable"

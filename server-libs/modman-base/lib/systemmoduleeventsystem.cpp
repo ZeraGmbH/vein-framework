@@ -1,7 +1,7 @@
 #include "systemmoduleeventsystem.h"
+#include "stringvalidator.h"
 #include <ve_eventdata.h>
 #include <ve_commandevent.h>
-#include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
 #include <QJsonArray>
@@ -15,6 +15,7 @@ static const char *sessionsAvailableComponentName =    "SessionsAvailable";
 static const char *notificationMessagesComponentName = "Error_Messages";
 static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
+static const char *moduleInterface =                   "INF_ModuleInterface";
 
 SystemModuleEventSystem::SystemModuleEventSystem(QObject *t_parent, bool devMode) :
     VeinEvent::EventSystem(t_parent),
@@ -117,7 +118,6 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
         emit sigSendEvent(initEvent);
         initEvent=nullptr;
 
-
         initData = new VeinComponent::ComponentData();
         initData->setEntityId(getEntityId());
         initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
@@ -150,6 +150,17 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
         initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
         initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
         emit sigSendEvent(initEvent);
+
+        initData = new VeinComponent::ComponentData();
+        initData->setEntityId(getEntityId());
+        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
+        initData->setComponentName(moduleInterface);
+        initData->setNewValue(QVariant(setModuleInterface()));
+        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
+        emit sigSendEvent(initEvent);
+        initEvent=nullptr;
     }
     else
     {
@@ -175,15 +186,32 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
         componentData.insert(modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
+        componentData.insert(moduleInterface, QVariant());
 
         VeinComponent::ComponentData *initialData=nullptr;
+        for(const QString &compName : componentData.keys())
+        {
+            if(compName == sessionComponentName) {
+                initialData = new VeinComponent::ComponentData();
+                cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
+                initialData->setSCPIInfo(scpiInfo);
+                cStringValidator *sValidator = new cStringValidator(m_availableSessions);
+                initialData->setValidator(sValidator);
+                m_veinSystemParameterMap[sessionComponentName] = initialData;
+            }
+        }
         for(const QString &compName : componentData.keys())
         {
             initialData = new VeinComponent::ComponentData();
             initialData->setEntityId(getEntityId());
             initialData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
             initialData->setComponentName(compName);
-            initialData->setNewValue(componentData.value(compName));
+            if(compName == moduleInterface) {
+                QVariant doc = QVariant(setModuleInterface());
+                initialData->setNewValue(doc);
+            }
+            else
+                initialData->setNewValue(componentData.value(compName));
             initialData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
             initialData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
             emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initialData));
@@ -220,5 +248,53 @@ void SystemModuleEventSystem::handleNotificationMessage(QJsonObject t_message)
 
     emDataEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, notificationMessagesData);
     emit sigSendEvent(emDataEvent);
+}
+
+QByteArray SystemModuleEventSystem::setModuleInterface()
+{
+    QJsonObject jsonObject;
+    QJsonObject jsonObj2;
+    QJsonObject jsonObj3;
+
+    //------------------------ "Module Info"
+    jsonObj2.insert("Description", "This module gives general information about the device");
+    jsonObj2.insert("Name", entityName);
+    jsonObject.insert("ModuleInfo", jsonObj2);
+
+    //------------------------ "ComponentInfo"
+    jsonObj2 = QJsonObject();
+    jsonObj2.insert("Description", "Module's interface details");
+    jsonObj3.insert(moduleInterface, jsonObj2);
+
+    jsonObj2 = QJsonObject();
+    jsonObj2.insert("Desciption", "Module's name");
+    jsonObj3.insert(entityNameComponentName, jsonObj2);
+
+    jsonObj2 = QJsonObject();
+    jsonObj2.insert("Description", "Session name");
+
+    QList<QString> keyList;
+    keyList = m_veinSystemParameterMap.keys();
+    for (int i = 0; i < keyList.count(); i++)
+        m_veinSystemParameterMap[keyList.at(i)]->exportMetaData(jsonObj2);
+
+    jsonObj3.insert(sessionComponentName, jsonObj2);
+    jsonObject.insert("ComponentInfo", jsonObj3);
+
+    //------------------------ "SCPIInfo"
+    QJsonArray jsonArr;
+    for (int i = 0; i < keyList.count(); i++) {
+        m_veinSystemParameterMap[keyList.at(i)]->exportSCPIInfo(jsonArr);
+    }
+    jsonObj2 = QJsonObject();
+    jsonObj2.insert("Name", "SYST");
+    jsonObj2.insert("Cmd", jsonArr);
+    jsonObject.insert("SCPIInfo", jsonObj2);
+
+    QJsonDocument jsonDoc;
+    jsonDoc.setObject(jsonObject);
+    QByteArray ba;
+    ba = jsonDoc.toJson();
+    return ba;
 }
 

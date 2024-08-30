@@ -3,6 +3,7 @@
 
 #include <ve_eventsystem.h>
 #include <ve_storagesystem.h>
+#include <vcmp_componentdata.h>
 #include <QJsonDocument>
 
 class SystemModuleEventSystem : public VeinEvent::EventSystem
@@ -30,11 +31,13 @@ private:
    * @param t_message
    */
     void handleNotificationMessage(QJsonObject t_message);
+    QByteArray setModuleInterface();
 
     VeinEvent::StorageSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
     QString m_currentSession;
     QStringList m_availableSessions;
+    QMap<QString, VeinComponent::ComponentData*> m_veinSystemParameterMap;
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
