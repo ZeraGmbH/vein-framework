@@ -4,6 +4,7 @@
 #include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
+#include <zera-jsonfileloader.h>
 #include <QJsonArray>
 #include <QDateTime>
 
@@ -66,9 +67,12 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         cData->entityId() == getEntityId()) {
                     // validate set event for _System.Session
                     if(cData->componentName() == sessionComponentName) {
-                        m_currentSession = cData->newValue().toString();
+                        if(cData->newValue().toString().endsWith(".json"))
+                            m_currentSession = cData->newValue().toString();
+                        else
+                            m_currentSession = fromSessionNameToJsonName(cData->newValue().toString());
                         if(m_sessionReady == true) {
-                            emit sigChangeSession(cData->newValue().toString());
+                            emit sigChangeSession(m_currentSession);
                             m_sessionReady = false;
                         }
                         t_event->accept();
@@ -91,6 +95,11 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
             cEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL); // inform all users (may or may not result in network messages)
         }
     }
+}
+
+void SystemModuleEventSystem::setConfigFileName(QString configFileName)
+{
+    m_configFileName = configFileName;
 }
 
 void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
@@ -296,5 +305,23 @@ QByteArray SystemModuleEventSystem::setModuleInterface()
     QByteArray ba;
     ba = jsonDoc.toJson();
     return ba;
+}
+
+QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
+{
+    QString jsonSessionName = "";
+    QString device;
+    if(m_availableSessions[0].contains("mt310s2"))
+        device = "mt310s2";
+    else if(m_availableSessions[0].contains("com5003"))
+        device = "com5003";
+    QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
+    QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
+    QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
+    for(int i = 0; i < sessionDisplayStrings.count(); i++) {
+        if(sessionName == sessionDisplayStrings[i].toString())
+            jsonSessionName =availableSessions[i].toString();
+    }
+    return jsonSessionName;
 }
 
