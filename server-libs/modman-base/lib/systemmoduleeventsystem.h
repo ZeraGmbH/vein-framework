@@ -15,6 +15,7 @@ public:
     VeinEvent::StorageSystem *getStorageSystem() const;
     void setStorage(VeinEvent::StorageSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
+    void setConfigFileName(QString configFileName);
 signals:
     void sigChangeSession(const QString &t_newSession);
     void sigModulesPausedChanged(bool t_paused);
@@ -32,11 +33,13 @@ private:
    */
     void handleNotificationMessage(QJsonObject t_message);
     QByteArray setModuleInterface();
+    QString fromSessionNameToJsonName(QString sessionName);
 
     VeinEvent::StorageSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
     QString m_currentSession;
     QStringList m_availableSessions;
+    QString m_configFileName;
     QMap<QString, VeinComponent::ComponentData*> m_veinSystemParameterMap;
     bool m_initDone=false;
     bool m_sessionReady=false;
