@@ -34,6 +34,7 @@ private:
     void handleNotificationMessage(QJsonObject t_message);
     QByteArray setModuleInterface();
     QString fromSessionNameToJsonName(QString sessionName);
+    QString fromJsonNameToSessionName(QString jsonName);
 
     VeinEvent::StorageSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;

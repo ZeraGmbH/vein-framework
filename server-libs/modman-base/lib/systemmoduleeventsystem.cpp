@@ -61,8 +61,18 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
                 Q_ASSERT(cData != nullptr);
                 // validate fetch requests
-                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) /// @todo maybe add roles/views later
+                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) { /// @todo maybe add roles/views later
                     validated = true;
+                    VeinComponent::ComponentData *compoData = new VeinComponent::ComponentData();
+                    compoData->setEntityId(getEntityId());
+                    compoData->setComponentName(cData->componentName());
+                    if(compoData->componentName() == sessionComponentName) {
+                        QString value = fromJsonNameToSessionName(cData->oldValue().toString());
+                        compoData->setNewValue(value);
+                        VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, compoData);
+                        emit sigSendEvent(event);
+                    }
+                }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
                     // validate set event for _System.Session
@@ -323,5 +333,24 @@ QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
             jsonSessionName =availableSessions[i].toString();
     }
     return jsonSessionName;
+}
+
+QString SystemModuleEventSystem::fromJsonNameToSessionName(QString jsonName)
+{
+    QString sessionName = "";
+    QString device;
+    if(jsonName.contains("mt310s2"))
+        device = "mt310s2";
+    else if(jsonName.contains("com5003"))
+        device = "com5003";
+    QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
+    QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
+    QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
+    for(int i = 0; i < availableSessions.count(); i++) {
+        if(jsonName == availableSessions[i].toString())
+            sessionName =sessionDisplayStrings[i].toString();
+    }
+    return sessionName;
+
 }
 
