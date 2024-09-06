@@ -112,6 +112,16 @@ void SystemModuleEventSystem::setConfigFileName(QString configFileName)
     m_configFileName = configFileName;
 }
 
+void SystemModuleEventSystem::setAvailableSessionList(QStringList availableSessionList)
+{
+    QStringList setter;
+    for(int i = 0; i < availableSessionList.count(); i++) {
+        QString sessionName = fromJsonNameToSessionName(availableSessionList[i]);
+        setter.append(sessionName);
+    }
+    m_availableSessionsDisplayed = setter;
+}
+
 void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
 {
     if(m_storageSystem!=nullptr)
@@ -214,7 +224,7 @@ void SystemModuleEventSystem::initOnce()
                 initialData = new VeinComponent::ComponentData();
                 cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
                 initialData->setSCPIInfo(scpiInfo);
-                cStringValidator *sValidator = new cStringValidator(m_availableSessions);
+                cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
                 initialData->setValidator(sValidator);
                 m_veinSystemParameterMap[sessionComponentName] = initialData;
             }
