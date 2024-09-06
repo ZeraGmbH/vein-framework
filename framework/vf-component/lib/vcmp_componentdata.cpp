@@ -28,6 +28,13 @@ ComponentData::ComponentData(const ComponentData &t_other) :
     setEntityId(t_other.entityId());
 }
 
+ComponentData::~ComponentData()
+{
+    if(m_scpiinfo)
+        m_scpiinfo = nullptr;
+    delete m_scpiinfo;
+}
+
 ComponentData::Command ComponentData::eventCommand() const
 {
     return m_command;

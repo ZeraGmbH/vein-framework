@@ -24,6 +24,7 @@ public:
     explicit ComponentData();
     explicit ComponentData(int t_entityId, Command t_cDataCommand=Command::CCMD_SET); // !! see setCommand implementation
     ComponentData(const ComponentData &t_other);
+    ~ComponentData();
     static constexpr int dataType() { return VCMP_COMPONENTDATA_DATATYPE; }
 
     Command eventCommand() const;
