@@ -77,15 +77,19 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         cData->entityId() == getEntityId()) {
                     // validate set event for _System.Session
                     if(cData->componentName() == sessionComponentName) {
+                        QString newSession;
                         if(cData->newValue().toString().endsWith(".json"))
-                            m_currentSession = cData->newValue().toString();
+                            newSession = cData->newValue().toString();
                         else
-                            m_currentSession = fromSessionNameToJsonName(cData->newValue().toString());
-                        if(m_sessionReady == true) {
-                            emit sigChangeSession(m_currentSession);
-                            m_sessionReady = false;
+                            newSession = fromSessionNameToJsonName(cData->newValue().toString());
+                        if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
+                            if(m_sessionReady == true) {
+                                m_currentSession = newSession;
+                                emit sigChangeSession(m_currentSession);
+                                m_sessionReady = false;
+                            }
+                            t_event->accept();
                         }
-                        t_event->accept();
                     }
                     else if(cData->componentName() == notificationMessagesComponentName) {
                         handleNotificationMessage(cData->newValue().toJsonObject());
