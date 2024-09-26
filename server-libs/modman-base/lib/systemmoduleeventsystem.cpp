@@ -85,6 +85,18 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
                             if(m_sessionReady == true) {
                                 m_currentSession = newSession;
+
+                                VeinComponent::ComponentData *sessionComponent = new VeinComponent::ComponentData();
+                                sessionComponent->setEntityId(getEntityId());
+                                sessionComponent->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
+                                sessionComponent->setComponentName(sessionComponentName);
+                                sessionComponent->setNewValue(QVariant("No Session"));
+                                sessionComponent->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+                                sessionComponent->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+                                VeinEvent::CommandEvent *sessionComponentEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, sessionComponent);
+                                emit sigSendEvent(sessionComponentEvent);
+                                qInfo("System Entity changing session to No Session.");
+
                                 emit sigChangeSession(m_currentSession);
                                 m_sessionReady = false;
                             }
