@@ -76,7 +76,13 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
                             if(m_sessionReady == true) {
                                 m_currentSession = newSession;
+                                emit sigSendEvent(VfServerComponentSetter::generateEvent(
+                                    getEntityId(),
+                                    sessionComponentName,
+                                    QVariant(),
+                                    QVariant("no session")) );
                                 emit sigChangeSession(m_currentSession);
+
                                 m_sessionReady = false;
                             }
                             t_event->accept();
