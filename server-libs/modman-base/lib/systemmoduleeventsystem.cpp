@@ -4,6 +4,7 @@
 #include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
+#include <vf_server_component_setter.h>
 #include <zera-jsonfileloader.h>
 #include <QJsonArray>
 #include <QDateTime>
@@ -121,77 +122,42 @@ void SystemModuleEventSystem::setAvailableSessionList(QStringList availableSessi
 
 void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const QStringList &sessionList)
 {
-    if(m_storageSystem!=nullptr)
-    {
-        m_sessionReady=true;
-        m_currentSession=sessionPath;
-        m_availableSessions=sessionList;
+    if(m_storageSystem) {
+        m_sessionReady = true;
+        m_currentSession = sessionPath;
+        m_availableSessions = sessionList;
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
+            entitiesComponentName,
+            QVariant(),
+            QVariant::fromValue<QList<int> >(m_storageSystem->getEntityList())));
 
-        VeinComponent::ComponentData *initData=nullptr;
-        VeinEvent::CommandEvent *initEvent = nullptr;
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
+            sessionComponentName,
+            QVariant(),
+            m_currentSession) );
 
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
+            sessionsAvailableComponentName,
+            QVariant(),
+            m_availableSessions) );
 
-        initData = new VeinComponent::ComponentData();
-        initData->setEntityId(getEntityId());
-        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(entitiesComponentName);
-        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        qDebug() << "ENTITIES" << m_storageSystem->getEntityList() << QVariant::fromValue<QList<int> >(m_storageSystem->getEntityList()).value<QList<int> >();
-        initData->setNewValue(QVariant::fromValue<QList<int> >(m_storageSystem->getEntityList()));
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
+            devModeComponentName,
+            QVariant(),
+            m_devMode) );
 
-        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
-        emit sigSendEvent(initEvent);
-        initEvent=nullptr;
-
-        initData = new VeinComponent::ComponentData();
-        initData->setEntityId(getEntityId());
-        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(sessionComponentName);
-        initData->setNewValue(QVariant(m_currentSession));
-        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
-        emit sigSendEvent(initEvent);
-        initEvent=nullptr;
-
-
-        initData = new VeinComponent::ComponentData();
-        initData->setEntityId(getEntityId());
-        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(sessionsAvailableComponentName);
-        initData->setNewValue(QVariant(m_availableSessions));
-        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
-        emit sigSendEvent(initEvent);
-
-
-        initData = new VeinComponent::ComponentData();
-        initData->setEntityId(getEntityId());
-        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(devModeComponentName);
-        initData->setNewValue(QVariant(m_devMode));
-        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
-        emit sigSendEvent(initEvent);
-
-        initData = new VeinComponent::ComponentData();
-        initData->setEntityId(getEntityId());
-        initData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-        initData->setComponentName(moduleInterface);
-        initData->setNewValue(QVariant(setModuleInterface()));
-        initData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        initData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        initEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initData);
-        emit sigSendEvent(initEvent);
-        initEvent=nullptr;
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
+            moduleInterface,
+            QVariant(),
+            setModuleInterface()) );
     }
     else
-    {
         qCritical() << "[SystemModuleEventSystem] StorageSystem required to call initializeEntities";
-    }
 }
 
 void SystemModuleEventSystem::initOnce()

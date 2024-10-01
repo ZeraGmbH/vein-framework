@@ -19,6 +19,7 @@ target_link_libraries(ModmanBase
     VfCryptoBridge
     VfNet2
     VfStorageHash
+    VfConvenientCode
     )
 
 set_target_properties(ModmanBase PROPERTIES VERSION ${PROJECT_VERSION})
