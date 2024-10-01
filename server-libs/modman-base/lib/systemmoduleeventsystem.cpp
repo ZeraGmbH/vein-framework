@@ -181,7 +181,8 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(devModeComponentName, QVariant(false));
         componentData.insert(moduleInterface, QVariant());
 
-        for(const QString &compName : componentData.keys()) {
+        const auto componentNames = componentData.keys();
+        for(const QString &compName : componentNames) {
             VeinComponent::ComponentData *initialData = new VeinComponent::ComponentData();
             initialData->setEntityId(getEntityId());
             initialData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
