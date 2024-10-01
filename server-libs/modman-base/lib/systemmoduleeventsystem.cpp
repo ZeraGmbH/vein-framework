@@ -162,8 +162,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
 void SystemModuleEventSystem::initOnce()
 {
-    if(m_initDone == false)
-    {
+    if(m_initDone == false) {
         VeinComponent::EntityData *systemData = new VeinComponent::EntityData();
         systemData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
         systemData->setEntityId(getEntityId());
@@ -203,8 +202,7 @@ void SystemModuleEventSystem::initOnce()
 
 void SystemModuleEventSystem::setModulesPaused(bool t_paused)
 {
-    if(t_paused != m_modulesPaused)
-    {
+    if(t_paused != m_modulesPaused) {
         m_modulesPaused = t_paused;
         emit sigModulesPausedChanged(m_modulesPaused);
     }
@@ -291,7 +289,7 @@ QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < sessionDisplayStrings.count(); i++) {
         if(sessionName == sessionDisplayStrings[i].toString())
-            jsonSessionName =availableSessions[i].toString();
+            jsonSessionName = availableSessions[i].toString();
     }
     return jsonSessionName;
 }
@@ -309,10 +307,9 @@ QString SystemModuleEventSystem::fromJsonNameToSessionName(QString jsonName)
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < availableSessions.count(); i++) {
         if(jsonName == availableSessions[i].toString())
-            sessionName =sessionDisplayStrings[i].toString();
+            sessionName = sessionDisplayStrings[i].toString();
     }
     return sessionName;
-
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData)
