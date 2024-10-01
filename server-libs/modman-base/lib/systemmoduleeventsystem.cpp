@@ -276,14 +276,19 @@ QByteArray SystemModuleEventSystem::setModuleInterface()
     return ba;
 }
 
+QString SystemModuleEventSystem::deduceDeviceName(const QString &sessionString)
+{
+    if(sessionString.contains("mt310s2"))
+        return "mt310s2";
+    else if(sessionString.contains("com5003"))
+        return "com5003";
+    return "unknown";
+}
+
 QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
 {
     QString jsonSessionName = "";
-    QString device;
-    if(m_availableSessions[0].contains("mt310s2"))
-        device = "mt310s2";
-    else if(m_availableSessions[0].contains("com5003"))
-        device = "com5003";
+    QString device = deduceDeviceName(m_availableSessions[0]);
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
@@ -297,11 +302,7 @@ QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
 QString SystemModuleEventSystem::fromJsonNameToSessionName(QString jsonName)
 {
     QString sessionName = "";
-    QString device;
-    if(jsonName.contains("mt310s2"))
-        device = "mt310s2";
-    else if(jsonName.contains("com5003"))
-        device = "com5003";
+    QString device = deduceDeviceName(jsonName);
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
