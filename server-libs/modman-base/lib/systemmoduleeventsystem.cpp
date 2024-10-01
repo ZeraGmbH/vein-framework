@@ -63,15 +63,8 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 // validate fetch requests
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) {
                     validated = true;
-                    if(cData->entityId() == getEntityId() && cData->componentName() == sessionComponentName) {
-                        VeinComponent::ComponentData *compoData = new VeinComponent::ComponentData();
-                        compoData->setEntityId(getEntityId());
-                        compoData->setComponentName(cData->componentName());
-                        QString value = fromJsonNameToSessionName(cData->oldValue().toString());
-                        compoData->setNewValue(value);
-                        VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, compoData);
-                        emit sigSendEvent(event);
-                    }
+                    if(cData->entityId() == getEntityId() && cData->componentName() == sessionComponentName)
+                        sendSessionNotificationForScpiModule(cData);
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
@@ -368,3 +361,13 @@ QString SystemModuleEventSystem::fromJsonNameToSessionName(QString jsonName)
 
 }
 
+void SystemModuleEventSystem::sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData)
+{
+    VeinComponent::ComponentData *componentData = new VeinComponent::ComponentData();
+    componentData->setEntityId(getEntityId());
+    componentData->setComponentName(cData->componentName());
+    QString value = fromJsonNameToSessionName(cData->oldValue().toString());
+    componentData->setNewValue(value);
+    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, componentData);
+    emit sigSendEvent(event);
+}
