@@ -61,12 +61,12 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
                 Q_ASSERT(cData != nullptr);
                 // validate fetch requests
-                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) { /// @todo maybe add roles/views later
+                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) {
                     validated = true;
-                    VeinComponent::ComponentData *compoData = new VeinComponent::ComponentData();
-                    compoData->setEntityId(getEntityId());
-                    compoData->setComponentName(cData->componentName());
-                    if(compoData->componentName() == sessionComponentName) {
+                    if(cData->entityId() == getEntityId() && cData->componentName() == sessionComponentName) {
+                        VeinComponent::ComponentData *compoData = new VeinComponent::ComponentData();
+                        compoData->setEntityId(getEntityId());
+                        compoData->setComponentName(cData->componentName());
                         QString value = fromJsonNameToSessionName(cData->oldValue().toString());
                         compoData->setNewValue(value);
                         VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, compoData);
