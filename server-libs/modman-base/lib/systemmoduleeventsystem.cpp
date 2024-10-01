@@ -288,7 +288,7 @@ QString SystemModuleEventSystem::deduceDeviceName(const QString &sessionString)
 QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
 {
     QString jsonSessionName = "";
-    QString device = deduceDeviceName(m_availableSessions[0]);
+    QString device = deduceDeviceName(m_availableSessions[0]); // ??? Really what about COM5003 ???
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
