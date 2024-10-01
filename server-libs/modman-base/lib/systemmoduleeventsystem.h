@@ -36,6 +36,7 @@ private:
     QByteArray setModuleInterface();
     QString fromSessionNameToJsonName(QString sessionName);
     QString fromJsonNameToSessionName(QString jsonName);
+    void sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData);
 
     VeinEvent::StorageSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
