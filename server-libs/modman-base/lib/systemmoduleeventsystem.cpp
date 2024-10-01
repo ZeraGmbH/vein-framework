@@ -169,6 +169,7 @@ void SystemModuleEventSystem::initOnce()
         systemData->setEntityId(getEntityId());
 
         emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, systemData));
+        setScpiInfo();
 
         QHash<QString, QVariant> componentData;
         componentData.insert(entityNameComponentName, entityName);
@@ -180,21 +181,8 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(devModeComponentName, QVariant(false));
         componentData.insert(moduleInterface, QVariant());
 
-        VeinComponent::ComponentData *initialData=nullptr;
-        for(const QString &compName : componentData.keys())
-        {
-            if(compName == sessionComponentName) {
-                initialData = new VeinComponent::ComponentData();
-                cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
-                initialData->setSCPIInfo(scpiInfo);
-                cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
-                initialData->setValidator(sValidator);
-                m_veinSystemParameterMap[sessionComponentName] = initialData;
-            }
-        }
-        for(const QString &compName : componentData.keys())
-        {
-            initialData = new VeinComponent::ComponentData();
+        for(const QString &compName : componentData.keys()) {
+            VeinComponent::ComponentData *initialData = new VeinComponent::ComponentData();
             initialData->setEntityId(getEntityId());
             initialData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
             initialData->setComponentName(compName);
@@ -208,7 +196,6 @@ void SystemModuleEventSystem::initOnce()
             initialData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
             emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initialData));
         }
-
         m_initDone = true;
     }
 }
@@ -336,4 +323,15 @@ void SystemModuleEventSystem::sendSessionNotificationForScpiModule(VeinComponent
     componentData->setNewValue(value);
     VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, componentData);
     emit sigSendEvent(event);
+}
+
+void SystemModuleEventSystem::setScpiInfo()
+{
+    VeinComponent::ComponentData *initialData = nullptr;
+    initialData = new VeinComponent::ComponentData();
+    cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
+    initialData->setSCPIInfo(scpiInfo);
+    cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
+    initialData->setValidator(sValidator);
+    m_veinSystemParameterMap[sessionComponentName] = initialData;
 }
