@@ -75,7 +75,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         if(cData->newValue().toString().endsWith(".json"))
                             newSession = cData->newValue().toString();
                         else
-                            newSession = fromSessionNameToJsonName(cData->newValue().toString());
+                            newSession = getJsonSessionName(cData->newValue().toString());
                         if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
                             if(m_sessionReady == true) {
                                 m_currentSession = newSession;
@@ -114,7 +114,7 @@ void SystemModuleEventSystem::setAvailableSessionList(QStringList availableSessi
 {
     QStringList setter;
     for(int i = 0; i < availableSessionList.count(); i++) {
-        QString sessionName = fromJsonNameToSessionName(availableSessionList[i]);
+        QString sessionName = getDisplayedSessionName(availableSessionList[i]);
         setter.append(sessionName);
     }
     m_availableSessionsDisplayed = setter;
@@ -285,7 +285,7 @@ QString SystemModuleEventSystem::deduceDeviceName(const QString &sessionString)
     return "unknown";
 }
 
-QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
+QString SystemModuleEventSystem::getJsonSessionName(QString displayedDessionName)
 {
     QString jsonSessionName = "";
     QString device = deduceDeviceName(m_availableSessions[0]); // ??? Really what about COM5003 ???
@@ -293,21 +293,21 @@ QString SystemModuleEventSystem::fromSessionNameToJsonName(QString sessionName)
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < sessionDisplayStrings.count(); i++) {
-        if(sessionName == sessionDisplayStrings[i].toString())
+        if(displayedDessionName == sessionDisplayStrings[i].toString())
             jsonSessionName = availableSessions[i].toString();
     }
     return jsonSessionName;
 }
 
-QString SystemModuleEventSystem::fromJsonNameToSessionName(QString jsonName)
+QString SystemModuleEventSystem::getDisplayedSessionName(QString jsonSessionName)
 {
     QString sessionName = "";
-    QString device = deduceDeviceName(jsonName);
+    QString device = deduceDeviceName(jsonSessionName);
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < availableSessions.count(); i++) {
-        if(jsonName == availableSessions[i].toString())
+        if(jsonSessionName == availableSessions[i].toString())
             sessionName = sessionDisplayStrings[i].toString();
     }
     return sessionName;
@@ -318,7 +318,7 @@ void SystemModuleEventSystem::sendSessionNotificationForScpiModule(VeinComponent
     VeinComponent::ComponentData *componentData = new VeinComponent::ComponentData();
     componentData->setEntityId(getEntityId());
     componentData->setComponentName(cData->componentName());
-    QString value = fromJsonNameToSessionName(cData->oldValue().toString());
+    QString value = getDisplayedSessionName(cData->oldValue().toString());
     componentData->setNewValue(value);
     VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, componentData);
     emit sigSendEvent(event);
