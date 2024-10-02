@@ -30,11 +30,6 @@ constexpr int SystemModuleEventSystem::getEntityId()
     return 0;
 }
 
-VeinEvent::StorageSystem *SystemModuleEventSystem::getStorageSystem() const
-{
-    return m_storageSystem;
-}
-
 void SystemModuleEventSystem::setStorage(VeinEvent::StorageSystem *t_storageSystem)
 {
     m_storageSystem = t_storageSystem;

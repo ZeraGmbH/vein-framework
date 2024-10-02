@@ -12,7 +12,6 @@ class SystemModuleEventSystem : public VeinEvent::EventSystem
 public:
     explicit SystemModuleEventSystem(QObject *t_parent = nullptr, bool devMode = false);
     static constexpr int getEntityId();
-    VeinEvent::StorageSystem *getStorageSystem() const;
     void setStorage(VeinEvent::StorageSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
     void setConfigFileName(QString configFileName);
