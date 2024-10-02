@@ -285,7 +285,7 @@ QString SystemModuleEventSystem::deduceDeviceName(const QString &sessionString)
     return "unknown";
 }
 
-QString SystemModuleEventSystem::getJsonSessionName(QString displayedDessionName)
+QString SystemModuleEventSystem::getJsonSessionName(QString displayedSessionName)
 {
     QString jsonSessionName = "";
     QString device = deduceDeviceName(m_availableSessions[0]); // ??? Really what about COM5003 ???
@@ -293,7 +293,7 @@ QString SystemModuleEventSystem::getJsonSessionName(QString displayedDessionName
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < sessionDisplayStrings.count(); i++) {
-        if(displayedDessionName == sessionDisplayStrings[i].toString())
+        if(displayedSessionName == sessionDisplayStrings[i].toString())
             jsonSessionName = availableSessions[i].toString();
     }
     return jsonSessionName;

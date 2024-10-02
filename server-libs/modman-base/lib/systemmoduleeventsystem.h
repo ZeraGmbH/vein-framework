@@ -35,7 +35,7 @@ private:
     void handleNotificationMessage(QJsonObject t_message);
     QByteArray setModuleInterface();
     static QString deduceDeviceName(const QString& sessionString);
-    QString getJsonSessionName(QString displayedDessionName);
+    QString getJsonSessionName(QString displayedSessionName);
     QString getDisplayedSessionName(QString jsonSessionName);
     void sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData);
     void setScpiInfo();
