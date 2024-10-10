@@ -10,6 +10,7 @@ public:
     static std::shared_ptr<VfClientEntitySubscriber> create(int entityId);
     VfClientEntitySubscriber(int entityId);
 
+    static QEvent* generateEvent(int entityId);
     void sendSubscription();
     QStringList getComponentNames();
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;

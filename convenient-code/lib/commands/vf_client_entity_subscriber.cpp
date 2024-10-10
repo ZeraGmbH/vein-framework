@@ -17,15 +17,19 @@ VfClientEntitySubscriber::VfClientEntitySubscriber(int entityId) :
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfClientEntitySubscriber::sendSubscription()
+QEvent *VfClientEntitySubscriber::generateEvent(int entityId)
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
-    eData->setEntityId(getEntityId());
+    eData->setEntityId(entityId);
     eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
     eData->setEventTarget(EntityData::EventTarget::ET_ALL);
-    CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
-    sendEvent(cEvent);
+    return new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
+}
+
+void VfClientEntitySubscriber::sendSubscription()
+{
+    sendEvent(generateEvent(getEntityId()));
 }
 
 QStringList VfClientEntitySubscriber::getComponentNames()
