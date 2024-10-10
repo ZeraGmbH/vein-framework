@@ -16,6 +16,7 @@ private slots:
     void getNotifierForTwoExisting();
     void receiveOneChangeSignalPerChangeByVein();
     void receiveNoChangeSignalOnSameValueByVein();
+    void receiveOneSetSignalPerSetByVein();
 private:
     void sendVeinSetAndProcess(TestVeinServer *server, QVariant oldValue, QVariant newValue);
 };

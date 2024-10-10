@@ -24,6 +24,7 @@ QDateTime StorageComponent::getTimestamp() const
 
 void StorageComponent::setValue(QVariant value)
 {
+    emit sigValueSet(value);
     if(value != m_value) {
         m_value = value;
         emit sigValueChange(value);

@@ -13,6 +13,7 @@ class VFEVENT_EXPORT StorageComponentInterface : public QObject
 {
     Q_OBJECT
 signals:
+    void sigValueSet(QVariant setValue);
     void sigValueChange(QVariant newValue);
 public:
     virtual QVariant getValue() const = 0;
