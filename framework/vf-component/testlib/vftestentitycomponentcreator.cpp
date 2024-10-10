@@ -1,4 +1,5 @@
 #include "vftestentitycomponentcreator.h"
+#include "vf_server_component_add.h"
 #include <vcmp_entitydata.h>
 #include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
@@ -24,15 +25,7 @@ void VfTestEntityComponentCreator::createEntity(int entityId)
 
 void VfTestEntityComponentCreator::createComponent(int entityId, QString componentName, QVariant initialValue)
 {
-    VeinComponent::ComponentData *componentData = new VeinComponent::ComponentData();
-    componentData->setEntityId(entityId);
-    componentData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    componentData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    componentData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
-    componentData->setComponentName(componentName);
-    componentData->setNewValue(initialValue);
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, componentData);
-    emit sigSendEvent(event);
+    emit sigSendEvent(VfServerComponentAdd::generateEvent(entityId, componentName, initialValue));
 }
 
 void VfTestEntityComponentCreator::processEvent(QEvent *)
