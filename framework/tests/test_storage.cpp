@@ -140,16 +140,7 @@ void test_storage::setComponent()
     server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
 
-    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
-    cData->setEntityId(testEntityId);
-    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-    cData->setComponentName(componentName);
-    cData->setNewValue("SetTestValue");
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    server->sendEvent(event);
-    TimeMachineObject::feedEventLoop();
+    server->setComponentServerNotification(testEntityId, componentName, "SetTestValue");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageComponentSet.json");
