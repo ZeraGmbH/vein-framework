@@ -107,6 +107,30 @@ void test_storage_notification::receiveNoChangeSignalOnSameValueByVein()
     QCOMPARE(spy[0][0], componentValue1);
 }
 
+void test_storage_notification::receiveOneSetSignalPerSetByVein()
+{
+    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addTestEntities(1, 1);
+    serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
+
+    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
+    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueSet);
+
+    sendVeinSetAndProcess(server, QVariant(), componentValue1); // change new / valid old
+    sendVeinSetAndProcess(server, componentValue1, componentValue1); // same new / valid old
+    sendVeinSetAndProcess(server, componentValue2, componentValue2); // change new / invalid old
+    sendVeinSetAndProcess(server, componentValue1, componentValue2); // same new / invalid old
+
+    QCOMPARE(component->getValue(), componentValue2);
+    QCOMPARE(spy.count(), 4);
+    QCOMPARE(spy[0][0], componentValue1);
+    QCOMPARE(spy[1][0], componentValue1);
+    QCOMPARE(spy[2][0], componentValue2);
+    QCOMPARE(spy[3][0], componentValue2);
+}
+
 void test_storage_notification::sendVeinSetAndProcess(TestVeinServer* server, QVariant oldValue, QVariant newValue)
 {
     QEvent *event;
