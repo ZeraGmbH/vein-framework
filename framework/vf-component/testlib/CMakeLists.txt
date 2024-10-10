@@ -17,6 +17,7 @@ target_link_libraries(VfComponentTest
     VfComponent
     VfEvent
     VfStorageHash
+    VfConvenientCode
     )
 
 target_include_directories(VfComponentTest

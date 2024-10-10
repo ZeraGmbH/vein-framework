@@ -1,4 +1,5 @@
 #include "test_storage.h"
+#include "vf_server_entity_remove.h"
 #include "testveinserverwithnet.h"
 #include "testloghelpers.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -83,13 +84,7 @@ void test_storage::addRemoveEntity()
     server->addComponent(testEntityId, componentName, componentValue, false);
     TimeMachineObject::feedEventLoop();
 
-    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
-    eData->setEntityId(testEntityId);
-    eData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    eData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    eData->setCommand(VeinComponent::EntityData::Command::ECMD_REMOVE);
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-    server->sendEvent(event);
+    server->sendEvent(VfServerEntityRemove::generateEvent(testEntityId));
     TimeMachineObject::feedEventLoop();
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
