@@ -2,6 +2,7 @@
 #include "testjsonspyeventsystem.h"
 #include "testloghelpers.h"
 #include "vf_client_entity_unsubscriber.h"
+#include "vf_server_component_add.h"
 #include "task_client_component_fetcher.h"
 #include "task_client_component_setter.h"
 #include "vtcp_workerfactorymethodstest.h"
@@ -205,15 +206,7 @@ void test_command_events::serverAddComponentForNomExistentEntity()
     QJsonObject jsonEvents;
     setupSpy(jsonEvents);
 
-    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
-    cData->setEntityId(testEntityId);
-    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
-    cData->setComponentName(componentName);
-    cData->setNewValue("InitialValue");
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    m_netServer->getServer()->sendEvent(event);
+    m_netServer->getServer()->sendEvent(VfServerComponentAdd::generateEvent(testEntityId, componentName, "InitialValue"));
     TimeMachineObject::feedEventLoop();
 
     QFile file(":/vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json");
