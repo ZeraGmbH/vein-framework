@@ -82,7 +82,7 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     TimeMachineObject::feedEventLoop();
 }
 
-void TestVeinServer::setComponent(int entityId, QString componentName, QVariant newValue)
+void TestVeinServer::setComponentClientTransaction(int entityId, QString componentName, QVariant newValue)
 {
     if(!m_storageSystem.hasStoredValue(entityId, componentName))
         qFatal("No entity/component with ID %i / Name %s available!", entityId, qPrintable(componentName));
