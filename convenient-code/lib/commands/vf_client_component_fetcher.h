@@ -13,6 +13,7 @@ public:
     static std::shared_ptr<VfClientComponentFetcher> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
     VfClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem);
 
+    static QEvent* generateEvent(int entityId, QString componentName);
     void startGetComponent();
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;

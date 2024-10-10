@@ -15,14 +15,18 @@ VfClientComponentFetcher::VfClientComponentFetcher(QString componentName, VfCmdE
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfClientComponentFetcher::startGetComponent()
+QEvent *VfClientComponentFetcher::generateEvent(int entityId, QString componentName)
 {
-    ComponentData *cData = new ComponentData(getEntityId(), ComponentData::Command::CCMD_FETCH);
+    ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-    cData->setComponentName(getComponentName());
-    CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-    sendEvent(cEvent);
+    cData->setComponentName(componentName);
+    return new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
+}
+
+void VfClientComponentFetcher::startGetComponent()
+{
+    sendEvent(generateEvent(getEntityId(), getComponentName()));
 }
 
 void VfClientComponentFetcher::processComponentEventData(const ComponentData *componentData)
