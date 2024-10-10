@@ -1,6 +1,6 @@
 #include "vf-cpp-entity.h"
-#include "vcmp_entitydata.h"
 #include "vcmp_errordatasender.h"
+#include "vf_server_entity_add.h"
 #include "vf_server_entity_remove.h"
 
 using namespace VfCpp;
@@ -57,11 +57,7 @@ cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QM
 
 void VfCppEntity::initModule()
 {
-    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
-    eData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
-    eData->setEntityId(m_entityId);
-    VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-    emit sigSendEvent(tmpEvent);
+    emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
 }
 
 void VfCppEntity::processEvent(QEvent *event)
