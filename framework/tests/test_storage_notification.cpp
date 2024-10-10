@@ -2,6 +2,7 @@
 #include "testveinserverwithnet.h"
 #include "vs_veinhash.h"
 #include "vtcp_workerfactorymethodstest.h"
+#include "vf_server_component_setter.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -55,65 +56,61 @@ void test_storage_notification::getNotifierForTwoExisting()
     QVERIFY(component1 != component2);
 }
 
-static constexpr int testEntityId = 37;
-static const char* entityName = "TestEntity";
-static const char* componentName = "TestComponent";
-static const char* componentValue = "TestInitialValue";
+static constexpr int testEntityId = 10;
+static const char* componentName = "ComponentName1";
+static const char* componentValue1 = "TestValue1";
+static const char* componentValue2 = "TestValue2";
 
-void test_storage_notification::receiveOneChangeSignalOnChangeByVein()
+//////////////////////////////////////////////////////////////////////////
+// In the tests following we play around with old (invalid) values - it is
+// unclear where they are used
+
+void test_storage_notification::receiveOneChangeSignalPerChangeByVein()
 {
     TestVeinServerWithNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
-    server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentValue, false);
-    TimeMachineObject::feedEventLoop();
+    server->addTestEntities(1, 1);
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
-
     QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
-    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
-    cData->setEntityId(testEntityId);
-    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-    cData->setComponentName(componentName);
-    cData->setNewValue("SetTestValue");
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    server->sendEvent(event);
-    TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(component->getValue(), "SetTestValue");
-    QCOMPARE(spy.count(), 1);
-    QCOMPARE(spy[0][0], "SetTestValue");
+    sendVeinSetAndProcess(server, QVariant(), componentValue1); // valid old / change new
+    sendVeinSetAndProcess(server, componentValue2, componentValue2); // invalid old / change new
+    sendVeinSetAndProcess(server, componentValue2, componentValue1); // valid old / change new
+
+    QCOMPARE(component->getValue(), componentValue1);
+    QCOMPARE(spy.count(), 3);
+    QCOMPARE(spy[0][0], componentValue1);
+    QCOMPARE(spy[1][0], componentValue2);
+    QCOMPARE(spy[2][0], componentValue1);
 }
 
 void test_storage_notification::receiveNoChangeSignalOnSameValueByVein()
 {
     TestVeinServerWithNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
-    server->addEntity(testEntityId, entityName);
-    server->addComponent(testEntityId, componentName, componentValue, false);
-    TimeMachineObject::feedEventLoop();
+    server->addTestEntities(1, 1);
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
     VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
-
     QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
-    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
-    cData->setEntityId(testEntityId);
-    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-    cData->setComponentName(componentName);
-    cData->setNewValue(componentValue);
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    server->sendEvent(event);
-    TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(component->getValue(), componentValue);
-    QCOMPARE(spy.count(), 0);
+    sendVeinSetAndProcess(server, QVariant(), componentValue1); // change new / valid old
+    sendVeinSetAndProcess(server, QVariant(), componentValue1); // same new / invalid old
+    sendVeinSetAndProcess(server, componentValue1, componentValue1); // same new / valid old
+
+    QCOMPARE(component->getValue(), componentValue1);
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(spy[0][0], componentValue1);
 }
 
+void test_storage_notification::sendVeinSetAndProcess(TestVeinServer* server, QVariant oldValue, QVariant newValue)
+{
+    QEvent *event;
+    event = VfServerComponentSetter::generateEvent(testEntityId, componentName, oldValue, newValue);
+    server->sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+}
