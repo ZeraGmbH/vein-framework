@@ -1,6 +1,7 @@
 #include "vf-cpp-entity.h"
 #include "vcmp_entitydata.h"
 #include "vcmp_errordatasender.h"
+#include "vf_server_entity_remove.h"
 
 using namespace VfCpp;
 
@@ -37,12 +38,7 @@ VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval,
 void VfCppEntity::prepareRemove()
 {
     m_componentList.clear();
-
-    VeinComponent::EntityData *eData = new VeinComponent::EntityData();
-    eData->setCommand(VeinComponent::EntityData::Command::ECMD_REMOVE);
-    eData->setEntityId(m_entityId);
-    VeinEvent::CommandEvent *tmpEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, eData);
-    emit sigSendEvent(tmpEvent);
+    emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
 }
 
 
