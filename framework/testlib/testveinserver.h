@@ -27,6 +27,7 @@ public:
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
     void setComponentClientTransaction(int entityId, QString componentName, QVariant newValue);
+    void setComponentServerNotification(int entityId, QString componentName, QVariant newValue);
     void removeEntitiesAdded();
     QMap<int, QList<QString>> getTestEntityComponentInfo();
 

@@ -1,5 +1,6 @@
 #include "testveinserver.h"
 #include "vf_client_component_setter.h"
+#include "vf_server_component_setter.h"
 #include "modulemanagersetupfacade.h"
 #include "testloghelpers.h"
 #include <timemachineobject.h>
@@ -89,6 +90,17 @@ void TestVeinServer::setComponentClientTransaction(int entityId, QString compone
 
     QVariant oldValue = m_storageSystem.getStoredValue(entityId, componentName);
     QEvent* event = VfClientComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
+    sendEvent(event);
+    TimeMachineObject::feedEventLoop();
+}
+
+void TestVeinServer::setComponentServerNotification(int entityId, QString componentName, QVariant newValue)
+{
+    if(!m_storageSystem.hasStoredValue(entityId, componentName))
+        qFatal("No entity/component with ID %i / Name %s available!", entityId, qPrintable(componentName));
+
+    QVariant oldValue = m_storageSystem.getStoredValue(entityId, componentName);
+    QEvent* event = VfServerComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
     sendEvent(event);
     TimeMachineObject::feedEventLoop();
 }
