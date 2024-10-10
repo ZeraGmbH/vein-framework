@@ -60,7 +60,7 @@ static const char* entityName = "TestEntity";
 static const char* componentName = "TestComponent";
 static const char* componentValue = "TestInitialValue";
 
-void test_storage_notification::receiveOneSignalOnChangeByVein()
+void test_storage_notification::receiveOneChangeSignalOnChangeByVein()
 {
     TestVeinServerWithNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
@@ -89,7 +89,7 @@ void test_storage_notification::receiveOneSignalOnChangeByVein()
     QCOMPARE(spy[0][0], "SetTestValue");
 }
 
-void test_storage_notification::receiveNoSignalOnSameValueByVein()
+void test_storage_notification::receiveNoChangeSignalOnSameValueByVein()
 {
     TestVeinServerWithNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();

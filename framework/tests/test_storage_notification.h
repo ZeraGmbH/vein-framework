@@ -12,8 +12,8 @@ private slots:
     void getNotifierForExisting();
     void getNotifierForNonExisting();
     void getNotifierForTwoExisting();
-    void receiveOneSignalOnChangeByVein();
-    void receiveNoSignalOnSameValueByVein();
+    void receiveOneChangeSignalOnChangeByVein();
+    void receiveNoChangeSignalOnSameValueByVein();
 };
 
 #endif // TEST_STORAGE_NOTIFICATION_H
