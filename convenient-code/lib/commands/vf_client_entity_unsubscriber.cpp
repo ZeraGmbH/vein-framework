@@ -14,15 +14,19 @@ VfClientEntityUnsubscriber::VfClientEntityUnsubscriber(int entityId) :
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfClientEntityUnsubscriber::sendUnsubscription()
+QEvent *VfClientEntityUnsubscriber::generateEvent(int entityId)
 {
     EntityData *eData = new EntityData();
     eData->setCommand(EntityData::Command::ECMD_UNSUBSCRIBE);
-    eData->setEntityId(getEntityId());
+    eData->setEntityId(entityId);
     eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
     eData->setEventTarget(EntityData::EventTarget::ET_ALL);
-    CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
-    sendEvent(cEvent);
+    return new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
+}
+
+void VfClientEntityUnsubscriber::sendUnsubscription()
+{
+    sendEvent(generateEvent(getEntityId()));
 }
 
 void VfClientEntityUnsubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)

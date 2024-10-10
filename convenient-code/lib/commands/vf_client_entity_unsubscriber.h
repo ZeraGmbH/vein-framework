@@ -10,6 +10,7 @@ public:
     static std::shared_ptr<VfClientEntityUnsubscriber> create(int entityId);
     VfClientEntityUnsubscriber(int entityId);
 
+    static QEvent* generateEvent(int entityId);
     void sendUnsubscription();
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
