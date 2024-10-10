@@ -5,6 +5,7 @@
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
 #include <vf_server_component_setter.h>
+#include <vf_server_component_add.h>
 #include <zera-jsonfileloader.h>
 #include <QJsonArray>
 #include <QDateTime>
@@ -177,19 +178,12 @@ void SystemModuleEventSystem::initOnce()
 
         const auto componentNames = componentData.keys();
         for(const QString &compName : componentNames) {
-            VeinComponent::ComponentData *initialData = new VeinComponent::ComponentData();
-            initialData->setEntityId(getEntityId());
-            initialData->setCommand(VeinComponent::ComponentData::Command::CCMD_ADD);
-            initialData->setComponentName(compName);
-            if(compName == moduleInterface) {
-                QVariant doc = QVariant(setModuleInterface());
-                initialData->setNewValue(doc);
-            }
+            QVariant initialValue;
+            if(compName == moduleInterface)
+                initialValue = QVariant(setModuleInterface());
             else
-                initialData->setNewValue(componentData.value(compName));
-            initialData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-            initialData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-            emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, initialData));
+                initialValue = componentData.value(compName);
+            emit sigSendEvent(VfServerComponentAdd::generateEvent(getEntityId(), compName, initialValue));
         }
         m_initDone = true;
     }
