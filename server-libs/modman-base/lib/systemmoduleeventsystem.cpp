@@ -4,6 +4,7 @@
 #include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
+#include <vf_server_entity_add.h>
 #include <vf_server_component_setter.h>
 #include <vf_server_component_add.h>
 #include <zera-jsonfileloader.h>
@@ -159,11 +160,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 void SystemModuleEventSystem::initOnce()
 {
     if(m_initDone == false) {
-        VeinComponent::EntityData *systemData = new VeinComponent::EntityData();
-        systemData->setCommand(VeinComponent::EntityData::Command::ECMD_ADD);
-        systemData->setEntityId(getEntityId());
-
-        emit sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, systemData));
+        emit sigSendEvent(VfServerEntityAdd::generateEvent(getEntityId()));
         setScpiInfo();
 
         QHash<QString, QVariant> componentData;
