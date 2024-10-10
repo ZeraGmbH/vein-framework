@@ -16,6 +16,7 @@ target_link_libraries(VfCpp
     Qt5::Core
     VfEvent
     VfComponent
+    VfConvenientCode
     )
 
 set_target_properties(VfCpp PROPERTIES VERSION ${PROJECT_VERSION})
