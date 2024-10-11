@@ -27,7 +27,6 @@ target_link_libraries(VfNet2
     PUBLIC
     Qt5::Core
     Qt5::Network
-    flatbuffers
     VfHelpers
     VfComponent
     VfEvent
