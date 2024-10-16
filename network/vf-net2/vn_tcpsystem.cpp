@@ -49,12 +49,6 @@ void TcpSystem::onClientConnected(VeinTcp::TcpPeer *peer)
     m_waitingAuth.append(peer);
     connect(peer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &TcpSystem::onClientDisconnected);
     peer->sendMessage(QByteArray("welcome")); //message content is irrelevant
-#ifdef VN2_LEGACY_UNREACHABLE
-    /** @todo implement authentication */
-    protobuf::VeinProtocol *protoAuth = new protobuf::VeinProtocol();
-    peer->sendMessage(protoAuth);
-    delete protoAuth;
-#endif // VN2_LEGACY_UNREACHABLE
 }
 
 void TcpSystem::onConnectionEstablished(VeinTcp::TcpPeer *t_peer)
@@ -63,12 +57,6 @@ void TcpSystem::onConnectionEstablished(VeinTcp::TcpPeer *t_peer)
     m_waitingAuth.append(t_peer);
     connect(t_peer, &VeinTcp::TcpPeer::sigMessageReceived, this, &TcpSystem::onMessageReceived);
     t_peer->sendMessage(QByteArray("hello")); //message content is irrelevant
-#ifdef VN2_LEGACY_UNREACHABLE
-    /** @todo implement authentication */
-    protobuf::VeinProtocol *protoAuth = new protobuf::VeinProtocol();
-    tmpPeer->sendMessage(protoAuth);
-    delete protoAuth;
-#endif // VN2_LEGACY_UNREACHABLE
 }
 
 void TcpSystem::onConnectionClosed(VeinTcp::TcpPeer *t_peer)
@@ -111,12 +99,6 @@ void TcpSystem::onMessageReceived(VeinTcp::TcpPeer *t_sender, QByteArray t_buffe
     ProtocolEvent *tmpEvent = new ProtocolEvent(ProtocolEvent::EventOrigin::EO_REMOTE);
     tmpEvent->setBuffer(t_buffer);
     tmpEvent->setPeerId(t_sender->getPeerId());
-#ifdef VN2_LEGACY_UNREACHABLE
-    if(proto->command_size()>0)
-    {
-        vCDebug(VEIN_NET_TCP_VERBOSE) << "Received protocol event of type:" << proto->command(0).datatype();
-    }
-#endif // VN2_LEGACY_UNREACHABLE
     emit sigSendEvent(tmpEvent);
 }
 
