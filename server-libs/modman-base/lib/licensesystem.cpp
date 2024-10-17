@@ -36,8 +36,8 @@ LicenseSystem::LicenseSystem(const QSet<QUrl> &t_licenseURLs, QObject *parent) :
         Q_ASSERT(licenseUrl.isLocalFile());
 
         const QHash<QString, QByteArray> licenseTable = getLicenseFilesFromPath(licenseUrl.toLocalFile());
-
-        for(const QString &licenseFilePath : licenseTable.keys()) {
+        const QStringList licensePaths = licenseTable.keys();
+        for(const QString &licenseFilePath : licensePaths) {
             const QByteArray licenseFileData = licenseTable.value(licenseFilePath);
             bool isVerified = false;
             QByteArray licenseJsonData;
