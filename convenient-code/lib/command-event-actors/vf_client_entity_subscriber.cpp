@@ -41,9 +41,9 @@ void VfClientEntitySubscriber::parseIntrospectionData(EventData *evData)
 {
     IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
     QJsonObject jsonObject = iData->jsonData();
-    QJsonArray componentsArray = jsonObject["components"].toArray();
+    const QJsonArray componentsArray = jsonObject["components"].toArray();
     m_componentNames.clear();
-    for(auto entry : componentsArray)
+    for(const QJsonValue &entry : componentsArray)
         m_componentNames.append(entry.toString());
 }
 
