@@ -24,7 +24,8 @@ cVeinModuleRpc::cVeinModuleRpc(int entityId,
     }
     m_rpcName=m_function;
     m_rpcName.append("(");
-    for(QString param : m_parameter.keys()){
+    const QStringList params = m_parameter.keys();
+    for(const QString &param : params) {
         m_rpcName.append(m_parameter[param]);
         m_rpcName.append(" ");
         m_rpcName.append(param);
