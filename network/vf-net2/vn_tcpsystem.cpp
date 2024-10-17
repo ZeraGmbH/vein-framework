@@ -124,7 +124,7 @@ void TcpSystem::processEvent(QEvent *t_event)
             //send to all
             if(pEvent->receivers().isEmpty()) {
                 const auto tmpPeerlist = m_peerList.values();
-                vCDebug(VEIN_NET_TCP_VERBOSE) << "Sending ProtocolEvent" << pEvent << "to receivers:" << tmpPeerlist;// << pEvent->protobuf()->DebugString().c_str();
+                vCDebug(VEIN_NET_TCP_VERBOSE) << "Sending ProtocolEvent" << pEvent << "to receivers:" << tmpPeerlist;
                 for(VeinTcp::TcpPeer *tmpPeer : tmpPeerlist)
                     tmpPeer->sendMessage(pEvent->buffer());
             }
@@ -134,7 +134,7 @@ void TcpSystem::processEvent(QEvent *t_event)
                 for(const QUuid &receiverId : tmpEventReceiversCopy) {
                     VeinTcp::TcpPeer *tmpPeer = m_peerList.value(receiverId,0);
                     if(tmpPeer) {
-                        vCDebug(VEIN_NET_TCP_VERBOSE) << "Sending ProtocolEvent" << pEvent << "to receiver:" << tmpPeer;// << pEvent->protobuf()->DebugString().c_str();
+                        vCDebug(VEIN_NET_TCP_VERBOSE) << "Sending ProtocolEvent" << pEvent << "to receiver:" << tmpPeer;
                         tmpPeer->sendMessage(pEvent->buffer());
                     }
                 }
