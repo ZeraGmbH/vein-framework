@@ -25,7 +25,7 @@ public:
     bool isListenActive() override;
     TcpPeerWorkerInterfacePtr createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor) override;
 private slots:
-    void clientDisconnectedSRV(TcpPeer *peer);
+    void clientDisconnectedSRV(VeinTcp::TcpPeer *peer);
 private:
     void incomingConnection(qintptr socketDescriptor) override;
     QList<TcpPeer*> m_clients;
