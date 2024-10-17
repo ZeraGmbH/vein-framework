@@ -1,6 +1,6 @@
 #include "vf-cpp-rpc.h"
 
-#include <QtConcurrent/QtConcurrent>
+#include <QtConcurrent/QtConcurrentRun>
 
 using namespace VfCpp;
 
