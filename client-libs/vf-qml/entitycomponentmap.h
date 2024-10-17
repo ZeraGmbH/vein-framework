@@ -38,7 +38,7 @@ namespace VeinApiQml
       ECM_READY = 1, /**< everything is available */
       ECM_REMOVED = 2, /**< the entity has been removed from the remote end */
     };
-    Q_ENUMS(DataState)
+    Q_ENUM(DataState)
 
     Q_PROPERTY(DataState state READ state NOTIFY sigStateChanged)
     Q_PROPERTY(QStringList remoteProcedures READ getRemoteProcedureList NOTIFY sigRemoteProceduresChanged)
