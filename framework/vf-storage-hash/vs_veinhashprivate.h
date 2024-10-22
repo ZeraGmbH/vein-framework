@@ -47,6 +47,7 @@ public:
     StorageComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
     bool areFutureComponentsEmpty();
 private:
+    void setComponentTimeStamp(StorageComponentPtr component);
     QHash<int, EntityMap> m_entityComponentData;
     QHash<int, EntityMap> m_futureEntityComponentData;
 };
