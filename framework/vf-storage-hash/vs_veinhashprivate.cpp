@@ -56,19 +56,21 @@ StorageComponentPtr VeinHashPrivate::getFutureComponent(int entityId, const QStr
 void VeinHashPrivate::insertComponentValue(EntityMap *entityChecked, const QString &componentName, QVariant value)
 {
     (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
+    StorageComponentPtr component = (*entityChecked)[componentName];
+    setComponentTimeStamp(component);
 }
 
 void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value)
 {
     Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
+    setComponentTimeStamp(component);
     component->setValue(value);
     m_entityComponentData[entityId][componentName] = component;
 }
 
 void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
 {
-    QDateTime now = TimerFactoryQt::getCurrentTime();
-    componentChecked->setTimestamp(now);
+    setComponentTimeStamp(componentChecked);
     componentChecked->setValue(value);
 }
 
@@ -140,6 +142,12 @@ StorageComponentPtr VeinHashPrivate::takeFutureComponent(const int entityId, con
 bool VeinHashPrivate::areFutureComponentsEmpty()
 {
     return m_futureEntityComponentData.isEmpty();
+}
+
+void VeinHashPrivate::setComponentTimeStamp(StorageComponentPtr component)
+{
+    QDateTime now = TimerFactoryQt::getCurrentTime();
+    component->setTimestamp(now);
 }
 
 }
