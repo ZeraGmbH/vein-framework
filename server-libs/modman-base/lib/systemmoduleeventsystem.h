@@ -46,6 +46,7 @@ private:
     QStringList m_availableSessionsDisplayed;
     QString m_configFileName;
     QMap<QString, VeinComponent::ComponentData*> m_veinSystemParameterMap;
+    QList<cSCPIInfo*> m_scpiCmdList;
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
