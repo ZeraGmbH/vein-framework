@@ -256,6 +256,9 @@ QByteArray SystemModuleEventSystem::setModuleInterface()
     for (int i = 0; i < keyList.count(); i++) {
         m_veinSystemParameterMap[keyList.at(i)]->exportSCPIInfo(jsonArr);
     }
+    for (int i = 0; i < m_scpiCmdList.count(); i++) {
+        m_scpiCmdList.at(i)->appendSCPIInfo(jsonArr);
+    }
     jsonObj2 = QJsonObject();
     jsonObj2.insert("Name", "SYST");
     jsonObj2.insert("Cmd", jsonArr);
@@ -325,4 +328,5 @@ void SystemModuleEventSystem::setScpiInfo()
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     initialData->setValidator(sValidator);
     m_veinSystemParameterMap[sessionComponentName] = initialData;
+    m_scpiCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", "2", sessionComponentName, "1", ""));
 }
