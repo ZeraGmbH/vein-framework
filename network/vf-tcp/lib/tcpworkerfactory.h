@@ -8,8 +8,8 @@ namespace VeinTcp
 class TcpWorkerFactory : public AbstractTcpWorkerFactory
 {
 public:
-    TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer, NETWORK network) override;
-    TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server, NETWORK network) override;
+    TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer) override;
+    TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server) override;
 };
 }
 
