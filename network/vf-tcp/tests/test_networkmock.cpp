@@ -506,6 +506,24 @@ void test_networkmock::failTwoServersSamePortMockFactory()
     QCOMPARE(server2.startServer(serverPort, false), false);
 }
 
+void test_networkmock::twoServersDifferentPortRealFactory()
+{
+    VeinTcp::TcpWorkerFactory realFactory;
+    VeinTcp::TcpServer server1(&realFactory);
+    QCOMPARE(server1.startServer(serverPort, false), true);
+    VeinTcp::TcpServer server2(&realFactory);
+    QCOMPARE(server2.startServer(serverPort+1, false), true);
+}
+
+void test_networkmock::twoServersDifferentPortMockFactory()
+{
+    VeinTcp::MockTcpWorkerFactory mockFactory;
+    VeinTcp::TcpServer server1(&mockFactory);
+    QCOMPARE(server1.startServer(serverPort, false), true);
+    VeinTcp::TcpServer server2(&mockFactory);
+    QCOMPARE(server2.startServer(serverPort+1, false), true);
+}
+
 void test_networkmock::clientConnectClientSideEstablishedReal()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
