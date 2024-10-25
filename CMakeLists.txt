@@ -54,6 +54,7 @@ function(SETUP_TESTS)
             VfCpp
             VfNet2
             vf-tcp-testlib
+            vf-tcp-mock-networklib
             VfFrameworkTest
             VfConvenientCodeTest
             ModmanBase
