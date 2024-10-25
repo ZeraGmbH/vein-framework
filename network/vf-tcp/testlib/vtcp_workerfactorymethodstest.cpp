@@ -1,6 +1,6 @@
 #include "vtcp_workerfactorymethodstest.h"
-#include "vtcp_peerworkermock.h"
-#include "vtcp_serverworkermock.h"
+#include "mocknetpeerworker.h"
+#include "mocknetserverworker.h"
 #include <functional>
 
 namespace VeinTcp
@@ -14,14 +14,14 @@ void TcpWorkerFactoryMethodsTest::enableRealNetwork()
 
 void TcpWorkerFactoryMethodsTest::enableMockNetwork()
 {
-    TcpServerWorkerMock::cleanupServerMocks();
+    MockNetServerWorker::cleanupServerMocks();
     m_createFunctionPeer =
         [](TcpPeer *peer) {
-            return std::make_unique<TcpPeerWorkerMock>(peer, TcpPeerWorkerMock::secret());
+            return std::make_unique<MockNetPeerWorker>(peer, MockNetPeerWorker::secret());
         };
     m_createFunctionServer =
         [](TcpServer *server) {
-            return std::make_unique<TcpServerWorkerMock>(server, TcpServerWorkerMock::secret());
+            return std::make_unique<MockNetServerWorker>(server, MockNetServerWorker::secret());
         };
 }
 

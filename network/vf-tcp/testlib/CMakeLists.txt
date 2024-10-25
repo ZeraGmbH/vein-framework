@@ -15,6 +15,7 @@ target_link_libraries(vf-tcp-testlib
     PUBLIC
     Qt5::Core
     VfTcp
+    vf-tcp-mock-networklib
     )
 
 target_include_directories(vf-tcp-testlib
