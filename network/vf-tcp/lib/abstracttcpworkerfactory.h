@@ -10,8 +10,8 @@ namespace VeinTcp
 class AbstractTcpWorkerFactory
 {
 public:
-    virtual TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer) = 0;
-    virtual TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server) = 0;
+    virtual TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer) = 0;
+    virtual TcpServerWorkerInterfacePtr createTcpServerWorker(TcpServer *server) = 0;
 };
 }
 

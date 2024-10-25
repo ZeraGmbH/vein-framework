@@ -4,12 +4,12 @@
 
 namespace VeinTcp
 {
-TcpPeerWorkerInterfacePtr MockTcpWorkerFactory::createPeerWorkerForClient(TcpPeer *peer)
+TcpPeerWorkerInterfacePtr MockTcpWorkerFactory::createTcpPeerWorker(TcpPeer *peer)
 {
     return std::make_unique<MockNetPeerWorker>(peer, MockNetPeerWorker::secret());
 }
 
-TcpServerWorkerInterfacePtr MockTcpWorkerFactory::createWorkerForServer(TcpServer *server)
+TcpServerWorkerInterfacePtr MockTcpWorkerFactory::createTcpServerWorker(TcpServer *server)
 {
     return std::make_unique<MockNetServerWorker>(server, MockNetServerWorker::secret());
 }
