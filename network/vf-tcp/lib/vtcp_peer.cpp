@@ -5,6 +5,12 @@
 
 namespace VeinTcp
 {
+TcpPeer::TcpPeer(AbstractTcpWorkerFactory *workerFactoryUsedShort, QObject *parent) :
+    QObject(parent),
+    m_worker(workerFactoryUsedShort->createTcpPeerWorker(this))
+{
+}
+
 TcpPeer::TcpPeer(QObject *parent) :
     QObject(parent),
     m_worker(TcpWorkerFactoryMethods::createTcpPeerWorker(this))

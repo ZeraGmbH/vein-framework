@@ -1,12 +1,13 @@
 #ifndef ABSTRACTTCPWORKERFACTORY_H
 #define ABSTRACTTCPWORKERFACTORY_H
 
-#include "vtcp_peer.h"
-#include "vtcp_server.h"
 #include "vtcp_serverworkerinterface.h"
 
 namespace VeinTcp
 {
+class TcpPeer;
+class TcpServer;
+
 class AbstractTcpWorkerFactory
 {
 public:
