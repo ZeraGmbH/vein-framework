@@ -1,14 +1,14 @@
-#ifndef VFTESTSERVERSTACK_H
-#define VFTESTSERVERSTACK_H
+#ifndef TESTVEINSERVERWITHMOCKNET_H
+#define TESTVEINSERVERWITHMOCKNET_H
 
 #include "testveinserver.h"
 #include "vn_networksystem.h"
 #include "vn_tcpsystem.h"
 
-class TestVeinServerWithNet
+class TestVeinServerWithMockNet
 {
 public:
-    TestVeinServerWithNet(int serverPort, QList<VeinEvent::EventSystem*> aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
+    TestVeinServerWithMockNet(int serverPort, QList<VeinEvent::EventSystem*> aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
     TestVeinServer* getServer();
     VeinEvent::StorageSystem* getStorage();
     int getSubscriberCount(int entityId);
@@ -18,4 +18,4 @@ private:
     TestVeinServer m_server;
 };
 
-#endif // VFTESTSERVERSTACK_H
+#endif // TESTVEINSERVERWITHMOCKNET_H

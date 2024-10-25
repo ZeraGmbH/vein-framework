@@ -3,7 +3,7 @@
 #include "task_client_component_fetcher.h"
 #include "task_client_entity_subscribe.h"
 #include "vf_core_stack_client.h"
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
@@ -26,7 +26,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
     serverNet.getServer()->appendEventSystem(&serverAdditionalEntity);
     serverAdditionalEntity.initModule();

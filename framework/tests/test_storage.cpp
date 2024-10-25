@@ -1,6 +1,6 @@
 #include "test_storage.h"
 #include "vf_server_entity_remove.h"
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "testloghelpers.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
@@ -18,7 +18,7 @@ void test_storage::initTestCase()
 
 void test_storage::systemEntityOnly()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     VeinEvent::StorageSystem* storage = serverNet.getStorage();
@@ -39,7 +39,7 @@ static const char* componentValue = "TestInitialValue";
 
 void test_storage::addEntity()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
     TimeMachineObject::feedEventLoop();
@@ -58,7 +58,7 @@ void test_storage::addEntity()
 
 void test_storage::addEntityAndComponent()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
     server->addComponent(testEntityId, componentName, componentValue, false);
@@ -78,7 +78,7 @@ void test_storage::addEntityAndComponent()
 
 void test_storage::addRemoveEntity()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
     server->addComponent(testEntityId, componentName, componentValue, false);
@@ -100,7 +100,7 @@ void test_storage::addRemoveEntity()
 
 void test_storage::addRemoveComponent()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
     server->addComponent(testEntityId, componentName, componentValue, false);
@@ -129,7 +129,7 @@ void test_storage::addRemoveComponent()
 
 void test_storage::setComponent()
 {
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
     server->addComponent(testEntityId, componentName, componentValue, false);

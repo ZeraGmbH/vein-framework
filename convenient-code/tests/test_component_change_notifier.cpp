@@ -3,7 +3,7 @@
 #include "vf_component_change_notifier.h"
 #include "vf_cmd_event_handler.h"
 #include "vf_core_stack_client.h"
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include <vcmp_componentdata.h>
 #include <timemachineobject.h>
@@ -69,7 +69,7 @@ void test_component_change_notifier::inClientServerStack()
 {
     // server
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.connectToServer("127.0.0.1", serverPort);

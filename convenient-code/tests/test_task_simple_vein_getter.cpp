@@ -1,7 +1,7 @@
 #include "test_task_simple_vein_getter.h"
 #include "tasksimpleveingetter.h"
 #include "vf_core_stack_client.h"
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "vtcp_workerfactorymethodstest.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
@@ -23,7 +23,7 @@ void test_task_simple_vein_getter::init()
 void test_task_simple_vein_getter::getValid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.connectToServer("127.0.0.1", serverPort);
@@ -49,7 +49,7 @@ void test_task_simple_vein_getter::getValid()
 void test_task_simple_vein_getter::getInvalid()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     clientStack.connectToServer("127.0.0.1", serverPort);

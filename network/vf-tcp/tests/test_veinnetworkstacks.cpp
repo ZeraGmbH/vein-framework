@@ -4,7 +4,7 @@
 #include "vf_core_stack_client.h"
 #include "vn_tcpsystem.h"
 #include "vtcp_workerfactorymethodstest.h"
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include <QSignalSpy>
 #include <QTest>
 
@@ -16,7 +16,7 @@ static constexpr int serverPort = 4242;
 void test_veinnetworkstacks::receiveIntrospection()
 {
     VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    TestVeinServerWithNet serverNet(serverPort);
+    TestVeinServerWithMockNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
     VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);

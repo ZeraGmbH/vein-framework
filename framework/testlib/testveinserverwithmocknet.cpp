@@ -1,8 +1,8 @@
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "mocktcpworkerfactory.h"
 #include <timemachineobject.h>
 
-TestVeinServerWithNet::TestVeinServerWithNet(int serverPort, QList<VeinEvent::EventSystem *> aboveNetworkSystems) :
+TestVeinServerWithMockNet::TestVeinServerWithMockNet(int serverPort, QList<VeinEvent::EventSystem *> aboveNetworkSystems) :
     m_tcpSystem(std::make_unique<VeinTcp::MockTcpWorkerFactory>().get())
 {
     for(const auto system : qAsConst(aboveNetworkSystems))
@@ -13,17 +13,17 @@ TestVeinServerWithNet::TestVeinServerWithNet(int serverPort, QList<VeinEvent::Ev
     TimeMachineObject::feedEventLoop();
 }
 
-TestVeinServer *TestVeinServerWithNet::getServer()
+TestVeinServer *TestVeinServerWithMockNet::getServer()
 {
     return &m_server;
 }
 
-VeinEvent::StorageSystem *TestVeinServerWithNet::getStorage()
+VeinEvent::StorageSystem *TestVeinServerWithMockNet::getStorage()
 {
     return getServer()->getStorage();
 }
 
-int TestVeinServerWithNet::getSubscriberCount(int entityId)
+int TestVeinServerWithMockNet::getSubscriberCount(int entityId)
 {
     return m_netSystem.getSubscriberCount(entityId);
 }
