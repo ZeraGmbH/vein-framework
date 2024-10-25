@@ -2,6 +2,7 @@
 #define VN_TCPSYSTEM_H
 
 #include "globalIncludes.h"
+#include "abstracttcpworkerfactory.h"
 #include <ve_eventsystem.h>
 #include <QAbstractSocket>
 #include <QUuid>
@@ -18,6 +19,7 @@ class VFNET2_EXPORT TcpSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
+    explicit TcpSystem(VeinTcp::AbstractTcpWorkerFactory *workerFactoryUsedShort, QObject *t_parent = nullptr);
     explicit TcpSystem(QObject *t_parent = nullptr);
     virtual ~TcpSystem();
 signals:
@@ -70,6 +72,7 @@ public:
     void processEvent(QEvent *t_event) override;
 
 private:
+    void init();
     /**
      * @brief List of clients waiting for approval
      */
