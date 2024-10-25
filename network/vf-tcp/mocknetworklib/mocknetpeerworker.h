@@ -18,6 +18,8 @@ private:
     struct secret { explicit secret() = default; };
     friend class MockTcpWorkerFactory;
     friend class MockNetServerWorker;
+    // intermediate TcpWorkerFactoryMethodsTest will be replaced by MockTcpWorkerFactory
+    friend class TcpWorkerFactoryMethodsTest;
 public:
     MockNetPeerWorker(TcpPeer *peer, secret);
     MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);
