@@ -16,8 +16,9 @@ private:
     // Just our friends can create us (by make_unique) - see
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
-    friend class TcpWorkerFactoryMethods;
     friend class TcpWorkerFactory;
+    // intermediate TcpWorkerFactoryMethods will be replaced by TcpWorkerFactory
+    friend class TcpWorkerFactoryMethods;
 public:
     TcpServerWorker(TcpServer *server, secret);
     ~TcpServerWorker();
