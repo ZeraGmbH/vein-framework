@@ -9,7 +9,6 @@ class test_storage_notification : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
     void getNullNotifierFromEmpty();
     void getNotifierForExisting();
     void getNotifierForNonExisting();
