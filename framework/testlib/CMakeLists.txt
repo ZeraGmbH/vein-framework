@@ -18,6 +18,7 @@ target_link_libraries(VfFrameworkTest
     VfTcp
     VfConvenientCode
     Zera::testlib-common
+    vf-tcp-mock-networklib
     veinserver-testlib
     )
 
