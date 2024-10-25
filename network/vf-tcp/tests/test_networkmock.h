@@ -53,6 +53,9 @@ private slots:
     void failTwoServersSamePortMock();
     void failTwoServersSamePortMockFactory();
 
+    void twoServersDifferentPortRealFactory();
+    void twoServersDifferentPortMockFactory();
+
     void clientConnectClientSideEstablishedReal();
     void clientConnectClientSideEstablishedRealFactory();
     void clientConnectClientSideEstablishedMock();
