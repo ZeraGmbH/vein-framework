@@ -7,17 +7,11 @@
 
 namespace VeinTcp
 {
-enum NETWORK
-{
-    SERVICE_NET,
-    VEIN_NET
-};
-
 class AbstractTcpWorkerFactory
 {
 public:
-    virtual TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer, NETWORK network) = 0;
-    virtual TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server, NETWORK network) = 0;
+    virtual TcpPeerWorkerInterfacePtr createPeerWorkerForClient(TcpPeer *peer) = 0;
+    virtual TcpServerWorkerInterfacePtr createWorkerForServer(TcpServer *server) = 0;
 };
 }
 
