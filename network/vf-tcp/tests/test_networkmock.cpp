@@ -391,8 +391,3 @@ void test_networkmock::talkBidirectionalMockFactory()
     QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
     QCOMPARE(spyServerSend[0][1], "ServerSend");
 }
-
-void test_networkmock::cleanup()
-{
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableRealNetwork();
-}

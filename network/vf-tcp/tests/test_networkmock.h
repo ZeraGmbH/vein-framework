@@ -45,9 +45,6 @@ private slots:
     // By 'sender' pointer the emitter of signal is meant not the client
     void talkBidirectionalRealFactory();
     void talkBidirectionalMockFactory();
-
-    // Back to default after each
-    void cleanup();
 };
 
 #endif // TEST_NETWORKMOCK_H
