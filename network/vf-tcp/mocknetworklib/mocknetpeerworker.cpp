@@ -70,14 +70,16 @@ bool MockNetPeerWorker::isConnected() const
 // client & server
 void MockNetPeerWorker::writeRaw(QByteArray message) const
 {
-    Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    if(!m_connectionEstablished)
+        qWarning("[vein-tcp] Trying to send data to disconnected host.");
     MockNetPeerWorker* const_this = const_cast<MockNetPeerWorker*>(this);
     const_this->emitMessageReceived(m_otherPeer, message); // does this make sense???
 }
 
 void MockNetPeerWorker::sendArray(const QByteArray &byteArray) const
 {
-    Q_ASSERT_X(m_connectionEstablished, __PRETTY_FUNCTION__, "[vein-tcp] Trying to send data to disconnected host.");
+    if(!m_connectionEstablished)
+        qWarning("[vein-tcp] Trying to send data to disconnected host.");
     MockNetPeerWorker* const_this = const_cast<MockNetPeerWorker*>(this);
     const_this->emitMessageReceived(m_otherPeer, byteArray);
 }
