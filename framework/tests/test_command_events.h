@@ -1,7 +1,7 @@
 #ifndef TEST_CLIENT_COMMAND_EVENTS_H
 #define TEST_CLIENT_COMMAND_EVENTS_H
 
-#include "testveinserverwithnet.h"
+#include "testveinserverwithmocknet.h"
 #include "vf_core_stack_client.h"
 #include "vf_entity_component_event_item.h"
 #include "testjsonspyeventsystem.h"
@@ -32,7 +32,7 @@ private slots:
 private:
     void setupSpy(QJsonObject &jsonEvents);
     void subscribeClient(int entityId);
-    std::unique_ptr<TestVeinServerWithNet> m_netServer;
+    std::unique_ptr<TestVeinServerWithMockNet> m_netServer;
     std::unique_ptr<VfCoreStackClient> m_netClient;
     VfCmdEventItemEntityPtr m_entityItem;
     std::unique_ptr<TestJsonSpyEventSystem> m_clientCmdEventSpyTop;

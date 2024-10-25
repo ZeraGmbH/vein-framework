@@ -296,7 +296,7 @@ void test_command_events::initTestCase()
 void test_command_events::init()
 {
     constexpr int serverPort = 4242;
-    m_netServer = std::make_unique<TestVeinServerWithNet>(serverPort);
+    m_netServer = std::make_unique<TestVeinServerWithMockNet>(serverPort);
     m_netServer->getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     m_netClient = std::make_unique<VfCoreStackClient>();
