@@ -26,7 +26,6 @@ private slots:
     void serverRemoveNonExistingComponent();
     void serverRemoveComponentForNomExistentEntity();
 
-    void initTestCase();
     void init();
     void cleanup();
 private:
