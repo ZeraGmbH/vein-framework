@@ -2,7 +2,6 @@
 #include "vf_server_entity_remove.h"
 #include "testveinserverwithmocknet.h"
 #include "testloghelpers.h"
-#include "vtcp_workerfactorymethodstest.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>
@@ -10,11 +9,6 @@
 static constexpr int serverPort = 4242;
 
 QTEST_MAIN(test_storage)
-
-void test_storage::initTestCase()
-{
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-}
 
 void test_storage::systemEntityOnly()
 {
