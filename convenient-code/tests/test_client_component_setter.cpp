@@ -3,7 +3,7 @@
 #include "testveinserver.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "vtcp_workerfactorymethodstest.h"
+#include "mocktcpworkerfactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -69,10 +69,9 @@ void test_client_component_setter::setEqualEmitsOk()
 
 void test_client_component_setter::setToInvalidEntity()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
@@ -94,10 +93,9 @@ void test_client_component_setter::setToInvalidEntity()
 
 void test_client_component_setter::setvalidEntityNet()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
