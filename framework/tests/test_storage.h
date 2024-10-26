@@ -7,7 +7,6 @@ class test_storage : public QObject
 {
     Q_OBJECT
 private slots:
-    void initTestCase();
     void systemEntityOnly();
     void addEntity();
     void addEntityAndComponent();
