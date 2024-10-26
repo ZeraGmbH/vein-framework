@@ -4,7 +4,7 @@
 #include "task_client_entity_subscribe.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "vtcp_workerfactorymethodstest.h"
+#include "mocktcpworkerfactory.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
 #include <QSignalSpy>
@@ -24,8 +24,6 @@ void test_task_client_component_setter::init()
 
 void test_task_client_component_setter::setValidValueSubscribed()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
-    
     TestVeinServerWithMockNet serverNet(serverPort);
     VfCpp::VfCppEntity serverAdditionalEntity(testId);
     serverNet.getServer()->appendEventSystem(&serverAdditionalEntity);
@@ -33,7 +31,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
     serverAdditionalEntity.createComponent("foo", 42);
     TimeMachineObject::feedEventLoop();
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.addItem(entityItem);
@@ -60,7 +58,7 @@ void test_task_client_component_setter::setValidValueSubscribed()
 
 void test_task_client_component_setter::timeout()
 {
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testId);
     clientStack.addItem(entityItem);
     TimeMachineObject::feedEventLoop();
