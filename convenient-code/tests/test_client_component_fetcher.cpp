@@ -71,7 +71,7 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
