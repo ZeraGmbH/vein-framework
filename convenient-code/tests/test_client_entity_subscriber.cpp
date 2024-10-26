@@ -3,10 +3,9 @@
 #include "vf_client_entity_subscriber.h"
 #include "vf_cmd_event_handler_system.h"
 #include "testveinserver.h"
-#include "ve_eventhandler.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "vtcp_workerfactorymethodstest.h"
+#include "mocktcpworkerfactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -40,10 +39,9 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceived()
 
 void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
@@ -61,10 +59,9 @@ void test_client_entity_subscriber::intropectSystemEntitySignalReceivedNetwork()
 
 void test_client_entity_subscriber::intropectSystemEntityTwiceNetwork()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
