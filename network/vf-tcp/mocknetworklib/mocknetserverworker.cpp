@@ -81,11 +81,6 @@ TcpPeer* MockNetServerWorker::emitSigClientConnected(TcpPeer* clientPeer)
     return serverPeer;
 }
 
-void MockNetServerWorker::cleanupServerMocks()
-{
-    m_serverMocks.clear();
-}
-
 void MockNetServerWorker::onPeerClosed(TcpPeer *peer)
 {
     TcpPeer *peerToNotify = nullptr;
