@@ -3,7 +3,7 @@
 #include "task_client_entity_subscribe.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "vtcp_workerfactorymethodstest.h"
+#include "mocktcpworkerfactory.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
 #include <QSignalSpy>
@@ -23,10 +23,9 @@ void test_task_client_component_fetcher::init()
 
 void test_task_client_component_fetcher::fetchSubscribed()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.addItem(entityItem);
@@ -49,7 +48,7 @@ void test_task_client_component_fetcher::fetchSubscribed()
 
 void test_task_client_component_fetcher::timeout()
 {
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.addItem(entityItem);
     TimeMachineObject::feedEventLoop();
