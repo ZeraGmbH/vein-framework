@@ -13,7 +13,7 @@ class VFTCP_EXPORT TcpServer : public QObject
 {
     Q_OBJECT
 public:
-    explicit TcpServer(AbstractTcpWorkerFactory *workerFactoryUsedShort, QObject *parent = nullptr);
+    explicit TcpServer(AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *parent = nullptr);
     explicit TcpServer(QObject *parent = nullptr);
     bool isListening() const;
 public slots:

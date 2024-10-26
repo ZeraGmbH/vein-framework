@@ -19,7 +19,7 @@ class VFNET2_EXPORT TcpSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit TcpSystem(VeinTcp::AbstractTcpWorkerFactory *workerFactoryUsedShort, QObject *t_parent = nullptr);
+    explicit TcpSystem(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *t_parent = nullptr);
     explicit TcpSystem(QObject *t_parent = nullptr);
     virtual ~TcpSystem();
 signals:
@@ -78,10 +78,8 @@ private:
      */
     QList<VeinTcp::TcpPeer *> m_waitingAuth;
 
-    /**
-     * @brief List of active clients
-     */
     QHash<QUuid, VeinTcp::TcpPeer *> m_peerList;
+    VeinTcp::AbstractTcpWorkerFactoryPtr m_tcpWorkerFactory;
     VeinTcp::TcpServer *m_server = nullptr;
 };
 }

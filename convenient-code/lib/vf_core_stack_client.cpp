@@ -3,6 +3,17 @@
 
 VfCoreStackClient::VfCoreStackClient()
 {
+    init();
+}
+
+VfCoreStackClient::VfCoreStackClient(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
+    m_tcpSystem(tcpWorkerFactory)
+{
+    init();
+}
+
+void VfCoreStackClient::init()
+{
     m_cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
     m_netSystem.setOperationMode(VeinNet::NetworkSystem::VNOM_PASS_THROUGH); //!!!!!
     m_eventHandler.addSubsystem(&m_netSystem);
