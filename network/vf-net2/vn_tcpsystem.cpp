@@ -49,7 +49,7 @@ void TcpSystem::connectToServer(const QString &t_host, quint16 t_port)
     VF_ASSERT(t_port > 0, "Port must be > 0");
     vCDebug(VEIN_NET_TCP) << "Attempting connection to:"<< t_host << "on port:" << t_port;
     VeinTcp::TcpPeer *tmpPeer;
-    if(m_tcpWorkerFactory) // This nasty if/elese will go soon hopefully
+    if(m_tcpWorkerFactory) // This nasty if/else will go soon hopefully
         tmpPeer = new VeinTcp::TcpPeer(m_tcpWorkerFactory, this);
     else
         tmpPeer = new VeinTcp::TcpPeer(this);
