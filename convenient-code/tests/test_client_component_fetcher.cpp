@@ -3,7 +3,7 @@
 #include "testveinserver.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "vtcp_workerfactorymethodstest.h"
+#include "mocktcpworkerfactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -69,7 +69,6 @@ void test_client_component_fetcher::getFromUnsubscribedEntityValidComponentNoNet
 
 void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
     VfCoreStackClient clientStack;
@@ -90,10 +89,9 @@ void test_client_component_fetcher::noGetFromUnsubscribedEntityValidComponentNet
 
 void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
@@ -117,10 +115,9 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
 
 void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 {
-    VeinTcp::TcpWorkerFactoryMethodsTest::enableMockNetwork();
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack;
+    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 

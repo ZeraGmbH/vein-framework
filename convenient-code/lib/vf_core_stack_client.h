@@ -14,6 +14,7 @@ class VfCoreStackClient : public QObject
     Q_OBJECT
 public:
     VfCoreStackClient();
+    VfCoreStackClient(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory);
     void connectToServer(const QString &host, quint16 port);
     void subscribeEntity(int entityId); // this should go once we got tasks
 
@@ -29,6 +30,7 @@ signals:
 private slots:
     void onSubscribed(bool ok);
 private:
+    void init();
     VeinEvent::EventHandler m_eventHandler;
     VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
     VeinNet::NetworkSystem m_netSystem;

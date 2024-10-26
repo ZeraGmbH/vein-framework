@@ -11,9 +11,10 @@ using namespace VeinEvent;
 
 namespace VeinNet
 {
-TcpSystem::TcpSystem(VeinTcp::AbstractTcpWorkerFactory *workerFactoryUsedShort, QObject *t_parent) :
-    EventSystem(t_parent) ,
-    m_server(new VeinTcp::TcpServer(workerFactoryUsedShort, this))
+TcpSystem::TcpSystem(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *t_parent) :
+    EventSystem(t_parent),
+    m_tcpWorkerFactory(tcpWorkerFactory),
+    m_server(new VeinTcp::TcpServer(tcpWorkerFactory, this))
 {
     init();
 }
@@ -47,7 +48,11 @@ void TcpSystem::connectToServer(const QString &t_host, quint16 t_port)
     VF_ASSERT(t_host.isEmpty() == false, "Empty host");
     VF_ASSERT(t_port > 0, "Port must be > 0");
     vCDebug(VEIN_NET_TCP) << "Attempting connection to:"<< t_host << "on port:" << t_port;
-    VeinTcp::TcpPeer *tmpPeer = new VeinTcp::TcpPeer(this);
+    VeinTcp::TcpPeer *tmpPeer;
+    if(m_tcpWorkerFactory) // This nasty if/elese will go soon hopefully
+        tmpPeer = new VeinTcp::TcpPeer(m_tcpWorkerFactory, this);
+    else
+        tmpPeer = new VeinTcp::TcpPeer(this);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigSocketError, this, &TcpSystem::onSocketError);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, &TcpSystem::onConnectionEstablished);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &TcpSystem::onConnectionClosed);

@@ -5,6 +5,11 @@
 namespace VeinTcp
 {
 
+AbstractTcpWorkerFactoryPtr TcpWorkerFactory::create()
+{
+    return std::make_shared<TcpWorkerFactory>();
+}
+
 TcpPeerWorkerInterfacePtr TcpWorkerFactory::createTcpPeerWorker(TcpPeer *peer)
 {
     return std::make_unique<TcpPeerWorker>(peer, TcpPeerWorker::secret());
