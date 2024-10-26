@@ -28,8 +28,6 @@ public:
     // for mock peer
     static MockNetServerWorker* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);
-    // for TcpWorkerFactoryMethodsTest
-    static void cleanupServerMocks();
 private slots:
     void onPeerClosed(VeinTcp::TcpPeer *peer);
 private:

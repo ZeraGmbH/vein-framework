@@ -8,7 +8,6 @@ namespace VeinTcp
 
 void TcpWorkerFactoryMethodsTest::enableMockNetwork()
 {
-    MockNetServerWorker::cleanupServerMocks();
     m_createFunctionPeer =
         [](TcpPeer *peer) {
             return std::make_unique<MockNetPeerWorker>(peer, MockNetPeerWorker::secret());
