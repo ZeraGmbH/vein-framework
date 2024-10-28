@@ -5,7 +5,7 @@
 #include "vf_server_component_add.h"
 #include "task_client_component_fetcher.h"
 #include "task_client_component_setter.h"
-#include "mocktcpworkerfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>
@@ -294,7 +294,7 @@ void test_command_events::init()
     m_netServer = std::make_unique<TestVeinServerWithMockNet>(serverPort);
     m_netServer->getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    m_netClient = std::make_unique<VfCoreStackClient>(VeinTcp::MockTcpWorkerFactory::create());
+    m_netClient = std::make_unique<VfCoreStackClient>(VeinTcp::MockTcpNetworkFactory::create());
     m_entityItem = VfEntityComponentEventItem::create(systemEntityId);
     m_netClient->addItem(m_entityItem);
     m_netClient->connectToServer("127.0.0.1", serverPort);

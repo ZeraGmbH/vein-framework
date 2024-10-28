@@ -3,7 +3,7 @@
 #include "vf_client_entity_subscriber.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "mocktcpworkerfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -17,7 +17,7 @@ void test_client_entity_unsubscriber::unsubscribeOnNotSubscribed()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
@@ -35,7 +35,7 @@ void test_client_entity_unsubscriber::subscribeUnsubscribe()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 

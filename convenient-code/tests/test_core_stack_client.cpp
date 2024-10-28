@@ -1,7 +1,7 @@
 #include "test_core_stack_client.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "mocktcpworkerfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include <QSignalSpy>
 #include <QTest>
 
@@ -14,7 +14,7 @@ void test_core_stack_client::subsriptionWithThrowAwayObjects()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
 
     QSignalSpy spy(&clientStack, &VfCoreStackClient::sigSubscribed);

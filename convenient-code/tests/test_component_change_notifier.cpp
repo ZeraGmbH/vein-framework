@@ -4,7 +4,7 @@
 #include "vf_cmd_event_handler.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "mocktcpworkerfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include <vcmp_componentdata.h>
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -70,7 +70,7 @@ void test_component_change_notifier::inClientServerStack()
     // server
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 

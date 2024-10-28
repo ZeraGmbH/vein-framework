@@ -1,14 +1,14 @@
 #ifndef TCPWORKERFACTORY_H
 #define TCPWORKERFACTORY_H
 
-#include "abstracttcpworkerfactory.h"
+#include "abstracttcpnetworkfactory.h"
 
 namespace VeinTcp
 {
-class TcpWorkerFactory : public AbstractTcpWorkerFactory
+class TcpNetworkFactory : public AbstractTcpNetworkFactory
 {
 public:
-    static AbstractTcpWorkerFactoryPtr create();
+    static AbstractTcpNetworkFactoryPtr create();
     TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer) override;
     TcpServerWorkerInterfacePtr createTcpServerWorker(TcpServer *server) override;
 };
