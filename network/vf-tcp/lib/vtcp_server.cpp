@@ -3,15 +3,15 @@
 
 namespace VeinTcp
 {
-TcpServer::TcpServer(AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *parent) :
+TcpServer::TcpServer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
     QObject(parent),
-    m_serverWorker(tcpWorkerFactory->createTcpServerWorker(this))
+    m_serverWorker(tcpNetworkFactory->createTcpServerWorker(this))
 {
 }
 
 TcpServer::TcpServer(QObject *parent) :
     QObject(parent),
-    m_serverWorker(TcpWorkerFactoryMethods::createTcpServerWorker(this))
+    m_serverWorker(TcpNetworkFactoryMethods::createTcpServerWorker(this))
 {
 }
 

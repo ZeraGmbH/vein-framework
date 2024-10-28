@@ -1,6 +1,6 @@
 #include "test_networkmock.h"
-#include "tcpworkerfactory.h"
-#include "mocktcpworkerfactory.h"
+#include "tcpnetworkfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include "vtcp_peer.h"
 #include "vtcp_server.h"
 #include <QSignalSpy>
@@ -14,10 +14,10 @@ static constexpr int serverPort = 4242;
 
 void test_networkmock::clientConnectKillClientRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     server.startServer(serverPort, false);
 
-    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer->setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -37,10 +37,10 @@ void test_networkmock::clientConnectKillClientRealFactory()
 
 void test_networkmock::clientConnectKillClientMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     server.startServer(serverPort, false);
 
-    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer *clientPeer = new VeinTcp::TcpPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer->setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -61,10 +61,10 @@ void test_networkmock::clientConnectKillClientMockFactory()
 
 void test_networkmock::clientConnectKillServerMockFactory()
 {
-    VeinTcp::TcpServer *server = new VeinTcp::TcpServer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer *server = new VeinTcp::TcpServer(VeinTcp::MockTcpNetworkFactory::create());
     server->startServer(serverPort, false);
 
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -88,10 +88,10 @@ void test_networkmock::clientConnectKillServerMockFactory()
 
 void test_networkmock::clientConnectKillServerRealFactory()
 {
-    VeinTcp::TcpServer *server = new VeinTcp::TcpServer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer *server = new VeinTcp::TcpServer(VeinTcp::TcpNetworkFactory::create());
     server->startServer(serverPort, false);
 
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -115,7 +115,7 @@ void test_networkmock::clientConnectKillServerRealFactory()
 
 void test_networkmock::failPeerConnectNoServerRealFactory()
 {
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
@@ -126,7 +126,7 @@ void test_networkmock::failPeerConnectNoServerRealFactory()
 
 void test_networkmock::failPeerConnectNoServerMockFactory()
 {
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
@@ -138,20 +138,20 @@ void test_networkmock::failPeerConnectNoServerMockFactory()
 void test_networkmock::failPeerSendNoServerRealFactory()
 {
     // howto test? check warning?
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.sendMessage("foo");
 }
 
 void test_networkmock::failPeerSendNoServerMockFactory()
 {
     // howto test? check warning?
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.sendMessage("foo");
 }
 
 void test_networkmock::failPeerNotLocalhostMockFactory()
 {
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.startConnection("192.168.1.1", serverPort);
     // check event loop fired: connect after start
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigSocketError);
@@ -162,19 +162,19 @@ void test_networkmock::failPeerNotLocalhostMockFactory()
 
 void test_networkmock::notStartedServerIsNotListeningRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server.isListening(), false);
 }
 
 void test_networkmock::notStartedServerIsNotListeningMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     QCOMPARE(server.isListening(), false);
 }
 
 void test_networkmock::startedServerIsListeningRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     server.startServer(serverPort, false);
     // Immediate no event loop!?
     QCOMPARE(server.isListening(), true);
@@ -182,16 +182,16 @@ void test_networkmock::startedServerIsListeningRealFactory()
 
 void test_networkmock::startedServerIsListeningMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     server.startServer(serverPort, false);
     QCOMPARE(server.isListening(), true);
 }
 
 void test_networkmock::clientConnectServerSideVeryImportantRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     server.startServer(serverPort, false);
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
@@ -209,9 +209,9 @@ void test_networkmock::clientConnectServerSideVeryImportantRealFactory()
 
 void test_networkmock::clientConnectServerSideVeryImportantMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     server.startServer(serverPort, false);
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
@@ -229,42 +229,42 @@ void test_networkmock::clientConnectServerSideVeryImportantMockFactory()
 
 void test_networkmock::failTwoServersSamePortRealFactory()
 {
-    VeinTcp::TcpServer server1(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server1(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server1.startServer(serverPort, false), true);
-    VeinTcp::TcpServer server2(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server2(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server2.startServer(serverPort, false), false);
 }
 
 void test_networkmock::failTwoServersSamePortMockFactory()
 {
-    VeinTcp::TcpServer server1(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server1(VeinTcp::MockTcpNetworkFactory::create());
     QCOMPARE(server1.startServer(serverPort, false), true);
-    VeinTcp::TcpServer server2(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server2(VeinTcp::MockTcpNetworkFactory::create());
     QCOMPARE(server2.startServer(serverPort, false), false);
 }
 
 void test_networkmock::twoServersDifferentPortRealFactory()
 {
-    VeinTcp::TcpServer server1(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server1(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server1.startServer(serverPort, false), true);
-    VeinTcp::TcpServer server2(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server2(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server2.startServer(serverPort+1, false), true);
 }
 
 void test_networkmock::twoServersDifferentPortMockFactory()
 {
-    VeinTcp::TcpServer server1(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server1(VeinTcp::MockTcpNetworkFactory::create());
     QCOMPARE(server1.startServer(serverPort, false), true);
-    VeinTcp::TcpServer server2(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server2(VeinTcp::MockTcpNetworkFactory::create());
     QCOMPARE(server2.startServer(serverPort+1, false), true);
 }
 
 void test_networkmock::clientConnectClientSideEstablishedRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     server.startServer(serverPort, false);
 
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -280,10 +280,10 @@ void test_networkmock::clientConnectClientSideEstablishedRealFactory()
 
 void test_networkmock::clientConnectClientSideEstablishedMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     server.startServer(serverPort, false);
 
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     VeinTcp::TcpPeer *establishedPeer = nullptr;
     QSignalSpy spy(&clientPeer, &VeinTcp::TcpPeer::sigConnectionEstablished);
@@ -299,9 +299,9 @@ void test_networkmock::clientConnectClientSideEstablishedMockFactory()
 
 void test_networkmock::talkBidirectionalRealFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::TcpNetworkFactory::create());
     server.startServer(serverPort, false);
-    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::TcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start
@@ -335,9 +335,9 @@ void test_networkmock::talkBidirectionalRealFactory()
 
 void test_networkmock::talkBidirectionalMockFactory()
 {
-    VeinTcp::TcpServer server(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpServer server(VeinTcp::MockTcpNetworkFactory::create());
     server.startServer(serverPort, false);
-    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpWorkerFactory::create());
+    VeinTcp::TcpPeer clientPeer(VeinTcp::MockTcpNetworkFactory::create());
     clientPeer.setPeerId(QUuid::createUuid());
     clientPeer.startConnection("localhost", serverPort);
     // check event loop fired: connect after start

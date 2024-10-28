@@ -10,7 +10,7 @@
 namespace VeinTcp
 {
 
-class TcpWorkerFactoryMethods
+class TcpNetworkFactoryMethods
 {
 public:
     static TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer);

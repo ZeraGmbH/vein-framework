@@ -2,7 +2,7 @@
 #include "task_client_entity_subscribe.h"
 #include "vf_core_stack_client.h"
 #include "testveinserverwithmocknet.h"
-#include "mocktcpworkerfactory.h"
+#include "mocktcpnetworkfactory.h"
 #include "timerfactoryqtfortest.h"
 #include "timemachinefortest.h"
 #include <QSignalSpy>
@@ -25,7 +25,7 @@ void test_task_client_entity_subscribe::subscibeOk()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 
@@ -40,7 +40,7 @@ void test_task_client_entity_subscribe::subscibeOk()
 
 void test_task_client_entity_subscribe::timeout()
 {
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     TimeMachineObject::feedEventLoop();
 
     std::shared_ptr<QStringList> components = std::make_shared<QStringList>();
@@ -63,7 +63,7 @@ void test_task_client_entity_subscribe::invalidEntity()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
 
-    VfCoreStackClient clientStack(VeinTcp::MockTcpWorkerFactory::create());
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
     clientStack.connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
 

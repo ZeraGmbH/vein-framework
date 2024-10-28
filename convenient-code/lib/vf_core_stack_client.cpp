@@ -6,8 +6,8 @@ VfCoreStackClient::VfCoreStackClient()
     init();
 }
 
-VfCoreStackClient::VfCoreStackClient(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory) :
-    m_tcpSystem(tcpWorkerFactory)
+VfCoreStackClient::VfCoreStackClient(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+    m_tcpSystem(tcpNetworkFactory)
 {
     init();
 }
