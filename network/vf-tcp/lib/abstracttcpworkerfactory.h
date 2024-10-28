@@ -1,5 +1,5 @@
-#ifndef ABSTRACTTCPNETWORKFACTORY_H
-#define ABSTRACTTCPNETWORKFACTORY_H
+#ifndef ABSTRACTTCPWORKERFACTORY_H
+#define ABSTRACTTCPWORKERFACTORY_H
 
 #include "vtcp_serverworkerinterface.h"
 #include <memory>
@@ -10,14 +10,14 @@ class TcpPeer;
 class TcpServer;
 
 
-class AbstractTcpNetworkFactory
+class AbstractTcpWorkerFactory
 {
 public:
     virtual TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer) = 0;
     virtual TcpServerWorkerInterfacePtr createTcpServerWorker(TcpServer *server) = 0;
 };
 
-typedef std::shared_ptr<AbstractTcpNetworkFactory> AbstractTcpNetworkFactoryPtr;
+typedef std::shared_ptr<AbstractTcpWorkerFactory> AbstractTcpWorkerFactoryPtr;
 }
 
-#endif // ABSTRACTTCPNETWORKFACTORY_H
+#endif // ABSTRACTTCPWORKERFACTORY_H

@@ -16,10 +16,10 @@ private:
     // Just our friends can create us (by make_unique) - see
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
-    friend class MockTcpNetworkFactory;
+    friend class MockTcpWorkerFactory;
     friend class MockNetServerWorker;
-    // intermediate TcpNetworkFactoryMethodsTest will be replaced by MockTcpNetworkFactory
-    friend class TcpNetworkFactoryMethodsTest;
+    // intermediate TcpWorkerFactoryMethodsTest will be replaced by MockTcpWorkerFactory
+    friend class TcpWorkerFactoryMethodsTest;
 public:
     MockNetPeerWorker(TcpPeer *peer, secret);
     MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);

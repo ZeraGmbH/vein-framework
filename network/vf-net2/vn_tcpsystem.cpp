@@ -11,10 +11,10 @@ using namespace VeinEvent;
 
 namespace VeinNet
 {
-TcpSystem::TcpSystem(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *t_parent) :
+TcpSystem::TcpSystem(VeinTcp::AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *t_parent) :
     EventSystem(t_parent),
-    m_tcpNetworkFactory(tcpNetworkFactory),
-    m_server(new VeinTcp::TcpServer(tcpNetworkFactory, this))
+    m_tcpWorkerFactory(tcpWorkerFactory),
+    m_server(new VeinTcp::TcpServer(tcpWorkerFactory, this))
 {
     init();
 }
@@ -49,8 +49,8 @@ void TcpSystem::connectToServer(const QString &t_host, quint16 t_port)
     VF_ASSERT(t_port > 0, "Port must be > 0");
     vCDebug(VEIN_NET_TCP) << "Attempting connection to:"<< t_host << "on port:" << t_port;
     VeinTcp::TcpPeer *tmpPeer;
-    if(m_tcpNetworkFactory) // This nasty if/else will go soon hopefully
-        tmpPeer = new VeinTcp::TcpPeer(m_tcpNetworkFactory, this);
+    if(m_tcpWorkerFactory) // This nasty if/else will go soon hopefully
+        tmpPeer = new VeinTcp::TcpPeer(m_tcpWorkerFactory, this);
     else
         tmpPeer = new VeinTcp::TcpPeer(this);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigSocketError, this, &TcpSystem::onSocketError);

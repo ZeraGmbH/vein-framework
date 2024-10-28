@@ -1,14 +1,14 @@
 #ifndef MOCKTCPWORKERFACTORY_H
 #define MOCKTCPWORKERFACTORY_H
 
-#include <abstracttcpnetworkfactory.h>
+#include <abstracttcpworkerfactory.h>
 
 namespace VeinTcp
 {
-class MockTcpNetworkFactory : public AbstractTcpNetworkFactory
+class MockTcpWorkerFactory : public AbstractTcpWorkerFactory
 {
 public:
-    static AbstractTcpNetworkFactoryPtr create();
+    static AbstractTcpWorkerFactoryPtr create();
     TcpPeerWorkerInterfacePtr createTcpPeerWorker(TcpPeer *peer) override;
     TcpServerWorkerInterfacePtr createTcpServerWorker(TcpServer *server) override;
 };

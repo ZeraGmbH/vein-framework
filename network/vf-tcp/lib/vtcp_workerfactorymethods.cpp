@@ -5,26 +5,26 @@
 namespace VeinTcp
 {
 
-std::function<TcpPeerWorkerInterfacePtr(TcpPeer *)> TcpNetworkFactoryMethods::m_createFunctionPeer = getCreateFunctionPeer();
-std::function<TcpServerWorkerInterfacePtr(TcpServer *)> TcpNetworkFactoryMethods::m_createFunctionServer = getCreateFunctionServer();
+std::function<TcpPeerWorkerInterfacePtr(TcpPeer *)> TcpWorkerFactoryMethods::m_createFunctionPeer = getCreateFunctionPeer();
+std::function<TcpServerWorkerInterfacePtr(TcpServer *)> TcpWorkerFactoryMethods::m_createFunctionServer = getCreateFunctionServer();
 
 
-TcpPeerWorkerInterfacePtr TcpNetworkFactoryMethods::createTcpPeerWorker(TcpPeer *peer)
+TcpPeerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpPeerWorker(TcpPeer *peer)
 {
     return m_createFunctionPeer(peer);
 }
 
-TcpServerWorkerInterfacePtr TcpNetworkFactoryMethods::createTcpServerWorker(TcpServer *server)
+TcpServerWorkerInterfacePtr TcpWorkerFactoryMethods::createTcpServerWorker(TcpServer *server)
 {
     return m_createFunctionServer(server);
 }
 
-std::function<TcpPeerWorkerInterfacePtr (TcpPeer *)> TcpNetworkFactoryMethods::getCreateFunctionPeer()
+std::function<TcpPeerWorkerInterfacePtr (TcpPeer *)> TcpWorkerFactoryMethods::getCreateFunctionPeer()
 {
     return [](TcpPeer *peer) { return std::make_unique<TcpPeerWorker>(peer, TcpPeerWorker::secret()); };
 }
 
-std::function<TcpServerWorkerInterfacePtr (TcpServer *)> TcpNetworkFactoryMethods::getCreateFunctionServer()
+std::function<TcpServerWorkerInterfacePtr (TcpServer *)> TcpWorkerFactoryMethods::getCreateFunctionServer()
 {
     return [](TcpServer *server) { return std::make_unique<TcpServerWorker>(server, TcpServerWorker::secret()); };
 }

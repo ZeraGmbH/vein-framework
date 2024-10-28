@@ -1,7 +1,7 @@
 #ifndef VEIN_TCP_PEER_H
 #define VEIN_TCP_PEER_H
 
-#include "abstracttcpnetworkfactory.h"
+#include "abstracttcpworkerfactory.h"
 #include "vftcp_export.h"
 #include "vtcp_peerworkerinterface.h"
 #include "vtcp_serverworkerinterface.h"
@@ -15,7 +15,7 @@ class VFTCP_EXPORT TcpPeer : public QObject
 {
     Q_OBJECT
 public:
-    explicit TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent = nullptr);
+    explicit TcpPeer(AbstractTcpWorkerFactoryPtr tcpWorkerFactory, QObject *parent = nullptr);
     explicit TcpPeer(QObject *parent = nullptr);
     explicit TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface* serverWorker, QObject *parent = nullptr);
 
