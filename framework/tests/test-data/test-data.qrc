@@ -19,11 +19,6 @@
 
         <file>vein-storage-dumps/dumpChangeSession.json</file>
         <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
-        <file>vein-storage-dumps/dumpStorageComponentAddRemove.json</file>
-        <file>vein-storage-dumps/dumpStorageComponentSet.json</file>
-        <file>vein-storage-dumps/dumpStorageEntityAdded.json</file>
-        <file>vein-storage-dumps/dumpStorageEntityAddRemove.json</file>
-        <file>vein-storage-dumps/dumpStorageEntityComponentAdd.json</file>
         <file>vein-storage-dumps/dumpStorageInitial.json</file>
         <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
     </qresource>

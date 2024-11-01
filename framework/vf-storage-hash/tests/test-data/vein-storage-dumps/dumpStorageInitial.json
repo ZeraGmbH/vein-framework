@@ -1,0 +1,58 @@
+{
+    "0": {
+        "DevMode": false,
+        "Entities": [
+            0
+        ],
+        "EntityName": "_System",
+        "Error_Messages": null,
+        "INF_ModuleInterface": {
+            "ComponentInfo": {
+                "EntityName": {
+                    "Desciption": "Module's name"
+                },
+                "INF_ModuleInterface": {
+                    "Description": "Module's interface details"
+                },
+                "Session": {
+                    "Description": "Session name",
+                    "Validation": {
+                        "Data": [
+                        ],
+                        "Type": "STRING"
+                    }
+                }
+            },
+            "ModuleInfo": {
+                "Description": "This module gives general information about the device",
+                "Name": "_System"
+            },
+            "SCPIInfo": {
+                "Cmd": [
+                    [
+                        "CONFIGURATION",
+                        "NAMESESSION",
+                        "10",
+                        "Session",
+                        "0",
+                        ""
+                    ],
+                    [
+                        "CONFIGURATION",
+                        "SESSION:CATALOG",
+                        "2",
+                        "Session",
+                        "1",
+                        ""
+                    ]
+                ],
+                "Name": "SYST"
+            }
+        },
+        "ModulesPaused": false,
+        "Session": "session",
+        "SessionsAvailable": [
+            "sessionList"
+        ]
+    }
+}
