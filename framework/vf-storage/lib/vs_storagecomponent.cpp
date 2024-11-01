@@ -1,4 +1,5 @@
 #include "vs_storagecomponent.h"
+#include <timerfactoryqt.h>
 
 namespace VeinStorage
 {
@@ -27,9 +28,9 @@ void StorageComponent::setValue(QVariant value)
     }
 }
 
-void StorageComponent::setTimestamp(QDateTime timestamp)
+void StorageComponent::setTimestamp()
 {
-    m_timestamp = timestamp;
+    m_timestamp = TimerFactoryQt::getCurrentTime();
 }
 
 }

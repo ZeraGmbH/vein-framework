@@ -1,5 +1,4 @@
 #include <QDateTime>
-#include <timerfactoryqt.h>
 #include "vs_storageeventsystemprivate.h"
 
 namespace VeinStorage
@@ -27,20 +26,20 @@ void VeinHashPrivate::insertComponentValue(EntityMap *entityChecked, const QStri
 {
     (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
     StorageComponentPtr component = (*entityChecked)[componentName];
-    setComponentTimeStamp(component);
+    component->setTimestamp();
 }
 
 void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value)
 {
     Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
-    setComponentTimeStamp(component);
+    component->setTimestamp();
     component->setValue(value);
     m_entityComponentData[entityId][componentName] = component;
 }
 
 void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
 {
-    setComponentTimeStamp(componentChecked);
+    componentChecked->setTimestamp();
     componentChecked->setValue(value);
 }
 
@@ -112,12 +111,6 @@ StorageComponentPtr VeinHashPrivate::takeFutureComponent(const int entityId, con
 bool VeinHashPrivate::areFutureComponentsEmpty()
 {
     return m_futureEntityComponentData.isEmpty();
-}
-
-void VeinHashPrivate::setComponentTimeStamp(StorageComponentPtr component)
-{
-    QDateTime now = TimerFactoryQt::getCurrentTime();
-    component->setTimestamp(now);
 }
 
 }

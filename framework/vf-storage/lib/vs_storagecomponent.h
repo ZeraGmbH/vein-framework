@@ -16,7 +16,7 @@ public:
 private:
     friend class VeinHashPrivate;
     void setValue(QVariant value);
-    void setTimestamp(QDateTime timestamp);
+    void setTimestamp();
     QVariant m_value;
     QDateTime m_timestamp;
 };
