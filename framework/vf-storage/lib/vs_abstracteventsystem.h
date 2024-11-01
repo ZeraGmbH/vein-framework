@@ -13,7 +13,7 @@ class VFEVENT_EXPORT AbstractEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit AbstractEventSystem(QObject *parent = nullptr);
+    explicit AbstractEventSystem(QObject *parent = nullptr) : EventSystem(parent) {}
 
     virtual bool hasEntity(int t_entityId) const = 0;
     virtual QList<int> getEntityList() const = 0;
