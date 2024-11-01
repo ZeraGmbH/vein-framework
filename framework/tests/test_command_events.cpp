@@ -143,11 +143,11 @@ void test_command_events::clientSetNonExistingComponent()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 
     // TODO??: This time it is SystemModuleEventSystem missing error handling... How shall we test/handle
-    // gazillions of error handling implementations: SystemModuleEventSystem/StorageSystem/IntrospectionSystem/VfCpp/zera-classes modules???
+    // gazillions of error handling implementations: SystemModuleEventSystem/AbstractEventSystem/IntrospectionSystem/VfCpp/zera-classes modules???
 
     // Unexpected result: Server just ignores. So check if component was
     // accidentally created in server...
-    VeinEvent::StorageSystem* storage = m_netServer->getStorage();
+    VeinStorage::AbstractEventSystem* storage = m_netServer->getStorage();
     QFile file2(":/vein-storage-dumps/dumpStorageInitial.json");
     QVERIFY(file2.open(QFile::ReadOnly));
 

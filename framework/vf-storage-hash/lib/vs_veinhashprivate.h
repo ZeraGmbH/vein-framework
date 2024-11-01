@@ -1,31 +1,13 @@
 #ifndef VEINHASHPRIVATE_H
 #define VEINHASHPRIVATE_H
 
-#include "ve_storagesystem.h"
+#include "vs_storagecomponent.h"
 #include <QObject>
 #include <QHash>
 #include <QDateTime>
 
 namespace VeinStorage
 {
-
-class StorageComponent : public VeinEvent::StorageComponentInterface
-{
-    Q_OBJECT
-public:
-    StorageComponent(QVariant value);
-    QVariant getValue() const override;
-    QDateTime getTimestamp() const override;
-private:
-    friend class VeinHashPrivate;
-    void setValue(QVariant value);
-    void setTimestamp(QDateTime timestamp);
-    QVariant m_value;
-    QDateTime m_timestamp;
-};
-
-typedef std::shared_ptr<StorageComponent> StorageComponentPtr;
-typedef QHash<QString, StorageComponentPtr> EntityMap;
 
 class VeinHashPrivate
 {

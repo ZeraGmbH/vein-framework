@@ -1,4 +1,4 @@
-#include "vs_veinhash.h"
+#include "vs_storageeventsystem.h"
 #include "vs_veinhashprivate.h"
 #include <vcmp_entitydata.h>
 #include <vcmp_errordatasender.h>
@@ -13,18 +13,18 @@ using namespace VeinComponent;
 namespace VeinStorage
 {
 
-VeinHash::VeinHash(QObject *parent) :
-    StorageSystem(parent),
+StorageEventSystem::StorageEventSystem(QObject *parent) :
+    AbstractEventSystem(parent),
     m_privHash(new VeinHashPrivate)
 {
 }
 
-VeinHash::~VeinHash()
+StorageEventSystem::~StorageEventSystem()
 {
     delete m_privHash;
 }
 
-void VeinHash::processEvent(QEvent *event)
+void StorageEventSystem::processEvent(QEvent *event)
 {
     if(event->type() == CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
@@ -54,7 +54,7 @@ void VeinHash::processEvent(QEvent *event)
     }
 }
 
-void VeinHash::processComponentData(QEvent *event)
+void StorageEventSystem::processComponentData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     ComponentData *cData = static_cast<ComponentData *>(cEvent->eventData());
@@ -115,7 +115,7 @@ void VeinHash::processComponentData(QEvent *event)
     }
 }
 
-void VeinHash::processEntityData(QEvent *event)
+void StorageEventSystem::processEntityData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
@@ -142,12 +142,12 @@ void VeinHash::processEntityData(QEvent *event)
     }
 }
 
-void VeinHash::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
+void StorageEventSystem::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
 {
     m_acceptableOrigins = origins;
 }
 
-QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) const
+QVariant StorageEventSystem::getStoredValue(int entityId, const QString &componentName) const
 {
     StorageComponentPtr component = m_privHash->findComponent(entityId, componentName);
     if(component)
@@ -156,40 +156,40 @@ QVariant VeinHash::getStoredValue(int entityId, const QString &componentName) co
     return QVariant();
 }
 
-bool VeinHash::hasStoredValue(int entityId, const QString &componentName) const
+bool StorageEventSystem::hasStoredValue(int entityId, const QString &componentName) const
 {
     return m_privHash->findComponent(entityId, componentName) != nullptr;
 }
 
-QList<QString> VeinHash::getEntityComponents(int entityId) const
+QList<QString> StorageEventSystem::getEntityComponents(int entityId) const
 {
     return m_privHash->getComponentList(entityId);
 }
 
-bool VeinHash::hasEntity(int entityId) const
+bool StorageEventSystem::hasEntity(int entityId) const
 {
     return m_privHash->findEntity(entityId) != nullptr;
 }
 
-QList<int> VeinHash::getEntityList() const
+QList<int> StorageEventSystem::getEntityList() const
 {
     return m_privHash->getEntityList();
 }
 
-StorageComponentInterfacePtr VeinHash::getComponent(int entityId, const QString &componentName) const
+AbstractComponentPtr StorageEventSystem::getComponent(int entityId, const QString &componentName) const
 {
-    StorageComponentInterfacePtr component = m_privHash->findComponent(entityId, componentName);
+    AbstractComponentPtr component = m_privHash->findComponent(entityId, componentName);
     if(!component)
         qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
     return component;
 }
 
-StorageComponentInterfacePtr VeinHash::getFutureComponent(int entityId, const QString &componentName)
+AbstractComponentPtr StorageEventSystem::getFutureComponent(int entityId, const QString &componentName)
 {
     return m_privHash->getFutureComponent(entityId, componentName);
 }
 
-void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
+void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
         outputFileDevice->isWritable()) {
@@ -260,7 +260,7 @@ void VeinHash::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) 
         outputFileDevice->close();
 }
 
-bool VeinHash::areFutureComponentsEmpty()
+bool StorageEventSystem::areFutureComponentsEmpty()
 {
     return m_privHash->areFutureComponentsEmpty();
 }

@@ -1,6 +1,6 @@
 #include "test_storage_notification.h"
 #include "testveinserver.h"
-#include "vs_veinhash.h"
+#include "vs_storageeventsystem.h"
 #include "vf_server_component_setter.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
@@ -8,11 +8,13 @@
 
 QTEST_MAIN(test_storage_notification)
 
+using namespace VeinStorage;
+
 static constexpr int serverPort = 4242;
 
 void test_storage_notification::getNullNotifierFromEmpty()
 {
-    VeinStorage::VeinHash hash;
+    StorageEventSystem hash;
     QCOMPARE(hash.getComponent(0, "foo"), nullptr);
     QCOMPARE(hash.getComponent(1, "foo"), nullptr);
     QCOMPARE(hash.getComponent(0, "bar"), nullptr);
@@ -23,7 +25,7 @@ void test_storage_notification::getNotifierForExisting()
 {
     TestVeinServer server;
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
-    VeinEvent::StorageSystem* storage = server.getStorage();
+    AbstractEventSystem* storage = server.getStorage();
 
     QVERIFY(storage->getComponent(0, "EntityName"));
 }
@@ -32,7 +34,7 @@ void test_storage_notification::getNotifierForNonExisting()
 {
     TestVeinServer server;
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
-    VeinEvent::StorageSystem* storage = server.getStorage();
+    AbstractEventSystem* storage = server.getStorage();
 
     QCOMPARE(storage->getComponent(0, "foo"), nullptr);
 }
@@ -41,10 +43,10 @@ void test_storage_notification::getNotifierForTwoExisting()
 {
     TestVeinServer server;
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
-    VeinEvent::StorageSystem* storage = server.getStorage();
+    AbstractEventSystem* storage = server.getStorage();
 
-    VeinEvent::StorageComponentInterfacePtr component1 = storage->getComponent(0, "EntityName");
-    VeinEvent::StorageComponentInterfacePtr component2 = storage->getComponent(0, "Session");
+    AbstractComponentPtr component1 = storage->getComponent(0, "EntityName");
+    AbstractComponentPtr component2 = storage->getComponent(0, "Session");
     QVERIFY(component1);
     QVERIFY(component2);
     QVERIFY(component1 != component2);
@@ -65,9 +67,9 @@ void test_storage_notification::receiveOneChangeSignalPerChangeByVein()
     server.addTestEntities(1, 1);
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = server.getStorage();
-    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
-    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
+    AbstractEventSystem* storage = server.getStorage();
+    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    QSignalSpy spy(component.get(), &AbstractComponent::sigValueChange);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // valid old / change new
     sendVeinSetAndProcess(&server, componentValue2, componentValue2); // invalid old / change new
@@ -86,9 +88,9 @@ void test_storage_notification::receiveNoChangeSignalOnSameValueByVein()
     server.addTestEntities(1, 1);
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = server.getStorage();
-    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
-    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueChange);
+    AbstractEventSystem* storage = server.getStorage();
+    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    QSignalSpy spy(component.get(), &AbstractComponent::sigValueChange);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // change new / valid old
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // same new / invalid old
@@ -105,9 +107,9 @@ void test_storage_notification::receiveOneSetSignalPerSetByVein()
     server.addTestEntities(1, 1);
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = server.getStorage();
-    VeinEvent::StorageComponentInterfacePtr component = storage->getComponent(testEntityId, componentName);
-    QSignalSpy spy(component.get(), &VeinEvent::StorageComponentInterface::sigValueSet);
+    AbstractEventSystem* storage = server.getStorage();
+    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    QSignalSpy spy(component.get(), &AbstractComponent::sigValueSet);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // change new / valid old
     sendVeinSetAndProcess(&server, componentValue1, componentValue1); // same new / valid old

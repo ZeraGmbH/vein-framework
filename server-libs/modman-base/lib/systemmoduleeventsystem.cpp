@@ -32,7 +32,7 @@ constexpr int SystemModuleEventSystem::getEntityId()
     return 0;
 }
 
-void SystemModuleEventSystem::setStorage(VeinEvent::StorageSystem *t_storageSystem)
+void SystemModuleEventSystem::setStorage(VeinStorage::AbstractEventSystem *t_storageSystem)
 {
     m_storageSystem = t_storageSystem;
 }
@@ -160,7 +160,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
             setModuleInterface()) );
     }
     else
-        qCritical() << "[SystemModuleEventSystem] StorageSystem required to call initializeEntities";
+        qCritical() << "[SystemModuleEventSystem] AbstractEventSystem required to call initializeEntities";
 }
 
 void SystemModuleEventSystem::initOnce()

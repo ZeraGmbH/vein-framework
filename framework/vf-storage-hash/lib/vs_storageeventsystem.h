@@ -1,20 +1,20 @@
-#ifndef VEINHASH_H
-#define VEINHASH_H
+#ifndef STORAGEEVENTSYSTEM_H
+#define STORAGEEVENTSYSTEM_H
 
 #include "vfstoragehash_export.h"
 #include "vs_veinhashprivate.h"
-#include <ve_storagesystem.h>
+#include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
 #include <ve_eventdata.h>
 
 namespace VeinStorage
 {
-class VFSTORAGEHASH_EXPORT VeinHash : public VeinEvent::StorageSystem
+class VFSTORAGEHASH_EXPORT StorageEventSystem : public AbstractEventSystem
 {
     Q_OBJECT
 public:
-    explicit VeinHash(QObject *parent = nullptr);
-    virtual ~VeinHash();
+    explicit StorageEventSystem(QObject *parent = nullptr);
+    virtual ~StorageEventSystem();
 
     void processEvent(QEvent *event) override;
 
@@ -25,8 +25,8 @@ public:
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
     QList<QString> getEntityComponents(int entityId) const override;
 
-    VeinEvent::StorageComponentInterfacePtr getComponent(int entityId, const QString &componentName) const override;
-    VeinEvent::StorageComponentInterfacePtr getFutureComponent(int entityId, const QString &componentName) override;
+    AbstractComponentPtr getComponent(int entityId, const QString &componentName) const override;
+    AbstractComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
 
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
     bool areFutureComponentsEmpty() override;
@@ -47,4 +47,4 @@ private:
 };
 }
 
-#endif // VEINHASH_H
+#endif // STORAGEEVENTSYSTEM_H

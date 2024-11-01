@@ -6,7 +6,7 @@
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
 #include "vn_introspectionsystem.h"
-#include "vs_veinhash.h"
+#include "vs_storageeventsystem.h"
 #include "vftestentityspy.h"
 #include "vftestcomponentspy.h"
 #include <memory>
@@ -32,7 +32,7 @@ public:
     QMap<int, QList<QString>> getTestEntityComponentInfo();
 
     VeinEvent::EventHandler* getEventHandler();
-    VeinEvent::StorageSystem* getStorage();
+    VeinStorage::AbstractEventSystem* getStorage();
     QByteArray dumpStorage(QList<int> entities);
     QByteArray dumpEvents();
     void sendEvent(QEvent *event);
@@ -53,7 +53,7 @@ private:
 
     SystemModuleEventSystem m_systemModuleSystem;
     VeinNet::IntrospectionSystem m_introspectionSystem;
-    VeinStorage::VeinHash m_storageSystem;
+    VeinStorage::StorageEventSystem m_storageSystem;
 
     std::unordered_map<int, std::unique_ptr<VfCpp::VfCppEntity>> m_entities;
     QStringList m_sessionList;

@@ -1,25 +1,28 @@
-#include "veinstoragefilter.h"
+#include "vs_storagefilter.h"
 
-VeinStorageFilter::Settings::Settings(bool fireCurrentValueOnAddFilter, bool fireOnChangesOnly) :
+namespace VeinStorage
+{
+
+StorageFilter::Settings::Settings(bool fireCurrentValueOnAddFilter, bool fireOnChangesOnly) :
     m_fireCurrentValueOnAddFilter(fireCurrentValueOnAddFilter),
     m_fireOnChangesOnly(fireOnChangesOnly)
 {
 }
 
-VeinStorageFilter::VeinStorageFilter(VeinEvent::StorageSystem* storage, Settings settings) :
+StorageFilter::StorageFilter(AbstractEventSystem* storage, Settings settings) :
     m_storage{storage},
     m_settings(settings)
 {
 }
 
-VeinStorageFilter::~VeinStorageFilter()
+StorageFilter::~StorageFilter()
 {
     clear();
 }
 
-bool VeinStorageFilter::add(int entityId, QString componentName)
+bool StorageFilter::add(int entityId, QString componentName)
 {
-    VeinEvent::StorageComponentInterfacePtr actualComponent = m_storage->getComponent(entityId, componentName);
+    AbstractComponentPtr actualComponent = m_storage->getComponent(entityId, componentName);
     if(!m_filteredEntityComponents.contains(entityId) || !m_filteredEntityComponents[entityId].contains(componentName)) {
         if(actualComponent) {
             m_filteredEntityComponents[entityId].insert(componentName);
@@ -28,11 +31,11 @@ bool VeinStorageFilter::add(int entityId, QString componentName)
 
             QMetaObject::Connection conn;
             if(m_settings.m_fireOnChangesOnly)
-                conn = connect(actualComponent.get(), &VeinEvent::StorageComponentInterface::sigValueChange, this, [=](QVariant newValue) {
+                conn = connect(actualComponent.get(), &AbstractComponent::sigValueChange, this, [=](QVariant newValue) {
                     emit sigComponentValue(entityId, componentName, newValue, actualComponent->getTimestamp());
                 });
             else
-                conn = connect(actualComponent.get(), &VeinEvent::StorageComponentInterface::sigValueSet, this, [=](QVariant setValue) {
+                conn = connect(actualComponent.get(), &AbstractComponent::sigValueSet, this, [=](QVariant setValue) {
                     emit sigComponentValue(entityId, componentName, setValue, actualComponent->getTimestamp());
                 });
             m_componentChangeConnections.append(conn);
@@ -42,7 +45,7 @@ bool VeinStorageFilter::add(int entityId, QString componentName)
     return false;
 }
 
-void VeinStorageFilter::clear()
+void StorageFilter::clear()
 {
     for(const auto &connection : qAsConst(m_componentChangeConnections))
         disconnect(connection);
@@ -50,9 +53,11 @@ void VeinStorageFilter::clear()
     m_filteredEntityComponents.clear();
 }
 
-void VeinStorageFilter::fireActual(int entityId, QString componentName, VeinEvent::StorageComponentInterfacePtr actualComponent)
+void StorageFilter::fireActual(int entityId, QString componentName, AbstractComponentPtr actualComponent)
 {
     const QVariant currValue = actualComponent->getValue();
     if(currValue.isValid())
         emit sigComponentValue(entityId, componentName, currValue, actualComponent->getTimestamp());
+}
+
 }

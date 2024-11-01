@@ -15,7 +15,7 @@ void test_storage::systemEntityOnly()
     TestVeinServerWithMockNet serverNet(serverPort);
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageInitial.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
@@ -39,7 +39,7 @@ void test_storage::addEntity()
     TimeMachineObject::feedEventLoop();
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageEntityAdded.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
@@ -59,7 +59,7 @@ void test_storage::addEntityAndComponent()
     TimeMachineObject::feedEventLoop();
     serverNet.getServer()->simulAllModulesLoaded("session", QStringList() << "sessionList");
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageEntityComponentAdd.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
@@ -81,7 +81,7 @@ void test_storage::addRemoveEntity()
     server->sendEvent(VfServerEntityRemove::generateEvent(testEntityId));
     TimeMachineObject::feedEventLoop();
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageEntityAddRemove.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
@@ -110,7 +110,7 @@ void test_storage::addRemoveComponent()
     server->sendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageComponentAddRemove.json");
     QVERIFY(file.open(QFile::ReadOnly));
 
@@ -131,7 +131,7 @@ void test_storage::setComponent()
 
     server->setComponentServerNotification(testEntityId, componentName, "SetTestValue");
 
-    VeinEvent::StorageSystem* storage = serverNet.getStorage();
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
     QFile file(":/vein-storage-dumps/dumpStorageComponentSet.json");
     QVERIFY(file.open(QFile::ReadOnly));
 

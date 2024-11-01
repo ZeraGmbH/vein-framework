@@ -1,12 +1,15 @@
-#ifndef VEINSTORAGEFILTER_H
-#define VEINSTORAGEFILTER_H
+#ifndef STORAGEFILTER_H
+#define STORAGEFILTER_H
 
-#include <ve_storagesystem.h>
+#include "vs_abstracteventsystem.h"
 #include <QDateTime>
 #include <QList>
 #include <QHash>
 
-class VeinStorageFilter : public QObject
+namespace VeinStorage
+{
+
+class StorageFilter : public QObject
 {
     Q_OBJECT
 public:
@@ -15,19 +18,20 @@ public:
         bool m_fireCurrentValueOnAddFilter;
         bool m_fireOnChangesOnly;
     };
-    explicit VeinStorageFilter(VeinEvent::StorageSystem* storage, Settings settings);
-    ~VeinStorageFilter();
+    explicit StorageFilter(AbstractEventSystem* storage, Settings settings);
+    ~StorageFilter();
     bool add(int entityId, QString componentName);
     void clear();
 signals:
     void sigComponentValue(int entityId, QString componentName, QVariant value, QDateTime timestamp);
 
 private:
-    void fireActual(int entityId, QString componentName, VeinEvent::StorageComponentInterfacePtr actualComponent);
-    const VeinEvent::StorageSystem* m_storage;
+    void fireActual(int entityId, QString componentName, AbstractComponentPtr actualComponent);
+    const AbstractEventSystem* m_storage;
     const Settings m_settings;
     QList<QMetaObject::Connection> m_componentChangeConnections;
     QHash<int, QSet<QString>> m_filteredEntityComponents;
 };
 
-#endif // VEINSTORAGEFILTER_H
+}
+#endif // STORAGEFILTER_H

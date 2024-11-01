@@ -27,15 +27,15 @@ class IntrospectionSystem {
     void processEvent(...)
 }
 
-class StorageSystem {
+class AbstractEventSystem {
     void processEvent(...)
 }
 
 class SystemModuleEventSystem {
     ' attribute-like methods
     {field} int getEntityId()
-    {field} StorageSystem *getStorageSystem()
-    {field}void setStorage(VeinEvent::StorageSystem *t_storageSystem)
+    {field} VeinStorage::AbstractEventSystem *getStorageSystem()
+    {field}void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem)
 
     void processEvent(...)
     signal void sigChangeSession(const QString &t_newSession)
@@ -49,7 +49,7 @@ EventHandler o-- "0..*" EventSystem : forwards events to >
 
 
 EventSystem <|-- IntrospectionSystem
-EventSystem <|-- StorageSystem
+EventSystem <|-- VeinStorage::AbstractEventSystem
 EventSystem <|-- SystemModuleEventSystem
 
 @enduml

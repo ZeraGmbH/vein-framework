@@ -18,7 +18,7 @@ TestVeinServer *TestVeinServerWithMockNet::getServer()
     return &m_server;
 }
 
-VeinEvent::StorageSystem *TestVeinServerWithMockNet::getStorage()
+VeinStorage::AbstractEventSystem *TestVeinServerWithMockNet::getStorage()
 {
     return getServer()->getStorage();
 }

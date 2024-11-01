@@ -1,5 +1,5 @@
 #include "test_vein_storage_filter.h"
-#include "veinstoragefilter.h"
+#include "vs_storagefilter.h"
 #include <timemachineobject.h>
 #include <timemachinefortest.h>
 #include <timerfactoryqtfortest.h>
@@ -35,8 +35,8 @@ void test_vein_storage_filter::fireInitialValid()
     TimeMachineForTest::getInstance()->processTimers(42);
     m_server->setComponentServerNotification(entityId1, componentName1, "foo");
 
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(true, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(true, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
 
@@ -49,8 +49,8 @@ void test_vein_storage_filter::fireInitialValid()
 
 void test_vein_storage_filter::noFireInitialInvalid()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(true, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(true, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
 
@@ -61,8 +61,8 @@ void test_vein_storage_filter::nofireInitialValid()
 {
     m_server->setComponentServerNotification(entityId1, componentName1, "foo");
 
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
 
@@ -73,8 +73,8 @@ void test_vein_storage_filter::nofireInitialValidWrongFilter()
 {
     m_server->setComponentServerNotification(entityId1, componentName1, "foo");
 
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(true, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(true, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(42, componentName1), false);
     QCOMPARE(filter.add(entityId1, "foo") , false);
@@ -86,8 +86,8 @@ void test_vein_storage_filter::fireIntitialOnceOnTwoIdenticalValid()
 {
     m_server->setComponentServerNotification(entityId1, componentName1, "foo");
 
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(true, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(true, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
     QCOMPARE(filter.add(entityId1, componentName1), false);
@@ -99,8 +99,8 @@ void test_vein_storage_filter::fireInitialValidOpenClose()
 {
     m_server->setComponentServerNotification(entityId1, componentName1, "foo");
 
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(true, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(true, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
     filter.clear();
@@ -110,8 +110,8 @@ void test_vein_storage_filter::fireInitialValidOpenClose()
 
 void test_vein_storage_filter::fireChangeValid()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
 
@@ -130,8 +130,8 @@ void test_vein_storage_filter::fireChangeValid()
 
 void test_vein_storage_filter::fireChangeValidMultiple()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
     QCOMPARE(filter.add(entityId1, componentName2), true);
@@ -152,8 +152,8 @@ void test_vein_storage_filter::fireChangeValidMultiple()
 
 void test_vein_storage_filter::nofireChangeValidWrongFilter()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(42, componentName1), false);
     QCOMPARE(filter.add(entityId1, "foo"), false);
@@ -165,8 +165,8 @@ void test_vein_storage_filter::nofireChangeValidWrongFilter()
 
 void test_vein_storage_filter::fireChangeOnceOnTwoIdenticalValid()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
     QCOMPARE(filter.add(entityId1, componentName1), false);
@@ -178,10 +178,10 @@ void test_vein_storage_filter::fireChangeOnceOnTwoIdenticalValid()
 
 void test_vein_storage_filter::fireChangeTwoSequentialClearFilter()
 {
-    VeinStorageFilter filter1(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy1(&filter1, &VeinStorageFilter::sigComponentValue);
-    VeinStorageFilter filter2(m_server->getStorage(), VeinStorageFilter::Settings(false, true));
-    QSignalSpy spy2(&filter2, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter1(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy1(&filter1, &VeinStorage::StorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter2(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, true));
+    QSignalSpy spy2(&filter2, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter1.add(entityId1, componentName1), true);
     QCOMPARE(filter2.add(entityId1, componentName1), true);
@@ -207,8 +207,8 @@ void test_vein_storage_filter::fireChangeTwoSequentialClearFilter()
 
 void test_vein_storage_filter::fireSetAllSame()
 {
-    VeinStorageFilter filter(m_server->getStorage(), VeinStorageFilter::Settings(false, false));
-    QSignalSpy spy(&filter, &VeinStorageFilter::sigComponentValue);
+    VeinStorage::StorageFilter filter(m_server->getStorage(), VeinStorage::StorageFilter::Settings(false, false));
+    QSignalSpy spy(&filter, &VeinStorage::StorageFilter::sigComponentValue);
 
     QCOMPARE(filter.add(entityId1, componentName1), true);
 

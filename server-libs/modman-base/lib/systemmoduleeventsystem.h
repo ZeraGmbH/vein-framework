@@ -2,7 +2,7 @@
 #define MODULEMANAGERSETTINGS_H
 
 #include <ve_eventsystem.h>
-#include <ve_storagesystem.h>
+#include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
 #include <QJsonDocument>
 
@@ -12,7 +12,7 @@ class SystemModuleEventSystem : public VeinEvent::EventSystem
 public:
     explicit SystemModuleEventSystem(QObject *t_parent = nullptr, bool devMode = false);
     static constexpr int getEntityId();
-    void setStorage(VeinEvent::StorageSystem *t_storageSystem);
+    void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
     void setConfigFileName(QString configFileName);
     void setAvailableSessionList(QStringList availableSessionList);
@@ -39,7 +39,7 @@ private:
     void sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData);
     void setScpiInfo();
 
-    VeinEvent::StorageSystem *m_storageSystem = nullptr;
+    VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
     QString m_currentSession;
     QStringList m_availableSessions;

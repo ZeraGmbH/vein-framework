@@ -137,7 +137,7 @@ void TestVeinServer::sendEvent(QEvent *event)
     emit m_storageSystem.sigSendEvent(event);
 }
 
-VeinEvent::StorageSystem *TestVeinServer::getStorage()
+VeinStorage::AbstractEventSystem *TestVeinServer::getStorage()
 {
     return &m_storageSystem;
 }

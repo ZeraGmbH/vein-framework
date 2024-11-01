@@ -44,7 +44,7 @@ SystemModuleEventSystem *ModuleManagerSetupFacade::getSystemModuleEventSystem()
     return &m_systemModuleSystem;
 }
 
-VeinEvent::StorageSystem *ModuleManagerSetupFacade::getStorageSystem()
+VeinStorage::AbstractEventSystem *ModuleManagerSetupFacade::getStorageSystem()
 {
     return &m_storSystem;
 }

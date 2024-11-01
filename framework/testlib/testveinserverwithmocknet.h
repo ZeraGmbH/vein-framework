@@ -10,7 +10,7 @@ class TestVeinServerWithMockNet
 public:
     TestVeinServerWithMockNet(int serverPort, QList<VeinEvent::EventSystem*> aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
     TestVeinServer* getServer();
-    VeinEvent::StorageSystem* getStorage();
+    VeinStorage::AbstractEventSystem* getStorage();
     int getSubscriberCount(int entityId);
 private:
     VeinNet::NetworkSystem m_netSystem;
