@@ -12,13 +12,10 @@ class StorageComponent : public AbstractComponent
 public:
     StorageComponent(QVariant value);
     QVariant getValue() const override;
-    QDateTime getTimestamp() const override;
 private:
     friend class VeinHashPrivate;
     void setValue(QVariant value);
-    void setTimestamp();
     QVariant m_value;
-    QDateTime m_timestamp;
 };
 
 typedef std::shared_ptr<StorageComponent> StorageComponentPtr;

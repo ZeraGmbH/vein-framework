@@ -17,7 +17,6 @@ signals:
     void sigValueChange(QVariant newValue);
 public:
     virtual QVariant getValue() const = 0;
-    virtual QDateTime getTimestamp() const = 0;
 };
 
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;

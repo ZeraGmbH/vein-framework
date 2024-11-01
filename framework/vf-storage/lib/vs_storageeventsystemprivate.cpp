@@ -26,20 +26,17 @@ void VeinHashPrivate::insertComponentValue(EntityMap *entityChecked, const QStri
 {
     (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
     StorageComponentPtr component = (*entityChecked)[componentName];
-    component->setTimestamp();
 }
 
 void VeinHashPrivate::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value)
 {
     Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
-    component->setTimestamp();
     component->setValue(value);
     m_entityComponentData[entityId][componentName] = component;
 }
 
 void VeinHashPrivate::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
 {
-    componentChecked->setTimestamp();
     componentChecked->setValue(value);
 }
 

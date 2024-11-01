@@ -2,7 +2,8 @@
 #define VS_STORAGEFILTER_H
 
 #include "vs_abstracteventsystem.h"
-#include <QDateTime>
+#include "vs_abstracttimestamper.h"
+#include "vs_timestampernow.h"
 #include <QList>
 #include <QHash>
 
@@ -20,13 +21,13 @@ public:
     };
     explicit StorageFilter(AbstractEventSystem* storage, Settings settings);
     ~StorageFilter();
-    bool add(int entityId, QString componentName);
+    bool add(int entityId, QString componentName, AbstractTimeStamperPtr timeStamper = TimeStamperNow::getInstance());
     void clear();
 signals:
     void sigComponentValue(int entityId, QString componentName, QVariant value, QDateTime timestamp);
 
 private:
-    void fireActual(int entityId, QString componentName, AbstractComponentPtr actualComponent);
+    void fireActual(int entityId, QString componentName, AbstractComponentPtr actualComponent, QDateTime timestamp);
     const AbstractEventSystem* m_storage;
     const Settings m_settings;
     QList<QMetaObject::Connection> m_componentChangeConnections;

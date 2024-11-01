@@ -14,11 +14,6 @@ QVariant StorageComponent::getValue() const
     return m_value;
 }
 
-QDateTime StorageComponent::getTimestamp() const
-{
-    return m_timestamp;
-}
-
 void StorageComponent::setValue(QVariant value)
 {
     emit sigValueSet(value);
@@ -26,11 +21,6 @@ void StorageComponent::setValue(QVariant value)
         m_value = value;
         emit sigValueChange(value);
     }
-}
-
-void StorageComponent::setTimestamp()
-{
-    m_timestamp = TimerFactoryQt::getCurrentTime();
 }
 
 }
