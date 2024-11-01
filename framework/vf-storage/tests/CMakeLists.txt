@@ -3,6 +3,7 @@ SETUP_TESTS(
     test_storage_notification
     test_storage_future_notification
     test_vein_storage_filter
+    test_time_stamper_settable
 )
 
 target_sources(test_storage
