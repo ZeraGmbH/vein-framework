@@ -5,7 +5,7 @@
 #include <memory>
 
 // * Client fetcher
-// * Servers have VfStorageHash
+// * Servers have VfStorage
 class VfClientComponentFetcher : public QObject, public VfComponentEventItem
 {
     Q_OBJECT

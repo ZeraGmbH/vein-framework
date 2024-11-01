@@ -1,15 +1,15 @@
-#ifndef STORAGEEVENTSYSTEM_H
-#define STORAGEEVENTSYSTEM_H
+#ifndef VS_STORAGEEVENTSYSTEM_H
+#define VS_STORAGEEVENTSYSTEM_H
 
-#include "vfstoragehash_export.h"
-#include "vs_veinhashprivate.h"
+#include "vfstorage_export.h"
+#include "vs_storageeventsystemprivate.h"
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
 #include <ve_eventdata.h>
 
 namespace VeinStorage
 {
-class VFSTORAGEHASH_EXPORT StorageEventSystem : public AbstractEventSystem
+class VFSTORAGE_EXPORT StorageEventSystem : public AbstractEventSystem
 {
     Q_OBJECT
 public:
@@ -47,4 +47,4 @@ private:
 };
 }
 
-#endif // STORAGEEVENTSYSTEM_H
+#endif // VS_STORAGEEVENTSYSTEM_H

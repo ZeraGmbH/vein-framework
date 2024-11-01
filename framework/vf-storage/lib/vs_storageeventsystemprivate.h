@@ -1,5 +1,5 @@
-#ifndef VEINHASHPRIVATE_H
-#define VEINHASHPRIVATE_H
+#ifndef VS_STORAGEEVENTSYSTEMPRIVATE_H
+#define VS_STORAGEEVENTSYSTEMPRIVATE_H
 
 #include "vs_storagecomponent.h"
 #include <QObject>
@@ -36,4 +36,4 @@ private:
 
 }
 
-#endif // VEINHASHPRIVATE_H
+#endif // VS_STORAGEEVENTSYSTEMPRIVATE_H

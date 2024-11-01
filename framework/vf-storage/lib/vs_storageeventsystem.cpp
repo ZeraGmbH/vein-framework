@@ -1,5 +1,5 @@
 #include "vs_storageeventsystem.h"
-#include "vs_veinhashprivate.h"
+#include "vs_storageeventsystemprivate.h"
 #include <vcmp_entitydata.h>
 #include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>

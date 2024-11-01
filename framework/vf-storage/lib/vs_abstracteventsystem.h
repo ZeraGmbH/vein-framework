@@ -1,5 +1,5 @@
-#ifndef STORAGESYSTEM_H
-#define STORAGESYSTEM_H
+#ifndef VS_ABSTRACTSTORAGESYSTEM_H
+#define VS_ABSTRACTSTORAGESYSTEM_H
 
 #include "vfevent_export.h"
 #include "vs_abstractcomponent.h"
@@ -30,5 +30,5 @@ public:
 };
 }
 
-#endif // STORAGESYSTEM_H
+#endif // VS_ABSTRACTSTORAGESYSTEM_H
 

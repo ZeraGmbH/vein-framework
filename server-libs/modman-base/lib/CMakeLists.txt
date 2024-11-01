@@ -18,7 +18,7 @@ target_link_libraries(ModmanBase
     VfComponent
     VfCryptoBridge
     VfNet2
-    VfStorageHash
+    VfStorage
     VfConvenientCode
     )
 

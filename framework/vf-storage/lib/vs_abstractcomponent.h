@@ -1,5 +1,5 @@
-#ifndef ABSTRACTSTORAGECOMPONENT_H
-#define ABSTRACTSTORAGECOMPONENT_H
+#ifndef VS_ABSTRACTCOMPONENT_H
+#define VS_ABSTRACTCOMPONENT_H
 
 #include "vfevent_export.h"
 #include <QVariant>
@@ -23,4 +23,4 @@ public:
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;
 
 }
-#endif // ABSTRACTSTORAGECOMPONENT_H
+#endif // VS_ABSTRACTCOMPONENT_H

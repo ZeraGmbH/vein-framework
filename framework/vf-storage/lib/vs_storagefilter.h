@@ -1,5 +1,5 @@
-#ifndef STORAGEFILTER_H
-#define STORAGEFILTER_H
+#ifndef VS_STORAGEFILTER_H
+#define VS_STORAGEFILTER_H
 
 #include "vs_abstracteventsystem.h"
 #include <QDateTime>
@@ -34,4 +34,4 @@ private:
 };
 
 }
-#endif // STORAGEFILTER_H
+#endif // VS_STORAGEFILTER_H

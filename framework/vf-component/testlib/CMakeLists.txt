@@ -16,7 +16,7 @@ target_link_libraries(VfComponentTest
     Qt5::Core
     VfComponent
     VfEvent
-    VfStorageHash
+    VfStorage
     VfConvenientCode
     )
 
