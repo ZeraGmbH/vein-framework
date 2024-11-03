@@ -54,6 +54,11 @@ void StorageEventSystem::processEvent(QEvent *event)
     }
 }
 
+AbstractDatabase *StorageEventSystem::getDb() const
+{
+    return m_privHash;
+}
+
 void StorageEventSystem::processComponentData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);

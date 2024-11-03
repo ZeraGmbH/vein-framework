@@ -2,9 +2,8 @@
 #define VS_ABSTRACTSTORAGESYSTEM_H
 
 #include "vfevent_export.h"
-#include "vs_abstractcomponent.h"
+#include "vs_abstractdatabase.h"
 #include "ve_eventsystem.h"
-#include <QIODevice>
 
 namespace VeinStorage
 {
@@ -14,6 +13,8 @@ class VFEVENT_EXPORT AbstractEventSystem : public VeinEvent::EventSystem
     Q_OBJECT
 public:
     explicit AbstractEventSystem(QObject *parent = nullptr) : EventSystem(parent) {}
+
+    virtual AbstractDatabase* getDb() const = 0;
 
     virtual bool hasEntity(int t_entityId) const = 0;
     virtual QList<int> getEntityList() const = 0;

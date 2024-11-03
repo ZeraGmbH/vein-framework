@@ -18,6 +18,10 @@ public:
 
     void processEvent(QEvent *event) override;
 
+    AbstractDatabase* getDb() const override;
+
+
+
     bool hasEntity(int entityId) const override;
     QList<int> getEntityList() const override;
 
