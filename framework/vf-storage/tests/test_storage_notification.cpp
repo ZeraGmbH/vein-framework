@@ -15,10 +15,10 @@ static constexpr int serverPort = 4242;
 void test_storage_notification::getNullNotifierFromEmpty()
 {
     StorageEventSystem hash;
-    QCOMPARE(hash.getComponent(0, "foo"), nullptr);
-    QCOMPARE(hash.getComponent(1, "foo"), nullptr);
-    QCOMPARE(hash.getComponent(0, "bar"), nullptr);
-    QCOMPARE(hash.getComponent(1, "bar"), nullptr);
+    QCOMPARE(hash.getDb()->findComponent(0, "foo"), nullptr);
+    QCOMPARE(hash.getDb()->findComponent(1, "foo"), nullptr);
+    QCOMPARE(hash.getDb()->findComponent(0, "bar"), nullptr);
+    QCOMPARE(hash.getDb()->findComponent(1, "bar"), nullptr);
 }
 
 void test_storage_notification::getNotifierForExisting()
@@ -27,7 +27,7 @@ void test_storage_notification::getNotifierForExisting()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
     AbstractEventSystem* storage = server.getStorage();
 
-    QVERIFY(storage->getComponent(0, "EntityName"));
+    QVERIFY(storage->getDb()->findComponent(0, "EntityName"));
 }
 
 void test_storage_notification::getNotifierForNonExisting()
@@ -36,7 +36,7 @@ void test_storage_notification::getNotifierForNonExisting()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
     AbstractEventSystem* storage = server.getStorage();
 
-    QCOMPARE(storage->getComponent(0, "foo"), nullptr);
+    QCOMPARE(storage->getDb()->findComponent(0, "foo"), nullptr);
 }
 
 void test_storage_notification::getNotifierForTwoExisting()
@@ -45,8 +45,8 @@ void test_storage_notification::getNotifierForTwoExisting()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
     AbstractEventSystem* storage = server.getStorage();
 
-    AbstractComponentPtr component1 = storage->getComponent(0, "EntityName");
-    AbstractComponentPtr component2 = storage->getComponent(0, "Session");
+    AbstractComponentPtr component1 = storage->getDb()->findComponent(0, "EntityName");
+    AbstractComponentPtr component2 = storage->getDb()->findComponent(0, "Session");
     QVERIFY(component1);
     QVERIFY(component2);
     QVERIFY(component1 != component2);
@@ -68,7 +68,7 @@ void test_storage_notification::receiveOneChangeSignalPerChangeByVein()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, componentName);
     QSignalSpy spy(component.get(), &AbstractComponent::sigValueChange);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // valid old / change new
@@ -89,7 +89,7 @@ void test_storage_notification::receiveNoChangeSignalOnSameValueByVein()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, componentName);
     QSignalSpy spy(component.get(), &AbstractComponent::sigValueChange);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // change new / valid old
@@ -108,7 +108,7 @@ void test_storage_notification::receiveOneSetSignalPerSetByVein()
     server.simulAllModulesLoaded("session", QStringList() << "sessionList");
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component = storage->getComponent(testEntityId, componentName);
+    AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, componentName);
     QSignalSpy spy(component.get(), &AbstractComponent::sigValueSet);
 
     sendVeinSetAndProcess(&server, QVariant(), componentValue1); // change new / valid old

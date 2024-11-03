@@ -23,7 +23,6 @@ public:
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QList<QString> getEntityComponents(int t_entityId) const = 0;
 
-    virtual AbstractComponentPtr getComponent(int entityId, const QString &componentName) const = 0;
     virtual AbstractComponentPtr getFutureComponent(int entityId, const QString &componentName) = 0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;

@@ -29,7 +29,6 @@ public:
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
     QList<QString> getEntityComponents(int entityId) const override;
 
-    AbstractComponentPtr getComponent(int entityId, const QString &componentName) const override;
     AbstractComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
 
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;

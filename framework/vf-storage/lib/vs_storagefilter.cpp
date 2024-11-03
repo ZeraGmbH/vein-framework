@@ -22,7 +22,7 @@ StorageFilter::~StorageFilter()
 
 bool StorageFilter::add(int entityId, QString componentName, AbstractTimeStamperPtr timeStamper)
 {
-    AbstractComponentPtr actualComponent = m_storage->getComponent(entityId, componentName);
+    AbstractComponentPtr actualComponent = m_storage->getDb()->findComponent(entityId, componentName);
     if(!m_filteredEntityComponents.contains(entityId) || !m_filteredEntityComponents[entityId].contains(componentName)) {
         if(actualComponent) {
             m_filteredEntityComponents[entityId].insert(componentName);

@@ -83,7 +83,7 @@ void test_storage_future_notification::getComponentAddedLaterIdentity()
     emit storage->sigSendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    AbstractComponentPtr component = storage->getComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, "ComponentName1");
     QCOMPARE(futureComponent, component);
 }
 
@@ -105,7 +105,7 @@ void test_storage_future_notification::getFutureComponentAlreadyStored()
 
     QVERIFY(storage->areFutureComponentsEmpty());
 
-    AbstractComponentPtr component = storage->getComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, "ComponentName1");
     QCOMPARE(futureComponent, component);
 }
 

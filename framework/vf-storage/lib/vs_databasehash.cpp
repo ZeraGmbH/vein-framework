@@ -1,9 +1,9 @@
-#include <QDateTime>
 #include "vs_databasehash.h"
+#include <QDateTime>
+#include <QDebug>
 
 namespace VeinStorage
 {
-
 
 DatabaseHash::DatabaseHash()
 {
@@ -89,6 +89,9 @@ StorageComponentPtr DatabaseHash::findComponent(EntityMap *entityMap, const QStr
 
 StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName)
 {
+    StorageComponentPtr component = findComponent(findEntity(entityId), componentName);
+    if(!component)
+        qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
     return findComponent(findEntity(entityId), componentName);
 }
 

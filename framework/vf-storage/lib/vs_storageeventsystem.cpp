@@ -181,14 +181,6 @@ QList<int> StorageEventSystem::getEntityList() const
     return m_privHash->getEntityList();
 }
 
-AbstractComponentPtr StorageEventSystem::getComponent(int entityId, const QString &componentName) const
-{
-    AbstractComponentPtr component = m_privHash->findComponent(entityId, componentName);
-    if(!component)
-        qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
-    return component;
-}
-
 AbstractComponentPtr StorageEventSystem::getFutureComponent(int entityId, const QString &componentName)
 {
     return m_privHash->getFutureComponent(entityId, componentName);
