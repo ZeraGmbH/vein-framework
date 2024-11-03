@@ -17,6 +17,7 @@ public:
     virtual void insertEntity(const int entityId) = 0;
     virtual void removeEntity(const int entityId) = 0;
 
+    virtual bool hasStoredValue(int entityId, const QString &componentName) const = 0;
     virtual StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName) = 0;
     virtual StorageComponentPtr findComponent(const int entityId, const QString &componentName) = 0;
     virtual QList<QString> getComponentList(int entityId) = 0;

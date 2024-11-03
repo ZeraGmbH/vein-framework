@@ -51,6 +51,16 @@ void DatabaseHash::removeEntity(const int entityId)
     m_entityComponentData.remove(entityId);
 }
 
+bool DatabaseHash::hasStoredValue(int entityId, const QString &componentName) const
+{
+    auto entityIter = m_entityComponentData.constFind(entityId);
+    if(m_entityComponentData.constFind(entityId) == m_entityComponentData.constEnd())
+        return false;
+    auto components = entityIter.value();
+    auto componentIter = components.constFind(componentName);
+    return componentIter != components.constEnd();
+}
+
 QList<int> DatabaseHash::getEntityList() const
 {
     return m_entityComponentData.keys();

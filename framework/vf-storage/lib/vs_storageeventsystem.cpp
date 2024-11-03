@@ -161,9 +161,4 @@ QVariant StorageEventSystem::getStoredValue(int entityId, const QString &compone
     return QVariant();
 }
 
-bool StorageEventSystem::hasStoredValue(int entityId, const QString &componentName) const
-{
-    return m_privHash->findComponent(entityId, componentName) != nullptr;
-}
-
 }
