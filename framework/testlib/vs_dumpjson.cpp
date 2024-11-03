@@ -2,6 +2,7 @@
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
+#include <QDebug>
 
 namespace VeinStorage
 {
