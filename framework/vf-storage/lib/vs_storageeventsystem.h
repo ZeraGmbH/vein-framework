@@ -19,7 +19,7 @@ public:
     void processEvent(QEvent *event) override;
     AbstractDatabase* getDb() const override;
 
-    Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
+    bool hasStoredValue(int entityId, const QString &componentName) const override;
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
 
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins); // Not too many users (yet)
