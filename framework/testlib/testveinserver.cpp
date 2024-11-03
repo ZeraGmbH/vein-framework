@@ -4,6 +4,7 @@
 #include "modulemanagersetupfacade.h"
 #include "testloghelpers.h"
 #include <timemachineobject.h>
+#include "vs_dumpjson.h"
 #include <QBuffer>
 
 using VeinComponent::EntityData;
@@ -146,7 +147,7 @@ QByteArray TestVeinServer::dumpStorage(QList<int> entities)
 {
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    m_storageSystem.dumpToFile(&buff, entities);
+    VeinStorage::DumpJson::dumpToFile(m_storageSystem.getDb(), &buff, entities);
     return jsonDumped;
 }
 

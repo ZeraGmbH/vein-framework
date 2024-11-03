@@ -20,8 +20,6 @@ public:
 
     virtual bool hasStoredValue(int t_entityId, const QString &t_componentName) const = 0;
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
-
-    virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;
 };
 }
 

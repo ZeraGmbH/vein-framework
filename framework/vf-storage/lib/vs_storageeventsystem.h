@@ -17,7 +17,6 @@ public:
     virtual ~StorageEventSystem();
 
     void processEvent(QEvent *event) override;
-
     AbstractDatabase* getDb() const override;
 
 
@@ -26,8 +25,6 @@ public:
 
     Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
-
-    void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
 
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins); // Not too many users (yet)
 

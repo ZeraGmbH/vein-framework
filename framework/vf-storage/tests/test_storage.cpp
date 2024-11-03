@@ -2,6 +2,7 @@
 #include "vf_server_entity_remove.h"
 #include "testveinserverwithmocknet.h"
 #include "testloghelpers.h"
+#include "vs_dumpjson.h"
 #include <timemachineobject.h>
 #include <QBuffer>
 #include <QTest>
@@ -22,7 +23,7 @@ void test_storage::systemEntityOnly()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -46,7 +47,7 @@ void test_storage::addEntity()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -66,7 +67,7 @@ void test_storage::addEntityAndComponent()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -88,7 +89,7 @@ void test_storage::addRemoveEntity()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -117,7 +118,7 @@ void test_storage::addRemoveComponent()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
@@ -138,6 +139,6 @@ void test_storage::setComponent()
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }

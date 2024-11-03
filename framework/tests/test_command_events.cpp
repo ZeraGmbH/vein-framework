@@ -3,6 +3,7 @@
 #include "testloghelpers.h"
 #include "vf_client_entity_unsubscriber.h"
 #include "vf_server_component_add.h"
+#include "vs_dumpjson.h"
 #include "task_client_component_fetcher.h"
 #include "task_client_component_setter.h"
 #include "mocktcpnetworkfactory.h"
@@ -154,7 +155,7 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonExpected2 = file2.readAll();
     QByteArray jsonDumped2;
     QBuffer buff(&jsonDumped2);
-    storage->dumpToFile(&buff, QList<int>());
+    VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected2, jsonDumped2));
 }
 
