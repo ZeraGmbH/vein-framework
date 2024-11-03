@@ -1,5 +1,5 @@
 #include "vs_storageeventsystem.h"
-#include "vs_storageeventsystemprivate.h"
+#include "vs_databasehash.h"
 #include <vcmp_entitydata.h>
 #include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>
@@ -15,7 +15,7 @@ namespace VeinStorage
 
 StorageEventSystem::StorageEventSystem(QObject *parent) :
     AbstractEventSystem(parent),
-    m_privHash(new VeinHashPrivate)
+    m_privHash(new DatabaseHash)
 {
 }
 

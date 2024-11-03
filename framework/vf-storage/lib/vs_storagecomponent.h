@@ -13,7 +13,7 @@ public:
     StorageComponent(QVariant value);
     QVariant getValue() const override;
 private:
-    friend class VeinHashPrivate;
+    friend class DatabaseHash;
     void setValue(QVariant value);
     QVariant m_value;
 };

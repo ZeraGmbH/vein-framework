@@ -2,7 +2,7 @@
 #define VS_STORAGEEVENTSYSTEM_H
 
 #include "vfstorage_export.h"
-#include "vs_storageeventsystemprivate.h"
+#include "vs_databasehash.h"
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
 #include <ve_eventdata.h>
@@ -37,7 +37,7 @@ private:
     void processComponentData(QEvent *event);
     void processEntityData(QEvent *event);
 
-    VeinHashPrivate *m_privHash;
+    DatabaseHash *m_privHash;
 
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
         {

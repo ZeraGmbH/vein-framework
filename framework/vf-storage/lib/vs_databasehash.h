@@ -1,5 +1,5 @@
-#ifndef VS_STORAGEEVENTSYSTEMPRIVATE_H
-#define VS_STORAGEEVENTSYSTEMPRIVATE_H
+#ifndef VS_DATABASE_HASH
+#define VS_DATABASE_HASH
 
 #include "vs_storagecomponent.h"
 #include <QObject>
@@ -9,10 +9,10 @@
 namespace VeinStorage
 {
 
-class VeinHashPrivate
+class DatabaseHash
 {
 public:
-    VeinHashPrivate();
+    DatabaseHash();
     StorageComponentPtr getFutureComponent(int entityId, const QString &componentName);
     void insertComponentValue(EntityMap* entityChecked, const QString &componentName, QVariant value);
     void insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value);
@@ -35,4 +35,4 @@ private:
 
 }
 
-#endif // VS_STORAGEEVENTSYSTEMPRIVATE_H
+#endif // VS_DATABASE_HASH
