@@ -19,10 +19,6 @@ public:
     void processEvent(QEvent *event) override;
     AbstractDatabase* getDb() const override;
 
-
-
-    bool hasEntity(int entityId) const override;
-
     Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;
 

@@ -166,9 +166,4 @@ bool StorageEventSystem::hasStoredValue(int entityId, const QString &componentNa
     return m_privHash->findComponent(entityId, componentName) != nullptr;
 }
 
-bool StorageEventSystem::hasEntity(int entityId) const
-{
-    return m_privHash->findEntity(entityId) != nullptr;
-}
-
 }
