@@ -166,11 +166,6 @@ bool StorageEventSystem::hasStoredValue(int entityId, const QString &componentNa
     return m_privHash->findComponent(entityId, componentName) != nullptr;
 }
 
-QList<QString> StorageEventSystem::getEntityComponents(int entityId) const
-{
-    return m_privHash->getComponentList(entityId);
-}
-
 bool StorageEventSystem::hasEntity(int entityId) const
 {
     return m_privHash->findEntity(entityId) != nullptr;
@@ -186,7 +181,7 @@ void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> enti
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
         outputFileDevice->isWritable()) {
         QJsonObject rootObject;
-        QList<int> tmpEntityIdKeys = getEntityList();
+        QList<int> tmpEntityIdKeys = m_privHash->getEntityList();
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : qAsConst(tmpEntityIdKeys)) {
             if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
@@ -194,7 +189,7 @@ void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> enti
             EntityMap* entityMap = m_privHash->findEntity(tmpEntityId);;
             QJsonObject tmpEntityObject;
 
-            QStringList tmpEntityComponentNames = getEntityComponents(tmpEntityId);
+            QStringList tmpEntityComponentNames = m_privHash->getComponentList(tmpEntityId);
             std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = m_privHash->findComponent(entityMap, tmpComponentName)->getValue();
