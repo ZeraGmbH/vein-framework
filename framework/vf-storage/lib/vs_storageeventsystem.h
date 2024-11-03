@@ -23,7 +23,6 @@ public:
 
 
     bool hasEntity(int entityId) const override;
-    QList<int> getEntityList() const override;
 
     Q_INVOKABLE bool hasStoredValue(int entityId, const QString &componentName) const override;
     Q_INVOKABLE QVariant getStoredValue(int entityId, const QString &componentName) const override;

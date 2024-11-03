@@ -133,7 +133,7 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
             getEntityId(),
             entitiesComponentName,
             QVariant(),
-            QVariant::fromValue<QList<int> >(m_storageSystem->getEntityList())));
+            QVariant::fromValue<QList<int> >(m_storageSystem->getDb()->getEntityList())));
 
         emit sigSendEvent(VfServerComponentSetter::generateEvent(
             getEntityId(),

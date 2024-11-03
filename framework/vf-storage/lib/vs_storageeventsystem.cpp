@@ -171,11 +171,6 @@ bool StorageEventSystem::hasEntity(int entityId) const
     return m_privHash->findEntity(entityId) != nullptr;
 }
 
-QList<int> StorageEventSystem::getEntityList() const
-{
-    return m_privHash->getEntityList();
-}
-
 void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
