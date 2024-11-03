@@ -181,11 +181,6 @@ QList<int> StorageEventSystem::getEntityList() const
     return m_privHash->getEntityList();
 }
 
-AbstractComponentPtr StorageEventSystem::getFutureComponent(int entityId, const QString &componentName)
-{
-    return m_privHash->getFutureComponent(entityId, componentName);
-}
-
 void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&

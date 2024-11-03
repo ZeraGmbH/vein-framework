@@ -13,7 +13,7 @@ using namespace VeinStorage;
 void test_storage_future_notification::getComponentOnEmptyHash()
 {
     StorageEventSystem storage;
-    AbstractComponentPtr component = storage.getFutureComponent(1, "foo");
+    AbstractComponentPtr component = storage.getDb()->getFutureComponent(1, "foo");
 
     QVERIFY(!component->getValue().isValid());
 }
@@ -26,7 +26,7 @@ void test_storage_future_notification::getComponentAddedLater()
     TimeMachineObject::feedEventLoop();
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component = storage->getFutureComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr component = storage->getDb()->getFutureComponent(testEntityId, "ComponentName1");
 
     QVERIFY(!component->getValue().isValid());
 
@@ -47,8 +47,8 @@ void test_storage_future_notification::getComponentsAddedLater()
     TimeMachineObject::feedEventLoop();
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component1 = storage->getFutureComponent(testEntityId, "ComponentName1");
-    AbstractComponentPtr component2 = storage->getFutureComponent(testEntityId, "ComponentName2");
+    AbstractComponentPtr component1 = storage->getDb()->getFutureComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr component2 = storage->getDb()->getFutureComponent(testEntityId, "ComponentName2");
 
     QVERIFY(!component1->getValue().isValid());
     QVERIFY(!component2->getValue().isValid());
@@ -76,7 +76,7 @@ void test_storage_future_notification::getComponentAddedLaterIdentity()
     TimeMachineObject::feedEventLoop();
     AbstractEventSystem* storage = server.getStorage();
 
-    AbstractComponentPtr futureComponent = storage->getFutureComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr futureComponent = storage->getDb()->getFutureComponent(testEntityId, "ComponentName1");
 
     server.addTestEntities();
     QEvent *event = VfServerComponentSetter::generateEvent(testEntityId, "ComponentName1", QVariant(), 42);
@@ -98,7 +98,7 @@ void test_storage_future_notification::getFutureComponentAlreadyStored()
     emit storage->sigSendEvent(event);
     TimeMachineObject::feedEventLoop();
 
-    AbstractComponentPtr futureComponent = storage->getFutureComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr futureComponent = storage->getDb()->getFutureComponent(testEntityId, "ComponentName1");
 
     QVERIFY(futureComponent->getValue().isValid());
     QCOMPARE(futureComponent->getValue(), 42);
@@ -115,7 +115,7 @@ void test_storage_future_notification::checkChangeSignals()
     TimeMachineObject::feedEventLoop();
 
     AbstractEventSystem* storage = server.getStorage();
-    AbstractComponentPtr component = storage->getFutureComponent(testEntityId, "ComponentName1");
+    AbstractComponentPtr component = storage->getDb()->getFutureComponent(testEntityId, "ComponentName1");
     QSignalSpy spy(component.get(), &AbstractComponent::sigValueChange);
 
     // addTestEntities sets QVariant() so addEntity + addComponent
