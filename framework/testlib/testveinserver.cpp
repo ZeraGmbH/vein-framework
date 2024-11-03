@@ -89,7 +89,7 @@ void TestVeinServer::setComponentClientTransaction(int entityId, QString compone
     if(!m_storageSystem.getDb()->hasStoredValue(entityId, componentName))
         qFatal("No entity/component with ID %i / Name %s available!", entityId, qPrintable(componentName));
 
-    QVariant oldValue = m_storageSystem.getStoredValue(entityId, componentName);
+    QVariant oldValue = m_storageSystem.getDb()->getStoredValue(entityId, componentName);
     QEvent* event = VfClientComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
     sendEvent(event);
     TimeMachineObject::feedEventLoop();
@@ -100,7 +100,7 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
     if(!m_storageSystem.getDb()->hasStoredValue(entityId, componentName))
         qFatal("No entity/component with ID %i / Name %s available!", entityId, qPrintable(componentName));
 
-    QVariant oldValue = m_storageSystem.getStoredValue(entityId, componentName);
+    QVariant oldValue = m_storageSystem.getDb()->getStoredValue(entityId, componentName);
     QEvent* event = VfServerComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
     sendEvent(event);
     TimeMachineObject::feedEventLoop();

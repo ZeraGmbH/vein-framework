@@ -19,6 +19,7 @@ public:
     void removeEntity(const int entityId) override;
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
+    QVariant getStoredValue(int entityId, const QString &componentName) const override;
     StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName) override;
     StorageComponentPtr findComponent(const int entityId, const QString &componentName) override;
     QList<QString> getComponentList(int entityId) override;

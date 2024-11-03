@@ -152,13 +152,5 @@ void StorageEventSystem::setAcceptableOrigin(QList<EventData::EventOrigin> origi
     m_acceptableOrigins = origins;
 }
 
-QVariant StorageEventSystem::getStoredValue(int entityId, const QString &componentName) const
-{
-    StorageComponentPtr component = m_privHash->findComponent(entityId, componentName);
-    if(component)
-        return component->getValue();
-    qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
-    return QVariant();
-}
 
 }
