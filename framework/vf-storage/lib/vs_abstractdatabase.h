@@ -6,7 +6,7 @@
 namespace VeinStorage
 {
 
-class AbstractDatabase
+class VFEVENT_EXPORT AbstractDatabase
 {
 public:
     virtual ~AbstractDatabase() = default;
