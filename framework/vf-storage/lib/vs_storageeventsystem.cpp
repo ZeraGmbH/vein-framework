@@ -252,9 +252,4 @@ void StorageEventSystem::dumpToFile(QIODevice *outputFileDevice, QList<int> enti
         outputFileDevice->close();
 }
 
-bool StorageEventSystem::areFutureComponentsEmpty()
-{
-    return m_privHash->areFutureComponentsEmpty();
-}
-
 }

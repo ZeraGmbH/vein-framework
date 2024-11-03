@@ -24,7 +24,6 @@ public:
     virtual QList<QString> getEntityComponents(int t_entityId) const = 0;
 
     virtual void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter) const = 0;
-    virtual bool areFutureComponentsEmpty() = 0;
 };
 }
 

@@ -30,7 +30,6 @@ public:
     QList<QString> getEntityComponents(int entityId) const override;
 
     void dumpToFile(QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>()) const  override;
-    bool areFutureComponentsEmpty() override;
 
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins); // Not too many users (yet)
 

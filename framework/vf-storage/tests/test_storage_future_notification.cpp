@@ -38,7 +38,7 @@ void test_storage_future_notification::getComponentAddedLater()
     QVERIFY(component->getValue().isValid());
     QCOMPARE(component->getValue(), 42);
 
-    QVERIFY(storage->areFutureComponentsEmpty());
+    QVERIFY(storage->getDb()->areFutureComponentsEmpty());
 }
 
 void test_storage_future_notification::getComponentsAddedLater()
@@ -67,7 +67,7 @@ void test_storage_future_notification::getComponentsAddedLater()
     QVERIFY(component2->getValue().isValid());
     QCOMPARE(component2->getValue(), 37);
 
-    QVERIFY(storage->areFutureComponentsEmpty());
+    QVERIFY(storage->getDb()->areFutureComponentsEmpty());
 }
 
 void test_storage_future_notification::getComponentAddedLaterIdentity()
@@ -103,7 +103,7 @@ void test_storage_future_notification::getFutureComponentAlreadyStored()
     QVERIFY(futureComponent->getValue().isValid());
     QCOMPARE(futureComponent->getValue(), 42);
 
-    QVERIFY(storage->areFutureComponentsEmpty());
+    QVERIFY(storage->getDb()->areFutureComponentsEmpty());
 
     AbstractComponentPtr component = storage->getDb()->findComponent(testEntityId, "ComponentName1");
     QCOMPARE(futureComponent, component);
