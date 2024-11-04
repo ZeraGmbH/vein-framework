@@ -21,7 +21,7 @@ public:
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
     StorageComponentPtr findComponent(const int entityId, const QString &componentName) override;
     StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName) override;
-    QList<QString> getComponentList(int entityId) override;
+    QList<QString> getComponentList(int entityId) const override;
 
     bool areFutureComponentsEmpty() const override;
     StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) override;

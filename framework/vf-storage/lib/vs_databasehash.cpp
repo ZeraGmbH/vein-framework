@@ -82,12 +82,12 @@ QList<int> DatabaseHash::getEntityList() const
     return m_entityComponentData.keys();
 }
 
-QList<QString> DatabaseHash::getComponentList(int entityId)
+QList<QString> DatabaseHash::getComponentList(int entityId) const
 {
+    auto iter = m_entityComponentData.constFind(entityId);
     QList<QString> componentList;
-    EntityMap *entity = findEntity(entityId);
-    if(entity)
-        componentList = entity->keys();
+    if(iter != m_entityComponentData.constEnd())
+        componentList = iter.value().keys();
     return componentList;
 }
 
