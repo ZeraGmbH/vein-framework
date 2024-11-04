@@ -114,12 +114,16 @@ StorageComponentPtr DatabaseHash::findComponent(EntityMap *entityMap, const QStr
     return iter.value();
 }
 
-StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName)
+StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName) const
 {
-    StorageComponentPtr component = findComponent(findEntity(entityId), componentName);
-    if(!component)
-        qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
-    return findComponent(findEntity(entityId), componentName);
+    auto iterEntity = m_entityComponentData.constFind(entityId);
+    if(iterEntity == m_entityComponentData.constEnd())
+        return nullptr;
+    const auto entityMap = iterEntity.value();
+    auto iterComponent = entityMap.constFind(componentName);
+    if(iterComponent == entityMap.constEnd())
+        return nullptr;
+    return iterComponent.value();
 }
 
 StorageComponentPtr DatabaseHash::takeFutureComponent(const int entityId, const QString &componentName)
