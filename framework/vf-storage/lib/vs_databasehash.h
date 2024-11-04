@@ -20,7 +20,6 @@ public:
     bool hasStoredValue(int entityId, const QString &componentName) const override;
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
     StorageComponentPtr findComponent(const int entityId, const QString &componentName) override;
-    StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName) override;
     QList<QString> getComponentList(int entityId) const override;
 
     bool areFutureComponentsEmpty() const override;
@@ -32,6 +31,7 @@ public:
     void insertEntity(const int entityId);
     void removeEntity(const int entityId);
 
+    StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName);
     void insertComponentValue(EntityMap* entityChecked, const QString &componentName, QVariant value);
     void changeComponentValue(StorageComponentPtr componentChecked, QVariant value);
     void removeComponentValue(EntityMap* entityChecked, const QString &componentName);

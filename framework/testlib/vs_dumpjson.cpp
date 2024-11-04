@@ -17,13 +17,11 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
         for(const int tmpEntityId : qAsConst(tmpEntityIdKeys)) {
             if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
                 continue;
-            EntityMap* entityMap = db->findEntity(tmpEntityId);;
             QJsonObject tmpEntityObject;
-
             QStringList tmpEntityComponentNames = db->getComponentList(tmpEntityId);
             std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
-                QVariant tmpData = db->findComponent(entityMap, tmpComponentName)->getValue();
+                QVariant tmpData = db->getStoredValue(tmpEntityId, tmpComponentName);
                 QJsonValue toInsert;
                 int tmpDataType = QMetaType::type(tmpData.typeName());
                 if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
