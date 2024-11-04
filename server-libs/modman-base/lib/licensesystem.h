@@ -21,7 +21,7 @@ public:
    */
     QVariantMap systemLicenseConfiguration(const QString &t_systemName) const;
 
-    void setDeviceSerial(const QString &serialNumber);
+    void setDeviceSerial(const QString &serialNumber) override;
     /**
    * @brief serialNumberIsInitialized
    * @return true if the StatusModule1.PAR_SerialNr was retrieved
