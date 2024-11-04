@@ -12,7 +12,6 @@ public:
     virtual ~AbstractDatabase() = default;
 
     virtual bool hasEntity(int entityId) const = 0;
-    virtual EntityMap *findEntity(const int entityId) = 0;
     virtual QList<int> getEntityList() const = 0;
 
     virtual bool hasStoredValue(int entityId, const QString &componentName) const = 0;

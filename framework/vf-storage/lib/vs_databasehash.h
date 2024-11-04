@@ -14,7 +14,6 @@ class DatabaseHash : public AbstractDatabase
 public:
     // Outer interface
     bool hasEntity(int entityId) const override;
-    EntityMap *findEntity(const int entityId) override;
     QList<int> getEntityList() const override;
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
@@ -28,6 +27,7 @@ public:
     // Event system interface
     // ATOW event systems use conrete DatabaseHash. Once we add another implementation
     // of DatabaseHash, we have to think about an interface as AbstractDatabaseWritable
+    EntityMap *findEntity(const int entityId);
     void insertEntity(const int entityId);
     void removeEntity(const int entityId);
 
