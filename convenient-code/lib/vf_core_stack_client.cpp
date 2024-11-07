@@ -1,5 +1,6 @@
 #include "vf_core_stack_client.h"
 #include "vf_client_entity_subscriber.h"
+#include "vf_client_entity_unsubscriber.h"
 
 VfCoreStackClient::VfCoreStackClient()
 {
@@ -38,6 +39,16 @@ void VfCoreStackClient::subscribeEntity(int entityId)
     entityToSubscribe->sendSubscription();
 }
 
+void VfCoreStackClient::unsubscribeEntity(int entityId)
+{
+    VfClientEntityUnsubscriberPtr entityUnsubscriber = VfClientEntityUnsubscriber::create(entityId);
+    m_pendingCommandEventItems[entityUnsubscriber.get()] = entityUnsubscriber;
+    m_cmdEventHandlerSystem->addItem(entityUnsubscriber);
+    connect(entityUnsubscriber.get(), &VfClientEntityUnsubscriber::sigUnsubscribed,
+            this, &VfCoreStackClient::onUnsubscribed);
+    entityUnsubscriber->sendUnsubscription();
+}
+
 void VfCoreStackClient::appendEventSystem(VeinEvent::EventSystem *system)
 {
     m_eventHandler.addSubsystem(system);
@@ -68,4 +79,11 @@ void VfCoreStackClient::onSubscribed(bool ok)
     VfCmdEventItemPtr item = m_pendingCommandEventItems.take(sender());
     m_cmdEventHandlerSystem->removeItem(item);
     emit sigSubscribed(ok, item->getEntityId());
+}
+
+void VfCoreStackClient::onUnsubscribed(bool ok)
+{
+    VfCmdEventItemPtr item = m_pendingCommandEventItems.take(sender());
+    m_cmdEventHandlerSystem->removeItem(item);
+    emit sigUnsubscribed(ok, item->getEntityId());
 }

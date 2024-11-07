@@ -17,6 +17,7 @@ public:
     VfCoreStackClient(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void connectToServer(const QString &host, quint16 port);
     void subscribeEntity(int entityId); // this should go once we got tasks
+    void unsubscribeEntity(int entityId);
 
     void appendEventSystem(VeinEvent::EventSystem* system);
     void prependEventSystem(VeinEvent::EventSystem* system);
@@ -26,9 +27,11 @@ public:
 signals:
     void sigConnnectionEstablished();
     void sigSubscribed(bool ok, int entityId);
+    void sigUnsubscribed(bool ok, int entityId);
 
 private slots:
     void onSubscribed(bool ok);
+    void onUnsubscribed(bool ok);
 private:
     void init();
     VeinEvent::EventHandler m_eventHandler;
