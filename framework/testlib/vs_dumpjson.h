@@ -13,6 +13,8 @@ class VFSTORAGE_EXPORT DumpJson
 {
 public:
     static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>());
+private:
+    static double formatDouble(double value);
 };
 
 }

@@ -39,7 +39,7 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
                     QVariantList tmpDoubleList;
                     const auto doubleList = tmpData.value<QList<double> >();
                     for(const double tmpDouble : doubleList)
-                        tmpDoubleList.append(tmpDouble);
+                        tmpDoubleList.append(formatDouble(tmpDouble));
                     toInsert = QJsonArray::fromVariantList(tmpDoubleList);
                 }
                 else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
@@ -75,6 +75,11 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
     if(outputFileDevice->isOpen())
         outputFileDevice->close();
 
+}
+
+double DumpJson::formatDouble(double value)
+{
+    return QString("%1").arg(value, 0, 'g', 6).toDouble();
 }
 
 }
