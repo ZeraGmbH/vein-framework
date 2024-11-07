@@ -129,17 +129,15 @@ void VeinQml::entityUnsubscribeById(int t_entityId)
 void VeinQml::processEvent(QEvent *t_event)
 {
     if(t_event->type()==CommandEvent::getQEventType()) {
-        CommandEvent *cEvent = static_cast<CommandEvent *>(t_event);
-        Q_ASSERT(cEvent != nullptr);
+        const CommandEvent *cEvent = static_cast<CommandEvent *>(t_event);
         EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
         if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
             /// @todo add support for network events (connected / disconnected / error)
             switch(evData->type())
             {
             case ComponentData::dataType():
             {
-                ComponentData *cData = static_cast<ComponentData *>(evData);
+                const ComponentData *cData = static_cast<ComponentData *>(evData);
                 Q_ASSERT(cData != nullptr);
                 if(m_entities.contains(cData->entityId())) /// @note component data is only processed after the introspection has been processed
                     m_entities.value(cData->entityId())->processComponentData(cData);
