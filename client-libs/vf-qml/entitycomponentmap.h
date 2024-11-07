@@ -2,13 +2,10 @@
 #define ENTITYCOMPONENTMAP_H
 
 #include "globalIncludes.h"
-
 #include <QQmlPropertyMap>
 #include <QJSValue>
 #include <QVariantMap>
 #include <QUuid>
-
-class QEvent;
 
 namespace VeinComponent
 {
@@ -16,12 +13,8 @@ namespace VeinComponent
   class RemoteProcedureData;
 }
 
-
 namespace VeinApiQml
 {
-  /**
-   * @brief QML accessible interface for accessing VeinEvent functionality
-   */
   class VFQML_EXPORT EntityComponentMap : public QQmlPropertyMap
   {
     Q_OBJECT
@@ -87,39 +80,12 @@ namespace VeinApiQml
     QVariant updateValue(const QString &t_key, const QVariant &t_newValue) override;
 
   private:
-    /**
-     * @brief Parses over the introspection JSON and initializes all values
-     */
     void loadEntityData();
-
-    /**
-     * @brief Required component data to enter the ECM_READY state
-     */
     QList<QString> m_pendingValues;
-
-    /**
-     * @brief list of available remote procedures
-     */
     QList<QString> m_registeredRemoteProcedures;
-
-    /**
-     * @brief Tracks rpc calls made by this instance QString is the procedure name
-     */
     QHash<QUuid, QString> m_pendingRPCCallbacks;
-
-    /**
-     * @brief QVariantMap representation of the entity layout
-     */
     const QVariantHash m_entityIntrospection;
-
-    /**
-     * @brief intern state
-     */
     DataState m_state = DataState::ECM_PENDING;
-
-    /**
-     * @brief entity id
-     */
     const int m_entityId;
   };
 }
