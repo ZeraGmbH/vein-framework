@@ -30,7 +30,7 @@ namespace VeinApiQml
     EntityComponentMap() = delete;
 
   public:
-    explicit EntityComponentMap(int t_entityId, const QVariantHash &t_entityIntrospection, QObject *t_parent=nullptr);
+    explicit EntityComponentMap(int entityId, const QVariantHash &entityIntrospection, QObject *parent=nullptr);
 
     enum class DataState : int {
       ECM_NONE = -1, /**< uninitialized */
@@ -43,8 +43,8 @@ namespace VeinApiQml
     Q_PROPERTY(DataState state READ state NOTIFY sigStateChanged)
     Q_PROPERTY(QStringList remoteProcedures READ getRemoteProcedureList NOTIFY sigRemoteProceduresChanged)
 
-    void processComponentData(VeinComponent::ComponentData *t_cData);
-    void processRemoteProcedureData(VeinComponent::RemoteProcedureData *t_rpcData);
+    void processComponentData(const VeinComponent::ComponentData *cData);
+    void processRemoteProcedureData(const VeinComponent::RemoteProcedureData *rpcData);
 
     DataState state() const;
     /**
@@ -56,7 +56,7 @@ namespace VeinApiQml
 
     Q_INVOKABLE int entityId() const;
     //alias for QQmlPropertyMap::contains
-    Q_INVOKABLE bool hasComponent(const QString &t_componentName) const;
+    Q_INVOKABLE bool hasComponent(const QString &componentName) const;
     Q_INVOKABLE int propertyCount() const;
     /**
      * @brief Calls remote procedure
@@ -64,8 +64,8 @@ namespace VeinApiQml
      * @param t_parameters
      * @return id of the result to expect
      */
-    Q_INVOKABLE QUuid invokeRPC(const QString &t_procedureName, const QVariantMap &t_parameters);
-    Q_INVOKABLE void cancelRPCInvokation(QUuid t_identifier);
+    Q_INVOKABLE QUuid invokeRPC(const QString &procedureName, const QVariantMap &parameters);
+    Q_INVOKABLE void cancelRPCInvokation(QUuid identifier);
 
     Q_INVOKABLE QList<QString> getRemoteProcedureList() const;
 
@@ -74,18 +74,7 @@ namespace VeinApiQml
     void sigEntityComplete(int t_entityId);
 
     void sigStateChanged(DataState t_state);
-
-    /**
-     * @brief The signal is emitted when a pending RPC call finishes
-     * @param t_identifier unique identifier of the rpc call
-     * @param t_resultData the result including the resultCode and eventual data
-     */
-    void sigRPCFinished(QUuid t_identifier, const QVariantMap &t_resultData);
-    /**
-     * @brief The signal is emitted when a pending RPC call transmits progress information or streams data
-     * @param t_identifier unique identifier of the rpc call
-     * @param t_progressData the progress information or streamed data
-     */
+    void sigRPCFinished(QUuid identifier, const QVariantMap &resultData);
     void sigRPCProgress(QUuid t_identifier, const QVariantMap &t_progressData);
     void sigRemoteProceduresChanged(QStringList t_procedureList);
 
