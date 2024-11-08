@@ -36,7 +36,7 @@ private:
     static QString deduceDeviceName(const QString& sessionString);
     QString getJsonSessionName(QString displayedSessionName);
     QString getDisplayedSessionName(QString jsonSessionName);
-    void sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData);
+    void sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void setScpiInfo();
 
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;

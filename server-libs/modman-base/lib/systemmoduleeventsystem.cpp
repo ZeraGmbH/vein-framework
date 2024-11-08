@@ -42,22 +42,18 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
     if(t_event->type() == VeinEvent::CommandEvent::getQEventType()) {
         bool validated = false;
         VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
-        Q_ASSERT(cEvent != nullptr);
         if(cEvent->eventSubtype() != VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) { // we do not need to process notifications
             if(cEvent->eventData()->type() == VeinComponent::IntrospectionData::dataType()) // introspection requests are always valid
                 validated = true;
             else if(cEvent->eventData()->type() == VeinComponent::EntityData::dataType()) // validate subscription requests
             {
-                VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(cEvent->eventData());
-                Q_ASSERT(eData != nullptr);
-                if(eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_SUBSCRIBE
-                        || eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_UNSUBSCRIBE) { /// @todo maybe add roles/views later
+                const VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(cEvent->eventData());
+                if(eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_SUBSCRIBE ||
+                   eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_UNSUBSCRIBE)
                     validated = true;
-                }
             }
             else if(cEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
-                VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
-                Q_ASSERT(cData != nullptr);
+                const VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
                 // validate fetch requests
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) {
                     validated = true;
@@ -308,7 +304,7 @@ QString SystemModuleEventSystem::getDisplayedSessionName(QString jsonSessionName
     return sessionName;
 }
 
-void SystemModuleEventSystem::sendSessionNotificationForScpiModule(VeinComponent::ComponentData *cData)
+void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)
 {
     VeinComponent::ComponentData *componentData = new VeinComponent::ComponentData();
     componentData->setEntityId(getEntityId());
