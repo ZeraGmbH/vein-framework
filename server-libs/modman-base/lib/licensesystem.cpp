@@ -40,8 +40,7 @@ LicenseSystem::LicenseSystem(const QSet<QUrl> &t_licenseURLs, QObject *parent) :
         for(const QString &licenseFilePath : licensePaths) {
             const QByteArray licenseFileData = licenseTable.value(licenseFilePath);
             bool isVerified = false;
-            QByteArray licenseJsonData;
-            licenseJsonData = sigHandler.verifyCMSSignature(m_certData, licenseFileData, &isVerified);
+            QByteArray licenseJsonData = sigHandler.verifyCMSSignature(m_certData, licenseFileData, &isVerified);
             if(isVerified) {
                 QJsonParseError parseError;
                 QJsonDocument licenseDocument = QJsonDocument::fromJson(licenseJsonData, &parseError);
@@ -117,7 +116,6 @@ QByteArray LicenseSystem::loadCertData() const
     certFile.open(QFile::ReadOnly);
     retVal = certFile.readAll();
     certFile.close();
-
     return retVal;
 }
 
@@ -143,58 +141,39 @@ QHash<QString, QByteArray> LicenseSystem::getLicenseFilesFromPath(const QString 
 {
     QFileInfo fInfo(t_path);
     QHash<QString, QByteArray> retVal;
-
-    if(fInfo.exists())
-    {
-        if(fInfo.isDir())
-        {
+    if(fInfo.exists()) {
+        if(fInfo.isDir()) {
             //recursive, only lists files
             QDirIterator tmpDirIterator(t_path, QDir::Files, QDirIterator::Subdirectories);
-            while(tmpDirIterator.hasNext())
-            {
+            while(tmpDirIterator.hasNext()) {
                 const QString nextFile = tmpDirIterator.next();
                 const QByteArray licData = loadLicenseFile(nextFile);
                 if(licData.isNull() == false)
-                {
                     retVal.insert(nextFile, licData);
-                }
             }
         }
-        else if(fInfo.isFile())
-        {
+        else if(fInfo.isFile()) {
             const QByteArray licData = loadLicenseFile(t_path);
             if(licData.isNull() == false)
-            {
                 retVal.insert(t_path, licData);
-            }
         }
     }
     else
-    {
         qWarning() << "Could not load license info from path:" << t_path;
-    }
-
     return retVal;
 }
 
 bool LicenseSystem::isValidLicenseExpiryDate(const QString t_dateString) const
 {
     bool retVal = false;
-
     if(t_dateString == s_expiresNeverDescriptor)
-    {
         retVal = true;
-    }
-    else
-    {
+    else {
         //the license expires at the end of the given month so add 1 month here
         const QDateTime tmpExpiryDate = QDateTime::fromString(t_dateString, "yyyy/MM").addMonths(1);
         if(tmpExpiryDate.isValid() && tmpExpiryDate.isNull() == false && tmpExpiryDate >= QDateTime::currentDateTime())
-        {
             retVal = true;
-        }
     }
-
     return retVal;
 }
 
@@ -205,24 +184,19 @@ bool LicenseSystem::isValidLicenseDeviceSerial(const QString t_deviceSerial) con
 
 void LicenseSystem::processEvent(QEvent *t_event)
 {
-    if(t_event->type()==VeinEvent::CommandEvent::getQEventType())
-    {
-        VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
-        Q_ASSERT(cEvent != nullptr);
-
-        VeinEvent::EventData *evData = cEvent->eventData();
-        Q_ASSERT(evData != nullptr);
-
+    if(t_event->type()==VeinEvent::CommandEvent::getQEventType()) {
+        const VeinEvent::CommandEvent *cEvent = static_cast<VeinEvent::CommandEvent *>(t_event);
+        const VeinEvent::EventData *evData = cEvent->eventData();
         //statusmodule initializes PAR_SerialNr with our serial number to check the licenses against
         if(evData->entityId() == 1150
                 && evData->type() == VeinComponent::ComponentData::dataType()
                 && evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
-            VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(evData);
+            const VeinComponent::ComponentData *cData = static_cast<const VeinComponent::ComponentData *>(evData);
             if(cData->componentName() == QString("PAR_SerialNr")) {
-                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_ADD || cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
+                if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_ADD ||
+                   cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
                     const QString newSerialNumber = cData->newValue().toString();
-                    if((newSerialNumber.isEmpty() == false) && (m_deviceSerial != newSerialNumber))
-                    {
+                    if((newSerialNumber.isEmpty() == false) && (m_deviceSerial != newSerialNumber)) {
                         qWarning() << "Changed device serial from:" << m_deviceSerial << "to:" << cData->newValue() << cData->oldValue();
                         setDeviceSerial(newSerialNumber);
                     }
