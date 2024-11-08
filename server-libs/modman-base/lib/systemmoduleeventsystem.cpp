@@ -16,7 +16,6 @@ static const char *entityNameComponentName =           "EntityName";
 static const char *entitiesComponentName =             "Entities";
 static const char *sessionComponentName =              "Session";
 static const char *sessionsAvailableComponentName =    "SessionsAvailable";
-static const char *notificationMessagesComponentName = "Error_Messages";
 static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
 static const char *moduleInterface =                   "INF_ModuleInterface";
@@ -78,15 +77,10 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                                     QVariant(),
                                     QVariant("")) );
                                 emit sigChangeSession(m_currentSession);
-
                                 m_sessionReady = false;
                             }
                             t_event->accept();
                         }
-                    }
-                    else if(cData->componentName() == notificationMessagesComponentName) {
-                        handleNotificationMessage(cData->newValue().toJsonObject());
-                        t_event->accept();
                     }
                     else if(cData->componentName() == modulesPausedComponentName) {
                         validated = true;
@@ -170,7 +164,6 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(entitiesComponentName, QVariant());
         componentData.insert(sessionComponentName, QVariant(m_currentSession));
         componentData.insert(sessionsAvailableComponentName, QVariant(m_availableSessions));
-        componentData.insert(notificationMessagesComponentName, QVariant(m_notificationMessages.toJson()));
         componentData.insert(modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
         componentData.insert(moduleInterface, QVariant());
@@ -194,26 +187,6 @@ void SystemModuleEventSystem::setModulesPaused(bool t_paused)
         m_modulesPaused = t_paused;
         emit sigModulesPausedChanged(m_modulesPaused);
     }
-}
-
-void SystemModuleEventSystem::handleNotificationMessage(QJsonObject t_message)
-{
-    Q_ASSERT(t_message.isEmpty() == false);
-    VeinComponent::ComponentData *notificationMessagesData = new VeinComponent::ComponentData();
-    VeinEvent::CommandEvent *emDataEvent = nullptr;
-    notificationMessagesData->setEntityId(getEntityId());
-    notificationMessagesData->setCommand(VeinComponent::ComponentData::Command::CCMD_SET);
-    notificationMessagesData->setComponentName(notificationMessagesComponentName);
-    notificationMessagesData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    notificationMessagesData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-
-    QJsonArray tmpArray = m_notificationMessages.array();
-    tmpArray.append(t_message);
-    m_notificationMessages.setArray(tmpArray);
-    notificationMessagesData->setNewValue(m_notificationMessages.toJson());
-
-    emDataEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, notificationMessagesData);
-    emit sigSendEvent(emDataEvent);
 }
 
 QByteArray SystemModuleEventSystem::setModuleInterface()

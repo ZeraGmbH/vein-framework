@@ -154,7 +154,6 @@ void test_client_entity_subscriber::introspectComponentNames()
     QVERIFY(componentNames.contains("SessionsAvailable"));
     QVERIFY(componentNames.contains("Entities"));
     QVERIFY(componentNames.contains("ModulesPaused"));
-    QVERIFY(componentNames.contains("Error_Messages"));
     QVERIFY(componentNames.contains("DevMode"));
 }
 

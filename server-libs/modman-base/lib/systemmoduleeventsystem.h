@@ -26,12 +26,6 @@ public slots:
     void setModulesPaused(bool t_paused);
 
 private:
-    /**
-   * @brief the old fashioned way of writing error messages
-   * @deprecated errors and warnings now are communicated via the system logging facility (probably systemd journal)
-   * @param t_message
-   */
-    void handleNotificationMessage(QJsonObject t_message);
     QByteArray setModuleInterface();
     static QString deduceDeviceName(const QString& sessionString);
     QString getJsonSessionName(QString displayedSessionName);
