@@ -33,7 +33,10 @@ bool cDoubleValidator::isValidParam(QVariant& newValue)
 {
     bool ok;
     double value = newValue.toDouble(&ok);
-    return (ok && (value <= m_fMax) && (value >= m_fMin));
+    ok = ok && (value <= m_fMax) && (value >= m_fMin);
+    if(ok)
+        newValue = QVariant::fromValue<double>(value);
+    return ok;
 }
 
 void cDoubleValidator::exportMetaData(QJsonObject& jsObj)
