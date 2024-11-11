@@ -20,7 +20,6 @@ public:
 private:
     void processIntrospectionData(QEvent *event);
     void processComponentData(QEvent *event);
-    void processEntityData(QEvent *event);
 
     DatabaseHash *m_privHash;
 
