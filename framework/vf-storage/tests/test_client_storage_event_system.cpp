@@ -1,6 +1,7 @@
 #include "test_client_storage_event_system.h"
 #include "mocktcpnetworkfactory.h"
 #include "vf_client_component_fetcher.h"
+#include "vf_client_component_setter.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -111,7 +112,7 @@ void test_client_storage_event_system::fetchExistingComponent()
     QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "EntityName"), "Foo");
 }
 
-void test_client_storage_event_system::getChangedComponentValue()
+void test_client_storage_event_system::serverSetComponent()
 {
     addAndSubscribeToEntity(entityID1, "Foo");
     m_netServer->getServer()->setComponentServerNotification(entityID1, "EntityName", "Bar");
@@ -119,20 +120,36 @@ void test_client_storage_event_system::getChangedComponentValue()
     QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "EntityName"), "Bar");
 }
 
-void test_client_storage_event_system::removeEntity()
+void test_client_storage_event_system::serverRemoveEntity()
 {
     addAndSubscribeToEntity(entityID1, "Foo");
     m_netServer->getServer()->removeEntitiesAdded();
     QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
 }
 
-void test_client_storage_event_system::componentAdded()
+void test_client_storage_event_system::serverAddComponent()
 {
     addAndSubscribeToEntity(entityID1, "Foo");
     m_netServer->getServer()->addComponent(entityID1, "component1", "xyz", false);
     TimeMachineObject::feedEventLoop();
     QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "component1"));
     QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "component1"), "xyz");
+}
+
+void test_client_storage_event_system::clientSetComponent()
+{
+    addAndSubscribeToEntity(entityID1, "Foo");
+    m_netServer->getServer()->addComponent(entityID1, "component1", "xyz", false);
+    TimeMachineObject::feedEventLoop();
+
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(entityID1);
+    m_netClient->addItem(entityItem);
+    VfClientComponentSetterPtr setter = VfClientComponentSetter::create("component1", entityItem);
+    entityItem->addItem(setter);
+    setter->startSetComponent(QVariant(), "abc");
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "component1"), "abc");
 }
 
 void test_client_storage_event_system::addAndSubscribeToEntity(int entityID, QString entityName)
