@@ -34,7 +34,8 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                 processComponentData(event);
                 break;
             case EntityData::dataType():
-                processEntityData(event);
+                //ECMD_ADD event doesn't reach to client because client hasn't yet subscribed to that entity
+                //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, ECMD_REMOVE events do not reach to client side
                 break;
             default:
                 break;
@@ -102,7 +103,7 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot add component for not existing entity id: %1").arg(entityId), event, this);
         else if(component)
-            ErrorDataSender::errorOut(QString("Cannot add not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot add existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else {
             StorageComponentPtr futureComponent = m_privHash->getFutureComponent(entityId, componentName);
             if(futureComponent)
@@ -112,26 +113,4 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
     default:
         break;
     }
-}
-
-void ClientStorageEventSystem::processEntityData(QEvent *event)
-{
-    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-    EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
-    const int entityId = eData->entityId();
-    EntityMap* entityMap = m_privHash->findEntity(entityId);
-    switch(eData->eventCommand())
-    {
-    case EntityData::Command::ECMD_REMOVE:
-    {
-        if(!entityMap)
-            ErrorDataSender::errorOut(QString("Cannot delete entity, entity id does not exists: %1").arg(entityId), event, this);
-        else
-            m_privHash->removeEntity(entityId);
-        break;
-    }
-    default:
-        break;
-    }
-
 }
