@@ -289,6 +289,26 @@ void test_command_events::serverRemoveComponentForNomExistentEntity()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
+void test_command_events::serverRemoveAllEntities()
+{
+    QJsonObject jsonEvents;
+    setupSpy(jsonEvents);
+
+    m_netServer->getServer()->addEntity(testEntityId, entityName);
+    m_netServer->getServer()->addComponent(testEntityId, componentName, componentValue, false);
+    TimeMachineObject::feedEventLoop();
+    subscribeClient(testEntityId);
+
+    m_netServer->getServer()->removeEntitiesAdded();
+    TimeMachineObject::feedEventLoop();
+
+    QFile file(":/vein-event-dumps/dumpEventsRemoveAllEntities.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+}
+
 void test_command_events::init()
 {
     constexpr int serverPort = 4242;

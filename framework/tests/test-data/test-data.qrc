@@ -16,10 +16,10 @@
         <file>vein-event-dumps/dumpEventsUnsubscribe.json</file>
         <file>vein-event-dumps/dumpEventsSubscribeNonExistent.json</file>
         <file>vein-event-dumps/dumpUnfinishedSession.json</file>
-
         <file>vein-storage-dumps/dumpChangeSession.json</file>
         <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
         <file>vein-storage-dumps/dumpStorageInitial.json</file>
         <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
+        <file>vein-event-dumps/dumpEventsRemoveAllEntities.json</file>
     </qresource>
 </RCC>
