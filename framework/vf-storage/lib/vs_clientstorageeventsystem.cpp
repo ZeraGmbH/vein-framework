@@ -24,21 +24,36 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
     if(event->type() == VeinEvent::CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         EventData *evData = cEvent->eventData();
-        if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin())) {
-            switch (evData->type())
-            {
-            case IntrospectionData::dataType():
-                processIntrospectionData(event);
-                break;
-            case ComponentData::dataType():
-                processComponentData(event);
-                break;
-            case EntityData::dataType():
-                //ECMD_ADD event doesn't reach to client because client hasn't yet subscribed to that entity
-                //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, ECMD_REMOVE events do not reach to client side
-                break;
-            default:
-                break;
+        if(m_acceptableOrigins.contains(evData->eventOrigin())) {
+            if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
+                switch (evData->type())
+                {
+                case IntrospectionData::dataType():
+                    processIntrospectionData(event);
+                    break;
+                case ComponentData::dataType():
+                    processComponentData(event);
+                    break;
+                case EntityData::dataType():
+                    //ECMD_ADD event doesn't reach to client because client hasn't yet subscribed to that entity
+                    //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, ECMD_REMOVE events do not reach to client side
+                    break;
+                default:
+                    break;
+                }
+            }
+            else if(cEvent->eventSubtype() == CommandEvent::EventSubtype::TRANSACTION) {
+                switch (evData->type())
+                {
+                case EntityData::dataType(): {
+                    EntityData *eData = static_cast<EntityData*>(cEvent->eventData());
+                    if(eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE)
+                        m_privHash->removeEntity(eData->entityId());
+                    break;
+                    }
+                default:
+                    break;
+                }
             }
         }
     }
