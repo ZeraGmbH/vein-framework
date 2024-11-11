@@ -71,7 +71,7 @@ void test_client_storage_event_system::subscribeAndUnsubscribe()
 
     m_netClient->unsubscribeEntity(entityID1);
     TimeMachineObject::feedEventLoop();
-    //no response event reaches to m_clientStorageSystem
+    QVERIFY(!m_clientStorageSystem->getDb()->hasEntity(entityID1));
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
 }
 
@@ -80,7 +80,7 @@ void test_client_storage_event_system::unsubscribeWithoutSubscribing()
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
     m_netClient->unsubscribeEntity(entityID1);
     TimeMachineObject::feedEventLoop();
-    //no response event reaches to m_clientStorageSystem
+    QVERIFY(!m_clientStorageSystem->getDb()->hasEntity(entityID1));
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
 }
 
