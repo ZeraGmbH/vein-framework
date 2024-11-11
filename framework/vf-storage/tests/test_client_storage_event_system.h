@@ -12,7 +12,6 @@ class test_client_storage_event_system : public QObject
 private slots:
     void init();
     void cleanup();
-    void setupSpy(QJsonObject &jsonEvents);
 
     void subscribeToNonExistingEntity();
     void subscribeToExistingEntity();
@@ -20,11 +19,13 @@ private slots:
     void unsubscribeWithoutSubscribing();
     void fetchNonExistingComponent();
     void fetchExistingComponent();
-    void getChangedComponentValue();
-    void removeEntity();
-    void componentAdded();
+    void serverSetComponent();
+    void serverRemoveEntity();
+    void serverAddComponent();
+    void clientSetComponent();
 
 private:
+    void setupSpy(QJsonObject &jsonEvents);
     void addAndSubscribeToEntity(int entityID, QString entityName);
 
     std::unique_ptr<TestVeinServerWithMockNet> m_netServer;
