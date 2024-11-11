@@ -70,11 +70,12 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
         ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(iData->entityId()), event, this);
     else {
         m_privHash->insertEntity(entityId);
+        entityMap = m_privHash->findEntity(entityId);
         QStringList components = iData->jsonData().toVariantHash().value("components").toStringList();
         for(const QString &componentName: qAsConst(components)) {
-            StorageComponentPtr futureComponent = m_privHash->getFutureComponent(entityId, componentName);
-            if(futureComponent)
-                m_privHash->insertFutureComponent(entityId, componentName, futureComponent, QVariant());
+            StorageComponentPtr component = m_privHash->findComponent(entityId, componentName);
+            if(!component)
+                m_privHash->insertComponentValue(entityMap, componentName, QVariant());
         }
     }
 }
@@ -119,11 +120,8 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
             ErrorDataSender::errorOut(QString("Cannot add component for not existing entity id: %1").arg(entityId), event, this);
         else if(component)
             ErrorDataSender::errorOut(QString("Cannot add existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
-        else {
-            StorageComponentPtr futureComponent = m_privHash->getFutureComponent(entityId, componentName);
-            if(futureComponent)
-                m_privHash->insertFutureComponent(entityId, componentName, futureComponent, cData->newValue());
-        }
+        else
+            m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;
     default:
         break;
