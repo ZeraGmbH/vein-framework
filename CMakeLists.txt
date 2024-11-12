@@ -53,6 +53,7 @@ function(SETUP_TESTS)
             VfComponentTest
             VfCpp
             VfNet2
+            VfQml
             vf-tcp-mock-networklib
             VfFrameworkTest
             VfConvenientCodeTest
