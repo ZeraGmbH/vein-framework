@@ -214,8 +214,6 @@ void VeinQml::onEntityLoaded(int t_entityId)
     emit sigStateChanged(m_state);
     if(m_entitySubscriptionReferenceTables.contains(t_entityId)) {
         vCDebug(VEIN_API_QML) << "Fetched required entity:" << t_entityId;
-        /// @todo PRIO check ecm_ready use
-        //m_entities.value(t_entityId)->setState(EntityComponentMap::DataState::ECM_READY);
         m_resolvedIds.insert(t_entityId);
         emit sigEntityAvailable(nameFromEntityId(t_entityId)); // needs to be called before sigStateChanged(), or the list of entities may be already deleted from a setRequiredIds() call
         if(m_state != ConnectionState::VQ_LOADED) {
