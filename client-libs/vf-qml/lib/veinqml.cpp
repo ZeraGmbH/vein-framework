@@ -146,7 +146,7 @@ void VeinQml::processEvent(QEvent *t_event)
             case EntityData::dataType():
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
-                int entityId =eData->entityId();
+                int entityId = eData->entityId();
                 switch(eData->eventCommand())
                 {
                 case EntityData::Command::ECMD_REMOVE:
@@ -158,8 +158,7 @@ void VeinQml::processEvent(QEvent *t_event)
                         m_entities.remove(entityId);
                         eMap->deleteLater();
 
-                        if(m_entitySubscriptionReferenceTables.contains(entityId))
-                        {
+                        if(m_entitySubscriptionReferenceTables.contains(entityId)) {
                             m_resolvedIds.remove(entityId);
                             qCCritical(VEIN_API_QML_INTROSPECTION) << "Required entity was removed remotely, entity id:" << entityId;
                             m_state = ConnectionState::VQ_ERROR;
