@@ -88,6 +88,29 @@ void test_entity_dictionary::insertOneSetName()
     QVERIFY(dict.setEntityName(entityId, "foo"));
 }
 
+void test_entity_dictionary::insertOneSetEmptyName()
+{
+    EntityDictionary dict;
+    QVariantHash dummyHash;
+    const int entityId = 0;
+    EntityComponentMap* map = new EntityComponentMap(entityId, dummyHash);
+    dict.insert(entityId, map);
+
+    QVERIFY(!dict.setEntityName(entityId, ""));
+}
+
+void test_entity_dictionary::insertOneSetSameNameTwice()
+{
+    EntityDictionary dict;
+    QVariantHash dummyHash;
+    const int entityId = 0;
+    EntityComponentMap* map = new EntityComponentMap(entityId, dummyHash);
+    dict.insert(entityId, map);
+
+    QVERIFY(dict.setEntityName(entityId, "foo"));
+    QVERIFY(dict.setEntityName(entityId, "foo"));
+}
+
 void test_entity_dictionary::insertOneSetNameInvalidId()
 {
     EntityDictionary dict;
