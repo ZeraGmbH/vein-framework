@@ -9,6 +9,7 @@ namespace VeinApiQml {
 class EntityDictionary
 {
 public:
+    virtual ~EntityDictionary();
     bool insert(int entityId, EntityComponentMap* eMap);
     bool setEntityName(int entityId, const QString& name);
 
