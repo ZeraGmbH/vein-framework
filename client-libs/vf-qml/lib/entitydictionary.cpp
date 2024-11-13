@@ -2,6 +2,13 @@
 
 namespace VeinApiQml {
 
+EntityDictionary::~EntityDictionary()
+{
+    for(auto &entry : qAsConst(m_entitiesById))
+        entry.m_entityComponentMap->deleteLater();
+    m_entitiesById.clear();
+}
+
 bool VeinApiQml::EntityDictionary::insert(int entityId, EntityComponentMap* eMap)
 {
     if(!m_entitiesById.contains(entityId)) {
