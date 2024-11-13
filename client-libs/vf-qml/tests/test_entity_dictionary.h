@@ -14,6 +14,8 @@ private slots:
     void insertOneAndDelete();
 
     void insertOneSetName();
+    void insertOneSetEmptyName();
+    void insertOneSetSameNameTwice();
     void insertOneSetNameInvalidId();
     void insertOneSetNameFind();
     void insertOneSetTwoNames();
