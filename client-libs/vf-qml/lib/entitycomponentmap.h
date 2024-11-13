@@ -33,40 +33,27 @@ namespace VeinApiQml
     };
     Q_ENUM(DataState)
 
-    Q_PROPERTY(DataState state READ state NOTIFY sigStateChanged)
     Q_PROPERTY(QStringList remoteProcedures READ getRemoteProcedureList NOTIFY sigRemoteProceduresChanged)
 
+    // Not for QML
     void processComponentData(const VeinComponent::ComponentData *cData);
     void processRemoteProcedureData(const VeinComponent::RemoteProcedureData *rpcData);
-
     DataState state() const;
-    /**
-     * @brief calls loadEntityData() if the t_dataState is ECM_PENDING
-     * @param t_dataState
-     * @note not callable from QML
-     */
     void setState(DataState t_dataState);
 
     Q_INVOKABLE int entityId() const;
     //alias for QQmlPropertyMap::contains
     Q_INVOKABLE bool hasComponent(const QString &componentName) const;
     Q_INVOKABLE int propertyCount() const;
-    /**
-     * @brief Calls remote procedure
-     * @param t_procedureName
-     * @param t_parameters
-     * @return id of the result to expect
-     */
+
     Q_INVOKABLE QUuid invokeRPC(const QString &procedureName, const QVariantMap &parameters);
     Q_INVOKABLE void cancelRPCInvokation(QUuid identifier);
-
     Q_INVOKABLE QList<QString> getRemoteProcedureList() const;
 
   signals:
     void sigSendEvent(QEvent *t_cEvent);
     void sigEntityComplete(int t_entityId);
 
-    void sigStateChanged(DataState t_state);
     void sigRPCFinished(QUuid identifier, const QVariantMap &resultData);
     void sigRPCProgress(QUuid t_identifier, const QVariantMap &t_progressData);
     void sigRemoteProceduresChanged(QStringList t_procedureList);
@@ -85,7 +72,7 @@ namespace VeinApiQml
     QList<QString> m_registeredRemoteProcedures;
     QHash<QUuid, QString> m_pendingRPCCallbacks;
     const QVariantHash m_entityIntrospection;
-    DataState m_state = DataState::ECM_PENDING;
+    DataState m_state = DataState::ECM_NONE;
     const int m_entityId;
   };
 }

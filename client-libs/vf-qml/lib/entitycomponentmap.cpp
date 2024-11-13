@@ -37,6 +37,7 @@ void EntityComponentMap::processComponentData(const ComponentData *cData)
             insert(cData->componentName(), cData->newValue()); // bypasses the function updateValue(...)
             m_pendingValues.removeAll(cData->componentName());
             if(m_pendingValues.isEmpty()) {
+                m_state = DataState::ECM_READY;
                 emit sigEntityComplete(m_entityId);
             }
         }
@@ -75,7 +76,6 @@ void EntityComponentMap::setState(EntityComponentMap::DataState t_dataState)
     m_state = t_dataState;
     if(m_state == DataState::ECM_PENDING)
         loadEntityData();
-    emit sigStateChanged(m_state);
 }
 
 int EntityComponentMap::entityId() const
@@ -85,6 +85,8 @@ int EntityComponentMap::entityId() const
 
 bool EntityComponentMap::hasComponent(const QString &componentName) const
 {
+    if(m_state != DataState::ECM_READY)
+        return false;
     return contains(componentName);
 }
 
