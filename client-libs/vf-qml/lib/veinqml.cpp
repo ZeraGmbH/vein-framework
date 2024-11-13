@@ -1,16 +1,12 @@
 #include "veinqml.h"
-
 #include "entitycomponentmap.h"
-
-#include <ve_commandevent.h>
 #include <ve_eventdata.h>
-
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_errordata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
-
+#include <vf_client_entity_unsubscriber.h>
 #include <QQmlEngine>
 
 Q_LOGGING_CATEGORY(VEIN_API_QML, VEIN_DEBUGNAME_QML)
@@ -101,15 +97,7 @@ void VeinQml::entityUnsubscribeById(int t_entityId)
     }
     if(subscriptionCount == 0) {
         removeEntity(t_entityId);
-
-        EntityData *eData = new EntityData();
-        eData->setCommand(EntityData::Command::ECMD_UNSUBSCRIBE);
-        eData->setEntityId(t_entityId);
-        eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
-        eData->setEventTarget(EntityData::EventTarget::ET_ALL);
-
-        CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
-        emit sigSendEvent(cEvent);
+        emit sigSendEvent(VfClientEntityUnsubscriber::generateEvent(t_entityId));
     }
     vCDebug(VEIN_API_QML_VERBOSE) << "Subscription removed for entity:" << t_entityId << "new subscriptionCount:" << subscriptionCount;
 }
