@@ -1,11 +1,11 @@
 #include "veinqml.h"
 #include "entitycomponentmap.h"
-#include <ve_eventdata.h>
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_errordata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
+#include <vf_client_entity_subscriber.h>
 #include <vf_client_entity_unsubscriber.h>
 #include <QQmlEngine>
 
@@ -70,16 +70,8 @@ void VeinQml::setStaticInstance(VeinQml *t_instance)
 
 void VeinQml::entitySubscribeById(int t_entityId)
 {
-    if(!m_entityDict.findById(t_entityId)) {
-        EntityData *eData = new EntityData();
-        eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
-        eData->setEntityId(t_entityId);
-        eData->setEventOrigin(EntityData::EventOrigin::EO_LOCAL);
-        eData->setEventTarget(EntityData::EventTarget::ET_ALL);
-
-        CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, eData);
-        emit sigSendEvent(cEvent);
-    }
+    if(!m_entityDict.findById(t_entityId))
+        emit sigSendEvent(VfClientEntitySubscriber::generateEvent(t_entityId));
     quint32 subscriptionCount = m_entitySubscriptionReferenceTables.value(t_entityId, 0);
     subscriptionCount++;
     m_entitySubscriptionReferenceTables.insert(t_entityId, subscriptionCount);
