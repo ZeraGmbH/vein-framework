@@ -225,4 +225,5 @@ void test_entity_dictionary::nameFromId()
 
     QCOMPARE(dict.nameFromId(entityId0), "foo");
     QCOMPARE(dict.nameFromId(entityId1), "bar");
+    QCOMPARE(dict.nameFromId(42), "");
 }
