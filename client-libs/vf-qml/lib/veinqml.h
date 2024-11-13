@@ -2,6 +2,7 @@
 #define VEINQML_H
 
 #include "globalIncludes.h"
+#include "entitydictionary.h"
 #include <ve_eventsystem.h>
 #include <QHash>
 #include <QJsonObject>
@@ -15,7 +16,6 @@ class VFQML_EXPORT VeinQml : public VeinEvent::EventSystem
     Q_OBJECT
 public:
     explicit VeinQml(QObject *t_parent = nullptr);
-    ~VeinQml();
     void processEvent(QEvent *t_event) override;
 
     enum class ConnectionState : int {
@@ -47,14 +47,12 @@ signals:
 private slots:
     void onEntityLoaded(int t_entityId);
 private:
-    int idFromEntityName(const QString &t_entityName) const;
-    QString nameFromEntityId(int t_entityId) const;
     void removeEntity(int t_entityId);
 
     ConnectionState m_state = ConnectionState::VQ_IDLE;
-    QHash<int, EntityComponentMap *> m_entities;
     QHash<int, quint32> m_entitySubscriptionReferenceTables;
     QSet<int> m_resolvedIds;
+    EntityDictionary m_entityDict;
     // do not delete from c++
     static VeinQml *s_staticInstance;
 };

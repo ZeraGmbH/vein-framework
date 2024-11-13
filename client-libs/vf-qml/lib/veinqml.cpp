@@ -26,14 +26,6 @@ VeinQml::VeinQml(QObject *t_parent) : EventSystem(t_parent)
 {
 }
 
-VeinQml::~VeinQml()
-{
-    const auto entityList = m_entities.values();
-    for(EntityComponentMap *toDelete : entityList)
-        toDelete->deleteLater();
-    m_entities.clear();
-}
-
 VeinQml::ConnectionState VeinQml::state() const
 {
     return m_state;
@@ -41,37 +33,32 @@ VeinQml::ConnectionState VeinQml::state() const
 
 EntityComponentMap *VeinQml::getEntity(const QString &t_entityName) const
 {
-    EntityComponentMap *retVal = nullptr;
-    const int entityId = idFromEntityName(t_entityName); /// @todo this is a performance bottleneck
+    EntityComponentMap *retVal = m_entityDict.findByName(t_entityName);
+    if(!retVal)
+        qWarning() << "No entity found with name:" << t_entityName;
 
-    if(entityId>=0 && m_entities.contains(entityId))
-        retVal = m_entities.value(entityId);
-    else
-        qCWarning(VEIN_API_QML) << "No entity found with name:" << t_entityName;
-
-    QQmlEngine::setObjectOwnership(retVal, QQmlEngine::CppOwnership); //see: http://doc.qt.io/qt-5/qtqml-cppintegration-data.html#data-ownership
+    // we take care
+    QQmlEngine::setObjectOwnership(retVal, QQmlEngine::CppOwnership);
     return retVal;
 }
 
 bool VeinQml::hasEntity(const QString &t_entityName) const
 {
-    const int entityId = idFromEntityName(t_entityName);
-    return entityId>=0 && m_entities.contains(entityId);
+    return m_entityDict.findByName(t_entityName) != nullptr;
 }
 
 EntityComponentMap *VeinQml::getEntityById(int t_id) const
 {
-    EntityComponentMap *retVal = nullptr;
-    if(m_entities.contains(t_id)) {
-        retVal = m_entities.value(t_id);
-        QQmlEngine::setObjectOwnership(retVal, QQmlEngine::CppOwnership); //see: http://doc.qt.io/qt-5/qtqml-cppintegration-data.html#data-ownership
-    }
+    EntityComponentMap *retVal = m_entityDict.findById(t_id);
+    if(retVal)
+        // we take care
+        QQmlEngine::setObjectOwnership(retVal, QQmlEngine::CppOwnership);
     return retVal;
 }
 
 QList<int> VeinQml::getEntityList() const
 {
-    return m_entities.keys();
+    return m_entityDict.getEntityList();
 }
 
 VeinQml *VeinQml::getStaticInstance()
@@ -87,7 +74,7 @@ void VeinQml::setStaticInstance(VeinQml *t_instance)
 
 void VeinQml::entitySubscribeById(int t_entityId)
 {
-    if(m_entities.contains(t_entityId) == false) {
+    if(!m_entityDict.findById(t_entityId)) {
         EntityData *eData = new EntityData();
         eData->setCommand(EntityData::Command::ECMD_SUBSCRIBE);
         eData->setEntityId(t_entityId);
@@ -105,7 +92,7 @@ void VeinQml::entitySubscribeById(int t_entityId)
 
 void VeinQml::entityUnsubscribeById(int t_entityId)
 {
-    Q_ASSERT(m_entities.contains(t_entityId));//unsubscribe for unknown entity?
+    Q_ASSERT(m_entityDict.findById(t_entityId));//unsubscribe for unknown entity?
     quint32 subscriptionCount = m_entitySubscriptionReferenceTables.value(t_entityId, 0);
     Q_ASSERT(subscriptionCount>0); //unsubscribe when never subscribed?
     if(subscriptionCount > 0) {
@@ -114,6 +101,7 @@ void VeinQml::entityUnsubscribeById(int t_entityId)
     }
     if(subscriptionCount == 0) {
         removeEntity(t_entityId);
+
         EntityData *eData = new EntityData();
         eData->setCommand(EntityData::Command::ECMD_UNSUBSCRIBE);
         eData->setEntityId(t_entityId);
@@ -138,35 +126,32 @@ void VeinQml::processEvent(QEvent *t_event)
             case ComponentData::dataType():
             {
                 const ComponentData *cData = static_cast<ComponentData *>(evData);
-                Q_ASSERT(cData != nullptr);
-                if(m_entities.contains(cData->entityId())) /// @note component data is only processed after the introspection has been processed
-                    m_entities.value(cData->entityId())->processComponentData(cData);
+                int entityId = cData->entityId();
+                EntityComponentMap *map = m_entityDict.findById(entityId);
+                if(map) { /// @note component data is only processed after the introspection has been processed
+                    const QString componentName = cData->componentName();
+                    if(cData->eventCommand() != ComponentData::Command::CCMD_REMOVE) {
+                        if(componentName == "EntityName")
+                            m_entityDict.setEntityName(entityId, cData->newValue().toString());
+                    }
+                    // Seems that entity remove is never received at the time of writing!
+                    // So since "EntityName" / "INF_ModuleInterface" are mandatory assume
+                    // entity removed once one of them is removed
+                    else if(componentName == "EntityName" || componentName == "INF_ModuleInterface")
+                        removeEntity(entityId);
+                    map->processComponentData(cData);
+                }
                 break;
             }
-            case EntityData::dataType():
+            case EntityData::dataType(): // Never received!!!
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
                 int entityId = eData->entityId();
                 switch(eData->eventCommand())
                 {
                 case EntityData::Command::ECMD_REMOVE:
-                {
-                    if(m_entities.contains(entityId)) {
-                        EntityComponentMap *eMap = m_entities.value(entityId);
-                        eMap->setState(EntityComponentMap::DataState::ECM_REMOVED);
-
-                        m_entities.remove(entityId);
-                        eMap->deleteLater();
-
-                        if(m_entitySubscriptionReferenceTables.contains(entityId)) {
-                            m_resolvedIds.remove(entityId);
-                            qCCritical(VEIN_API_QML_INTROSPECTION) << "Required entity was removed remotely, entity id:" << entityId;
-                            m_state = ConnectionState::VQ_ERROR;
-                            emit sigStateChanged(m_state);
-                        }
-                    }
+                    removeEntity(entityId);
                     break;
-                }
                 default:
                     break;
                 }
@@ -183,9 +168,9 @@ void VeinQml::processEvent(QEvent *t_event)
                 IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
                 int entityId = iData->entityId();
                 vCDebug(VEIN_API_QML_VERBOSE) << "Received introspection data for entity:" << entityId;
-                if(m_entities.contains(entityId) == false) {
+                if(!m_entityDict.findById(entityId)) {
                     EntityComponentMap *eMap = new EntityComponentMap(entityId, iData->jsonData().toVariantHash(), this);
-                    m_entities.insert(entityId, eMap);
+                    m_entityDict.insert(entityId, eMap);
                     connect(eMap, &EntityComponentMap::sigSendEvent, this, &VeinQml::sigSendEvent);
                     connect(eMap, &EntityComponentMap::sigEntityComplete, this, &VeinQml::onEntityLoaded);
                     eMap->setState(EntityComponentMap::DataState::ECM_PENDING);
@@ -196,8 +181,9 @@ void VeinQml::processEvent(QEvent *t_event)
             {
                 RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(evData);
                 Q_ASSERT(rpcData != nullptr);
-                if(m_entities.contains(rpcData->entityId())) /// @note component data is only processed after the introspection has been processed
-                    m_entities.value(rpcData->entityId())->processRemoteProcedureData(rpcData);
+                EntityComponentMap *eMap = m_entityDict.findById(rpcData->entityId());
+                if(eMap) /// @note component data is only processed after the introspection has been processed
+                    eMap->processRemoteProcedureData(rpcData);
                 break;
             }
             default:
@@ -209,16 +195,13 @@ void VeinQml::processEvent(QEvent *t_event)
 
 void VeinQml::onEntityLoaded(int t_entityId)
 {
-    m_state = ConnectionState::VQ_IDLE;
-    emit sigStateChanged(m_state);
     if(m_entitySubscriptionReferenceTables.contains(t_entityId)) {
         vCDebug(VEIN_API_QML) << "Fetched required entity:" << t_entityId;
         m_resolvedIds.insert(t_entityId);
-        emit sigEntityAvailable(nameFromEntityId(t_entityId)); // needs to be called before sigStateChanged(), or the list of entities may be already deleted from a setRequiredIds() call
+        emit sigEntityAvailable(m_entityDict.nameFromId(t_entityId));
         if(m_state != ConnectionState::VQ_LOADED) {
             QList<int> entitySubscriptionReferenceTableList = m_entitySubscriptionReferenceTables.keys();
-            if(m_resolvedIds.contains(QSet<int>(entitySubscriptionReferenceTableList.begin(), entitySubscriptionReferenceTableList.end())))
-            {
+            if(m_resolvedIds.contains(QSet<int>(entitySubscriptionReferenceTableList.begin(), entitySubscriptionReferenceTableList.end()))) {
                 vCDebug(VEIN_API_QML) << "All required entities resolved";
                 m_state = ConnectionState::VQ_LOADED;
                 emit sigStateChanged(m_state);
@@ -227,38 +210,24 @@ void VeinQml::onEntityLoaded(int t_entityId)
     }
 }
 
-int VeinQml::idFromEntityName(const QString &t_entityName) const
-{
-    int retVal = -1;
-    if(t_entityName.isEmpty() == false) {
-        const auto tmpEntityIdKeys = m_entities.keys();
-        for(const int tmpKey : tmpEntityIdKeys) {
-            EntityComponentMap *eMap = m_entities.value(tmpKey);
-            if(eMap->value("EntityName") == t_entityName) { /// @todo replace with cross reference list
-                retVal = tmpKey;
-                break;
-            }
-        }
-    }
-    return retVal;
-}
-
-QString VeinQml::nameFromEntityId(int t_entityId) const
-{
-    QString retVal;
-    if(m_entities.contains(t_entityId))
-        retVal = m_entities.value(t_entityId)->value("EntityName").value<QString>(); /// @todo replace with cross reference list
-    return retVal;
-}
-
 void VeinQml::removeEntity(int t_entityId)
 {
     m_entitySubscriptionReferenceTables.remove(t_entityId);
     m_resolvedIds.remove(t_entityId);
-    EntityComponentMap *toDelete = m_entities.value(t_entityId);
-    toDelete->setState(EntityComponentMap::DataState::ECM_REMOVED);
-    m_entities.remove(t_entityId);
-    toDelete->deleteLater();
+    // Hack: As soon as an entity is removed we assume there will be
+    // * others to leave
+    // * new set coming back
+    // That matches what session change does
+    // Note: On session change two entities remain _SYSTEM and _LOGGER
+    if(m_state != ConnectionState::VQ_IDLE) {
+        m_state = ConnectionState::VQ_IDLE;
+        emit sigStateChanged(m_state);
+    }
+    EntityComponentMap *toDelete = m_entityDict.remove(t_entityId);
+    if(toDelete) {
+        toDelete->setState(EntityComponentMap::DataState::ECM_REMOVED);
+        toDelete->deleteLater();
+    }
 }
 
 VeinQml *VeinQml::s_staticInstance = nullptr;
