@@ -17,7 +17,8 @@ target_link_libraries(VfQml
     Qt5::Qml
     VfHelpers
     VfEvent
-    VfComponent 
+    VfComponent
+    VfConvenientCode
     )
 
 target_include_directories(VfQml
