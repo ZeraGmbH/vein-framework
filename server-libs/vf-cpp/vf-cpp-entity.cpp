@@ -2,6 +2,7 @@
 #include "vcmp_errordatasender.h"
 #include "vf_server_entity_add.h"
 #include "vf_server_entity_remove.h"
+#include "vf_server_component_remove.h"
 
 using namespace VfCpp;
 
@@ -39,6 +40,12 @@ void VfCppEntity::prepareRemove()
 {
     m_componentList.clear();
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
+}
+
+void VfCppEntity::removeComponent(QString componentName)
+{
+    if(m_componentList.contains(componentName))
+        emit sigSendEvent(VfServerComponentRemove::generateEvent(m_entityId, componentName));
 }
 
 int VfCppEntity::getEntityId() const

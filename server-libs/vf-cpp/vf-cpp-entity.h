@@ -15,6 +15,7 @@ public:
 
     VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false);
     void prepareRemove();
+    void removeComponent(QString componentName);
     int getEntityId() const;
     bool hasComponent(const QString name);
     QMap<QString,VfCppComponent::Ptr> getComponents() const;

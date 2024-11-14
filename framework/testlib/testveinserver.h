@@ -26,6 +26,7 @@ public:
     void addTestEntities(int entityCount=2, int componentCount=2, int baseEntityId = 10, int baseComponentNum = 1);
     void addEntity(int entityId, QString entityName);
     void addComponent(int entityId, QString componentName, QVariant initialValue, bool readOnly);
+    void removeComponent(int entityId, QString componentName);
     void setComponentClientTransaction(int entityId, QString componentName, QVariant newValue);
     void setComponentServerNotification(int entityId, QString componentName, QVariant newValue);
     void removeEntitiesAdded();

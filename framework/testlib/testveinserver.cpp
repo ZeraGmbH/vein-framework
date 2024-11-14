@@ -84,6 +84,14 @@ void TestVeinServer::addComponent(int entityId, QString componentName, QVariant 
     TimeMachineObject::feedEventLoop();
 }
 
+void TestVeinServer::removeComponent(int entityId, QString componentName)
+{
+    if(m_entities.find(entityId) == m_entities.end())
+        qFatal("Entity with ID %i was not added by addEntity!", entityId);
+    m_entities[entityId]->removeComponent(componentName);
+    TimeMachineObject::feedEventLoop();
+}
+
 void TestVeinServer::setComponentClientTransaction(int entityId, QString componentName, QVariant newValue)
 {
     if(!m_storageSystem.getDb()->hasStoredValue(entityId, componentName))

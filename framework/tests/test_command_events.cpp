@@ -226,15 +226,8 @@ void test_command_events::serverRemoveComponent()
 
     QJsonObject jsonEvents;
     setupSpy(jsonEvents);
-    VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
-    cData->setEntityId(testEntityId);
-    cData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    cData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    cData->setCommand(VeinComponent::ComponentData::Command::CCMD_REMOVE);
-    cData->setComponentName(componentName);
-    cData->setNewValue("InitialValue");
-    VeinEvent::CommandEvent *event = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, cData);
-    server->sendEvent(event);
+
+    m_netServer->getServer()->removeComponent(testEntityId, componentName);
     TimeMachineObject::feedEventLoop();
 
     QFile file(":/vein-event-dumps/dumpEventsRemoveComponent.json");
