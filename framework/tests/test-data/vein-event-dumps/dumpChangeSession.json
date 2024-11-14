@@ -261,7 +261,7 @@
             "EntityCommand": "ECMD_ADD",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_LOCAL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -272,7 +272,7 @@
             "EntityCommand": "ECMD_ADD",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_LOCAL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -367,7 +367,7 @@
             "EntityCommand": "ECMD_ADD",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_LOCAL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -378,7 +378,7 @@
             "EntityCommand": "ECMD_ADD",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_LOCAL",
             "Valid": true,
             "ValidPeer": false
         },
