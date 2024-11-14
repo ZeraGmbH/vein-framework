@@ -15,11 +15,6 @@ VfCppComponent::VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem
     sendNotification(VeinComponent::ComponentData::Command::CCMD_ADD);
 }
 
-VfCppComponent::~VfCppComponent()
-{
-    sendNotification(VeinComponent::ComponentData::Command::CCMD_REMOVE);
-}
-
 QVariant VfCppComponent::getValue()
 {
     return m_vValue;

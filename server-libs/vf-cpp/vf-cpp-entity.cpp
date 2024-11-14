@@ -11,6 +11,11 @@ VfCppEntity::VfCppEntity(int entityId):
 {
 }
 
+VfCppEntity::~VfCppEntity()
+{
+    emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
+}
+
 bool VfCppEntity::hasComponent(const QString name)
 {
     return m_componentList.contains(name);
@@ -36,7 +41,7 @@ VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval,
         qFatal("VfCppEntity::createComponent: A component %s already exists", qPrintable(name));
 }
 
-void VfCppEntity::prepareRemove()
+void VfCppEntity::removeEntity()
 {
     m_componentList.clear();
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));

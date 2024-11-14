@@ -117,7 +117,7 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
 void TestVeinServer::removeEntitiesAdded()
 {
     for(const auto &entity : m_entities) {
-        entity.second->prepareRemove();
+        entity.second->removeEntity();
         m_vfEventHandler.removeSubsystem(entity.second.get());
     }
     m_entities.clear();

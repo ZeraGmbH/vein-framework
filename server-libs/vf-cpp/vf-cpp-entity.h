@@ -12,9 +12,10 @@ class VfCppEntity : public VeinEvent::EventSystem
     Q_OBJECT
 public:
     VfCppEntity(int entityId);
+    ~VfCppEntity();
 
     VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false);
-    void prepareRemove();
+    void removeEntity();
     void removeComponent(QString componentName);
     int getEntityId() const;
     bool hasComponent(const QString name);

@@ -14,7 +14,6 @@ class VfCppComponent: public QObject
 public:
     typedef  QSharedPointer< VfCppComponent > Ptr;
     VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly=false);
-    ~VfCppComponent();
     QVariant getValue();
     QString getName();
 
