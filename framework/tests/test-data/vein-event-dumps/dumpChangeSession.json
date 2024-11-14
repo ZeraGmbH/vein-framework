@@ -133,7 +133,7 @@
             "EntityCommand": "ECMD_REMOVE",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -144,7 +144,7 @@
             "EntityCommand": "ECMD_REMOVE",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -239,7 +239,7 @@
             "EntityCommand": "ECMD_REMOVE",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false
         },
@@ -250,7 +250,7 @@
             "EntityCommand": "ECMD_REMOVE",
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false
         },
