@@ -114,11 +114,6 @@ void VeinQml::processEvent(QEvent *t_event)
                         if(componentName == "EntityName")
                             m_entityDict.setEntityName(entityId, cData->newValue().toString());
                     }
-                    // Seems that entity remove is never received at the time of writing!
-                    // So since "EntityName" / "INF_ModuleInterface" are mandatory assume
-                    // entity removed once one of them is removed
-                    else if(componentName == "EntityName" || componentName == "INF_ModuleInterface")
-                        removeEntity(entityId);
                     map->processComponentData(cData);
                 }
                 break;
