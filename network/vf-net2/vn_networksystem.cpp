@@ -132,15 +132,19 @@ class NetworkSystemPrivate
                 bool handled = false;
                 if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && evData->type() == VeinComponent::EntityData::dataType())
                     handled = tryHandleSubscription(static_cast<VeinComponent::EntityData *>(evData), cEvent->peerId());
+
                 if(handled)
                     cEvent->setAccepted(true);
                 else if(m_subscriptions.contains(evData->entityId())) {
                     QList<QUuid> protoReceivers = m_subscriptions.value(evData->entityId());
                     if(!protoReceivers.isEmpty()) {
                         QByteArray flatBuffer = prepareEnvelope(cEvent);
-                        vCDebug(VEIN_NET_VERBOSE) << "Processing command event:" << cEvent << "type:" << static_cast<qint8>(cEvent->eventSubtype());// << "new event:" << protoEvent;
+                        vCDebug(VEIN_NET_VERBOSE) << "Processing command event:" << cEvent << "type:" << static_cast<qint8>(cEvent->eventSubtype());
                         sendNetworkEvent(protoReceivers, flatBuffer);
                     }
+                    if(static_cast<VeinComponent::EntityData *>(evData)->eventCommand() == EntityData::Command::ECMD_REMOVE)
+                        // remove all to avoid subscriptions sneaking into next session
+                        m_subscriptions.remove(evData->entityId());
                 }
             }
             break;
