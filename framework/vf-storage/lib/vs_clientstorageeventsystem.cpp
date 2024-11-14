@@ -35,13 +35,19 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                     processComponentData(event);
                     break;
                 case EntityData::dataType():
+                {
                     //ECMD_ADD event doesn't reach to client because client hasn't yet subscribed to that entity
-                    //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, ECMD_REMOVE events do not reach to client side
+                    //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, events do not reach to client side
+                    EntityData *eData = static_cast<EntityData*>(cEvent->eventData());
+                    if(eData->eventCommand() == EntityData::Command::ECMD_REMOVE)
+                        m_privHash->removeEntity(eData->entityId());
                     break;
+                }
                 default:
                     break;
                 }
             }
+            // From vf-qml sitting above us (not sent out attow)
             else if(cEvent->eventSubtype() == CommandEvent::EventSubtype::TRANSACTION) {
                 switch (evData->type())
                 {
