@@ -41,6 +41,10 @@ void VfCppEntity::prepareRemove()
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
 }
 
+int VfCppEntity::getEntityId() const
+{
+    return m_entityId;
+}
 
 cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
 {
