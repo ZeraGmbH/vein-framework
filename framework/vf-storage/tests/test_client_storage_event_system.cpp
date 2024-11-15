@@ -75,6 +75,20 @@ void test_client_storage_event_system::subscribeAndUnsubscribe()
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
 }
 
+void test_client_storage_event_system::subscribeAndEntityRemove()
+{
+    addAndSubscribeToEntity(entityID1, "Foo");
+    QVERIFY(m_clientStorageSystem->getDb()->hasEntity(entityID1));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
+    QCOMPARE(m_netServer->getSubscriberCount(entityID1), 1);
+
+    m_netServer->getServer()->removeEntitiesAdded();
+    TimeMachineObject::feedEventLoop();
+    QVERIFY(!m_clientStorageSystem->getDb()->hasEntity(entityID1));
+    QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
+
+}
+
 void test_client_storage_event_system::unsubscribeWithoutSubscribing()
 {
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);

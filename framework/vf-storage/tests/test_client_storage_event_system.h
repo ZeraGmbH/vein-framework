@@ -16,6 +16,7 @@ private slots:
     void subscribeToNonExistingEntity();
     void subscribeToExistingEntity();
     void subscribeAndUnsubscribe();
+    void subscribeAndEntityRemove();
     void unsubscribeWithoutSubscribing();
     void fetchNonExistingComponent();
     void fetchExistingComponent();
