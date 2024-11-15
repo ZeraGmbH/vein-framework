@@ -122,14 +122,8 @@ void VeinQml::processEvent(QEvent *t_event)
             {
                 EntityData *eData = static_cast<EntityData *>(evData);
                 int entityId = eData->entityId();
-                switch(eData->eventCommand())
-                {
-                case EntityData::Command::ECMD_REMOVE:
+                if(eData->eventCommand() == EntityData::Command::ECMD_REMOVE)
                     removeEntity(entityId);
-                    break;
-                default:
-                    break;
-                }
                 break;
             }
             case ErrorData::dataType(): /// @todo add message queue and check if the error belongs to actions taken from this client
