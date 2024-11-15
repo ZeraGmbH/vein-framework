@@ -155,7 +155,6 @@ void test_client_storage_event_system::clientSetComponent()
 void test_client_storage_event_system::addAndSubscribeToEntity(int entityID, QString entityName)
 {
     m_netServer->getServer()->addEntity(entityID, entityName);
-    QSignalSpy spySubscription(m_netClient.get(), &VfCoreStackClient::sigSubscribed);
     m_netClient->subscribeEntity(entityID);
     TimeMachineObject::feedEventLoop();
 }
