@@ -1,6 +1,7 @@
 #include "entitycomponentmap.h"
 #include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
+#include <vf_client_component_fetcher.h>
 #include <vcmp_remoteproceduredata.h>
 
 using namespace VeinEvent;
@@ -197,25 +198,12 @@ QVariant EntityComponentMap::updateValue(const QString &t_key, const QVariant &t
 
 void EntityComponentMap::loadEntityData()
 {
-    CommandEvent *cEvent = nullptr;
-    ComponentData *cData = nullptr;
-
     const QList<QString> tmpComponentList = m_entityIntrospection.value(QString("components")).toStringList();
     m_registeredRemoteProcedures = m_entityIntrospection.value(QString("procedures")).toStringList();
     m_pendingValues.append(tmpComponentList);
     for(const QString &tmpKey : tmpComponentList) {
         insert(tmpKey, QVariant()); // bypasses the function updateValue(...)
-
-        cData = new ComponentData();
-        cData->setEntityId(m_entityId);
-        cData->setCommand(ComponentData::Command::CCMD_FETCH);
-        cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
-        cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
-        cData->setComponentName(tmpKey);
-        cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, cData);
-        vCDebug(VEIN_API_QML_VERBOSE) << "Fetching entity data for entityId:" << m_entityId << "component:" << tmpKey << "event:" << cEvent;
-
-        emit sigSendEvent(cEvent);
+        emit sigSendEvent(VfClientComponentFetcher::generateEvent(m_entityId, tmpKey));
     }
 }
 } // end namespace VeinApiQml
