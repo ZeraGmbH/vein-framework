@@ -1,17 +1,10 @@
 #include "vtcp_server.h"
-#include "vtcp_workerfactorymethods.h"
 
 namespace VeinTcp
 {
 TcpServer::TcpServer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
     QObject(parent),
     m_serverWorker(tcpNetworkFactory->createTcpServerWorker(this))
-{
-}
-
-TcpServer::TcpServer(QObject *parent) :
-    QObject(parent),
-    m_serverWorker(TcpNetworkFactoryMethods::createTcpServerWorker(this))
 {
 }
 

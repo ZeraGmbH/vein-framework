@@ -19,13 +19,6 @@ TcpSystem::TcpSystem(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QO
     init();
 }
 
-TcpSystem::TcpSystem(QObject *t_parent) :
-    EventSystem(t_parent) ,
-    m_server(new VeinTcp::TcpServer(this))
-{
-    init();
-}
-
 void TcpSystem::init()
 {
     vCDebug(VEIN_NET_TCP)  << "Created TCP system";

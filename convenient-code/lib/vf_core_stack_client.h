@@ -13,7 +13,6 @@ class VfCoreStackClient : public QObject
 {
     Q_OBJECT
 public:
-    VfCoreStackClient();
     VfCoreStackClient(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory);
     void connectToServer(const QString &host, quint16 port);
     void subscribeEntity(int entityId); // this should go once we got tasks
