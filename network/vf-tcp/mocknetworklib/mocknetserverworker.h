@@ -16,8 +16,6 @@ private:
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
     friend class MockTcpNetworkFactory;
-    // intermediate TcpNetworkFactoryMethodsTest will be replaced by MockTcpNetworkFactory
-    friend class TcpNetworkFactoryMethodsTest;
 public:
     MockNetServerWorker(TcpServer *server, secret);
     virtual ~MockNetServerWorker();
