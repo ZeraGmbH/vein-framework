@@ -74,8 +74,7 @@ void MockNetPeerWorker::writeRaw(QByteArray message) const
         qWarning("[vein-tcp] Trying to send data to disconnected host.");
         return;
     }
-    MockNetPeerWorker* const_this = const_cast<MockNetPeerWorker*>(this);
-    const_this->emitMessageReceived(m_otherPeer, message); // does this make sense???
+    emitMessageReceived(m_otherPeer, message); // does this make sense???
 }
 
 void MockNetPeerWorker::sendArray(const QByteArray &byteArray) const
@@ -84,8 +83,7 @@ void MockNetPeerWorker::sendArray(const QByteArray &byteArray) const
         qWarning("[vein-tcp] Trying to send data to disconnected host.");
         return;
     }
-    MockNetPeerWorker* const_this = const_cast<MockNetPeerWorker*>(this);
-    const_this->emitMessageReceived(m_otherPeer, byteArray);
+    emitMessageReceived(m_otherPeer, byteArray);
 }
 
 QUuid MockNetPeerWorker::getPeerId() const
@@ -122,7 +120,7 @@ void MockNetPeerWorker::doEmitSigConnectionEstablished()
 }
 
 // client & server
-void MockNetPeerWorker::emitMessageReceived(TcpPeer *peer, QByteArray message)
+void MockNetPeerWorker::emitMessageReceived(TcpPeer *peer, QByteArray message) const
 {
     QMetaObject::invokeMethod(peer,
                               "sigMessageReceived",

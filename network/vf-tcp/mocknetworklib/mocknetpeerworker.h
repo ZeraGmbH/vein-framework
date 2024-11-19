@@ -38,7 +38,7 @@ private slots:
     void doEmitSigConnectionEstablished();
 private:
     void emitSigConnectionEstablished();
-    void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message);
+    void emitMessageReceived(VeinTcp::TcpPeer *peer, QByteArray message) const;
     void emitSigSocketError(QAbstractSocket::SocketError error);
 
     QUuid m_peerId;
