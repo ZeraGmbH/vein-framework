@@ -70,20 +70,12 @@ bool MockNetPeerWorker::isConnected() const
 // client & server
 void MockNetPeerWorker::writeRaw(QByteArray message) const
 {
-    if(!m_otherPeer || !m_connectionEstablished) {
-        qWarning("[vein-tcp] Trying to send data to disconnected host.");
-        return;
-    }
-    emitMessageReceived(m_otherPeer, message); // does this make sense???
+    emitMessageReceived(message);
 }
 
 void MockNetPeerWorker::sendArray(const QByteArray &byteArray) const
 {
-    if(!m_otherPeer || !m_connectionEstablished) {
-        qWarning("[vein-tcp] Trying to send data to disconnected host.");
-        return;
-    }
-    emitMessageReceived(m_otherPeer, byteArray);
+    emitMessageReceived(byteArray);
 }
 
 QUuid MockNetPeerWorker::getPeerId() const
@@ -120,12 +112,16 @@ void MockNetPeerWorker::doEmitSigConnectionEstablished()
 }
 
 // client & server
-void MockNetPeerWorker::emitMessageReceived(TcpPeer *peer, QByteArray message) const
+void MockNetPeerWorker::emitMessageReceived(QByteArray message) const
 {
-    QMetaObject::invokeMethod(peer,
+    if(!m_otherPeer || !m_connectionEstablished) {
+        qWarning("[vein-tcp] Trying to send data to disconnected host.");
+        return;
+    }
+    QMetaObject::invokeMethod(m_otherPeer,
                               "sigMessageReceived",
                               Qt::QueuedConnection,
-                              Q_ARG(VeinTcp::TcpPeer*, peer),
+                              Q_ARG(VeinTcp::TcpPeer*, m_otherPeer),
                               Q_ARG(QByteArray, message));
 }
 }
