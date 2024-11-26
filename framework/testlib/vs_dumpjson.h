@@ -12,7 +12,9 @@ namespace VeinStorage
 class VFSTORAGE_EXPORT DumpJson
 {
 public:
-    static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice, QList<int> entityFilter = QList<int>());
+    static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice,
+                           QList<int> entityFilter = QList<int>(),
+                           QList<int> entitiesIgnored = QList<int>());
 private:
     static double formatDouble(double value);
 };

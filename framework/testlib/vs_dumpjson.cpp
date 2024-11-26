@@ -7,7 +7,7 @@
 namespace VeinStorage
 {
 
-void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QList<int> entityFilter)
+void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QList<int> entityFilter, QList<int> entitiesIgnored)
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
         outputFileDevice->isWritable()) {
@@ -16,6 +16,8 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
         std::sort(tmpEntityIdKeys.begin(), tmpEntityIdKeys.end());
         for(const int tmpEntityId : qAsConst(tmpEntityIdKeys)) {
             if(!entityFilter.isEmpty() && !entityFilter.contains(tmpEntityId))
+                continue;
+            if(entitiesIgnored.contains(tmpEntityId))
                 continue;
             QJsonObject tmpEntityObject;
             QStringList tmpEntityComponentNames = db->getComponentList(tmpEntityId);
