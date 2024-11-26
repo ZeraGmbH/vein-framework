@@ -58,6 +58,10 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
                         QJsonDocument doc = QJsonDocument::fromJson(tmpData.toString().toUtf8());
                         toInsert = doc.object();
                     }
+                    else if(tmpDataType == QMetaType::Double) // force nan handled
+                        toInsert = tmpData.toDouble();
+                    else if(tmpDataType == QMetaType::Float) // force nan handled
+                        toInsert = tmpData.toFloat();
                     else
                         toInsert = QJsonValue::fromVariant(tmpData);
                 }
