@@ -144,7 +144,7 @@ void EntityComponentMap::cancelRPCInvokation(QUuid identifier)
 
         RemoteProcedureData *rpcData = new RemoteProcedureData();
         rpcData->setEntityId(m_entityId);
-        rpcData->setCommand(RemoteProcedureData::Command::RPCMD_CALL);
+        rpcData->setCommand(RemoteProcedureData::Command::RPCMD_CALL); // <- cancelRPCInvokation is not used - shouldn't it be RPCMD_CANCELLATION ??
         rpcData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
         rpcData->setEventTarget(ComponentData::EventTarget::ET_ALL);
         rpcData->setProcedureName(m_pendingRPCCallbacks.value(identifier));
