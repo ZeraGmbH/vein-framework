@@ -20,6 +20,7 @@ namespace VeinNet
 struct EntityIntrospection
 {
 public:
+    // int value is not used - we use QMap for reproducible dumps
     QMap<QString, int> m_components;
     QMap<QString, int> m_procedures;
 };
