@@ -1,4 +1,5 @@
 #include "vs_dumpjson.h"
+#include <QBuffer>
 #include <QJsonObject>
 #include <QJsonArray>
 #include <QJsonDocument>
@@ -81,6 +82,14 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
     if(outputFileDevice->isOpen())
         outputFileDevice->close();
 
+}
+
+QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db, QList<int> entityFilter, QList<int> entitiesIgnored)
+{
+    QByteArray jsonDumped;
+    QBuffer buff(&jsonDumped);
+    VeinStorage::DumpJson::dumpToFile(db, &buff, entityFilter, entitiesIgnored);
+    return jsonDumped;
 }
 
 double DumpJson::formatDouble(double value)

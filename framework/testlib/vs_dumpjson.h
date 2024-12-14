@@ -4,6 +4,7 @@
 #include "vfstorage_export.h"
 #include "vs_abstractdatabase.h"
 #include <QIODevice>
+#include <QByteArray>
 #include <QList>
 
 namespace VeinStorage
@@ -15,6 +16,9 @@ public:
     static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice,
                            QList<int> entityFilter = QList<int>(),
                            QList<int> entitiesIgnored = QList<int>());
+    static QByteArray dumpToByteArray(AbstractDatabase *db,
+                                      QList<int> entityFilter = QList<int>(),
+                                      QList<int> entitiesIgnored = QList<int>());
 private:
     static double formatDouble(double value);
 };
