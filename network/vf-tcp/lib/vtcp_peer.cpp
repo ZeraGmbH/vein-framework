@@ -1,5 +1,4 @@
 #include "vtcp_peer.h"
-#include "vtcp_workerfactorymethods.h"
 #include <QTcpSocket>
 #include <QHostAddress>
 
@@ -8,12 +7,6 @@ namespace VeinTcp
 TcpPeer::TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
     QObject(parent),
     m_worker(tcpNetworkFactory->createTcpPeerWorker(this))
-{
-}
-
-TcpPeer::TcpPeer(QObject *parent) :
-    QObject(parent),
-    m_worker(TcpNetworkFactoryMethods::createTcpPeerWorker(this))
 {
 }
 

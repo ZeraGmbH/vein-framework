@@ -41,11 +41,7 @@ void TcpSystem::connectToServer(const QString &t_host, quint16 t_port)
     VF_ASSERT(t_host.isEmpty() == false, "Empty host");
     VF_ASSERT(t_port > 0, "Port must be > 0");
     vCDebug(VEIN_NET_TCP) << "Attempting connection to:"<< t_host << "on port:" << t_port;
-    VeinTcp::TcpPeer *tmpPeer;
-    if(m_tcpNetworkFactory) // This nasty if/else will go soon hopefully
-        tmpPeer = new VeinTcp::TcpPeer(m_tcpNetworkFactory, this);
-    else
-        tmpPeer = new VeinTcp::TcpPeer(this);
+    VeinTcp::TcpPeer *tmpPeer = new VeinTcp::TcpPeer(m_tcpNetworkFactory, this);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigSocketError, this, &TcpSystem::onSocketError);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigConnectionEstablished, this, &TcpSystem::onConnectionEstablished);
     connect(tmpPeer, &VeinTcp::TcpPeer::sigConnectionClosed, this, &TcpSystem::onConnectionClosed);

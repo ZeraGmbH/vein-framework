@@ -17,8 +17,6 @@ private:
     // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
     struct secret { explicit secret() = default; };
     friend class TcpNetworkFactory;
-    // intermediate TcpNetworkFactoryMethods will be replaced by TcpNetworkFactory
-    friend class TcpNetworkFactoryMethods;
 public:
     TcpServerWorker(TcpServer *server, secret);
     ~TcpServerWorker();

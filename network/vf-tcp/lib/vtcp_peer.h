@@ -16,7 +16,6 @@ class VFTCP_EXPORT TcpPeer : public QObject
     Q_OBJECT
 public:
     explicit TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent = nullptr);
-    explicit TcpPeer(QObject *parent = nullptr);
     explicit TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface* serverWorker, QObject *parent = nullptr);
 
     QString getIpAddress() const;
