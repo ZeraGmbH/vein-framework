@@ -44,8 +44,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
         if(cEvent->eventSubtype() != VeinEvent::CommandEvent::EventSubtype::NOTIFICATION) { // we do not need to process notifications
             if(cEvent->eventData()->type() == VeinComponent::IntrospectionData::dataType()) // introspection requests are always valid
                 validated = true;
-            else if(cEvent->eventData()->type() == VeinComponent::EntityData::dataType()) // validate subscription requests
-            {
+            else if(cEvent->eventData()->type() == VeinComponent::EntityData::dataType()) { // validate subscription requests
                 const VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(cEvent->eventData());
                 if(eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_SUBSCRIBE ||
                    eData->eventCommand() == VeinComponent::EntityData::Command::ECMD_UNSUBSCRIBE)
@@ -61,26 +60,9 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
-                    // validate set event for _System.Session
                     if(cData->componentName() == sessionComponentName) {
-                        QString newSession;
-                        if(cData->newValue().toString().endsWith(".json"))
-                            newSession = cData->newValue().toString();
-                        else
-                            newSession = getJsonSessionName(cData->newValue().toString());
-                        if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
-                            if(m_sessionReady == true) {
-                                m_currentSession = newSession;
-                                emit sigSendEvent(VfServerComponentSetter::generateEvent(
-                                    getEntityId(),
-                                    sessionComponentName,
-                                    QVariant(),
-                                    QVariant("")) );
-                                emit sigChangeSession(m_currentSession);
-                                m_sessionReady = false;
-                            }
+                        if(handleVeinSessionSet(cData))
                             t_event->accept();
-                        }
                     }
                     else if(cData->componentName() == modulesPausedComponentName) {
                         validated = true;
@@ -96,6 +78,29 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
             cEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL); // inform all users (may or may not result in network messages)
         }
     }
+}
+
+bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::ComponentData *cData)
+{
+    QString newSession;
+    if(cData->newValue().toString().endsWith(".json"))
+        newSession = cData->newValue().toString();
+    else
+        newSession = getJsonSessionName(cData->newValue().toString());
+    if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
+        if(m_sessionReady == true) {
+            m_currentSession = newSession;
+            emit sigSendEvent(VfServerComponentSetter::generateEvent(
+                getEntityId(),
+                sessionComponentName,
+                QVariant(),
+                QVariant("")) );
+            emit sigChangeSession(m_currentSession);
+            m_sessionReady = false;
+        }
+        return true;
+    }
+    return false;
 }
 
 void SystemModuleEventSystem::setConfigFileName(QString configFileName)
