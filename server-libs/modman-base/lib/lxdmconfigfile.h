@@ -13,11 +13,11 @@ public:
         QString m_sessionName;
         QString m_sessionFileName;
     };
-    LxdmConfigFile(const QString &configFileName = "/var/lib/lxdm/lxdm.conf",
-                         const QList<XSession> &availableXSessions =
-                         QList<XSession>() <<
-                            XSession("Desktop", "/usr/share/xsessions/xfce.desktop") <<
-                            XSession("Fullscreen", "/usr/share/xsessions/zenux-gui.desktop"));
+    explicit LxdmConfigFile(const QString &configFileName = "/var/lib/lxdm/lxdm.conf",
+                            const QList<XSession> &availableXSessions =
+                            QList<XSession>() <<
+                                XSession("Desktop", "/usr/share/xsessions/xfce.desktop") <<
+                                XSession("Fullscreen", "/usr/share/xsessions/zenux-gui.desktop"));
 
     const QString getConfiguredXSessionName();
     const QStringList getAvailableXSessionNames();
