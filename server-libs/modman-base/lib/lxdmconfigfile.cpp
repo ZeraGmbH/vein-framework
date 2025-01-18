@@ -16,7 +16,7 @@ LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
 const QString LxdmConfigFile::getConfiguredXSessionName()
 {
     QStringList lines = readLxdmConfig();
-    for(QString &line : lines) {
+    for(const QString &line : lines) {
         if(line.startsWith(sessionLead)) {
             QStringList labelValue = line.split("=");
             if(labelValue.size() == 2)
