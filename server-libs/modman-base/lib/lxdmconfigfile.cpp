@@ -8,9 +8,13 @@ LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
                                const QList<XSession> &availableXSessions) :
     m_configFileName(configFileName)
 {
-    for(const XSession &session : availableXSessions)
+    for(const XSession &session : availableXSessions) {
         if(QFile::exists(session.m_sessionFileName))
             m_availableXSessions.append(session);
+        else
+            qWarning("Session file '%s' does not exist. Skip session '%s'!",
+                     qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
+    }
 }
 
 const QString LxdmConfigFile::getConfiguredXSessionName()
