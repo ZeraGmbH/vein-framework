@@ -1,23 +1,12 @@
 #ifndef LXDMCONFIGFILE_H
 #define LXDMCONFIGFILE_H
 
-#include <QString>
-#include <QList>
+#include "lxdmconfigfileparam.h"
 
 class LxdmConfigFile
 {
 public:
-    struct XSession
-    {
-        XSession(const QString& sessionName, const QString &sessionFileName);
-        QString m_sessionName;
-        QString m_sessionFileName;
-    };
-    explicit LxdmConfigFile(const QString &configFileName = "/var/lib/lxdm/lxdm.conf",
-                            const QList<XSession> &availableXSessions =
-                            QList<XSession>() <<
-                                XSession("Desktop (slow)", "/usr/share/xsessions/xfce.desktop") <<
-                                XSession("Fullscreen", "/usr/share/xsessions/zenux-gui.desktop"));
+    explicit LxdmConfigFile(const LxdmConfigFileParam &param = LxdmConfigFileParam());
 
     const QString getConfiguredXSessionName();
     const QStringList getAvailableXSessionNames();
@@ -29,7 +18,7 @@ private:
     bool writeConfig(const QString &sessionFileName);
 
     const QString m_configFileName;
-    QList<XSession> m_availableXSessions;
+    QList<LxdmConfigFileParam::XSession> m_availableXSessions;
 };
 
 #endif // LXDMCONFIGFILE_H

@@ -26,8 +26,8 @@ private slots:
     void setCurrSessionValidDoneSessionNotSet();
     void setCurrSessionValidDoneSessionSetTwice();
 private:
-    void createTestConfigFile(QStringList lines);
-    void createTestSessionFiles(QStringList fileNames);
+    void createTestConfigFile(const QStringList &lines);
+    void createTestSessionFiles(const QStringList &fileNames);
     QStringList m_sessionFilesGenerated;
 };
 

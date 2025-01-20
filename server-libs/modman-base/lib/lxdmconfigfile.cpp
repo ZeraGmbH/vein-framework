@@ -4,12 +4,12 @@
 
 static const char* sessionLead = "last_session=";
 
-LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
-                               const QList<XSession> &availableXSessions) :
-    m_configFileName(configFileName)
+LxdmConfigFile::LxdmConfigFile(const LxdmConfigFileParam &param) :
+    m_configFileName(param.getConfigFileName())
 {
-    if(QFile::exists(configFileName)) {
-        for(const XSession &session : availableXSessions) {
+    if(QFile::exists(m_configFileName)) {
+        const QList<LxdmConfigFileParam::XSession> availableXSessions = param.getAvailableXSessions();
+        for(const LxdmConfigFileParam::XSession &session : availableXSessions) {
             if(QFile::exists(session.m_sessionFileName))
                 m_availableXSessions.append(session);
             else
@@ -18,7 +18,7 @@ LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
         }
     }
     else
-        qWarning("Lxdm config '%s' not found - session change will not work!", qPrintable(configFileName));
+        qWarning("Lxdm config '%s' not found - session change will not work!", qPrintable(m_configFileName));
 }
 
 const QString LxdmConfigFile::getConfiguredXSessionName()
@@ -39,7 +39,7 @@ const QString LxdmConfigFile::getConfiguredXSessionName()
 const QStringList LxdmConfigFile::getAvailableXSessionNames()
 {
     QStringList names;
-    for(const XSession &session : m_availableXSessions)
+    for(const auto  &session : m_availableXSessions)
         names.append(session.m_sessionName);
     return names;
 }
@@ -112,10 +112,4 @@ bool LxdmConfigFile::writeConfig(const QString &sessionFileName)
         configFileWrite.write(line.toLatin1() + "\n");
     configFileWrite.commit();
     return true;
-}
-
-LxdmConfigFile::XSession::XSession(const QString &sessionName, const QString &sessionFileName) :
-    m_sessionName(sessionName),
-    m_sessionFileName(sessionFileName)
-{
 }
