@@ -15,7 +15,8 @@ private slots:
     void getCurrSessionFileContainsValidSessionLine();
     void getCurrSessionCorrectFound();
     void getCurrSessionFileContainsUnkownSessionLine();
-    void getAvailableSessions();
+    void getAvailableSessionsNoLxdmConfig();
+    void getAvailableSessionsWithLxdmConfig();
     void getAvailableSessionsOneNorExisting();
 
     void setCurrSessionUnknown();
@@ -23,6 +24,7 @@ private slots:
     void setCurrSessionValidSessionFileNotExisting();
     void setCurrSessionValidDone();
     void setCurrSessionValidDoneSessionNotSet();
+    void setCurrSessionValidDoneSessionSetTwice();
 private:
     void createTestConfigFile(QStringList lines);
     void createTestSessionFiles(QStringList fileNames);

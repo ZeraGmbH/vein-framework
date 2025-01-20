@@ -8,12 +8,14 @@ LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
                                const QList<XSession> &availableXSessions) :
     m_configFileName(configFileName)
 {
-    for(const XSession &session : availableXSessions) {
-        if(QFile::exists(session.m_sessionFileName))
-            m_availableXSessions.append(session);
-        else
-            qWarning("Session file '%s' does not exist. Skip session '%s'!",
-                     qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
+    if(QFile::exists(configFileName)) {
+        for(const XSession &session : availableXSessions) {
+            if(QFile::exists(session.m_sessionFileName))
+                m_availableXSessions.append(session);
+            else
+                qWarning("Session file '%s' does not exist. Skip session '%s'!",
+                         qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
+        }
     }
 }
 
@@ -26,9 +28,8 @@ const QString LxdmConfigFile::getConfiguredXSessionName()
             if(labelValue.size() == 2)
                 return sessionNameFromFile(labelValue[1]);
         }
-        qWarning("Cannot not find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
-        return QString();
     }
+    qWarning("Cannot not find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
     return QString();
 }
 
@@ -80,24 +81,30 @@ bool LxdmConfigFile::writeConfig(const QString &sessionFileName)
         qWarning("Session file '%s' does not exist!", qPrintable(sessionFileName));
         return false;
     }
-    QStringList lines = readLxdmConfig();
+    const QStringList linesRead = readLxdmConfig();
     bool lastSessionFound = false;
+    QStringList linesWrite;
     QString lineContentToSet = QString(sessionLead) + sessionFileName;
-    for(QString &line : lines) {
+    for(const QString &line : linesRead) {
+        QString lineWrite = line;
         if(line.startsWith(sessionLead)) {
-            line = lineContentToSet;
+            if(lastSessionFound)
+                continue;
+            lineWrite = lineContentToSet;
             lastSessionFound = true;
         }
+        if(!lineWrite.isEmpty())
+            linesWrite.append(lineWrite);
     }
     if(!lastSessionFound)
-        lines.append(lineContentToSet);
+        linesWrite.append(lineContentToSet);
 
     QSaveFile configFileWrite(m_configFileName);
     if(!configFileWrite.open(QFile::WriteOnly)) {
         qWarning("Cannot not write %s", qPrintable(sessionFileName));
         return false;
     }
-    for(const auto &line : lines)
+    for(const QString &line : linesWrite)
         configFileWrite.write(line.toLatin1() + "\n");
     configFileWrite.commit();
     return true;
