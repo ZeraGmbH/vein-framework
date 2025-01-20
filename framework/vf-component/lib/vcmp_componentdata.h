@@ -64,8 +64,8 @@ private:
     QString m_componentName;
     QVariant m_newValue;
     QVariant m_oldValue;
-    cSCPIInfo* m_scpiinfo;
-    ValidatorInterface* m_pValidator;
+    cSCPIInfo* m_scpiinfo = nullptr;
+    ValidatorInterface* m_pValidator = nullptr;
 };
 }
 
