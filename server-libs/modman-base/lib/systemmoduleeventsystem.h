@@ -10,7 +10,7 @@ class SystemModuleEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit SystemModuleEventSystem(QObject *t_parent = nullptr, bool devMode = false);
+    explicit SystemModuleEventSystem(bool devMode = false);
     static constexpr int getEntityId();
     void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;

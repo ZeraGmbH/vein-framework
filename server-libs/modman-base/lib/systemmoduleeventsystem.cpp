@@ -20,8 +20,7 @@ static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
 static const char *moduleInterface =                   "INF_ModuleInterface";
 
-SystemModuleEventSystem::SystemModuleEventSystem(QObject *t_parent, bool devMode) :
-    VeinEvent::EventSystem(t_parent),
+SystemModuleEventSystem::SystemModuleEventSystem(bool devMode) :
     m_devMode(devMode)
 {
 }

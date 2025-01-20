@@ -3,7 +3,7 @@
 
 ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem, bool devMode, QObject *parent) :
     QObject(parent),
-    m_systemModuleSystem(nullptr, devMode),
+    m_systemModuleSystem(devMode),
     m_licenseSystem(licenseSystem)
 {
     Q_ASSERT(m_licenseSystem != nullptr);
