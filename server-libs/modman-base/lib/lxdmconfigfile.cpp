@@ -17,6 +17,8 @@ LxdmConfigFile::LxdmConfigFile(const QString &configFileName,
                          qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
         }
     }
+    else
+        qWarning("Lxdm config '%s' not found - session change will not work!", qPrintable(configFileName));
 }
 
 const QString LxdmConfigFile::getConfiguredXSessionName()
@@ -29,7 +31,8 @@ const QString LxdmConfigFile::getConfiguredXSessionName()
                 return sessionNameFromFile(labelValue[1]);
         }
     }
-    qWarning("Cannot not find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
+    if(!m_availableXSessions.isEmpty())
+        qWarning("Cannot not find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
     return QString();
 }
 
@@ -55,7 +58,8 @@ QStringList LxdmConfigFile::readLxdmConfig()
     QStringList lines;
     QFile configFileRead(m_configFileName);
     if(!configFileRead.open(QFile::ReadOnly)) {
-        qWarning("Cannot not read %s", qPrintable(m_configFileName));
+        if(!m_availableXSessions.isEmpty())
+            qWarning("Cannot not read %s", qPrintable(m_configFileName));
         return lines;
     }
     QString content = configFileRead.readAll();
