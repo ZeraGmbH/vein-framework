@@ -1,10 +1,10 @@
-#include "testlxdmconfigfilegenerator.h"
+#include "mocklxdmconfigfilegenerator.h"
 #include <QDir>
 
 static const char* lxdmTestDir = "/tmp/lxdmtest/";
 static const char* lxdmTestConfigFile = "lxdm.conf";
 
-TestLxdmConfigFileGenerator::TestLxdmConfigFileGenerator(const QStringList &linesInLxdmConfig,
+MockLxdmConfigFileGenerator::MockLxdmConfigFileGenerator(const QStringList &linesInLxdmConfig,
                                                          const QList<LxdmConfigFileParam::XSession> &availableXSessions) :
     m_configParam(getLxdmConfFileNameFull(), toFullPath(availableXSessions))
 {
@@ -15,23 +15,23 @@ TestLxdmConfigFileGenerator::TestLxdmConfigFileGenerator(const QStringList &line
         createTestSessionFile(session.m_sessionFileName);
 }
 
-TestLxdmConfigFileGenerator::~TestLxdmConfigFileGenerator()
+MockLxdmConfigFileGenerator::~MockLxdmConfigFileGenerator()
 {
     QDir dir(lxdmTestDir);
     dir.removeRecursively();
 }
 
-QString TestLxdmConfigFileGenerator::getLxdmConfFileNameFull()
+QString MockLxdmConfigFileGenerator::getLxdmConfFileNameFull()
 {
     return QString(lxdmTestDir) + lxdmTestConfigFile;
 }
 
-QString TestLxdmConfigFileGenerator::genLastSessionLine(const QString xSessionFileName)
+QString MockLxdmConfigFileGenerator::genLastSessionLine(const QString xSessionFileName)
 {
     return QString("last_session=%1").arg(lxdmTestDir + xSessionFileName);
 }
 
-void TestLxdmConfigFileGenerator::createLxdmConfigFile(const QStringList &lines)
+void MockLxdmConfigFileGenerator::createLxdmConfigFile(const QStringList &lines)
 {
     QFile file(getLxdmConfFileNameFull());
     file.open(QFile::WriteOnly);
@@ -39,22 +39,22 @@ void TestLxdmConfigFileGenerator::createLxdmConfigFile(const QStringList &lines)
         file.write(line.toLatin1() + "\n");
 }
 
-void TestLxdmConfigFileGenerator::removeLxdmConfigFile()
+void MockLxdmConfigFileGenerator::removeLxdmConfigFile()
 {
     QFile::remove(getLxdmConfFileNameFull());
 }
 
-void TestLxdmConfigFileGenerator::removeXsessionFile(const QString xSessionFileName)
+void MockLxdmConfigFileGenerator::removeXsessionFile(const QString xSessionFileName)
 {
     QFile::remove(lxdmTestDir + xSessionFileName);
 }
 
-LxdmConfigFileParam TestLxdmConfigFileGenerator::getConfigParam()
+LxdmConfigFileParam MockLxdmConfigFileGenerator::getConfigParam()
 {
     return m_configParam;
 }
 
-QList<LxdmConfigFileParam::XSession> TestLxdmConfigFileGenerator::toFullPath(const QList<LxdmConfigFileParam::XSession> &availableXSessions)
+QList<LxdmConfigFileParam::XSession> MockLxdmConfigFileGenerator::toFullPath(const QList<LxdmConfigFileParam::XSession> &availableXSessions)
 {
     QList<LxdmConfigFileParam::XSession> availableXSessionsFullPath;
     for(const auto &session : availableXSessions) {
@@ -65,7 +65,7 @@ QList<LxdmConfigFileParam::XSession> TestLxdmConfigFileGenerator::toFullPath(con
 }
 
 
-void TestLxdmConfigFileGenerator::createTestSessionFile(const QString &fileName)
+void MockLxdmConfigFileGenerator::createTestSessionFile(const QString &fileName)
 {
     QFile file(lxdmTestDir + fileName);
     file.open(QFile::WriteOnly);

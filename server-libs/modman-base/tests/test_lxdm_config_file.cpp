@@ -1,6 +1,6 @@
 #include "test_lxdm_config_file.h"
 #include "lxdmconfigfile.h"
-#include "testlxdmconfigfilegenerator.h"
+#include "mocklxdmconfigfilegenerator.h"
 #include <QFile>
 #include <QTest>
 
@@ -17,34 +17,34 @@ void test_lxdm_config_modify::getCurrSessionFileNotFound()
 
 void test_lxdm_config_modify::getCurrSessionFileMissesSessionLine()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << "" << "", QList<LxdmConfigFileParam::XSession>());
+    MockLxdmConfigFileGenerator paramGen(QStringList() << "" << "", QList<LxdmConfigFileParam::XSession>());
     LxdmConfigFile confFile(paramGen.getConfigParam());
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 }
 
 void test_lxdm_config_modify::getCurrSessionFileContainsInValidSessionLine()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList(),
+    MockLxdmConfigFileGenerator paramGen(QStringList(),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Test", "test.desktop"));
     LxdmConfigFile confFile(paramGen.getConfigParam());
 
-    TestLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session /tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session /tmp/lxdmtest/test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    TestLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << " last_session=/tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << " last_session=/tmp/lxdmtest/test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    TestLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session = /tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session = /tmp/lxdmtest/test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    TestLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session=/tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session=/tmp/lxdmtest/test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "Test");
 }
 
 void test_lxdm_config_modify::getCurrSessionFileContainsValidSessionLine()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Test", "foo.desktop"));
     LxdmConfigFile confFile(paramGen.getConfigParam());
@@ -53,7 +53,7 @@ void test_lxdm_config_modify::getCurrSessionFileContainsValidSessionLine()
 
 void test_lxdm_config_modify::getCurrSessionCorrectFound()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -63,7 +63,7 @@ void test_lxdm_config_modify::getCurrSessionCorrectFound()
 
 void test_lxdm_config_modify::getCurrSessionFileContainsUnkownSessionLine()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("unkown.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("unkown.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop"));
     LxdmConfigFile confFile(paramGen.getConfigParam());
@@ -72,7 +72,7 @@ void test_lxdm_config_modify::getCurrSessionFileContainsUnkownSessionLine()
 
 void test_lxdm_config_modify::getAvailableSessionsNoLxdmConfig()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -83,7 +83,7 @@ void test_lxdm_config_modify::getAvailableSessionsNoLxdmConfig()
 
 void test_lxdm_config_modify::getAvailableSessionsWithLxdmConfig()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -93,7 +93,7 @@ void test_lxdm_config_modify::getAvailableSessionsWithLxdmConfig()
 
 void test_lxdm_config_modify::getAvailableSessionsOneNotExisting()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -104,7 +104,7 @@ void test_lxdm_config_modify::getAvailableSessionsOneNotExisting()
 
 void test_lxdm_config_modify::setCurrSessionUnknown()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") );
     LxdmConfigFile confFile(paramGen.getConfigParam());
@@ -113,7 +113,7 @@ void test_lxdm_config_modify::setCurrSessionUnknown()
 
 void test_lxdm_config_modify::setCurrSessionValid()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -123,7 +123,7 @@ void test_lxdm_config_modify::setCurrSessionValid()
 
 void test_lxdm_config_modify::setCurrSessionValidSessionFileNotExisting()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -134,7 +134,7 @@ void test_lxdm_config_modify::setCurrSessionValidSessionFileNotExisting()
 
 void test_lxdm_config_modify::setCurrSessionValidDone()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() << TestLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() << MockLxdmConfigFileGenerator::genLastSessionLine("foo.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -145,7 +145,7 @@ void test_lxdm_config_modify::setCurrSessionValidDone()
 
 void test_lxdm_config_modify::setCurrSessionValidDoneSessionNotSet()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList(),
+    MockLxdmConfigFileGenerator paramGen(QStringList(),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -156,9 +156,9 @@ void test_lxdm_config_modify::setCurrSessionValidDoneSessionNotSet()
 
 void test_lxdm_config_modify::setCurrSessionValidDoneSessionSetTwice()
 {
-    TestLxdmConfigFileGenerator paramGen(QStringList() <<
-                                             TestLxdmConfigFileGenerator::genLastSessionLine("foo.desktop") <<
-                                             TestLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
+    MockLxdmConfigFileGenerator paramGen(QStringList() <<
+                                             MockLxdmConfigFileGenerator::genLastSessionLine("foo.desktop") <<
+                                             MockLxdmConfigFileGenerator::genLastSessionLine("bar.desktop"),
                                          QList<LxdmConfigFileParam::XSession>() <<
                                              LxdmConfigFileParam::XSession("Foo", "foo.desktop") <<
                                              LxdmConfigFileParam::XSession("Bar", "bar.desktop") );
@@ -166,7 +166,7 @@ void test_lxdm_config_modify::setCurrSessionValidDoneSessionSetTwice()
     confFile.setCurrentXSession("Bar");
     QCOMPARE(confFile.getConfiguredXSessionName(), "Bar");
 
-    QFile configFileRead(TestLxdmConfigFileGenerator::getLxdmConfFileNameFull());
+    QFile configFileRead(MockLxdmConfigFileGenerator::getLxdmConfFileNameFull());
     configFileRead.open(QFile::ReadOnly);
     QString content = configFileRead.readAll();
     QCOMPARE(content, "last_session=/tmp/lxdmtest/bar.desktop\n");

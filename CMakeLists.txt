@@ -57,8 +57,6 @@ function(SETUP_TESTS)
             vf-tcp-mock-networklib
             VfFrameworkTest
             VfConvenientCodeTest
-            ModmanBase
-            veinserver-testlib
             Zera::testlib-common
             Zera::zera-timers-testlib
             )

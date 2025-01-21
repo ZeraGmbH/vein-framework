@@ -1,14 +1,14 @@
-#ifndef TESTLXDMCONFIGFILEGENERATOR_H
-#define TESTLXDMCONFIGFILEGENERATOR_H
+#ifndef MOCKLXDMCONFIGFILEGENERATOR_H
+#define MOCKLXDMCONFIGFILEGENERATOR_H
 
 #include "lxdmconfigfileparam.h"
 
-class TestLxdmConfigFileGenerator
+class MockLxdmConfigFileGenerator
 {
 public:
-    TestLxdmConfigFileGenerator(const QStringList &linesInLxdmConfig,
+    MockLxdmConfigFileGenerator(const QStringList &linesInLxdmConfig,
                                 const QList<LxdmConfigFileParam::XSession> &availableXSessions);
-    ~TestLxdmConfigFileGenerator();
+    ~MockLxdmConfigFileGenerator();
 
     static QString getLxdmConfFileNameFull();
     // file names just basenames
@@ -25,4 +25,4 @@ private:
     LxdmConfigFileParam m_configParam;
 };
 
-#endif // TESTLXDMCONFIGFILEGENERATOR_H
+#endif // MOCKLXDMCONFIGFILEGENERATOR_H
