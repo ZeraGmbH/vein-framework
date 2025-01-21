@@ -59,11 +59,12 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
-                    if(cData->componentName() == sessionComponentName) {
+                    const QString componentName = cData->componentName();
+                    if(componentName == sessionComponentName) {
                         if(handleVeinSessionSet(cData))
                             t_event->accept();
                     }
-                    else if(cData->componentName() == modulesPausedComponentName) {
+                    else if(componentName == modulesPausedComponentName) {
                         validated = true;
                         setModulesPaused(cData->newValue().toBool());
                     }
