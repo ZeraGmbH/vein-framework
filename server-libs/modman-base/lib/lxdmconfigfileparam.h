@@ -17,7 +17,7 @@ public:
     explicit LxdmConfigFileParam(
         const QString &configFileName = "/var/lib/lxdm/lxdm.conf",
         const QList<XSession> &availableXSessions = QList<LxdmConfigFileParam::XSession>() <<
-            LxdmConfigFileParam::XSession("Desktop (slow)", "/usr/share/xsessions/xfce.desktop") <<
+            LxdmConfigFileParam::XSession("Desktop", "/usr/share/xsessions/xfce.desktop") <<
             LxdmConfigFileParam::XSession("Fullscreen", "/usr/share/xsessions/zenux-gui.desktop")
         );
     QString getConfigFileName() const;
