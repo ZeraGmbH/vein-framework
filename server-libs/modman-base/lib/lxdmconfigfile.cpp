@@ -32,7 +32,7 @@ const QString LxdmConfigFile::getConfiguredXSessionName()
         }
     }
     if(!m_availableXSessions.isEmpty())
-        qWarning("Cannot not find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
+        qWarning("Cannot find '%s' in %s!", sessionLead, qPrintable(m_configFileName));
     return QString();
 }
 
@@ -59,7 +59,7 @@ QStringList LxdmConfigFile::readLxdmConfig()
     QFile configFileRead(m_configFileName);
     if(!configFileRead.open(QFile::ReadOnly)) {
         if(!m_availableXSessions.isEmpty())
-            qWarning("Cannot not read %s", qPrintable(m_configFileName));
+            qWarning("Cannot read %s", qPrintable(m_configFileName));
         return lines;
     }
     QString content = configFileRead.readAll();
