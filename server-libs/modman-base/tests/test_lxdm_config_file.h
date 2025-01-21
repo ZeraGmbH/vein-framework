@@ -8,7 +8,6 @@ class test_lxdm_config_modify : public QObject
 {
     Q_OBJECT
 private slots:
-    void cleanup();
     void getCurrSessionFileNotFound();
     void getCurrSessionFileMissesSessionLine();
     void getCurrSessionFileContainsInValidSessionLine();
@@ -17,7 +16,7 @@ private slots:
     void getCurrSessionFileContainsUnkownSessionLine();
     void getAvailableSessionsNoLxdmConfig();
     void getAvailableSessionsWithLxdmConfig();
-    void getAvailableSessionsOneNorExisting();
+    void getAvailableSessionsOneNotExisting();
 
     void setCurrSessionUnknown();
     void setCurrSessionValid();
@@ -25,10 +24,6 @@ private slots:
     void setCurrSessionValidDone();
     void setCurrSessionValidDoneSessionNotSet();
     void setCurrSessionValidDoneSessionSetTwice();
-private:
-    void createTestConfigFile(const QStringList &lines);
-    void createTestSessionFiles(const QStringList &fileNames);
-    QStringList m_sessionFilesGenerated;
 };
 
 #endif // TEST_LXDM_CONFIG_FILE_H
