@@ -1,8 +1,7 @@
 #include "modulemanagersetupfacade.h"
 #include <QDataStream>
 
-ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem, bool devMode, QObject *parent) :
-    QObject(parent),
+ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem, bool devMode) :
     m_systemModuleSystem(devMode),
     m_licenseSystem(licenseSystem)
 {
