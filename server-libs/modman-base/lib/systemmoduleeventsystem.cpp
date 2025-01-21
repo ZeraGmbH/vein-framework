@@ -214,24 +214,25 @@ QByteArray SystemModuleEventSystem::setModuleInterface()
     jsonObj2.insert("Desciption", "Module's name");
     jsonObj3.insert(entityNameComponentName, jsonObj2);
 
-    jsonObj2 = QJsonObject();
-    jsonObj2.insert("Description", "Session name");
-
     QList<QString> keyList;
-    keyList = m_veinSystemParameterMap.keys();
-    for (int i = 0; i < keyList.count(); i++)
-        m_veinSystemParameterMap[keyList.at(i)]->exportMetaData(jsonObj2);
-
-    jsonObj3.insert(sessionComponentName, jsonObj2);
+    keyList = m_veinParameterMap.keys();
+    for (int i = 0; i < keyList.count(); i++) {
+        const QString &componentName = keyList[i];
+        QJsonObject componentMetaData;
+        const TVeinParam &param = m_veinParameterMap[componentName];
+        componentMetaData.insert("Description", param.m_description);
+        param.m_veinComponentData->exportMetaData(componentMetaData);
+        jsonObj3.insert(componentName, componentMetaData);
+    }
     jsonObject.insert("ComponentInfo", jsonObj3);
 
     //------------------------ "SCPIInfo"
     QJsonArray jsonArr;
     for (int i = 0; i < keyList.count(); i++) {
-        m_veinSystemParameterMap[keyList.at(i)]->exportSCPIInfo(jsonArr);
+        m_veinParameterMap[keyList.at(i)].m_veinComponentData->exportSCPIInfo(jsonArr);
     }
-    for (int i = 0; i < m_scpiCmdList.count(); i++) {
-        m_scpiCmdList.at(i)->appendSCPIInfo(jsonArr);
+    for (int i = 0; i < m_scpiCatalogCmdList.count(); i++) {
+        m_scpiCatalogCmdList.at(i)->appendSCPIInfo(jsonArr);
     }
     jsonObj2 = QJsonObject();
     jsonObj2.insert("Name", "SYST");
@@ -295,13 +296,16 @@ void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinCom
 
 void SystemModuleEventSystem::setScpiInfo()
 {
+    struct TVeinParam param;
     VeinComponent::ComponentData *initialData = nullptr;
+
     initialData = new VeinComponent::ComponentData();
     cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
     initialData->setSCPIInfo(scpiInfo);
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     initialData->setValidator(sValidator);
-    m_veinSystemParameterMap[sessionComponentName] = initialData;
-
-    m_scpiCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", "2", sessionComponentName, "1", ""));
+    param.m_description = "Session name";
+    param.m_veinComponentData = initialData;
+    m_veinParameterMap[sessionComponentName] = param;
+    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", "2", sessionComponentName, "1", ""));
 }

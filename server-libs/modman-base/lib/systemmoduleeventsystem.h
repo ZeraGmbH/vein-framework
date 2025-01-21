@@ -40,8 +40,13 @@ private:
     QStringList m_availableSessions;
     QStringList m_availableSessionsDisplayed;
     QString m_configFileName;
-    QMap<QString, VeinComponent::ComponentData*> m_veinSystemParameterMap;
-    QList<cSCPIInfo*> m_scpiCmdList;
+    struct TVeinParam
+    {
+        QString m_description;
+        VeinComponent::ComponentData* m_veinComponentData = nullptr;
+    };
+    QMap<QString, TVeinParam> m_veinParameterMap;
+    QList<cSCPIInfo*> m_scpiCatalogCmdList;
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
