@@ -1,8 +1,10 @@
 #include "modulemanagersetupfacade.h"
 #include <QDataStream>
 
-ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem, bool devMode) :
-    m_systemModuleSystem(devMode),
+ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
+                                                   bool devMode,
+                                                   const LxdmConfigFile &lxdmConfFile) :
+    m_systemModuleSystem(devMode, lxdmConfFile),
     m_licenseSystem(licenseSystem)
 {
     Q_ASSERT(m_licenseSystem != nullptr);

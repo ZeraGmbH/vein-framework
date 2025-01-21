@@ -20,8 +20,9 @@ static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
 static const char *moduleInterface =                   "INF_ModuleInterface";
 
-SystemModuleEventSystem::SystemModuleEventSystem(bool devMode) :
-    m_devMode(devMode)
+SystemModuleEventSystem::SystemModuleEventSystem(bool devMode, const LxdmConfigFile &lxdmConfFile) :
+    m_devMode(devMode),
+    m_lxdmConfFile(lxdmConfFile)
 {
 }
 

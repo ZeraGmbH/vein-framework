@@ -1,6 +1,7 @@
 #ifndef MODULEMANAGERSETTINGS_H
 #define MODULEMANAGERSETTINGS_H
 
+#include "lxdmconfigfile.h"
 #include <ve_eventsystem.h>
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
@@ -10,7 +11,7 @@ class SystemModuleEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit SystemModuleEventSystem(bool devMode = false);
+    explicit SystemModuleEventSystem(bool devMode = false, const LxdmConfigFile &lxdmConfFile = LxdmConfigFile());
     static constexpr int getEntityId();
     void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
@@ -47,6 +48,7 @@ private:
     };
     QMap<QString, TVeinParam> m_veinParameterMap;
     QList<cSCPIInfo*> m_scpiCatalogCmdList;
+    LxdmConfigFile m_lxdmConfFile;
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
