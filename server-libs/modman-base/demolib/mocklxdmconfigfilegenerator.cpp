@@ -15,7 +15,7 @@ MockLxdmConfigFileGenerator::MockLxdmConfigFileGenerator(const QStringList &line
         createTestSessionFile(session.m_sessionFileName);
 }
 
-MockLxdmConfigFileGenerator::~MockLxdmConfigFileGenerator()
+void MockLxdmConfigFileGenerator::cleanup()
 {
     QDir dir(lxdmTestDir);
     dir.removeRecursively();

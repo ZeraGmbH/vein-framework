@@ -8,7 +8,7 @@ class MockLxdmConfigFileGenerator
 public:
     MockLxdmConfigFileGenerator(const QStringList &linesInLxdmConfig,
                                 const QList<LxdmConfigFileParam::XSession> &availableXSessions);
-    ~MockLxdmConfigFileGenerator();
+    static void cleanup();
 
     static QString getLxdmConfFileNameFull();
     // file names just basenames
