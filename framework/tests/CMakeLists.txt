@@ -12,3 +12,8 @@ target_sources(test_test_vein_server
   PRIVATE
     test-data/test-data.qrc
 )
+
+target_link_libraries(test_test_vein_server
+  PUBLIC
+    veinserver-demolib
+)
