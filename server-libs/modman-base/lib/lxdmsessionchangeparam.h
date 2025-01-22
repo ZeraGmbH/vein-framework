@@ -14,7 +14,7 @@ public:
     LxdmConfigFileParam getConfigParam() const;
     std::function<bool ()> getRestartFunc() const;
 private:
-    const LxdmConfigFileParam& m_lxdmConfigParam;
+    const LxdmConfigFileParam m_lxdmConfigParam;
     std::function<bool ()> m_restartService;
 };
 

@@ -60,7 +60,8 @@
                     "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
-                    "SessionsAvailable"
+                    "SessionsAvailable",
+                    "XSession"
                 ],
                 "procedures": [
                 ]
@@ -83,7 +84,8 @@
                     "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
-                    "SessionsAvailable"
+                    "SessionsAvailable",
+                    "XSession"
                 ],
                 "procedures": [
                 ]
@@ -106,7 +108,8 @@
                     "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
-                    "SessionsAvailable"
+                    "SessionsAvailable",
+                    "XSession"
                 ],
                 "procedures": [
                 ]
@@ -129,7 +132,8 @@
                     "INF_ModuleInterface",
                     "ModulesPaused",
                     "Session",
-                    "SessionsAvailable"
+                    "SessionsAvailable",
+                    "XSession"
                 ],
                 "procedures": [
                 ]

@@ -16,13 +16,15 @@ static const char *entityNameComponentName =           "EntityName";
 static const char *entitiesComponentName =             "Entities";
 static const char *sessionComponentName =              "Session";
 static const char *sessionsAvailableComponentName =    "SessionsAvailable";
+static const char *xSessionComponentName =             "XSession";
 static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
 static const char *moduleInterface =                   "INF_ModuleInterface";
 
-SystemModuleEventSystem::SystemModuleEventSystem(bool devMode, const LxdmConfigFile &lxdmConfFile) :
+SystemModuleEventSystem::SystemModuleEventSystem(bool devMode, const LxdmSessionChangeParam &lxdmParam) :
     m_devMode(devMode),
-    m_lxdmConfFile(lxdmConfFile)
+    m_lxdmConfFile(lxdmParam.getConfigParam()),
+    m_restartService(lxdmParam.getRestartFunc())
 {
 }
 
@@ -65,6 +67,15 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         if(handleVeinSessionSet(cData))
                             t_event->accept();
                     }
+                    else if(componentName == xSessionComponentName) {
+                        if(handleXSessionSet(cData->newValue().toString()))
+                            validated = true;
+                        else {
+                            t_event->accept();
+                            // swap old <-> new
+                            emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(), cData->componentName(), cData->newValue(), cData->oldValue()));
+                        }
+                    }
                     else if(componentName == modulesPausedComponentName) {
                         validated = true;
                         setModulesPaused(cData->newValue().toBool());
@@ -104,6 +115,15 @@ bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::Componen
     return false;
 }
 
+bool SystemModuleEventSystem::handleXSessionSet(const QString &xSession)
+{
+    if(m_lxdmConfFile.setCurrentXSession(xSession)) {
+        if(m_restartService())
+            return true;
+    }
+    return false;
+}
+
 void SystemModuleEventSystem::setConfigFileName(QString configFileName)
 {
     m_configFileName = configFileName;
@@ -139,6 +159,12 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
         emit sigSendEvent(VfServerComponentSetter::generateEvent(
             getEntityId(),
+            xSessionComponentName,
+            QVariant(),
+            m_lxdmConfFile.getConfiguredXSessionName()) );
+
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
             sessionsAvailableComponentName,
             QVariant(),
             m_availableSessions) );
@@ -170,6 +196,7 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(entitiesComponentName, QVariant());
         componentData.insert(sessionComponentName, QVariant(m_currentSession));
         componentData.insert(sessionsAvailableComponentName, QVariant(m_availableSessions));
+        componentData.insert(xSessionComponentName, m_lxdmConfFile.getConfiguredXSessionName());
         componentData.insert(modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
         componentData.insert(moduleInterface, QVariant());
@@ -212,7 +239,7 @@ QByteArray SystemModuleEventSystem::setModuleInterface()
     jsonObj3.insert(moduleInterface, jsonObj2);
 
     jsonObj2 = QJsonObject();
-    jsonObj2.insert("Desciption", "Module's name");
+    jsonObj2.insert("Description", "Module's name");
     jsonObj3.insert(entityNameComponentName, jsonObj2);
 
     QList<QString> keyList;
@@ -309,4 +336,14 @@ void SystemModuleEventSystem::setScpiInfo()
     param.m_veinComponentData = initialData;
     m_veinParameterMap[sessionComponentName] = param;
     m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", "2", sessionComponentName, "1", ""));
+
+    initialData = new VeinComponent::ComponentData();
+    scpiInfo = new cSCPIInfo("CONFIGURATION", "XSESSION", "10", xSessionComponentName, "0", "");
+    initialData->setSCPIInfo(scpiInfo);
+    sValidator = new cStringValidator(m_lxdmConfFile.getAvailableXSessionNames());
+    initialData->setValidator(sValidator);
+    param.m_description = "XSession name";
+    param.m_veinComponentData = initialData;
+    m_veinParameterMap[xSessionComponentName] = param;
+    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "XSESSION:CATALOG", "2", xSessionComponentName, "1", ""));
 }

@@ -1,7 +1,11 @@
 {
     "0": {
         "DevMode": false,
-        "Entities": null,
+        "Entities": [
+            0,
+            10,
+            11
+        ],
         "EntityName": "_System",
         "INF_ModuleInterface": {
             "ComponentInfo": {
@@ -73,9 +77,21 @@
             }
         },
         "ModulesPaused": false,
-        "Session": "",
+        "Session": "test_session1.json",
         "SessionsAvailable": [
+            "test_session1.json",
+            "test_session2.json"
         ],
-        "XSession": "Bar"
+        "XSession": "Foo"
+    },
+    "10": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName10"
+    },
+    "11": {
+        "ComponentName1": null,
+        "ComponentName2": null,
+        "EntityName": "EntityName11"
     }
 }

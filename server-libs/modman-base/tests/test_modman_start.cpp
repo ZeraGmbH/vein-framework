@@ -26,6 +26,7 @@ void test_modman_start::emptyModman()
     QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "EntityName").newValue, "_System");
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Session"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "SessionsAvailable"));
+    QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "XSession"));
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "Entities"));
     QCOMPARE(VfTestComponentSpyFilter::first(systemComponents, "Entities").newValue, QVariant()); // _SYSTEM listed once SystemModuleEventSystem::initializeEntity is called
     QVERIFY(VfTestComponentSpyFilter::hasOne(systemComponents, "ModulesPaused"));

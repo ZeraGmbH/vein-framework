@@ -4,7 +4,6 @@
 #include "licensesysteminterface.h"
 #include "moduleeventhandler.h"
 #include "systemmoduleeventsystem.h"
-#include "lxdmconfigfile.h"
 #include "vn_introspectionsystem.h"
 #include "vs_storageeventsystem.h"
 
@@ -14,7 +13,7 @@ class ModuleManagerSetupFacade : public QObject
 public:
     ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                              bool devMode = false,
-                             const LxdmConfigFile &lxdmConfFile = LxdmConfigFile());
+                             const LxdmSessionChangeParam& lxdmParam = LxdmSessionChangeParam());
     static void registerMetaTypeStreamOperators();
     void addSubsystem(VeinEvent::EventSystem* subsystem);
     void addModuleSystem(VeinEvent::EventSystem* system);

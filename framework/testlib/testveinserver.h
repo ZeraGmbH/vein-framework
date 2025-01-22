@@ -3,12 +3,14 @@
 
 #include "systemmoduleeventsystem.h"
 #include "testjsonspyeventsystem.h"
+#include "lxdmsessionchangeparam.h"
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
 #include "vn_introspectionsystem.h"
 #include "vs_storageeventsystem.h"
 #include "vftestentityspy.h"
 #include "vftestcomponentspy.h"
+#include "mocklxdmsessionchangeparamgenerator.h"
 #include <memory>
 #include <unordered_map>
 
@@ -16,7 +18,8 @@ class TestVeinServer : public QObject
 {
     Q_OBJECT
 public:
-    explicit TestVeinServer();
+    explicit TestVeinServer(const LxdmSessionChangeParam& lxdmParam = MockLxdmSessionChangeParamGenerator::generateTestSessionChanger(true));
+    ~TestVeinServer();
 
     void prependEventSystem(VeinEvent::EventSystem *system);
     void appendEventSystem(VeinEvent::EventSystem *system);

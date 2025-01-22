@@ -3,8 +3,8 @@
 
 ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                                                    bool devMode,
-                                                   const LxdmConfigFile &lxdmConfFile) :
-    m_systemModuleSystem(devMode, lxdmConfFile),
+                                                   const LxdmSessionChangeParam &lxdmParam) :
+    m_systemModuleSystem(devMode, lxdmParam),
     m_licenseSystem(licenseSystem)
 {
     Q_ASSERT(m_licenseSystem != nullptr);

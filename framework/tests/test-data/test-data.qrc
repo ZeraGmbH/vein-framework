@@ -1,7 +1,10 @@
 <RCC>
     <qresource prefix="/">
         <file>vein-event-dumps/dumpChangeSession.json</file>
+        <file>vein-event-dumps/dumpChangeXSession.json</file>
+        <file>vein-event-dumps/dumpChangeXSessionFail.json</file>
         <file>vein-event-dumps/dumpCompleteSessionSession.json</file>
+        <file>vein-event-dumps/dumpCompleteSessionWithLxdm.json</file>
         <file>vein-event-dumps/dumpEventsAddComponentClientSubscribed.json</file>
         <file>vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json</file>
         <file>vein-event-dumps/dumpEventsAddEntityComponent.json</file>
@@ -16,8 +19,12 @@
         <file>vein-event-dumps/dumpEventsUnsubscribe.json</file>
         <file>vein-event-dumps/dumpEventsSubscribeNonExistent.json</file>
         <file>vein-event-dumps/dumpUnfinishedSession.json</file>
+
         <file>vein-storage-dumps/dumpChangeSession.json</file>
+        <file>vein-storage-dumps/dumpChangeXSession.json</file>
+        <file>vein-storage-dumps/dumpChangeXSessionFail.json</file>
         <file>vein-storage-dumps/dumpCompleteSessionSession.json</file>
+        <file>vein-storage-dumps/dumpCompleteSessionWithLxdm.json</file>
         <file>vein-storage-dumps/dumpStorageInitial.json</file>
         <file>vein-storage-dumps/dumpUnfinishedSession.json</file>
         <file>vein-event-dumps/dumpEventsRemoveAllEntities.json</file>

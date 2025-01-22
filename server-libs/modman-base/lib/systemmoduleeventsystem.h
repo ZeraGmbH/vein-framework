@@ -1,6 +1,7 @@
 #ifndef MODULEMANAGERSETTINGS_H
 #define MODULEMANAGERSETTINGS_H
 
+#include "lxdmsessionchangeparam.h"
 #include "lxdmconfigfile.h"
 #include <ve_eventsystem.h>
 #include <vs_abstracteventsystem.h>
@@ -11,7 +12,8 @@ class SystemModuleEventSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit SystemModuleEventSystem(bool devMode = false, const LxdmConfigFile &lxdmConfFile = LxdmConfigFile());
+    explicit SystemModuleEventSystem(bool devMode = false,
+                                     const LxdmSessionChangeParam& lxdmParam = LxdmSessionChangeParam());
     static constexpr int getEntityId();
     void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
@@ -32,6 +34,7 @@ private:
     QString getJsonSessionName(QString displayedSessionName);
     QString getDisplayedSessionName(QString jsonSessionName);
     bool handleVeinSessionSet(const VeinComponent::ComponentData *cData);
+    bool handleXSessionSet(const QString &xSession);
     void sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void setScpiInfo();
 
@@ -49,6 +52,7 @@ private:
     QMap<QString, TVeinParam> m_veinParameterMap;
     QList<cSCPIInfo*> m_scpiCatalogCmdList;
     LxdmConfigFile m_lxdmConfFile;
+    std::function<bool ()> m_restartService;
     bool m_initDone=false;
     bool m_sessionReady=false;
     bool m_modulesPaused=false;

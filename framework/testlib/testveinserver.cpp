@@ -3,6 +3,7 @@
 #include "vf_server_component_setter.h"
 #include "modulemanagersetupfacade.h"
 #include "testloghelpers.h"
+#include "mocklxdmconfigfilegenerator.h"
 #include <timemachineobject.h>
 #include "vs_dumpjson.h"
 #include <QBuffer>
@@ -10,12 +11,13 @@
 using VeinComponent::EntityData;
 using VeinComponent::ComponentData;
 
-TestVeinServer::TestVeinServer() :
+TestVeinServer::TestVeinServer(const LxdmSessionChangeParam& lxdmParam) :
     m_vfEntityAddSpy(EntityData::Command::ECMD_ADD),
     m_vfComponentAddSpy(ComponentData::Command::CCMD_ADD),
     m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET),
     m_serverCmdEventSpyTop(&m_JsonEventLog, "server-enter"),
-    m_serverCmdEventSpyBottom(&m_JsonEventLog, "server-fallthrough")
+    m_serverCmdEventSpyBottom(&m_JsonEventLog, "server-fallthrough"),
+    m_systemModuleSystem(false, lxdmParam)
 
 {
     ModuleManagerSetupFacade::registerMetaTypeStreamOperators();
@@ -34,6 +36,11 @@ TestVeinServer::TestVeinServer() :
                      &m_serverCmdEventSpyBottom, &TestJsonSpyEventSystem::onEventAccepted);
 
     m_systemModuleSystem.initOnce();
+}
+
+TestVeinServer::~TestVeinServer()
+{
+    MockLxdmConfigFileGenerator::cleanup();
 }
 
 void TestVeinServer::prependEventSystem(VeinEvent::EventSystem *system)

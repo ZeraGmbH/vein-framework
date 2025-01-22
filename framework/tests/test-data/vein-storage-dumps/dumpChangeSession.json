@@ -10,7 +10,7 @@
         "INF_ModuleInterface": {
             "ComponentInfo": {
                 "EntityName": {
-                    "Desciption": "Module's name"
+                    "Description": "Module's name"
                 },
                 "INF_ModuleInterface": {
                     "Description": "Module's interface details"
@@ -19,6 +19,16 @@
                     "Description": "Session name",
                     "Validation": {
                         "Data": [
+                        ],
+                        "Type": "STRING"
+                    }
+                },
+                "XSession": {
+                    "Description": "XSession name",
+                    "Validation": {
+                        "Data": [
+                            "Foo",
+                            "Bar"
                         ],
                         "Type": "STRING"
                     }
@@ -40,9 +50,25 @@
                     ],
                     [
                         "CONFIGURATION",
+                        "XSESSION",
+                        "10",
+                        "XSession",
+                        "0",
+                        ""
+                    ],
+                    [
+                        "CONFIGURATION",
                         "SESSION:CATALOG",
                         "2",
                         "Session",
+                        "1",
+                        ""
+                    ],
+                    [
+                        "CONFIGURATION",
+                        "XSESSION:CATALOG",
+                        "2",
+                        "XSession",
                         "1",
                         ""
                     ]
@@ -55,7 +81,8 @@
         "SessionsAvailable": [
             "test_session1.json",
             "test_session2.json"
-        ]
+        ],
+        "XSession": "Bar"
     },
     "20": {
         "ComponentName1": null,

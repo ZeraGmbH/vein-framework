@@ -9,13 +9,16 @@ class test_test_vein_server : public QObject
 {
     Q_OBJECT
 private slots:
-    void init();
     void cleanup();
 
     void unfinishedSession();
     void completeSession();
     void changeSession();
+    void completeSessionWithValidXSession();
+    void completeSessionXSessionChangePass();
+    void completeSessionXSessionChangeFail();
 private:
+    void startServer(bool restartServicePasses);
     std::unique_ptr<TestVeinServer> m_server;
 };
 
