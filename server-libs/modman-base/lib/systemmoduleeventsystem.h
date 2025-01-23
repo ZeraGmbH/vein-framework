@@ -31,8 +31,8 @@ public slots:
 private:
     QByteArray setModuleInterface();
     static QString deduceDeviceName(const QString& sessionString);
-    QString getJsonSessionName(QString displayedSessionName);
-    QString getDisplayedSessionName(QString jsonSessionName);
+    QString getJsonSessionName(const QString &displayedSessionName);
+    QString getDisplayedSessionName(const QString &jsonSessionName);
     bool handleVeinSessionSet(const VeinComponent::ComponentData *cData);
     bool handleXSessionSet(const QString &xSession);
     void sendNotificationForScpiModule(const VeinComponent::ComponentData *cData);

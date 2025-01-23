@@ -283,43 +283,40 @@ QString SystemModuleEventSystem::deduceDeviceName(const QString &sessionString)
     return "unknown";
 }
 
-QString SystemModuleEventSystem::getJsonSessionName(QString displayedSessionName)
+QString SystemModuleEventSystem::getJsonSessionName(const QString &displayedSessionName)
 {
-    QString jsonSessionName = "";
     QString device = deduceDeviceName(m_availableSessions[0]); // ??? Really what about COM5003 ???
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < sessionDisplayStrings.count(); i++) {
         if(displayedSessionName == sessionDisplayStrings[i].toString())
-            jsonSessionName = availableSessions[i].toString();
+            return availableSessions[i].toString();
     }
-    return jsonSessionName;
+    return QString();
 }
 
-QString SystemModuleEventSystem::getDisplayedSessionName(QString jsonSessionName)
+QString SystemModuleEventSystem::getDisplayedSessionName(const QString &jsonSessionName)
 {
-    QString sessionName = "";
     QString device = deduceDeviceName(jsonSessionName);
     QJsonObject jsonConfig = cJsonFileLoader::loadJsonFile(m_configFileName).value(device).toObject();
     QJsonArray availableSessions = jsonConfig["availableSessions"].toArray();
     QJsonArray sessionDisplayStrings = jsonConfig["sessionDisplayStrings"].toArray();
     for(int i = 0; i < availableSessions.count(); i++) {
         if(jsonSessionName == availableSessions[i].toString())
-            sessionName = sessionDisplayStrings[i].toString();
+            return sessionDisplayStrings[i].toString();
     }
-    return sessionName;
+    return QString();
 }
 
 void SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent::ComponentData *cData)
 {
     if(cData->componentName() == sessionComponentName)
         sendSessionNotificationForScpiModule(cData);
-    else if(cData->componentName() == xSessionComponentName) {
+    else if(cData->componentName() == xSessionComponentName)
         emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
                                                                  cData->componentName(),
                                                                  QVariant(), cData->oldValue()));
-    }
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)
