@@ -9,16 +9,22 @@ LxdmConfigFile::LxdmConfigFile(const LxdmConfigFileParam &param) :
 {
     if(QFile::exists(m_configFileName)) {
         const QList<LxdmConfigFileParam::XSession> availableXSessions = param.getAvailableXSessions();
+        QStringList sessionFilesFound;
         for(const LxdmConfigFileParam::XSession &session : availableXSessions) {
-            if(QFile::exists(session.m_sessionFileName))
+            if(QFile::exists(session.m_sessionFileName)) {
                 m_availableXSessions.append(session);
+                sessionFilesFound.append(session.m_sessionFileName);
+            }
             else
-                qWarning("Session file '%s' does not exist. Skip session '%s'!",
+                qWarning("XSession file '%s' does not exist. Skip session '%s'!",
                          qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
         }
+        qInfo("XSession manager config file: %s", qPrintable(m_configFileName));
+        qInfo("XSession files: %s", qPrintable(sessionFilesFound.join(" / ")));
+        qInfo("XSession selected: %s", qPrintable(getConfiguredXSessionName()));
     }
     else
-        qWarning("Lxdm config '%s' not found - session change will not work!", qPrintable(m_configFileName));
+        qWarning("Lxdm config '%s' not found - XSession change will not work!", qPrintable(m_configFileName));
 }
 
 const QString LxdmConfigFile::getConfiguredXSessionName()
@@ -49,7 +55,7 @@ bool LxdmConfigFile::setCurrentXSession(const QString &sessionName)
     for(const auto &session : m_availableXSessions)
         if(session.m_sessionName == sessionName)
             return writeConfig(session.m_sessionFileName);
-    qWarning("Session %s to set is unknown!", qPrintable(sessionName));
+    qWarning("XSession %s to set is unknown!", qPrintable(sessionName));
     return false;
 }
 
@@ -74,7 +80,7 @@ const QString LxdmConfigFile::sessionNameFromFile(const QString &sessionFileName
     for(const auto &session : m_availableXSessions)
         if(session.m_sessionFileName == sessionFileName)
             return session.m_sessionName;
-    qWarning("Unknown session file '%s' in %s!",
+    qWarning("Unknown XSession file '%s' in %s!",
              qPrintable(sessionFileName), qPrintable(m_configFileName));
     return QString();
 }
@@ -82,7 +88,7 @@ const QString LxdmConfigFile::sessionNameFromFile(const QString &sessionFileName
 bool LxdmConfigFile::writeConfig(const QString &sessionFileName)
 {
     if(!QFile::exists(sessionFileName)) {
-        qWarning("Session file '%s' does not exist!", qPrintable(sessionFileName));
+        qWarning("XSession file '%s' does not exist!", qPrintable(sessionFileName));
         return false;
     }
     const QStringList linesRead = readLxdmConfig();
@@ -105,7 +111,7 @@ bool LxdmConfigFile::writeConfig(const QString &sessionFileName)
 
     QSaveFile configFileWrite(m_configFileName);
     if(!configFileWrite.open(QFile::WriteOnly)) {
-        qWarning("Cannot not write %s", qPrintable(sessionFileName));
+        qWarning("Cannot not write %s", qPrintable(m_configFileName));
         return false;
     }
     for(const QString &line : linesWrite)
