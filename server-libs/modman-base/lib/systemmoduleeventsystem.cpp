@@ -54,11 +54,11 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
             }
             else if(cEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
                 const VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
-                // validate fetch requests
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) {
+                    // validate fetch requests
                     validated = true;
-                    if(cData->entityId() == getEntityId() && cData->componentName() == sessionComponentName)
-                        sendSessionNotificationForScpiModule(cData);
+                    if(cData->entityId() == getEntityId())
+                        sendNotificationForScpiModule(cData);
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
@@ -309,6 +309,17 @@ QString SystemModuleEventSystem::getDisplayedSessionName(QString jsonSessionName
             sessionName = sessionDisplayStrings[i].toString();
     }
     return sessionName;
+}
+
+void SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent::ComponentData *cData)
+{
+    if(cData->componentName() == sessionComponentName)
+        sendSessionNotificationForScpiModule(cData);
+    else if(cData->componentName() == xSessionComponentName) {
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
+                                                                 cData->componentName(),
+                                                                 QVariant(), cData->oldValue()));
+    }
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)
