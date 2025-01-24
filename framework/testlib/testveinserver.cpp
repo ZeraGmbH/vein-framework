@@ -121,6 +121,11 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
     TimeMachineObject::feedEventLoop();
 }
 
+QVariant TestVeinServer::getValue(int entityId, QString componentName)
+{
+    return m_storageSystem.getDb()->getStoredValue(entityId, componentName);
+}
+
 void TestVeinServer::removeEntitiesAdded()
 {
     for(const auto &entity : m_entities) {
@@ -214,3 +219,5 @@ void TestVeinServer::resetEventSpyData()
     m_vfComponentChangeSpy.reset();
     m_JsonEventLog = QJsonObject();
 }
+
+
