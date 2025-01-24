@@ -32,6 +32,7 @@ public:
     void removeComponent(int entityId, QString componentName);
     void setComponentClientTransaction(int entityId, QString componentName, QVariant newValue);
     void setComponentServerNotification(int entityId, QString componentName, QVariant newValue);
+    QVariant getValue(int entityId, QString componentName);
     void removeEntitiesAdded();
     QMap<int, QList<QString>> getTestEntityComponentInfo();
 
