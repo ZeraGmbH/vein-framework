@@ -15,5 +15,5 @@ target_sources(test_test_vein_server
 
 target_link_libraries(test_test_vein_server
   PUBLIC
-    veinserver-demolib
+    xsession-change-demolib
 )

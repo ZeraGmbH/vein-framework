@@ -20,7 +20,7 @@ target_link_libraries(VfFrameworkTest
     Zera::testlib-common
     vf-tcp-mock-networklib
     veinserver-testlib
-    veinserver-demolib
+    xsession-change-demolib
     )
 
 target_include_directories(VfFrameworkTest

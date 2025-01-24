@@ -13,7 +13,7 @@ add_library(ModmanBase SHARED
 
 target_link_libraries(ModmanBase 
     PUBLIC
-    Qt5::Core
+    xsession-change-lib
     VfEvent
     VfComponent
     VfCryptoBridge
