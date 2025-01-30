@@ -117,6 +117,8 @@ bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::Componen
 
 bool SystemModuleEventSystem::handleXSessionSet(const QString &xSession)
 {
+    if(m_lxdmConfFile.getConfiguredXSessionName() == xSession)
+        return true;
     if(m_lxdmConfFile.setCurrentXSession(xSession)) {
         if(m_restartService())
             return true;
