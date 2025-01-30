@@ -22,9 +22,9 @@ static const char *devModeComponentName =              "DevMode";
 static const char *moduleInterface =                   "INF_ModuleInterface";
 
 SystemModuleEventSystem::SystemModuleEventSystem(bool devMode, const LxdmSessionChangeParam &lxdmParam) :
-    m_devMode(devMode),
     m_lxdmConfFile(lxdmParam.getConfigParam()),
-    m_restartService(lxdmParam.getRestartFunc())
+    m_restartService(lxdmParam.getRestartFunc()),
+    m_devMode(devMode)
 {
 }
 
