@@ -316,7 +316,7 @@ void SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent:
     else if(cData->componentName() == xSessionComponentName)
         emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
                                                                  cData->componentName(),
-                                                                 QVariant(), cData->oldValue()));
+                                                                 QVariant(), m_lxdmConfFile.getConfiguredXSessionName()));
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)
