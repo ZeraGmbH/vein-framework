@@ -44,7 +44,7 @@ void VfEntityComponentEventItem::processErrorCommandEventData(VeinEvent::EventDa
         auto iter = m_componentItems.find(componentData->componentName());
         if(iter != m_componentItems.end()) {
             for(VfCmdEventItemComponentPtr item = iter.value().getFirst(); item!=nullptr; item=iter.value().getNext())
-                item->processComponentEventData(componentData);
+                item->processErrorComponentEventData(componentData);
         }
     }
 }

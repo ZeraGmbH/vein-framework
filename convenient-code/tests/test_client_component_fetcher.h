@@ -11,6 +11,7 @@ private slots:
     void getFromUnsubscribedEntityValidComponentNoNet();
     void noGetFromUnsubscribedEntityValidComponentNet();
     void getFromSubscribedEntityValidComponentNet();
+    void getFromSubscribedEntityNonExistentComponentNet();
     void getFromSubscribedEntityInvalidComponentNet();
     void getTwoDifferentComponent();
 };

@@ -32,7 +32,7 @@ void VfClientComponentFetcher::startGetComponent()
 void VfClientComponentFetcher::processComponentEventData(const ComponentData *componentData)
 {
     if(componentData->eventCommand() == ComponentData::Command::CCMD_FETCH)
-        emit sigGetFinish(componentData->newValue().isValid(), componentData->newValue());
+        emit sigGetFinish(true, componentData->newValue());
 }
 
 void VfClientComponentFetcher::processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData)

@@ -34,7 +34,7 @@ void test_client_component_fetcher::errorSignalFromUnsubscribedEntityInvalidComp
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(testEntityId);
     server.cmdEventHandlerSystem.addItem(entityItem);
-    
+
     VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
     entityItem->addItem(fetcher);
     QSignalSpy spy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
@@ -113,6 +113,32 @@ void test_client_component_fetcher::getFromSubscribedEntityValidComponentNet()
     QCOMPARE(arguments.at(1), QVariant("_System"));
 }
 
+void test_client_component_fetcher::getFromSubscribedEntityNonExistentComponentNet()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
+    clientStack.connectToServer("127.0.0.1", serverPort);
+    TimeMachineObject::feedEventLoop();
+
+    clientStack.subscribeEntity(systemEntityId);
+    TimeMachineObject::feedEventLoop();
+
+    VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
+    clientStack.addItem(entityItem);
+
+    VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
+    entityItem->addItem(fetcher);
+    QSignalSpy fetcherSpy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
+    fetcher->startGetComponent();
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(fetcherSpy.count(), 1);
+    QList<QVariant> arguments = fetcherSpy[0];
+    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(1), QVariant());
+}
+
 void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
@@ -126,8 +152,9 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 
     VfCmdEventItemEntityPtr entityItem = VfEntityComponentEventItem::create(systemEntityId);
     clientStack.addItem(entityItem);
-    
-    VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("foo", entityItem);
+
+    // Entities is invalid (fresh QVariant) on TestVeinServerWithMockNet
+    VfClientComponentFetcherPtr fetcher = VfClientComponentFetcher::create("Entities", entityItem);
     entityItem->addItem(fetcher);
     QSignalSpy fetcherSpy(fetcher.get(), &VfClientComponentFetcher::sigGetFinish);
     fetcher->startGetComponent();
@@ -135,7 +162,7 @@ void test_client_component_fetcher::getFromSubscribedEntityInvalidComponentNet()
 
     QCOMPARE(fetcherSpy.count(), 1);
     QList<QVariant> arguments = fetcherSpy[0];
-    QCOMPARE(arguments.at(0).toBool(), false);
+    QCOMPARE(arguments.at(0).toBool(), true); // invalid existing is ok
     QCOMPARE(arguments.at(1), QVariant());
 }
 
