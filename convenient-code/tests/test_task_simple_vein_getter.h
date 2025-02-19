@@ -11,6 +11,7 @@ private slots:
     void getValid();
     void getInvalid();
     void getTimeout();
+    void getEntities();
 };
 
 #endif // TEST_TASK_SIMPLE_VEIN_GETTER_H

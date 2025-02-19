@@ -82,3 +82,28 @@ void test_task_simple_vein_getter::getTimeout()
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
 }
+
+void test_task_simple_vein_getter::getEntities()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
+    clientStack.connectToServer("127.0.0.1", serverPort);
+
+    TimeMachineObject::feedEventLoop();
+
+    TaskSimpleVeinGetterPtr task = TaskSimpleVeinGetter::create(systemEntityId, "Entities",
+                                                                clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    bool receivedOk = false;
+    int timeout=0;
+    connect(task.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
+        Q_UNUSED(taskId)
+        receivedOk = ok;
+        timeout = TimeMachineForTest::getInstance()->getCurrentTimeMs();
+    });
+    task->start();
+    TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
+
+    QVERIFY(receivedOk);
+    QCOMPARE(task->getValue(), "");
+}
