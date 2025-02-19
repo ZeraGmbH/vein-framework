@@ -38,7 +38,7 @@ void TaskSimpleVeinEntityGetter::startComponentFetcher(bool ok, int taskId)
 {
     if(ok)
     {
-        for (const auto &item : std::as_const(*m_componentList))
+        for (const auto &item : *m_componentList)
         {
             std::shared_ptr<QVariant> value = std::make_shared<QVariant>();
             m_values.append(value);
