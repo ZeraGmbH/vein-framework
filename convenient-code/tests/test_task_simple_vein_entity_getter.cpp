@@ -137,6 +137,30 @@ void test_task_simple_vein_entity_getter::fireSameTaskTwiceAfterAnother()
     QCOMPARE(taskTwo->getValues()[4]->value<QList<double>>()[0], 1);
 }
 
+void test_task_simple_vein_entity_getter::getEntityWithInvalidComponent()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
+    clientStack.connectToServer("127.0.0.1", serverPort);
+
+    TimeMachineObject::feedEventLoop();
+
+    TaskSimpleVeinEntityGetterPtr task = TaskSimpleVeinEntityGetter::create(systemEntityId, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+
+    bool receivedOk = false;
+    int timeout=0;
+    connect(task.get(), &TaskTemplate::sigFinish, [&](bool ok, int taskId) {
+        Q_UNUSED(taskId)
+        receivedOk = ok;
+        timeout = TimeMachineForTest::getInstance()->getCurrentTimeMs();
+    });
+    task->start();
+    TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
+
+    QVERIFY(receivedOk);
+}
+
 void test_task_simple_vein_entity_getter::fireSameTaskTwiceSameTime()
 {
     TestVeinServerWithMockNet serverNet(serverPort);

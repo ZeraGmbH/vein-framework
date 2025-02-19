@@ -12,9 +12,7 @@ private slots:
     void getInvalidEntity();
     void fireSameTaskTwiceSameTime();
     void fireSameTaskTwiceAfterAnother();
-
-
-signals:
+    void getEntityWithInvalidComponent();
 };
 
 #endif // TEST_TASK_SIMPLE_VEIN_ENTITY_GETTER_H
