@@ -3,6 +3,7 @@ SETUP_TESTS(
     test_client_entity_subscriber
     test_client_component_fetcher
     test_client_component_setter
+    test_client_rpc_invoker
     test_client_entity_unsubscriber
     test_entity_component_event_item
     test_cmd_event_handler
