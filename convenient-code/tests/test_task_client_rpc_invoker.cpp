@@ -43,7 +43,8 @@ void test_task_client_rpc_invoker::invokeSubscribedRPC()
 
     QVariantMap parameters;
     parameters["p_param"] = true;
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest(bool p_param)",parameters, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest(bool p_param)",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
     taskInvoker->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
@@ -58,7 +59,8 @@ void test_task_client_rpc_invoker::timeout()
 
     QVariantMap parameters;
     parameters["p_param"] = true;
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest(bool p_param)",parameters, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest(bool p_param)",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
 
     bool receivedOk = true;
     int timeout = 0;

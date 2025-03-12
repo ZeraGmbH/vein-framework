@@ -10,9 +10,10 @@ std::unique_ptr<TaskSimpleVeinRPCInvoker> TaskSimpleVeinRPCInvoker::create(int e
 TaskSimpleVeinRPCInvoker::TaskSimpleVeinRPCInvoker(int entityId, QString procedureName, QVariantMap parameters,
                                                    VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
+    m_result = std::make_shared<QVariant>();
     std::shared_ptr<QStringList> componentList = std::make_shared<QStringList>();
     m_task.addSub(TaskClientEntitySubscribe::create(entityId, cmdEventHandlerSystem, componentList, timeout));
-    m_task.addSub(TaskClientRPCInvoker::create(entityId, procedureName, parameters, cmdEventHandlerSystem, timeout));
+    m_task.addSub(TaskClientRPCInvoker::create(entityId, procedureName, parameters, m_result, cmdEventHandlerSystem, timeout));
     connect(&m_task, &TaskTemplate::sigFinish, this, &TaskTemplate::sigFinish);
 }
 
@@ -23,4 +24,9 @@ TaskSimpleVeinRPCInvoker::~TaskSimpleVeinRPCInvoker()
 void TaskSimpleVeinRPCInvoker::start()
 {
     m_task.start();
+}
+
+QVariant TaskSimpleVeinRPCInvoker::getResult()
+{
+    return *m_result;
 }
