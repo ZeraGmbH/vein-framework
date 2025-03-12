@@ -1,6 +1,7 @@
 #ifndef TESTCOMMANDEVENTSTRINGS_H
 #define TESTCOMMANDEVENTSTRINGS_H
 
+#include "vcmp_remoteproceduredata.h"
 #include "ve_commandevent.h"
 #include <vcmp_entitydata.h>
 #include <vcmp_componentdata.h>
@@ -13,6 +14,7 @@ public:
     static QString strTarget(qint8 target);
     static QString strEntityCommand(VeinComponent::EntityData::Command cmd);
     static QString strComponentCommand(VeinComponent::ComponentData::Command cmd);
+    static QString strRPCCommand(VeinComponent::RemoteProcedureData::Command cmd);
 };
 
 #endif // TESTCOMMANDEVENTSTRINGS_H

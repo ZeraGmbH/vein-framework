@@ -99,3 +99,30 @@ QString TestCommandEventStrings::strComponentCommand(VeinComponent::ComponentDat
     }
     return str;
 }
+
+QString TestCommandEventStrings::strRPCCommand(VeinComponent::RemoteProcedureData::Command cmd)
+{
+    QString str;
+    switch(cmd) {
+    case RemoteProcedureData::Command::RPCMD_INVALID:
+        str = "RPCMD_INVALID";
+        break;
+    case RemoteProcedureData::Command::RPCMD_CALL:
+        str = "RPCMD_CALL";
+        break;
+    case RemoteProcedureData::Command::RPCMD_REGISTER:
+        str = "RPCMD_REGISTER";
+        break;
+    case RemoteProcedureData::Command::RPCMD_RESULT:
+        str = "RPCMD_RESULT";
+        break;
+    case RemoteProcedureData::Command::RPCMD_PROGRESS:
+        str = "RPCMD_PROGRESS";
+        break;
+    case RemoteProcedureData::Command::RPCMD_CANCELLATION:
+        str = "RPCMD_CANCELLATION";
+        break;
+    }
+    return str;
+
+}
