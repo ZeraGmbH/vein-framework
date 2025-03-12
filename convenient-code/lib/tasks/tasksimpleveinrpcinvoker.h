@@ -14,8 +14,10 @@ public:
                          VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
     virtual ~TaskSimpleVeinRPCInvoker();
     void start() override;
+    QVariant getResult();
 private:
     TaskContainerSequence m_task;
+    std::shared_ptr<QVariant> m_result;
 
 };
 typedef std::unique_ptr<TaskSimpleVeinRPCInvoker> TaskSimpleVeinRPCInvokerPtr;
