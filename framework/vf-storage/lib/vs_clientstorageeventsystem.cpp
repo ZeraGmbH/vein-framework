@@ -72,9 +72,7 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
     const int entityId = iData->entityId();
     EntityMap* entityMap = m_privHash->findEntity(entityId);
 
-    if(entityMap)
-        ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(iData->entityId()), event, this);
-    else {
+    if(!entityMap) {
         m_privHash->insertEntity(entityId);
         entityMap = m_privHash->findEntity(entityId);
         QStringList components = iData->jsonData().toVariantHash().value("components").toStringList();
