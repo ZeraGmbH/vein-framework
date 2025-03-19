@@ -24,6 +24,8 @@ private slots:
     void serverRemoveEntity();
     void serverAddComponent();
     void clientSetComponent();
+    void clientInvokeNonExistingRPC();
+    void clientInvokeExistingRPC();
 
 private:
     void setupSpy(QJsonObject &jsonEvents);

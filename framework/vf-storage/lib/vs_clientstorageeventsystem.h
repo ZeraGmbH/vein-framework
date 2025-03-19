@@ -18,8 +18,10 @@ public:
     void processEvent(QEvent *event) override;
 
 private:
+    void insertComponent(const int entityId, QStringList components, EntityMap* entityMap);
     void processIntrospectionData(QEvent *event);
     void processComponentData(QEvent *event);
+    void processRmcpData(QEvent *event);
 
     DatabaseHash *m_privHash;
 

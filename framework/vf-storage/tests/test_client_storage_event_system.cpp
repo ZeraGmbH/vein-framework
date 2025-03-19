@@ -2,6 +2,8 @@
 #include "mocktcpnetworkfactory.h"
 #include "vf_client_component_fetcher.h"
 #include "vf_client_component_setter.h"
+#include "vf_client_rpc_invoker.h"
+#include "vf_entity_rpc_event_handler.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -164,6 +166,51 @@ void test_client_storage_event_system::clientSetComponent()
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "component1"), "abc");
+}
+
+void test_client_storage_event_system::clientInvokeNonExistingRPC()
+{
+    int entityID = 99999;
+
+    //vfEntityRpcEventHandler is an entity based on VfCpp
+    //We append it to our server as a rpc-event handler
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+    m_netClient->subscribeEntity(entityID);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    m_netClient->addItem(rpcInvoker);
+
+    rpcInvoker->invokeRPC("RPC_foo()",QVariantMap());
+    TimeMachineObject::feedEventLoop();
+
+    QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID, "RPC_foo()"));
+}
+
+void test_client_storage_event_system::clientInvokeExistingRPC()
+{
+    int entityID = 99999;
+    //vfEntityRpcEventHandler is an entity based on VfCpp
+    //We append it to our server as a rpc-event handler
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+    m_netClient->subscribeEntity(entityID);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    m_netClient->addItem(rpcInvoker);
+
+    QVariantMap parameters;
+    parameters["p_param"] = false;
+    rpcInvoker->invokeRPC("RPC_forTest(bool p_param)",parameters);
+    TimeMachineObject::feedEventLoop();
+
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID, "RPC_forTest(bool p_param)"));
 }
 
 void test_client_storage_event_system::addAndSubscribeToEntity(int entityID, QString entityName)
