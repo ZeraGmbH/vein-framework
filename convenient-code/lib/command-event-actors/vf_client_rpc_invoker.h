@@ -10,14 +10,14 @@ class VfClientRPCInvoker : public QObject, public VfEntityEventItem
 public:
     static std::shared_ptr<VfClientRPCInvoker> create(int entityId);
     VfClientRPCInvoker(int entityId);
-
-    static QEvent *generateEvent(int entityId, QString procedureName, QVariantMap parameters);
     void invokeRPC(QString procedureName, QVariantMap paramters);
-    void startSetComponent(QVariant oldValue, QVariant newValue);
-    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
-    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
     void sigRPCFinished(bool ok, QUuid identifier, const QVariantMap &resultData);
+
+private:
+    static QEvent *generateEvent(int entityId, QString procedureName, QVariantMap parameters);
+    void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
+    void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 };
 typedef std::shared_ptr<VfClientRPCInvoker> VfClientRPCInvokerPtr;
 
