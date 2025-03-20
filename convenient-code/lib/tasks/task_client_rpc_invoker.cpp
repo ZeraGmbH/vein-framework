@@ -27,10 +27,10 @@ TaskClientRPCInvoker::~TaskClientRPCInvoker()
 
 void TaskClientRPCInvoker::start()
 {
-    connect(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, [&](bool ok, QUuid identifier, const QVariantMap &resultData) {
-        Q_UNUSED(identifier)
+    //calling this multiple times overwrites connections
+    m_rpcInvoker->invokeRPC(m_procedureName, m_parameters);
+    connect(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, [=](bool ok, QUuid identifier, const QVariantMap &resultData) {
         *m_resultData = resultData["RemoteProcedureData::Return"];
         finishTask(ok);
     });
-    m_rpcInvoker->invokeRPC(m_procedureName, m_parameters);
 }
