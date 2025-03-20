@@ -17,5 +17,6 @@ SETUP_TESTS(
     test_task_simple_vein_setter
     test_task_simple_vein_entity_getter
     test_task_simple_vein_rpc_invoker
+    test_rpc_params_parser
 )
 
