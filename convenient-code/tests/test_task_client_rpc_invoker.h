@@ -9,6 +9,7 @@ class test_task_client_rpc_invoker : public QObject
 private slots:
     void init();
     void invokeSubscribedRPC();
+    void invokeSubscribedRPCTwice();
     void timeout();
 };
 

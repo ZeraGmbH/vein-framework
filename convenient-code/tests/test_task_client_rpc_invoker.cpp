@@ -52,6 +52,38 @@ void test_task_client_rpc_invoker::invokeSubscribedRPC()
     QCOMPARE(spy[0][0].toBool(), true);
 }
 
+void test_task_client_rpc_invoker::invokeSubscribedRPCTwice()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+
+    //vfEntityRpcEventHandler is an entity based on VfCpp
+    //We append it to our server as a rpc-event handler
+    vfEntityRpcEventHandler rpcEventHandler;
+    serverNet.getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
+    clientStack.connectToServer("127.0.0.1", serverPort);
+    TimeMachineObject::feedEventLoop();
+
+    TaskClientEntitySubscribe taskSubscribe(rpcHandlerId, clientStack.getCmdEventHandlerSystem(), std::make_shared<QStringList>());
+    taskSubscribe.start();
+    TimeMachineObject::feedEventLoop();
+
+    QVariantMap parameters;
+    parameters["p_param"] = true;
+    std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
+    taskInvoker->start();
+    taskInvoker->start();
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(spy.count(), 1); // starting tasks multiple times responds once
+    QCOMPARE(spy[0][0].toBool(), true);
+}
+
 void test_task_client_rpc_invoker::timeout()
 {
     VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
