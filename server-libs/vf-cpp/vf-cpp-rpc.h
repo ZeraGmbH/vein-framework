@@ -56,6 +56,7 @@ public:
 
     void callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters);
     void sendRpcResult(const QUuid &p_callId, RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult);
+    static QString createRpcSignature(QString rpcName, QMap<QString,QString> paramDescriptions);
 
 private slots:
     void callFunctionPrivate(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters);
