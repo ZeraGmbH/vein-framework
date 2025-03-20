@@ -81,7 +81,7 @@ void test_client_rpc_invoker::unsubscribedEntityValidRPCNoNet()
     QSignalSpy invokerSpy(invoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    invoker->invokeRPC("RPC_forTest(bool p_param)",parameters);
+    invoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(invokerSpy.count(), 1);
@@ -116,7 +116,7 @@ void test_client_rpc_invoker::unsubscribedEntityValidRPCNet()
     QSignalSpy invokerSpy(invoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    invoker->invokeRPC("RPC_forTest(bool p_param)",parameters);
+    invoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(invokerSpy.count(), 0);
@@ -146,7 +146,7 @@ void test_client_rpc_invoker::subscribedEntityValidRPCNet()
     QSignalSpy invokerSpy(invoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    invoker->invokeRPC("RPC_forTest(bool p_param)",parameters);
+    invoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(invokerSpy.count(), 1);

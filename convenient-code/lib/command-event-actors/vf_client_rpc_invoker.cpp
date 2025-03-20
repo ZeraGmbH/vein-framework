@@ -1,4 +1,5 @@
 #include "vf_client_rpc_invoker.h"
+#include "vf_rpc_params_parser.h"
 #include "vcmp_entitydata.h"
 #include <vcmp_remoteproceduredata.h>
 
@@ -34,7 +35,8 @@ QEvent *VfClientRPCInvoker::generateEvent(int entityId, QString procedureName, Q
 
 void VfClientRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
 {
-    QEvent *newEvent = generateEvent(getEntityId(), procedureName, paramters);
+    QString rpcSignature = VfRpcParamsParser::parseRpcParams(procedureName, paramters);
+    QEvent *newEvent = generateEvent(getEntityId(), rpcSignature, paramters);
     sendEvent(newEvent);
 }
 
