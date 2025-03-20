@@ -16,11 +16,10 @@ VfClientRPCInvoker::VfClientRPCInvoker(int entityId) :
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QEvent *VfClientRPCInvoker::generateEvent(int entityId, QString procedureName, QVariantMap parameters)
+QEvent *VfClientRPCInvoker::generateEvent(int entityId, QString procedureName, QVariantMap parameters, QUuid identifier)
 {
-    QUuid rpcIdentifier = QUuid::createUuid();
     QVariantMap rpcParamData;
-    rpcParamData.insert(RemoteProcedureData::s_callIdString, rpcIdentifier);
+    rpcParamData.insert(RemoteProcedureData::s_callIdString, identifier);
     rpcParamData.insert(RemoteProcedureData::s_parameterString, parameters);
 
     RemoteProcedureData *rpcData = new RemoteProcedureData();
@@ -33,11 +32,14 @@ QEvent *VfClientRPCInvoker::generateEvent(int entityId, QString procedureName, Q
     return new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, rpcData);
 }
 
-void VfClientRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
+QUuid VfClientRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
 {
+    QUuid identifier = QUuid::createUuid();
+    m_pendingRPCs.insert(identifier);
     QString rpcSignature = VfRpcParamsParser::parseRpcParams(procedureName, paramters);
-    QEvent *newEvent = generateEvent(getEntityId(), rpcSignature, paramters);
+    QEvent *newEvent = generateEvent(getEntityId(), rpcSignature, paramters, identifier);
     sendEvent(newEvent);
+    return identifier;
 }
 
 void VfClientRPCInvoker::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
@@ -46,8 +48,11 @@ void VfClientRPCInvoker::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
     if(evData->type() == RemoteProcedureData::dataType()) {
         RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(evData);
         if(rpcData->command() == RemoteProcedureData::Command::RPCMD_RESULT) {
-            const QUuid rpcIdentifier = rpcData->invokationData().value(RemoteProcedureData::s_callIdString).toUuid(); //we don't need identifier
-            emit sigRPCFinished(true, rpcIdentifier, rpcData->invokationData());
+            const QUuid rpcIdentifier = rpcData->invokationData().value(RemoteProcedureData::s_callIdString).toUuid();
+            if(m_pendingRPCs.contains(rpcIdentifier)) {
+                m_pendingRPCs.remove(rpcIdentifier);
+                emit sigRPCFinished(true, rpcIdentifier, rpcData->invokationData());
+            }
         }
     }
 }

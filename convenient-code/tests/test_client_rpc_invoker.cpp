@@ -157,6 +157,47 @@ void test_client_rpc_invoker::subscribedEntityValidRPCNet()
     QCOMPARE(resultData, false);
 }
 
+void test_client_rpc_invoker::subscribedEntityValidRPCTwoInvokers()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+    vfEntityRpcEventHandler rpcEventHandler;
+    serverNet.getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+
+    QList<int> entities = serverNet.getServer()->getEntityAddList();
+    QCOMPARE(entities.size(), 2);
+
+    VfCoreStackClient clientStack(VeinTcp::MockTcpNetworkFactory::create());
+    clientStack.connectToServer("127.0.0.1", serverPort);
+    TimeMachineObject::feedEventLoop();
+
+    clientStack.subscribeEntity(rpcHandlerId);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientRPCInvokerPtr invokerOne = VfClientRPCInvoker::create(rpcHandlerId);
+    clientStack.addItem(invokerOne);
+
+    QSignalSpy invokerSpyOne(invokerOne.get(), &VfClientRPCInvoker::sigRPCFinished);
+    QVariantMap parameters;
+    parameters["p_param"] = true;
+    QUuid idOne = invokerOne->invokeRPC("RPC_forTest",parameters);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientRPCInvokerPtr invokerTwo = VfClientRPCInvoker::create(rpcHandlerId);
+    clientStack.addItem(invokerTwo);
+
+    QSignalSpy invokerSpyTwo(invokerTwo.get(), &VfClientRPCInvoker::sigRPCFinished);
+    QUuid idTwo = invokerTwo->invokeRPC("RPC_forTest",parameters);
+    TimeMachineObject::feedEventLoop();
+
+    QCOMPARE(invokerSpyOne.count(), 1);
+    QCOMPARE(invokerSpyOne[0][1], idOne);
+
+    QCOMPARE(invokerSpyTwo.count(), 1);
+    QCOMPARE(invokerSpyTwo[0][1], idTwo);
+}
+
 void test_client_rpc_invoker::subscribedEntityNonExistentRPCNet()
 {
     TestVeinServerWithMockNet serverNet(serverPort);
