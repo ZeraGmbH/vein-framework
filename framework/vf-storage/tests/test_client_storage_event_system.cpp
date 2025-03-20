@@ -207,7 +207,7 @@ void test_client_storage_event_system::clientInvokeExistingRPC()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
-    rpcInvoker->invokeRPC("RPC_forTest(bool p_param)",parameters);
+    rpcInvoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID, "RPC_forTest(bool p_param)"));

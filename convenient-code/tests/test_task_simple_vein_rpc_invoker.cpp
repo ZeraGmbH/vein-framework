@@ -37,7 +37,7 @@ void test_task_simple_vein_rpc_invoker::getValid()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest(bool p_param)",parameters,
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters,
                                                                 clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
