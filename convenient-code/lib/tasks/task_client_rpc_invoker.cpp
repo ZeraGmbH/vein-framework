@@ -1,7 +1,8 @@
 #include "task_client_rpc_invoker.h"
 #include <taskdecoratortimeout.h>
 
-TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler, int timeout, std::function<void ()> additionalErrorHandler)
+TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler,
+                                             int timeout, std::function<void ()> additionalErrorHandler)
 {
     return TaskDecoratorTimeout::wrapTimeout(timeout,
                                              std::make_unique<TaskClientRPCInvoker>(entityId, procedureName, parameters, result, commandEventHandler),
@@ -18,7 +19,6 @@ TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, QString procedureName, 
     m_rpcInvoker = VfClientRPCInvoker::create(entityId);
     m_commandEventHandler->addItem(m_rpcInvoker);
 }
-
 
 TaskClientRPCInvoker::~TaskClientRPCInvoker()
 {

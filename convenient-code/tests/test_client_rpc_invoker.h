@@ -11,6 +11,7 @@ private slots:
     void unsubscribedEntityValidRPCNoNet();
     void unsubscribedEntityValidRPCNet();
     void subscribedEntityValidRPCNet();
+    void subscribedEntityValidRPCTwoInvokers();
     void subscribedEntityNonExistentRPCNet();
 };
 
