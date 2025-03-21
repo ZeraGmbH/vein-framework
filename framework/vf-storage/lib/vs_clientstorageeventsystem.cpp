@@ -1,6 +1,5 @@
 #include "vs_clientstorageeventsystem.h"
 #include <vcmp_entitydata.h>
-#include <ve_commandevent.h>
 #include <vcmp_componentdata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
@@ -33,10 +32,7 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                     processIntrospectionData(event);
                     break;
                 case ComponentData::dataType():
-                    processComponentData(event);
-                    break;
-                case RemoteProcedureData::dataType():
-                    processRpcData(event);
+                    processComponentData(cEvent);
                     break;
                 case EntityData::dataType():
                 {
@@ -61,6 +57,9 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                         m_privHash->removeEntity(eData->entityId());
                     break;
                     }
+                case RemoteProcedureData::dataType():
+                    processRpcData(cEvent);
+                    break;
                 default:
                     break;
                 }
@@ -78,6 +77,13 @@ void VeinStorage::ClientStorageEventSystem::insertComponent(const int entityId, 
     }
 }
 
+void ClientStorageEventSystem::insertRpc(const int entityId, QStringList rpcs)
+{
+    if(m_rpcs.contains(entityId))
+        qWarning("Entity %i already contains Rpcs", entityId);
+    m_rpcs.insert(entityId, rpcs);
+}
+
 void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
@@ -91,13 +97,12 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
         QStringList components = iData->jsonData().toVariantHash().value("components").toStringList();
         insertComponent(entityId, components, entityMap);
         QStringList rpcs = iData->jsonData().toVariantHash().value("procedures").toStringList();
-        insertComponent(entityId, rpcs, entityMap);
+        insertRpc(entityId, rpcs);
     }
 }
 
-void ClientStorageEventSystem::processComponentData(QEvent *event)
+void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
 {
-    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     ComponentData *cData = static_cast<ComponentData *>(cEvent->eventData());
     const QString componentName = cData->componentName();
     const int entityId = cData->entityId();
@@ -108,33 +113,33 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
     {
     case ComponentData::Command::CCMD_FETCH:
         if(!entity)
-            ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), cEvent, this);
         else if(!component)
-            ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
             m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;
     case ComponentData::Command::CCMD_REMOVE:
         if(!entity)
-            ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot remove component for invalid entity id: %1").arg(entityId), cEvent, this);
         else if(!component)
-            ErrorDataSender::errorOut(QString("Cannot remove not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot remove not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
             m_privHash->removeComponentValue(entity, componentName);
         break;
     case ComponentData::Command::CCMD_SET:
         if(!entity)
-            ErrorDataSender::errorOut(QString("Cannot set component for not existing entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot set component for not existing entity id: %1").arg(entityId), cEvent, this);
         else if(!component)
-            ErrorDataSender::errorOut(QString("Cannot set not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot set not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
             m_privHash->changeComponentValue(component, cData->newValue());
         break;
     case ComponentData::Command::CCMD_ADD:
         if(!entity)
-            ErrorDataSender::errorOut(QString("Cannot add component for not existing entity id: %1").arg(entityId), event, this);
+            ErrorDataSender::errorOut(QString("Cannot add component for not existing entity id: %1").arg(entityId), cEvent, this);
         else if(component)
-            ErrorDataSender::errorOut(QString("Cannot add existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+            ErrorDataSender::errorOut(QString("Cannot add existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
             m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;
@@ -143,40 +148,21 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
     }
 }
 
-void ClientStorageEventSystem::processRpcData(QEvent *event)
+void ClientStorageEventSystem::processRpcData(CommandEvent *cEvent)
 {
-    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     RemoteProcedureData *rmcp = static_cast<RemoteProcedureData*>(cEvent->eventData());
     const QString procedureName = rmcp->procedureName();
     const int entityId = rmcp->entityId();
     EntityMap* entity = m_privHash->findEntity(entityId);
-    StorageComponentPtr rpc = m_privHash->findComponent(entity, procedureName);
     switch(rmcp->command())
     {
-    case RemoteProcedureData::Command::RPCMD_INVALID:
-        // TO DO
-        break;
     case RemoteProcedureData::Command::RPCMD_CALL:
-        // TO DO
+        if(!m_rpcs.contains(entityId))
+            ErrorDataSender::errorOut(QString("Cannot call RPC for non existing entity %1").arg(entityId), cEvent, this);
+        if(!m_rpcs[entityId].contains(procedureName))
+            ErrorDataSender::errorOut(QString("Cannot call non existing RPC %1").arg(procedureName), cEvent, this);
         break;
-    case RemoteProcedureData::Command::RPCMD_REGISTER:
-        // TO DO
-        break;
-    case RemoteProcedureData::Command::RPCMD_RESULT:
-        if(!entity)
-            ErrorDataSender::errorOut(QString("Cannot fetch rpc for not existing entity id: %1").arg(entityId), event, this);
-        else if(!rpc)
-            ErrorDataSender::errorOut(QString("Cannot fetch non existing rpc: %1 %2").arg(entityId).arg(rmcp->procedureName()), event, this);
-        else {
-            QVariant result = rmcp->invokationData().value("RemoteProcedureData::Return");
-            m_privHash->insertComponentValue(entity, procedureName, result);
-        }
-        break;
-    case RemoteProcedureData::Command::RPCMD_PROGRESS:
-        // TO DO
-        break;
-    case RemoteProcedureData::Command::RPCMD_CANCELLATION:
-        // TO DO
+    default:
         break;
     }
 }

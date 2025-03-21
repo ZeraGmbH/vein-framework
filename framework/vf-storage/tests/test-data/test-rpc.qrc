@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/">
+        <file>vein-client-storage-events/invokeIncorrectRpcEventClient.json</file>
+        <file>vein-client-storage-events/invokeIncorrectRpcEventServer.json</file>
+        <file>vein-client-storage-events/invokeCorrectRpcEventClient.json</file>
+        <file>vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json</file>
+    </qresource>
+</RCC>
+
