@@ -37,7 +37,8 @@ void test_task_simple_vein_rpc_invoker::getValid()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters,
+    std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result,
                                                                 clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
@@ -50,7 +51,7 @@ void test_task_simple_vein_rpc_invoker::getValid()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
 
     QVERIFY(receivedOk);
-    QCOMPARE(task->getResult().toBool(), true);
+    QCOMPARE(result->toBool(), true);
 }
 
 void test_task_simple_vein_rpc_invoker::getInvalid()
@@ -67,7 +68,7 @@ void test_task_simple_vein_rpc_invoker::getInvalid()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters,
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<QVariant>(),
                                                                         clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(task.get(), &TaskTemplate::sigFinish);
     task->start();
@@ -82,7 +83,7 @@ void test_task_simple_vein_rpc_invoker::getTimeout()
     VfCmdEventHandlerSystemPtr cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
     QVariantMap parameters;
     parameters["p_param"] = true;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters,
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<QVariant>(),
                                                                 cmdEventHandlerSystem, stdTimeout);
 
     bool receivedOk = true;
