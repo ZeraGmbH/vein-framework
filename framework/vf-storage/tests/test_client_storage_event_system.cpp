@@ -4,6 +4,8 @@
 #include "vf_client_component_setter.h"
 #include "vf_client_rpc_invoker.h"
 #include "vf_entity_rpc_event_handler.h"
+#include "testjsonspyeventsystem.h"
+#include "testloghelpers.h"
 #include <timemachineobject.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -171,11 +173,19 @@ void test_client_storage_event_system::clientSetComponent()
 void test_client_storage_event_system::clientInvokeNonExistingRPC()
 {
     int entityID = 99999;
+    QJsonObject jsonSpyClient;
+    TestJsonSpyEventSystem jsonSystemClient(&jsonSpyClient, "client");
+    m_netClient->appendEventSystem(&jsonSystemClient);
 
     //vfEntityRpcEventHandler is an entity based on VfCpp
     //We append it to our server as a rpc-event handler
     vfEntityRpcEventHandler rpcEventHandler;
     m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+
+    QJsonObject jsonSpyServer;
+    TestJsonSpyEventSystem jsonSystemServer(&jsonSpyServer, "server");
+    m_netServer->getServer()->appendEventSystem(&jsonSystemServer);
+
     rpcEventHandler.initOnce();
     TimeMachineObject::feedEventLoop();
     m_netClient->subscribeEntity(entityID);
@@ -184,17 +194,33 @@ void test_client_storage_event_system::clientInvokeNonExistingRPC()
     VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
     m_netClient->addItem(rpcInvoker);
 
-    rpcInvoker->invokeRPC("RPC_foo()",QVariantMap());
+    rpcInvoker->invokeRPC("RPC_foo",QVariantMap());
     TimeMachineObject::feedEventLoop();
 
-    QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID, "RPC_foo()"));
+    QFile fileEvents(":/vein-client-storage-events/invokeIncorrectRpcEventClient.json");
+    QVERIFY(fileEvents.open(QFile::ReadOnly));
+    QByteArray jsonExpected = fileEvents.readAll();
+
+    QJsonDocument doc(jsonSpyClient);
+    QByteArray jsonDumped = doc.toJson();
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+
+    fileEvents.setFileName(":/vein-client-storage-events/invokeIncorrectRpcEventServer.json");
+    QVERIFY(fileEvents.open(QFile::ReadOnly));
+    jsonExpected = fileEvents.readAll();
+
+    doc = QJsonDocument(jsonSpyServer);
+    jsonDumped = doc.toJson();
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_client_storage_event_system::clientInvokeExistingRPC()
+void test_client_storage_event_system::clientInvokeExistingRpcCorrectParameter()
 {
     int entityID = 99999;
-    //vfEntityRpcEventHandler is an entity based on VfCpp
-    //We append it to our server as a rpc-event handler
+    QJsonObject jsonSpyClient;
+    TestJsonSpyEventSystem jsonSystemClient(&jsonSpyClient, "client");
+    m_netClient->appendEventSystem(&jsonSystemClient);
+
     vfEntityRpcEventHandler rpcEventHandler;
     m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
     rpcEventHandler.initOnce();
@@ -210,7 +236,48 @@ void test_client_storage_event_system::clientInvokeExistingRPC()
     rpcInvoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
-    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID, "RPC_forTest(bool p_param)"));
+    QFile fileEvents(":/vein-client-storage-events/invokeCorrectRpcEventClient.json");
+    QVERIFY(fileEvents.open(QFile::ReadOnly));
+    QByteArray jsonExpected = fileEvents.readAll();
+
+    QJsonDocument doc(jsonSpyClient);
+    QByteArray jsonDumped = doc.toJson();
+
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+}
+
+void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
+{
+    int entityID = 99999;
+    QJsonObject jsonSpyClient;
+    TestJsonSpyEventSystem jsonSystemClient(&jsonSpyClient, "client");
+    m_netClient->appendEventSystem(&jsonSystemClient);
+
+    //vfEntityRpcEventHandler is an entity based on VfCpp
+    //We append it to our server as a rpc-event handler
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+    m_netClient->subscribeEntity(entityID);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    m_netClient->addItem(rpcInvoker);
+
+    QVariantMap parameters;
+    parameters["p_param"] = 1;
+    rpcInvoker->invokeRPC("RPC_forTest",parameters);
+    TimeMachineObject::feedEventLoop();
+
+    QFile fileEvents(":/vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json");
+    QVERIFY(fileEvents.open(QFile::ReadOnly));
+    QByteArray jsonExpected = fileEvents.readAll();
+
+    QJsonDocument doc(jsonSpyClient);
+    QByteArray jsonDumped = doc.toJson();
+
+    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
 void test_client_storage_event_system::addAndSubscribeToEntity(int entityID, QString entityName)

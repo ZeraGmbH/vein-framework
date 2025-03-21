@@ -12,3 +12,8 @@ target_sources(test_storage
     test-data/test-data.qrc
 )
 
+target_sources(test_client_storage_event_system
+  PRIVATE
+    test-data/test-rpc.qrc
+)
+

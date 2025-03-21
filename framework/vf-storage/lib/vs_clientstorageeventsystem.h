@@ -4,6 +4,7 @@
 #include "vs_databasehash.h"
 #include <vs_abstracteventsystem.h>
 #include <ve_eventdata.h>
+#include <ve_commandevent.h>
 #include <QObject>
 
 namespace VeinStorage
@@ -19,11 +20,13 @@ public:
 
 private:
     void insertComponent(const int entityId, QStringList components, EntityMap* entityMap);
+    void insertRpc(const int entityId, QStringList rpcs);
     void processIntrospectionData(QEvent *event);
-    void processComponentData(QEvent *event);
-    void processRpcData(QEvent *event);
+    void processComponentData(VeinEvent::CommandEvent *cEvent);
+    void processRpcData(VeinEvent::CommandEvent *cEvent);
 
     DatabaseHash *m_privHash;
+    QMap<int,QStringList> m_rpcs;
 
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
         {

@@ -25,7 +25,8 @@ private slots:
     void serverAddComponent();
     void clientSetComponent();
     void clientInvokeNonExistingRPC();
-    void clientInvokeExistingRPC();
+    void clientInvokeExistingRpcCorrectParameter();
+    void clientInvokeExistingRPCWrongParameter();
 
 private:
     void setupSpy(QJsonObject &jsonEvents);

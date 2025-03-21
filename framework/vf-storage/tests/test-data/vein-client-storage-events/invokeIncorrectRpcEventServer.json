@@ -1,0 +1,97 @@
+{
+    "VeinEvents": [
+        {
+            "Am command event in": "server",
+            "Attached data": "EntityData",
+            "Entity": 99999,
+            "EntityCommand": "ECMD_ADD",
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_LOCAL",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_ADD",
+            "ComponentName": "EntityName",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": "RPCEventHandler",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "RemoteProcedureData",
+            "ComponentCommand": "RPCMD_REGISTER",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "ProcedureName": "RPC_forTest(bool p_param)",
+            "Valid": true,
+            "ValidPeer": false
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "IntrospectionData",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "IntrospectionData": {
+                "components": [
+                    "EntityName"
+                ],
+                "procedures": [
+                    "RPC_forTest(bool p_param)"
+                ]
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "ErrorData",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "OriginalEventData": {
+                "Attached data": "RemoteProcedureData",
+                "ComponentCommand": "RPCMD_CALL",
+                "Entity": 99999,
+                "EventOrigin": "EO_LOCAL",
+                "EventTarget": "ET_IRRELEVANT",
+                "ProcedureName": "RPC_foo()",
+                "Valid": true
+            },
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "ErrorData",
+            "Entity": 99999,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "OriginalEventData": {
+                "Attached data": "RemoteProcedureData",
+                "ComponentCommand": "RPCMD_CALL",
+                "Entity": 99999,
+                "EventOrigin": "EO_FOREIGN",
+                "EventTarget": "ET_IRRELEVANT",
+                "ProcedureName": "RPC_foo()",
+                "Valid": true
+            },
+            "Valid": true,
+            "ValidPeer": true
+        }
+    ]
+}
