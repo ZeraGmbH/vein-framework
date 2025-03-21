@@ -21,7 +21,7 @@ private:
     void insertComponent(const int entityId, QStringList components, EntityMap* entityMap);
     void processIntrospectionData(QEvent *event);
     void processComponentData(QEvent *event);
-    void processRmcpData(QEvent *event);
+    void processRpcData(QEvent *event);
 
     DatabaseHash *m_privHash;
 
