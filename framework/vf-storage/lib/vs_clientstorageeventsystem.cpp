@@ -36,7 +36,7 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                     processComponentData(event);
                     break;
                 case RemoteProcedureData::dataType():
-                    processRmcpData(event);
+                    processRpcData(event);
                     break;
                 case EntityData::dataType():
                 {
@@ -143,7 +143,7 @@ void ClientStorageEventSystem::processComponentData(QEvent *event)
     }
 }
 
-void ClientStorageEventSystem::processRmcpData(QEvent *event)
+void ClientStorageEventSystem::processRpcData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     RemoteProcedureData *rmcp = static_cast<RemoteProcedureData*>(cEvent->eventData());
