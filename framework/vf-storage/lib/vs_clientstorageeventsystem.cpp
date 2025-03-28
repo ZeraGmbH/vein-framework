@@ -153,7 +153,6 @@ void ClientStorageEventSystem::processRpcData(CommandEvent *cEvent)
     RemoteProcedureData *rmcp = static_cast<RemoteProcedureData*>(cEvent->eventData());
     const QString procedureName = rmcp->procedureName();
     const int entityId = rmcp->entityId();
-    EntityMap* entity = m_privHash->findEntity(entityId);
     switch(rmcp->command())
     {
     case RemoteProcedureData::Command::RPCMD_CALL:
