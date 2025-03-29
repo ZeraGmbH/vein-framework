@@ -29,6 +29,7 @@ target_link_libraries(VfNet2
     Qt5::Network
     VfHelpers
     VfComponent
+    VfStorage
     VfEvent
     VfTcp
     )

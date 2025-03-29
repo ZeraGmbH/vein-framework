@@ -13,6 +13,7 @@ ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licen
     m_eventHandler.addSubsystem(&m_storSystem);
     m_eventHandler.addSubsystem(m_licenseSystem);
     m_systemModuleSystem.setStorage(&m_storSystem);
+    injectStorageIntoIntrospection();
 }
 
 void ModuleManagerSetupFacade::registerMetaTypeStreamOperators()
@@ -53,4 +54,9 @@ VeinStorage::AbstractEventSystem *ModuleManagerSetupFacade::getStorageSystem()
 LicenseSystemInterface *ModuleManagerSetupFacade::getLicenseSystem()
 {
     return m_licenseSystem;
+}
+
+void ModuleManagerSetupFacade::injectStorageIntoIntrospection()
+{
+    m_introspectionSystem.setStorage(&m_storSystem);
 }

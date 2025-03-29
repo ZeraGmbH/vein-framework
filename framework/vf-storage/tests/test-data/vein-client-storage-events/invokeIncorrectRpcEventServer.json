@@ -44,7 +44,10 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "RPCEventHandler"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName"
                 ],
@@ -52,6 +55,9 @@
                     "RPC_forTest(bool p_param)"
                 ]
             },
+            "IntrospectionRPCs": [
+                "RPC_forTest(bool p_param)"
+            ],
             "Valid": true,
             "ValidPeer": true
         },

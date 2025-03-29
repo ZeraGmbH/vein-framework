@@ -22,6 +22,8 @@ public:
     VeinStorage::AbstractEventSystem *getStorageSystem();
     LicenseSystemInterface *getLicenseSystem();
 private:
+    void injectStorageIntoIntrospection();
+
     ModuleEventHandler m_eventHandler;
     VeinStorage::StorageEventSystem m_storSystem;
     SystemModuleEventSystem m_systemModuleSystem;
