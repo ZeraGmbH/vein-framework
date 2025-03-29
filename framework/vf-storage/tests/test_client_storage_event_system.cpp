@@ -297,13 +297,93 @@ void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
+void test_client_storage_event_system::subscribeToNonExistingEntityRpc()
+{
+    m_netClient->subscribeEntity(entityID1);
+    TimeMachineObject::feedEventLoop();
+    QVERIFY(m_clientStorageSystem->getRpcs().isEmpty());
+}
+
+void test_client_storage_event_system::subscribeToExistingEntityWithoutRpc()
+{
+    addAndSubscribeToEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
+    QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(rpcs.contains(entityID1));
+    QCOMPARE(rpcs[entityID1], QStringList());
+}
+
+void test_client_storage_event_system::subscribeToExistingEntityWithRpc()
+{
+    addEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
+    vfEntityRpcEventHandler rpcEventHandler(entityID1);
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    subscribeEntity(entityID1);
+
+    QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(rpcs.contains(entityID1));
+    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
+}
+
+void test_client_storage_event_system::subscribeAndUnsubscribeWithRpc()
+{
+    addEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
+    vfEntityRpcEventHandler rpcEventHandler(entityID1);
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    subscribeEntity(entityID1);
+
+    QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(rpcs.contains(entityID1));
+    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
+
+    m_netClient->unsubscribeEntity(entityID1);
+    TimeMachineObject::feedEventLoop();
+
+    rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(!rpcs.contains(entityID1));
+}
+
+void test_client_storage_event_system::subscribeAndEntityRemoveWithRpc()
+{
+    addEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
+    vfEntityRpcEventHandler rpcEventHandler(entityID1);
+    m_netServer->getServer()->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    subscribeEntity(entityID1);
+
+    QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(rpcs.contains(entityID1));
+    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
+
+    m_netServer->getServer()->removeEntitiesAdded();
+    TimeMachineObject::feedEventLoop();
+
+    rpcs = m_clientStorageSystem->getRpcs();
+    QVERIFY(!rpcs.contains(entityID1));
+}
+
+void test_client_storage_event_system::addEntity(int entityID, const QString &entityName, const QVariantMap &components)
+{
+    m_netServer->getServer()->addEntity(entityID, entityName);
+    for(auto iter=components.constBegin(); iter!=components.constEnd(); ++iter)
+        m_netServer->getServer()->addComponent(entityID, iter.key(), iter.value(), false);
+    TimeMachineObject::feedEventLoop();
+}
+
+void test_client_storage_event_system::subscribeEntity(int entityID)
+{
+    m_netClient->subscribeEntity(entityID);
+    TimeMachineObject::feedEventLoop();
+}
+
 void test_client_storage_event_system::addAndSubscribeToEntity(int entityID,
                                                                const QString &entityName,
                                                                const QVariantMap &components)
 {
-    m_netServer->getServer()->addEntity(entityID, entityName);
-        for(auto iter=components.constBegin(); iter!=components.constEnd(); ++iter)
-            m_netServer->getServer()->addComponent(entityID, iter.key(), iter.value(), false);
-    m_netClient->subscribeEntity(entityID);
-    TimeMachineObject::feedEventLoop();
+    addEntity(entityID, entityName, components);
+    subscribeEntity(entityID);
 }

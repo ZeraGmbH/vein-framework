@@ -24,12 +24,22 @@ private slots:
     void serverRemoveEntity();
     void serverAddComponent();
     void clientSetComponent();
+
     void clientInvokeNonExistingRPC();
     void clientInvokeExistingRpcCorrectParameter();
     void clientInvokeExistingRPCWrongParameter();
+    void subscribeToNonExistingEntityRpc();
+    void subscribeToExistingEntityWithoutRpc();
+    void subscribeToExistingEntityWithRpc();
+    void subscribeAndUnsubscribeWithRpc();
+    void subscribeAndEntityRemoveWithRpc();
 
 private:
     void setupSpy(QJsonObject &jsonEvents);
+    void addEntity(int entityID,
+                   const QString &entityName,
+                   const QVariantMap &components = QVariantMap());
+    void subscribeEntity(int entityID);
     void addAndSubscribeToEntity(int entityID,
                                  const QString &entityName,
                                  const QVariantMap &components = QVariantMap());

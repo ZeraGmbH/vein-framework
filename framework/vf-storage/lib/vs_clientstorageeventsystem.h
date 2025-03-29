@@ -16,6 +16,7 @@ public:
     explicit ClientStorageEventSystem(QObject *parent = nullptr);
 
     AbstractDatabase* getDb() const override;
+    QMap<int,QStringList> getRpcs() const; // move later?
     void processEvent(QEvent *event) override;
 
 private:
