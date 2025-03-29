@@ -19,6 +19,11 @@ AbstractDatabase *ClientStorageEventSystem::getDb() const
     return m_privHash;
 }
 
+QMap<int, QStringList> ClientStorageEventSystem::getRpcs() const
+{
+    return m_rpcs;
+}
+
 void ClientStorageEventSystem::processEvent(QEvent *event)
 {
     if(event->type() == VeinEvent::CommandEvent::getQEventType()) {
