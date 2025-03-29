@@ -47,8 +47,6 @@ public:
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
     void resetEventSpyData();
 private:
-    void injectStorageIntoIntrospection();
-
     VeinEvent::EventHandler m_vfEventHandler;
 
     VfTestEntitySpy m_vfEntityAddSpy;
@@ -59,8 +57,8 @@ private:
     TestJsonSpyEventSystem m_serverCmdEventSpyBottom;
 
     SystemModuleEventSystem m_systemModuleSystem;
-    VeinNet::IntrospectionSystem m_introspectionSystem;
     VeinStorage::StorageEventSystem m_storageSystem;
+    VeinNet::IntrospectionSystem m_introspectionSystem;
 
     std::unordered_map<int, std::unique_ptr<VfCpp::VfCppEntity>> m_entities;
     QStringList m_sessionList;

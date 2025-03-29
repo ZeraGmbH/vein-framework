@@ -19,16 +19,13 @@ class VFNET2_EXPORT IntrospectionSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit IntrospectionSystem(QObject *parent=nullptr);
+    explicit IntrospectionSystem(VeinStorage::AbstractEventSystem *storageSystem, QObject *parent=nullptr);
     static const QString s_nameComponent;
-    void setStorage(VeinStorage::AbstractEventSystem *storageSystem);
 
     void processEvent(QEvent *event) override;
 private:
-    QJsonObject getJsonIntrospection(int entityId) const;
-    QStringList getComonentNames(int entityId) const;
     QStringList getRpcNames(int entityId) const;
-    QHash<int, EntityIntrospection*> m_introspectionData;
+    QHash<int, QStringList> m_rpcEntityNames;
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
 };
 

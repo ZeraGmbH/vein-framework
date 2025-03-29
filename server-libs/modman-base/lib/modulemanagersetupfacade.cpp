@@ -5,6 +5,7 @@ ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licen
                                                    bool devMode,
                                                    const LxdmSessionChangeParam &lxdmParam) :
     m_systemModuleSystem(devMode, lxdmParam),
+    m_introspectionSystem(&m_storSystem),
     m_licenseSystem(licenseSystem)
 {
     Q_ASSERT(m_licenseSystem != nullptr);
@@ -13,7 +14,6 @@ ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licen
     m_eventHandler.addSubsystem(&m_storSystem);
     m_eventHandler.addSubsystem(m_licenseSystem);
     m_systemModuleSystem.setStorage(&m_storSystem);
-    injectStorageIntoIntrospection();
 }
 
 void ModuleManagerSetupFacade::registerMetaTypeStreamOperators()
@@ -56,7 +56,3 @@ LicenseSystemInterface *ModuleManagerSetupFacade::getLicenseSystem()
     return m_licenseSystem;
 }
 
-void ModuleManagerSetupFacade::injectStorageIntoIntrospection()
-{
-    m_introspectionSystem.setStorage(&m_storSystem);
-}
