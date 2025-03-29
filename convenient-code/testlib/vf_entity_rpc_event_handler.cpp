@@ -1,6 +1,6 @@
 #include "vf_entity_rpc_event_handler.h"
 
-vfEntityRpcEventHandler::vfEntityRpcEventHandler(QObject *parent, int id) : QObject(parent)
+vfEntityRpcEventHandler::vfEntityRpcEventHandler(int id)
 {
     m_entity = new VfCpp::VfCppEntity(id);
     m_isInitalized = false;
