@@ -39,8 +39,10 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                     //ECMD_ADD event doesn't reach to client because client hasn't yet subscribed to that entity
                     //ECMD_SUBSCRIBE, ECMD_UNSUBSCRIBE, events do not reach to client side
                     EntityData *eData = static_cast<EntityData*>(cEvent->eventData());
-                    if(eData->eventCommand() == EntityData::Command::ECMD_REMOVE)
+                    if(eData->eventCommand() == EntityData::Command::ECMD_REMOVE) {
                         m_privHash->removeEntity(eData->entityId());
+                        m_rpcs.remove(eData->entityId());
+                    }
                     break;
                 }
                 default:
@@ -53,8 +55,10 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                 {
                 case EntityData::dataType(): {
                     EntityData *eData = static_cast<EntityData*>(cEvent->eventData());
-                    if(eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE)
+                    if(eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE) {
                         m_privHash->removeEntity(eData->entityId());
+                        m_rpcs.remove(eData->entityId());
+                    }
                     break;
                     }
                 case RemoteProcedureData::dataType():
