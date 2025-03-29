@@ -18,7 +18,10 @@
             "EventOrigin": "EO_FOREIGN",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "RPCEventHandler"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName"
                 ],
@@ -26,6 +29,9 @@
                     "RPC_forTest(bool p_param)"
                 ]
             },
+            "IntrospectionRPCs": [
+                "RPC_forTest(bool p_param)"
+            ],
             "Valid": true,
             "ValidPeer": true
         },

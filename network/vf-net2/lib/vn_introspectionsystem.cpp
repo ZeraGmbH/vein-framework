@@ -36,6 +36,11 @@ IntrospectionSystem::IntrospectionSystem(QObject *parent) :
 
 const QString IntrospectionSystem::s_nameComponent = QLatin1String("EntityName");
 
+void IntrospectionSystem::setStorage(VeinStorage::AbstractEventSystem *storageSystem)
+{
+    m_storageSystem = storageSystem;
+}
+
 void IntrospectionSystem::processEvent(QEvent *event)
 {
     Q_ASSERT(event != nullptr);
@@ -68,6 +73,15 @@ void IntrospectionSystem::processEvent(QEvent *event)
                         IntrospectionData *newData = new IntrospectionData();
                         newData->setEntityId(entityId);
                         newData->setJsonData(tmpObject);
+                        if (m_storageSystem) {
+                            VeinStorage::AbstractDatabase* storageDb = m_storageSystem->getDb();
+                            const QStringList componentList = storageDb->getComponentList(entityId);
+                            QVariantMap componentValues;
+                            for (const QString &component : componentList)
+                                componentValues[component] = storageDb->getStoredValue(entityId, component);
+                            newData->setComponentValues(componentValues);
+                        }
+                        newData->setRpcNames(getRpcNames(entityId));
                         newData->setEventOrigin(IntrospectionData::EventOrigin::EO_LOCAL);
                         newData->setEventTarget(IntrospectionData::EventTarget::ET_ALL);
 
@@ -133,10 +147,20 @@ QJsonObject IntrospectionSystem::getJsonIntrospection(int entityId) const
 {
     QJsonObject retVal;
     if(m_introspectionData.contains(entityId)) {
-        retVal.insert(QString("components"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_components.keys()));
-        retVal.insert(QString("procedures"), QJsonArray::fromStringList(m_introspectionData.value(entityId)->m_procedures.keys()));
+        retVal.insert(QString("components"), QJsonArray::fromStringList(getComonentNames(entityId)));
+        retVal.insert(QString("procedures"), QJsonArray::fromStringList(getRpcNames(entityId)));
     }
     return retVal;
+}
+
+QStringList IntrospectionSystem::getComonentNames(int entityId) const
+{
+    return m_introspectionData.value(entityId)->m_components.keys();
+}
+
+QStringList IntrospectionSystem::getRpcNames(int entityId) const
+{
+    return m_introspectionData.value(entityId)->m_procedures.keys();
 }
 
 } // namespace VeinNet

@@ -130,7 +130,11 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "TestEntity",
+                "TestComponent": "TestInitialValue"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName",
                     "TestComponent"
@@ -138,6 +142,8 @@
                 "procedures": [
                 ]
             },
+            "IntrospectionRPCs": [
+            ],
             "Valid": true,
             "ValidPeer": true
         },
@@ -148,7 +154,11 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "TestEntity",
+                "TestComponent": "TestInitialValue"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName",
                     "TestComponent"
@@ -156,6 +166,8 @@
                 "procedures": [
                 ]
             },
+            "IntrospectionRPCs": [
+            ],
             "Valid": true,
             "ValidPeer": true
         },
@@ -166,7 +178,11 @@
             "EventOrigin": "EO_FOREIGN",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "TestEntity",
+                "TestComponent": "TestInitialValue"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName",
                     "TestComponent"
@@ -174,6 +190,8 @@
                 "procedures": [
                 ]
             },
+            "IntrospectionRPCs": [
+            ],
             "Valid": true,
             "ValidPeer": true
         },
@@ -184,7 +202,11 @@
             "EventOrigin": "EO_FOREIGN",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
-            "IntrospectionData": {
+            "IntrospectionComponentData": {
+                "EntityName": "TestEntity",
+                "TestComponent": "TestInitialValue"
+            },
+            "IntrospectionJson": {
                 "components": [
                     "EntityName",
                     "TestComponent"
@@ -192,6 +214,8 @@
                 "procedures": [
                 ]
             },
+            "IntrospectionRPCs": [
+            ],
             "Valid": true,
             "ValidPeer": true
         },

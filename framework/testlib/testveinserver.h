@@ -47,6 +47,8 @@ public:
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
     void resetEventSpyData();
 private:
+    void injectStorageIntoIntrospection();
+
     VeinEvent::EventHandler m_vfEventHandler;
 
     VfTestEntitySpy m_vfEntityAddSpy;
