@@ -34,7 +34,6 @@
             "ValidPeer": true
         },
         {
-            "Accepted (finalized) by": "VeinNet::NetworkSystem",
             "Am command event in": "server-fallthrough",
             "Attached data": "EntityData",
             "Entity": 0,
@@ -42,6 +41,28 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "client-enter",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_UNSUBSCRIBE",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true
+        },
+        {
+            "Am command event in": "client-fallthrough",
+            "Attached data": "EntityData",
+            "Entity": 0,
+            "EntityCommand": "ECMD_UNSUBSCRIBE",
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true
         }

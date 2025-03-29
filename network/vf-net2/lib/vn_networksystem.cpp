@@ -130,7 +130,8 @@ class NetworkSystemPrivate
             if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL &&
                 evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {
                 bool handled = false;
-                if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && evData->type() == VeinComponent::EntityData::dataType())
+                if (cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION &&
+                     evData->type() == VeinComponent::EntityData::dataType())
                     handled = tryHandleSubscription(static_cast<VeinComponent::EntityData *>(evData), cEvent->peerId());
 
                 if(handled)
@@ -138,24 +139,30 @@ class NetworkSystemPrivate
                 else if(m_subscriptions.contains(evData->entityId())) {
                     QList<QUuid> protoReceivers;
                     if(evData->type() == VeinComponent::IntrospectionData::dataType())
-                        protoReceivers.append(cEvent->peerId());
+                        protoReceivers.append(cEvent->peerId()); // just subscriber
                     else
-                        protoReceivers = m_subscriptions.value(evData->entityId());
+                        protoReceivers = m_subscriptions.value(evData->entityId()); // all subscribed
 
                     if(!protoReceivers.isEmpty()) {
                         QByteArray flatBuffer = prepareEnvelope(cEvent);
                         vCDebug(VEIN_NET_VERBOSE) << "Processing command event:" << cEvent << "type:" << static_cast<qint8>(cEvent->eventSubtype());
                         sendNetworkEvent(protoReceivers, flatBuffer);
                     }
-
-                    if(static_cast<VeinComponent::EntityData *>(evData)->eventCommand() == EntityData::Command::ECMD_REMOVE)
-                        // remove all to avoid subscriptions sneaking into next session
-                        m_subscriptions.remove(evData->entityId());
+                    if(evData->type() == VeinComponent::EntityData::dataType()) {
+                        VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(evData);
+                        if (eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE) {
+                            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
+                            tmpCurrentSubscriptions.removeAll(cEvent->peerId());
+                            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
+                        }
+                        else if (eData->eventCommand() == EntityData::Command::ECMD_REMOVE)
+                            // remove all to avoid subscriptions sneaking into next session
+                            m_subscriptions.remove(evData->entityId());
+                    }
                 }
             }
             break;
         }
-
     }
 
     int getSubscriberCount(int entityId) const
@@ -168,7 +175,7 @@ class NetworkSystemPrivate
     bool tryHandleSubscription(VeinComponent::EntityData *eData, QUuid peerId)
     {
         Q_ASSERT(eData != nullptr);
-        bool handled = false;
+        bool doAccept = false;
         switch(eData->eventCommand())
         {
         case EntityData::Command::ECMD_SUBSCRIBE:
@@ -178,22 +185,13 @@ class NetworkSystemPrivate
                 tmpCurrentSubscriptions.append(peerId);
             m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
             vCDebug(VEIN_NET_VERBOSE) << "Added subscription for entity:" << eData->entityId() << "network peer:" << peerId;
-            handled = true;
-            break;
-        }
-        case EntityData::Command::ECMD_UNSUBSCRIBE:
-        {
-            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
-            tmpCurrentSubscriptions.removeAll(peerId);
-            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
-            vCDebug(VEIN_NET_VERBOSE) << "Removed subscription for entity:" << eData->entityId() << "network peer:" << peerId;
-            handled = true;
+            doAccept = true; // we respond by subscription
             break;
         }
         default:
             break;
         }
-        return handled;
+        return doAccept;
     }
 
     void handleNetworkStatusEvent(NetworkStatusEvent *sEvent)
