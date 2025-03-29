@@ -64,20 +64,6 @@
                 ],
                 "XSession": "Bar"
             },
-            "IntrospectionJson": {
-                "components": [
-                    "DevMode",
-                    "Entities",
-                    "EntityName",
-                    "INF_ModuleInterface",
-                    "ModulesPaused",
-                    "Session",
-                    "SessionsAvailable",
-                    "XSession"
-                ],
-                "procedures": [
-                ]
-            },
             "IntrospectionRPCs": [
             ],
             "Valid": true,
@@ -101,20 +87,6 @@
                     "sessionList"
                 ],
                 "XSession": "Bar"
-            },
-            "IntrospectionJson": {
-                "components": [
-                    "DevMode",
-                    "Entities",
-                    "EntityName",
-                    "INF_ModuleInterface",
-                    "ModulesPaused",
-                    "Session",
-                    "SessionsAvailable",
-                    "XSession"
-                ],
-                "procedures": [
-                ]
             },
             "IntrospectionRPCs": [
             ],
@@ -140,20 +112,6 @@
                 ],
                 "XSession": "Bar"
             },
-            "IntrospectionJson": {
-                "components": [
-                    "DevMode",
-                    "Entities",
-                    "EntityName",
-                    "INF_ModuleInterface",
-                    "ModulesPaused",
-                    "Session",
-                    "SessionsAvailable",
-                    "XSession"
-                ],
-                "procedures": [
-                ]
-            },
             "IntrospectionRPCs": [
             ],
             "Valid": true,
@@ -177,20 +135,6 @@
                     "sessionList"
                 ],
                 "XSession": "Bar"
-            },
-            "IntrospectionJson": {
-                "components": [
-                    "DevMode",
-                    "Entities",
-                    "EntityName",
-                    "INF_ModuleInterface",
-                    "ModulesPaused",
-                    "Session",
-                    "SessionsAvailable",
-                    "XSession"
-                ],
-                "procedures": [
-                ]
             },
             "IntrospectionRPCs": [
             ],

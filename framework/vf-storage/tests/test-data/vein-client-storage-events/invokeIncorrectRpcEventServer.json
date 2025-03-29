@@ -47,14 +47,6 @@
             "IntrospectionComponentData": {
                 "EntityName": "RPCEventHandler"
             },
-            "IntrospectionJson": {
-                "components": [
-                    "EntityName"
-                ],
-                "procedures": [
-                    "RPC_forTest(bool p_param)"
-                ]
-            },
             "IntrospectionRPCs": [
                 "RPC_forTest(bool p_param)"
             ],

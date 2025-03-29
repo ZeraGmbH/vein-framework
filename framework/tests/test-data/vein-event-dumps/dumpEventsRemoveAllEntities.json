@@ -134,14 +134,6 @@
                 "EntityName": "TestEntity",
                 "TestComponent": "TestInitialValue"
             },
-            "IntrospectionJson": {
-                "components": [
-                    "EntityName",
-                    "TestComponent"
-                ],
-                "procedures": [
-                ]
-            },
             "IntrospectionRPCs": [
             ],
             "Valid": true,
@@ -157,14 +149,6 @@
             "IntrospectionComponentData": {
                 "EntityName": "TestEntity",
                 "TestComponent": "TestInitialValue"
-            },
-            "IntrospectionJson": {
-                "components": [
-                    "EntityName",
-                    "TestComponent"
-                ],
-                "procedures": [
-                ]
             },
             "IntrospectionRPCs": [
             ],
@@ -182,14 +166,6 @@
                 "EntityName": "TestEntity",
                 "TestComponent": "TestInitialValue"
             },
-            "IntrospectionJson": {
-                "components": [
-                    "EntityName",
-                    "TestComponent"
-                ],
-                "procedures": [
-                ]
-            },
             "IntrospectionRPCs": [
             ],
             "Valid": true,
@@ -205,14 +181,6 @@
             "IntrospectionComponentData": {
                 "EntityName": "TestEntity",
                 "TestComponent": "TestInitialValue"
-            },
-            "IntrospectionJson": {
-                "components": [
-                    "EntityName",
-                    "TestComponent"
-                ],
-                "procedures": [
-                ]
             },
             "IntrospectionRPCs": [
             ],

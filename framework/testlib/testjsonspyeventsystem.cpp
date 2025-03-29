@@ -105,9 +105,6 @@ void TestJsonSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evDat
 {
     IntrospectionData *iData = static_cast<IntrospectionData*>(evData);
     jsonEventInfo.insert("Attached data", "IntrospectionData");
-    QJsonObject jsonIntrospection = iData->jsonData();
-    jsonIntrospection = QJsonObject::fromVariantMap(jsonIntrospection.toVariantMap());
-    jsonEventInfo.insert("IntrospectionJson", jsonIntrospection);
     QJsonObject componentData = QJsonObject::fromVariantMap(iData->componentValues());
     jsonEventInfo.insert("IntrospectionComponentData", componentData);
     QJsonArray rpcs = QJsonArray::fromStringList(iData->rpcNames());
