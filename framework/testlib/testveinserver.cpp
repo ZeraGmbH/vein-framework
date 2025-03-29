@@ -17,11 +17,10 @@ TestVeinServer::TestVeinServer(const LxdmSessionChangeParam& lxdmParam) :
     m_vfComponentChangeSpy(ComponentData::Command::CCMD_SET),
     m_serverCmdEventSpyTop(&m_JsonEventLog, "server-enter"),
     m_serverCmdEventSpyBottom(&m_JsonEventLog, "server-fallthrough"),
-    m_systemModuleSystem(false, lxdmParam)
-
+    m_systemModuleSystem(false, lxdmParam),
+    m_introspectionSystem(&m_storageSystem)
 {
     ModuleManagerSetupFacade::registerMetaTypeStreamOperators();
-    injectStorageIntoIntrospection();
     m_systemModuleSystem.setStorage(&m_storageSystem);
 
     m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyTop);
@@ -156,11 +155,6 @@ VeinEvent::EventHandler *TestVeinServer::getEventHandler()
 void TestVeinServer::sendEvent(QEvent *event)
 {
     emit m_storageSystem.sigSendEvent(event);
-}
-
-void TestVeinServer::injectStorageIntoIntrospection()
-{
-    m_introspectionSystem.setStorage(&m_storageSystem);
 }
 
 VeinStorage::AbstractEventSystem *TestVeinServer::getStorage()

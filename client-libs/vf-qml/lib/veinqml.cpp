@@ -138,7 +138,10 @@ void VeinQml::processEvent(QEvent *t_event)
                 int entityId = iData->entityId();
                 vCDebug(VEIN_API_QML_VERBOSE) << "Received introspection data for entity:" << entityId;
                 if(!m_entityDict.findById(entityId)) {
-                    EntityComponentMap *eMap = new EntityComponentMap(entityId, iData->jsonData().toVariantHash(), this);
+                    QVariantHash oldStyleIntrospection;
+                    oldStyleIntrospection["components"] = QVariant(iData->componentValues().keys());
+                    oldStyleIntrospection["procedures"] = QVariant(iData->rpcNames());
+                    EntityComponentMap *eMap = new EntityComponentMap(entityId, oldStyleIntrospection, this);
                     m_entityDict.insert(entityId, eMap);
                     connect(eMap, &EntityComponentMap::sigSendEvent, this, &VeinQml::sigSendEvent);
                     connect(eMap, &EntityComponentMap::sigEntityComplete, this, &VeinQml::onEntityLoaded);

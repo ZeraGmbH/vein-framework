@@ -13,8 +13,6 @@ class VFCOMPONENT_EXPORT IntrospectionData : public VeinEvent::EventData
 {
 public:
     IntrospectionData();
-    QJsonObject jsonData() const;
-    void setJsonData(const QJsonObject &t_jsonData);
 
     QVariantMap componentValues() const;
     void setComponentValues(const QVariantMap &componentValues);
@@ -27,8 +25,6 @@ public:
     QByteArray serialize() const override;
     void deserialize(const QByteArray &t_data) override;
 private:
-    QJsonObject m_jsonData;
-
     QVariantMap m_componentValues;
     QStringList m_rpcNames;
 };

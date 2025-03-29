@@ -15,7 +15,7 @@
             "ValueOld": "invalid"
         },
         {
-            "Accepted (finalized) by": "VeinNet::IntrospectionSystem",
+            "Accepted (finalized) by": "VeinStorage::StorageEventSystem",
             "Am command event in": "server-fallthrough",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_ADD",
