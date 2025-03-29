@@ -19,7 +19,6 @@ public:
     void processEvent(QEvent *event) override;
 
 private:
-    void insertComponent(const int entityId, QStringList components, EntityMap* entityMap);
     void insertRpc(const int entityId, QStringList rpcs);
     void processIntrospectionData(QEvent *event);
     void processComponentData(VeinEvent::CommandEvent *cEvent);
