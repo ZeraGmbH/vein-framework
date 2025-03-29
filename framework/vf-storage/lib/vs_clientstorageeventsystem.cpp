@@ -91,7 +91,7 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
     const int entityId = iData->entityId();
     EntityMap* entityMap = m_privHash->findEntity(entityId);
 
-    if(!entityMap) {
+    if(!entityMap) { // multiple subscriptions/introspections are perfectly fine
         m_privHash->insertEntity(entityId);
         entityMap = m_privHash->findEntity(entityId);
         QStringList components = iData->jsonData().toVariantHash().value("components").toStringList();
