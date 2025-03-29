@@ -11,8 +11,11 @@ public:
     VfClientEntitySubscriber(int entityId);
 
     static QEvent* generateEvent(int entityId);
+
     void sendSubscription();
-    QStringList getComponentNames();
+    QStringList getComponentNames() const;
+    QVariantMap getComponents() const;
+
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;
     void processErrorCommandEventData(VeinEvent::EventData *originalEventData) override;
 signals:
@@ -20,7 +23,7 @@ signals:
 private:
     void parseIntrospectionData(VeinEvent::EventData *evData);
     void emitSigSubscribed(bool ok);
-    QStringList m_componentNames;
+    QVariantMap m_components;
 };
 
 typedef std::shared_ptr<VfClientEntitySubscriber> VfClientEntitySubscriberPtr;

@@ -13,6 +13,7 @@ private slots:
     void trySubscribeOnNonExistantEntity();
     void trySubscribeOnNonExistantEntityTogetherwithOtherError();
     void introspectComponentNames();
+    void introspectComponentContents();
     void invalidIntrospectionData();
 };
 

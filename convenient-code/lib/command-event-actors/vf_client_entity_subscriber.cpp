@@ -32,19 +32,20 @@ void VfClientEntitySubscriber::sendSubscription()
     sendEvent(generateEvent(getEntityId()));
 }
 
-QStringList VfClientEntitySubscriber::getComponentNames()
+QStringList VfClientEntitySubscriber::getComponentNames() const
 {
-    return m_componentNames;
+    return m_components.keys();
+}
+
+QVariantMap VfClientEntitySubscriber::getComponents() const
+{
+    return m_components;
 }
 
 void VfClientEntitySubscriber::parseIntrospectionData(EventData *evData)
 {
     IntrospectionData *iData = static_cast<IntrospectionData *>(evData);
-    QJsonObject jsonObject = iData->jsonData();
-    const QJsonArray componentsArray = jsonObject["components"].toArray();
-    m_componentNames.clear();
-    for(const QJsonValue &entry : componentsArray)
-        m_componentNames.append(entry.toString());
+    m_components = iData->componentValues();
 }
 
 void VfClientEntitySubscriber::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
