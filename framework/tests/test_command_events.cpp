@@ -59,9 +59,6 @@ void test_command_events::clientSubscribeUnsubscribeEntity()
 
     QCOMPARE(m_netServer->getSubscriberCount(systemEntityId), 0);
 
-    // * NetworkSystemPrivate::processCmdEvents accepts unsubscribe event so we see no events from server
-    // * Unsunscribe is a fire and forget so testing unsubscribe on invalid or not sunscribed is a
-    //   mission impossible
     QFile file(":/vein-event-dumps/dumpEventsUnsubscribe.json");
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
