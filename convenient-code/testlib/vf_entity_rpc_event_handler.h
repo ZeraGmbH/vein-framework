@@ -8,7 +8,7 @@ class vfEntityRpcEventHandler : public QObject
 {
     Q_OBJECT
 public:
-    vfEntityRpcEventHandler(QObject *parent = nullptr, int id=99999);
+    vfEntityRpcEventHandler(int id=99999);
     ~vfEntityRpcEventHandler();
     bool initOnce();
     VfCpp::VfCppEntity *getVeinEntity() const;
