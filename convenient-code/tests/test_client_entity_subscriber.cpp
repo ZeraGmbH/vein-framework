@@ -157,6 +157,34 @@ void test_client_entity_subscriber::introspectComponentNames()
     QVERIFY(componentNames.contains("DevMode"));
 }
 
+void test_client_entity_subscriber::introspectComponentContents()
+{
+    TestVeinServer testServer;
+    VfCmdEventHandlerSystem cmdEventHandlerSystem;
+    testServer.appendEventSystem(&cmdEventHandlerSystem);
+    TimeMachineObject::feedEventLoop();
+
+    VfClientEntitySubscriberPtr entityToSubscribe = VfClientEntitySubscriber::create(systemEntityId);
+    cmdEventHandlerSystem.addItem(entityToSubscribe);
+    QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
+    entityToSubscribe->sendSubscription();
+    TimeMachineObject::feedEventLoop();
+
+    QVariantMap components = entityToSubscribe->getComponents();
+    QVERIFY(components.contains("EntityName"));
+    QCOMPARE(components["EntityName"], "_System");
+    QVERIFY(components.contains("Session"));
+    QCOMPARE(components["Session"], "");
+    QVERIFY(components.contains("SessionsAvailable"));
+    QCOMPARE(components["SessionsAvailable"], QVariant(QStringList()));
+    QVERIFY(components.contains("Entities"));
+    QCOMPARE(components["Entities"], QVariant());
+    QVERIFY(components.contains("ModulesPaused"));
+    QCOMPARE(components["ModulesPaused"], false);
+    QVERIFY(components.contains("DevMode"));
+    QCOMPARE(components["DevMode"], false);
+}
+
 using namespace VeinEvent;
 using namespace VeinComponent;
 
@@ -166,8 +194,6 @@ void test_client_entity_subscriber::invalidIntrospectionData()
 
     IntrospectionData *iData = new IntrospectionData();
     iData->setEntityId(systemEntityId);
-    QJsonObject dummyJsonData;
-    iData->setJsonData(dummyJsonData);
 
     CommandEvent *cEvent = new CommandEvent(CommandEvent::EventSubtype::TRANSACTION, iData);
     QSignalSpy spy(entityToSubscribe.get(), &VfClientEntitySubscriber::sigSubscribed);
