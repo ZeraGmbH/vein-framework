@@ -61,16 +61,26 @@ void test_client_storage_event_system::subscribeToNonExistingEntity()
 
 void test_client_storage_event_system::subscribeToExistingEntity()
 {
-    addAndSubscribeToEntity(entityID1, "Foo");
+    addAndSubscribeToEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
     QVERIFY(m_clientStorageSystem->getDb()->hasEntity(entityID1));
     QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Bar"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Baz"));
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "EntityName"), "Foo");
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Bar"), 42);
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Baz"), 37);
 }
 
 void test_client_storage_event_system::subscribeAndUnsubscribe()
 {
-    addAndSubscribeToEntity(entityID1, "Foo");
+    addAndSubscribeToEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
     QVERIFY(m_clientStorageSystem->getDb()->hasEntity(entityID1));
     QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Bar"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Baz"));
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "EntityName"), "Foo");
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Bar"), 42);
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Baz"), 37);
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 1);
 
     m_netClient->unsubscribeEntity(entityID1);
@@ -81,16 +91,23 @@ void test_client_storage_event_system::subscribeAndUnsubscribe()
 
 void test_client_storage_event_system::subscribeAndEntityRemove()
 {
-    addAndSubscribeToEntity(entityID1, "Foo");
+    addAndSubscribeToEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
     QVERIFY(m_clientStorageSystem->getDb()->hasEntity(entityID1));
     QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Bar"));
+    QVERIFY(m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Baz"));
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "EntityName"), "Foo");
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Bar"), 42);
+    QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "Baz"), 37);
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 1);
 
     m_netServer->getServer()->removeEntitiesAdded();
     TimeMachineObject::feedEventLoop();
     QVERIFY(!m_clientStorageSystem->getDb()->hasEntity(entityID1));
+    QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "EntityName"));
+    QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Bar"));
+    QVERIFY(!m_clientStorageSystem->getDb()->hasStoredValue(entityID1, "Baz"));
     QCOMPARE(m_netServer->getSubscriberCount(entityID1), 0);
-
 }
 
 void test_client_storage_event_system::unsubscribeWithoutSubscribing()
@@ -280,9 +297,13 @@ void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
 }
 
-void test_client_storage_event_system::addAndSubscribeToEntity(int entityID, QString entityName)
+void test_client_storage_event_system::addAndSubscribeToEntity(int entityID,
+                                                               const QString &entityName,
+                                                               const QVariantMap &components)
 {
     m_netServer->getServer()->addEntity(entityID, entityName);
+        for(auto iter=components.constBegin(); iter!=components.constEnd(); ++iter)
+            m_netServer->getServer()->addComponent(entityID, iter.key(), iter.value(), false);
     m_netClient->subscribeEntity(entityID);
     TimeMachineObject::feedEventLoop();
 }

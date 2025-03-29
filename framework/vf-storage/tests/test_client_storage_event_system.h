@@ -30,7 +30,9 @@ private slots:
 
 private:
     void setupSpy(QJsonObject &jsonEvents);
-    void addAndSubscribeToEntity(int entityID, QString entityName);
+    void addAndSubscribeToEntity(int entityID,
+                                 const QString &entityName,
+                                 const QVariantMap &components = QVariantMap());
 
     std::unique_ptr<TestVeinServerWithMockNet> m_netServer;
     std::unique_ptr<VfCoreStackClient> m_netClient;

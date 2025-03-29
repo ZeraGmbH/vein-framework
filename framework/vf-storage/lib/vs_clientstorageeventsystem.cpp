@@ -64,15 +64,6 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
     }
 }
 
-void VeinStorage::ClientStorageEventSystem::insertComponent(const int entityId, QStringList components, EntityMap* entityMap)
-{
-    for(const QString &componentName: qAsConst(components)) {
-        StorageComponentPtr component = m_privHash->findComponent(entityId, componentName);
-        if(!component)
-            m_privHash->insertComponentValue(entityMap, componentName, QVariant());
-    }
-}
-
 void ClientStorageEventSystem::insertRpc(const int entityId, QStringList rpcs)
 {
     if(m_rpcs.contains(entityId))
@@ -90,9 +81,12 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
     if(!entityMap) { // multiple subscriptions/introspections are perfectly fine
         m_privHash->insertEntity(entityId);
         entityMap = m_privHash->findEntity(entityId);
-        QStringList components = iData->jsonData().toVariantHash().value("components").toStringList();
-        insertComponent(entityId, components, entityMap);
-        QStringList rpcs = iData->jsonData().toVariantHash().value("procedures").toStringList();
+
+        const QVariantMap componentMap = iData->componentValues();
+        for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter)
+            m_privHash->insertComponentValue(entityMap, iter.key(), iter.value());
+
+        QStringList rpcs = iData->rpcNames();
         insertRpc(entityId, rpcs);
     }
 }
