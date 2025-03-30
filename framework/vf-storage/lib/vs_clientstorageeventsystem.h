@@ -28,7 +28,7 @@ private:
     DatabaseHash *m_privHash;
     QMap<int, QStringList> m_entityRpcNames;
 
-    QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
+    QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins = // Hmmm
         {
             VeinEvent::EventData::EventOrigin::EO_LOCAL,
             VeinEvent::EventData::EventOrigin::EO_FOREIGN

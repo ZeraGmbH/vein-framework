@@ -26,8 +26,6 @@ const QString IntrospectionSystem::s_nameComponent = QLatin1String("EntityName")
 
 void IntrospectionSystem::processEvent(QEvent *event)
 {
-    // We track RPCs / Components are taken from storage
-    Q_ASSERT(event != nullptr);
     if(event->type() == CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         EventData *evData = cEvent->eventData();

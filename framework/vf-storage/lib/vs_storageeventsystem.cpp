@@ -36,7 +36,6 @@ void StorageEventSystem::processEvent(QEvent *event)
                 {
                 case ComponentData::dataType():
                 {
-                    // Why is this done here??
                     ComponentData *cData = static_cast<ComponentData *>(evData);
                     if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
                         qWarning() << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
@@ -55,13 +54,8 @@ void StorageEventSystem::processEvent(QEvent *event)
             }
         }
         if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
-            switch (evData->type())
-            {
-            case RemoteProcedureData::dataType():
+            if(evData->type() == RemoteProcedureData::dataType())
                 processRpcData(cEvent);
-            default:
-                break;
-            }
         }
     }
 }
@@ -74,11 +68,6 @@ AbstractDatabase *StorageEventSystem::getDb() const
 QMap<int, QStringList> StorageEventSystem::getRpcs() const
 {
     return m_entityRpcNames;
-}
-
-void StorageEventSystem::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
-{
-    m_acceptableOrigins = origins;
 }
 
 void StorageEventSystem::processComponentData(QEvent *event)
