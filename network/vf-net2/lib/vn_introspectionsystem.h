@@ -8,8 +8,6 @@
 namespace VeinNet
 {
 
-struct EntityIntrospection;
-
 class VFNET2_EXPORT IntrospectionSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
