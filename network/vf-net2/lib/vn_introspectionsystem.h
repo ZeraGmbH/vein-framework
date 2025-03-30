@@ -2,8 +2,8 @@
 #define VEINNET_INTROSPECTIONSYSTEM_H
 
 #include <ve_eventsystem.h>
+#include "vfnet2_export.h"
 #include "vs_abstracteventsystem.h"
-#include "globalIncludes.h"
 
 namespace VeinNet
 {

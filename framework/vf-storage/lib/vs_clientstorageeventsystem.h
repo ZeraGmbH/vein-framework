@@ -5,7 +5,6 @@
 #include <vs_abstracteventsystem.h>
 #include <ve_eventdata.h>
 #include <ve_commandevent.h>
-#include <QObject>
 
 namespace VeinStorage
 {
