@@ -4,7 +4,6 @@
 #include "vfstorage_export.h"
 #include "vs_databasehash.h"
 #include <vs_abstracteventsystem.h>
-#include <vcmp_componentdata.h>
 #include <ve_eventdata.h>
 
 namespace VeinStorage
