@@ -12,7 +12,13 @@ using namespace VeinStorage;
 ClientStorageEventSystem::ClientStorageEventSystem(QObject *parent) :
     AbstractEventSystem{parent},
     m_privHash(new DatabaseHash)
-{}
+{
+}
+
+ClientStorageEventSystem::~ClientStorageEventSystem()
+{
+    delete m_privHash;
+}
 
 AbstractDatabase *ClientStorageEventSystem::getDb() const
 {

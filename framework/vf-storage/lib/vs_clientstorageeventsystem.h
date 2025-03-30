@@ -14,6 +14,7 @@ class ClientStorageEventSystem : public AbstractEventSystem
     Q_OBJECT
 public:
     explicit ClientStorageEventSystem(QObject *parent = nullptr);
+    virtual ~ClientStorageEventSystem();
 
     AbstractDatabase* getDb() const override;
     QMap<int, QStringList> getRpcs() const override;
