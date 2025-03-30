@@ -164,10 +164,13 @@ void VeinStorage::StorageEventSystem::processRpcData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(cEvent->eventData());
+    int entityId = rpcData->entityId();
     if(rpcData->command() == RemoteProcedureData::Command::RPCMD_REGISTER) {
         const QString rpcName = rpcData->procedureName();
-        if(!m_entityRpcNames[rpcData->entityId()].contains(rpcName))
-            m_entityRpcNames[rpcData->entityId()].append(rpcName);
+        if(!m_entityRpcNames[entityId].contains(rpcName))
+            m_entityRpcNames[entityId].append(rpcName);
+        else
+            ErrorDataSender::errorOut(QString("RPC %1 already exists in %2").arg(rpcName).arg(entityId), event, this);
     }
 }
 
