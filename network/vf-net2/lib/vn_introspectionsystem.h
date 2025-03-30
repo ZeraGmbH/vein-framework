@@ -4,17 +4,12 @@
 #include <ve_eventsystem.h>
 #include "vs_abstracteventsystem.h"
 #include "globalIncludes.h"
-#include <QHash>
-#include <QJsonObject>
 
 namespace VeinNet
 {
 
 struct EntityIntrospection;
 
-/**
-* @brief Collates VeinStorage data structure informations into VeinComponent::IntrospectionData for remote introspection
-*/
 class VFNET2_EXPORT IntrospectionSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
@@ -28,6 +23,6 @@ private:
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
 };
 
-} // namespace VeinNet
+}
 
 #endif // VEINNET_INTROSPECTIONSYSTEM_H

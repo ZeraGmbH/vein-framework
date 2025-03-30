@@ -1,12 +1,8 @@
 #include "vn_introspectionsystem.h"
 #include <ve_commandevent.h>
-#include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
-#include <vcmp_errordata.h>
 #include <vcmp_errordatasender.h>
-#include <QEvent>
-#include <QJsonArray>
 
 Q_LOGGING_CATEGORY(VEIN_NET_INTRO, VEIN_DEBUGNAME_NET_INTRO)
 Q_LOGGING_CATEGORY(VEIN_NET_INTRO_VERBOSE, VEIN_DEBUGNAME_NET_INTRO_VERBOSE)

@@ -1,12 +1,10 @@
 #include "vs_storageeventsystem.h"
 #include "vs_databasehash.h"
+#include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
+#include <vcmp_componentdata.h>
 #include <vcmp_remoteproceduredata.h>
 #include <vcmp_errordatasender.h>
-#include <ve_commandevent.h>
-#include <QJsonDocument>
-#include <QJsonObject>
-#include <QJsonArray>
 
 using namespace VeinEvent;
 using namespace VeinComponent;
