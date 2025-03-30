@@ -20,8 +20,8 @@ public:
     QMap<int,QStringList> getRpcs() const override;
 
 private:
-    void processComponentData(QEvent *event);
     void processEntityData(QEvent *event);
+    void processComponentData(QEvent *event);
     void processRpcData(QEvent *event);
 
     DatabaseHash *m_privHash;

@@ -68,6 +68,37 @@ QMap<int, QStringList> StorageEventSystem::getRpcs() const
     return m_entityRpcNames;
 }
 
+void StorageEventSystem::processEntityData(QEvent *event)
+{
+    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
+    EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
+    const int entityId = eData->entityId();
+    const EntityMap* entityMap = m_privHash->findEntity(entityId);
+    switch(eData->eventCommand())
+    {
+    case EntityData::Command::ECMD_ADD:
+        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
+            m_entityRpcNames.remove(entityId);
+        if(entityMap)
+            ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), event, this);
+        else
+            m_privHash->insertEntity(entityId);
+        break;
+    case EntityData::Command::ECMD_REMOVE:
+    {
+        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
+            m_entityRpcNames.remove(entityId);
+        if(!entityMap)
+            ErrorDataSender::errorOut(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), event, this);
+        else
+            m_privHash->removeEntity(entityId);
+        break;
+    }
+    default: // ECMD_SUBSCRIBE is handled in introspection- / network-event-system
+        break;
+    }
+}
+
 void StorageEventSystem::processComponentData(QEvent *event)
 {
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
@@ -125,37 +156,6 @@ void StorageEventSystem::processComponentData(QEvent *event)
         }
         break;
     default:
-        break;
-    }
-}
-
-void StorageEventSystem::processEntityData(QEvent *event)
-{
-    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
-    EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
-    const int entityId = eData->entityId();
-    const EntityMap* entityMap = m_privHash->findEntity(entityId);
-    switch(eData->eventCommand())
-    {
-    case EntityData::Command::ECMD_ADD:
-        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
-            m_entityRpcNames.remove(entityId);
-        if(entityMap)
-            ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), event, this);
-        else
-            m_privHash->insertEntity(entityId);
-        break;
-    case EntityData::Command::ECMD_REMOVE:
-    {
-        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
-            m_entityRpcNames.remove(entityId);
-        if(!entityMap)
-            ErrorDataSender::errorOut(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), event, this);
-        else
-            m_privHash->removeEntity(entityId);
-        break;
-    }
-    default: // ECMD_SUBSCRIBE is handled in introspection- / network-event-system
         break;
     }
 }
