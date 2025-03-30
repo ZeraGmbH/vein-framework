@@ -3,7 +3,6 @@
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
-#include <vcmp_remoteproceduredata.h>
 #include <vcmp_errordata.h>
 #include <vcmp_errordatasender.h>
 #include <QEvent>
@@ -41,11 +40,6 @@ void IntrospectionSystem::processEvent(QEvent *event)
                 EntityData *eData = static_cast<EntityData *>(evData);
                 switch(eData->eventCommand())
                 {
-                case EntityData::Command::ECMD_ADD:
-                case EntityData::Command::ECMD_REMOVE:
-                    if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
-                        m_rpcEntityNames.remove(entityId);
-                    break;
                 case EntityData::Command::ECMD_SUBSCRIBE:
                 {
                     vCDebug(VEIN_NET_INTRO_VERBOSE) << "Processing command event:" << cEvent << "with command ECMD_SUBSCRIBE, entityId:" << entityId;
@@ -81,17 +75,6 @@ void IntrospectionSystem::processEvent(QEvent *event)
                 }
                 break;
             }
-            case RemoteProcedureData::dataType():
-            {
-                RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(evData);
-                if(rpcData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
-                    if(rpcData->command() == RemoteProcedureData::Command::RPCMD_REGISTER) {
-                        const QString rpcName = rpcData->procedureName();
-                        if(!m_rpcEntityNames[entityId].contains(rpcName))
-                            m_rpcEntityNames[entityId].append(rpcName);
-                    }
-                }
-            }
             default:
                 break;
             }
@@ -101,9 +84,10 @@ void IntrospectionSystem::processEvent(QEvent *event)
 
 QStringList IntrospectionSystem::getRpcNames(int entityId) const
 {
-    if (!m_rpcEntityNames.contains(entityId))
+    const QMap<int, QStringList> rpcs = m_storageSystem->getRpcs();
+    if (!rpcs.contains(entityId))
         return QStringList();
-    return m_rpcEntityNames[entityId];
+    return rpcs[entityId];
 }
 
 } // namespace VeinNet

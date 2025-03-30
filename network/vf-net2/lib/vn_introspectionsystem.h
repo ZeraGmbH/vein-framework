@@ -25,7 +25,6 @@ public:
     void processEvent(QEvent *event) override;
 private:
     QStringList getRpcNames(int entityId) const;
-    QHash<int, QStringList> m_rpcEntityNames;
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
 };
 

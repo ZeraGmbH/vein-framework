@@ -21,7 +21,7 @@ AbstractDatabase *ClientStorageEventSystem::getDb() const
 
 QMap<int, QStringList> ClientStorageEventSystem::getRpcs() const
 {
-    return m_rpcs;
+    return m_entityRpcNames;
 }
 
 void ClientStorageEventSystem::processEvent(QEvent *event)
@@ -47,7 +47,7 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
                     if (eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE ||
                         eData->eventCommand() == EntityData::Command::ECMD_REMOVE) {
                         m_privHash->removeEntity(eData->entityId());
-                        m_rpcs.remove(eData->entityId());
+                        m_entityRpcNames.remove(eData->entityId());
                     }
                     break;
                 }
@@ -71,9 +71,9 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
 
 void ClientStorageEventSystem::insertRpc(const int entityId, QStringList rpcs)
 {
-    if(m_rpcs.contains(entityId))
+    if(m_entityRpcNames.contains(entityId))
         qWarning("Entity %i already contains Rpcs", entityId);
-    m_rpcs.insert(entityId, rpcs);
+    m_entityRpcNames.insert(entityId, rpcs);
 }
 
 void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
@@ -151,9 +151,9 @@ void ClientStorageEventSystem::processRpcData(CommandEvent *cEvent)
     switch(rmcp->command())
     {
     case RemoteProcedureData::Command::RPCMD_CALL:
-        if(!m_rpcs.contains(entityId))
+        if(!m_entityRpcNames.contains(entityId))
             ErrorDataSender::errorOut(QString("Cannot call RPC for non existing entity %1").arg(entityId), cEvent, this);
-        if(!m_rpcs[entityId].contains(procedureName))
+        if(!m_entityRpcNames[entityId].contains(procedureName))
             ErrorDataSender::errorOut(QString("Cannot call non existing RPC %1").arg(procedureName), cEvent, this);
         break;
     default:

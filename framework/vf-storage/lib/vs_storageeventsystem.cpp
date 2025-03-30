@@ -1,6 +1,7 @@
 #include "vs_storageeventsystem.h"
 #include "vs_databasehash.h"
 #include <vcmp_entitydata.h>
+#include <vcmp_remoteproceduredata.h>
 #include <vcmp_errordatasender.h>
 #include <ve_commandevent.h>
 #include <QJsonDocument>
@@ -29,24 +30,35 @@ void StorageEventSystem::processEvent(QEvent *event)
     if(event->type() == CommandEvent::getQEventType()) {
         CommandEvent *cEvent = static_cast<CommandEvent *>(event);
         EventData *evData = cEvent->eventData();
-        if(cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION && m_acceptableOrigins.contains(evData->eventOrigin())) {
+        if (cEvent->eventSubtype() == CommandEvent::EventSubtype::NOTIFICATION) {
+            if(m_acceptableOrigins.contains(evData->eventOrigin())) {
+                switch (evData->type())
+                {
+                case ComponentData::dataType():
+                {
+                    // Why is this done here??
+                    ComponentData *cData = static_cast<ComponentData *>(evData);
+                    if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
+                        qWarning() << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
+                        event->accept();
+                    }
+                    else
+                        processComponentData(event);
+                    break;
+                }
+                case EntityData::dataType():
+                    processEntityData(event);
+                    break;
+                default:
+                    break;
+                }
+            }
+        }
+        if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL) {
             switch (evData->type())
             {
-            case ComponentData::dataType():
-            {
-                // Why is this done here??
-                ComponentData *cData = static_cast<ComponentData *>(evData);
-                if(Q_UNLIKELY(cData->newValue().isValid() == false && cData->eventCommand() == ComponentData::Command::CCMD_SET)) {
-                    qWarning() << "Dropping event (command = CCMD_SET) with invalid event data:\nComponent name:" << cData->componentName() << "Value:" << cData->newValue();
-                    event->accept();
-                }
-                else
-                    processComponentData(event);
-                break;
-            }
-            case EntityData::dataType():
-                processEntityData(event);
-                break;
+            case RemoteProcedureData::dataType():
+                processRpcData(cEvent);
             default:
                 break;
             }
@@ -57,6 +69,16 @@ void StorageEventSystem::processEvent(QEvent *event)
 AbstractDatabase *StorageEventSystem::getDb() const
 {
     return m_privHash;
+}
+
+QMap<int, QStringList> StorageEventSystem::getRpcs() const
+{
+    return m_entityRpcNames;
+}
+
+void StorageEventSystem::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
+{
+    m_acceptableOrigins = origins;
 }
 
 void StorageEventSystem::processComponentData(QEvent *event)
@@ -125,10 +147,12 @@ void StorageEventSystem::processEntityData(QEvent *event)
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     EntityData *eData = static_cast<EntityData *>(cEvent->eventData());
     const int entityId = eData->entityId();
-    EntityMap* entityMap = m_privHash->findEntity(entityId);
+    const EntityMap* entityMap = m_privHash->findEntity(entityId);
     switch(eData->eventCommand())
     {
     case EntityData::Command::ECMD_ADD:
+        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
+            m_entityRpcNames.remove(entityId);
         if(entityMap)
             ErrorDataSender::errorOut(QString("Cannot add entity, entity id already exists: %1").arg(eData->entityId()), event, this);
         else
@@ -136,21 +160,28 @@ void StorageEventSystem::processEntityData(QEvent *event)
         break;
     case EntityData::Command::ECMD_REMOVE:
     {
+        if(eData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL)
+            m_entityRpcNames.remove(entityId);
         if(!entityMap)
             ErrorDataSender::errorOut(QString("Cannot delete entity, entity id does not exists: %1").arg(eData->entityId()), event, this);
         else
             m_privHash->removeEntity(entityId);
         break;
     }
-    default: //ECMD_SUBSCRIBE etc. is handled by the networksystem
+    default: // ECMD_SUBSCRIBE is handled in introspection- / network-event-system
         break;
     }
 }
 
-void StorageEventSystem::setAcceptableOrigin(QList<EventData::EventOrigin> origins)
+void VeinStorage::StorageEventSystem::processRpcData(QEvent *event)
 {
-    m_acceptableOrigins = origins;
+    CommandEvent *cEvent = static_cast<CommandEvent *>(event);
+    RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(cEvent->eventData());
+    if(rpcData->command() == RemoteProcedureData::Command::RPCMD_REGISTER) {
+        const QString rpcName = rpcData->procedureName();
+        if(!m_entityRpcNames[rpcData->entityId()].contains(rpcName))
+            m_entityRpcNames[rpcData->entityId()].append(rpcName);
+    }
 }
-
 
 }

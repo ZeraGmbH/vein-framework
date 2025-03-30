@@ -16,7 +16,7 @@ public:
     explicit ClientStorageEventSystem(QObject *parent = nullptr);
 
     AbstractDatabase* getDb() const override;
-    QMap<int,QStringList> getRpcs() const; // move later?
+    QMap<int, QStringList> getRpcs() const override;
     void processEvent(QEvent *event) override;
 
 private:
@@ -26,7 +26,7 @@ private:
     void processRpcData(VeinEvent::CommandEvent *cEvent);
 
     DatabaseHash *m_privHash;
-    QMap<int,QStringList> m_rpcs;
+    QMap<int, QStringList> m_entityRpcNames;
 
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
         {
