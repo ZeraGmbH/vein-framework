@@ -18,14 +18,17 @@ public:
 
     void processEvent(QEvent *event) override;
     AbstractDatabase* getDb() const override;
+    QMap<int,QStringList> getRpcs() const override;
 
     void setAcceptableOrigin(QList<VeinEvent::EventData::EventOrigin> origins); // Not too many users (yet)
 
 private:
     void processComponentData(QEvent *event);
     void processEntityData(QEvent *event);
+    void processRpcData(QEvent *event);
 
     DatabaseHash *m_privHash;
+    QMap<int, QStringList> m_entityRpcNames;
 
     QList<VeinEvent::EventData::EventOrigin> m_acceptableOrigins =
         {

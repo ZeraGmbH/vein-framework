@@ -15,6 +15,7 @@ public:
     explicit AbstractEventSystem(QObject *parent = nullptr) : EventSystem(parent) {}
 
     virtual AbstractDatabase* getDb() const = 0;
+    virtual QMap<int, QStringList> getRpcs() const = 0;
 };
 }
 
