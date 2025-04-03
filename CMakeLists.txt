@@ -88,7 +88,6 @@ add_subdirectory(convenient-code)
 add_subdirectory(framework)
 add_subdirectory(network)
 add_subdirectory(server-libs)
-add_subdirectory(scpi-cmd-preparation)
 add_subdirectory(xsession-change)
 
 feature_summary(WHAT ALL FATAL_ON_MISSING_REQUIRED_PACKAGES)
