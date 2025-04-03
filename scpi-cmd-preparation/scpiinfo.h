@@ -11,13 +11,6 @@ public:
     cSCPIInfo(){}
     cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refname, QString reftype, QString unit);
 
-    void setSCPIModel(QString model);
-    void setSCPICmd(QString cmd);
-    void setSCPICmdType(QString cmdtype);
-    void setRefName(QString refname);
-    void setRefType(QString reftype);
-    void setUnit(QString unit);
-
     void appendSCPIInfo(QJsonArray &jsArr);
 
 private:

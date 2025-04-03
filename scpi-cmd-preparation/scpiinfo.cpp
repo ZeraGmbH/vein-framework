@@ -6,36 +6,6 @@ cSCPIInfo::cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refnam
 {
 }
 
-void cSCPIInfo::setSCPIModel(QString model)
-{
-    m_sSCPIModel = model;
-}
-
-void cSCPIInfo::setSCPICmd(QString cmd)
-{
-    m_sSCPICmd = cmd;
-}
-
-void cSCPIInfo::setSCPICmdType(QString cmdtype)
-{
-    m_sSCPICmdType = cmdtype;
-}
-
-void cSCPIInfo::setRefName(QString refname)
-{
-    m_sRefName = refname;
-}
-
-void cSCPIInfo::setRefType(QString reftype)
-{
-    m_sRefType = reftype;
-}
-
-void cSCPIInfo::setUnit(QString unit)
-{
-    m_sUnit = unit;
-}
-
 void cSCPIInfo::appendSCPIInfo(QJsonArray &jsArr)
 {
     QJsonArray jsonSCPIArr;
