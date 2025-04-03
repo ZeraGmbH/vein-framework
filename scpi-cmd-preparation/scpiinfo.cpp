@@ -1,4 +1,3 @@
-#include <QJsonArray>
 #include "scpiinfo.h"
 
 cSCPIInfo::cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refname, QString reftype, QString unit)
@@ -18,4 +17,3 @@ void cSCPIInfo::appendSCPIInfo(QJsonArray &jsArr)
 
     jsArr.append(jsonSCPIArr);
 }
-

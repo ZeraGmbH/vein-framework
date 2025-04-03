@@ -2,8 +2,7 @@
 #define SCPIINFO_H
 
 #include <QString>
-#include <QJsonObject>
-
+#include <QJsonArray>
 
 class cSCPIInfo
 {
@@ -14,12 +13,12 @@ public:
     void appendSCPIInfo(QJsonArray &jsArr);
 
 private:
-    QString m_sSCPIModel;
-    QString m_sSCPICmd;
-    QString m_sSCPICmdType;
-    QString m_sRefName;
-    QString m_sRefType;
-    QString m_sUnit;
+    const QString m_sSCPIModel;
+    const QString m_sSCPICmd;
+    const QString m_sSCPICmdType;
+    const QString m_sRefName;
+    const QString m_sRefType;
+    const QString m_sUnit;
 };
 
 
