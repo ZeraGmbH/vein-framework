@@ -3,8 +3,6 @@
 
 #include "vfcomponent_export.h"
 #include "globalIncludes.h"
-#include "scpiinfo.h"
-#include "validatorinterface.h"
 #include <ve_eventdata.h>
 
 namespace VeinComponent
@@ -48,12 +46,6 @@ public:
     const QVariant &oldValue() const;
     void setOldValue(const QVariant &t_oldValue);
 
-    void setSCPIInfo(cSCPIInfo* scpiinfo);
-    void exportSCPIInfo(QJsonArray &jsArr);
-    void exportMetaData(QJsonObject &jsonObj);
-
-    void setValidator(ValidatorInterface* validator);
-
     bool isValid() const override;
     QByteArray serialize() const override;
     void deserialize(const QByteArray &t_data) override;
@@ -64,8 +56,6 @@ private:
     QString m_componentName;
     QVariant m_newValue;
     QVariant m_oldValue;
-    cSCPIInfo* m_scpiinfo = nullptr;
-    ValidatorInterface* m_pValidator = nullptr;
 };
 }
 

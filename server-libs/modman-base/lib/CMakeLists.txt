@@ -14,6 +14,7 @@ add_library(ModmanBase SHARED
 target_link_libraries(ModmanBase 
     PUBLIC
     xsession-change-lib
+    modules-vein
     VfEvent
     VfComponent
     VfCryptoBridge

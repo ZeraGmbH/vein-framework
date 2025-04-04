@@ -6,6 +6,8 @@
 #include <ve_eventsystem.h>
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
+#include "scpiinfo.h"
+#include "validatorinterface.h"
 #include <QJsonDocument>
 
 class SystemModuleEventSystem : public VeinEvent::EventSystem
@@ -49,6 +51,14 @@ private:
     {
         QString m_description;
         VeinComponent::ComponentData* m_veinComponentData = nullptr;
+        void setSCPIInfo(cSCPIInfo* scpiinfo);
+        void setValidator(ValidatorInterface* validator);
+
+        void exportSCPIInfo(QJsonArray &jsArr);
+        void exportMetaData(QJsonObject &jsonObj) const;
+    private:
+        cSCPIInfo* m_scpiinfo = nullptr;
+        ValidatorInterface* m_pValidator = nullptr;
     };
     QMap<QString, TVeinParam> m_veinParameterMap;
     QList<cSCPIInfo*> m_scpiCatalogCmdList;
