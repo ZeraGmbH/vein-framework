@@ -4,11 +4,20 @@
 #include <QString>
 #include <QJsonArray>
 
+namespace SCPI {
+enum eSCPIEntryType {
+    isComponent,
+    isCatalog
+};
+}
+
 class cSCPIInfo
 {
 public:
+
     cSCPIInfo(){}
     cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refname, QString reftype, QString unit);
+    cSCPIInfo(QString model, QString cmd, int cmdTypeMask, QString refname, SCPI::eSCPIEntryType entryType, QString unit);
 
     void appendSCPIInfo(QJsonArray &jsArr);
 

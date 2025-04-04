@@ -1,7 +1,17 @@
 #include "scpiinfo.h"
 
-cSCPIInfo::cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refname, QString reftype, QString unit)
-    :m_sSCPIModel(model), m_sSCPICmd(cmd), m_sSCPICmdType(cmdtype), m_sRefName(refname), m_sRefType(reftype), m_sUnit(unit)
+cSCPIInfo::cSCPIInfo(QString model, QString cmd, QString cmdtype, QString refname, QString reftype, QString unit) :
+    m_sSCPIModel(model), m_sSCPICmd(cmd), m_sSCPICmdType(cmdtype), m_sRefName(refname), m_sRefType(reftype), m_sUnit(unit)
+{
+}
+
+cSCPIInfo::cSCPIInfo(QString model, QString cmd, int cmdTypeMask, QString refname, SCPI::eSCPIEntryType entryType, QString unit) :
+    m_sSCPIModel(model),
+    m_sSCPICmd(cmd),
+    m_sSCPICmdType(QString::number(cmdTypeMask)),
+    m_sRefName(refname),
+    m_sRefType(entryType==SCPI::isCatalog ? "1" : "0"),
+    m_sUnit(unit)
 {
 }
 
