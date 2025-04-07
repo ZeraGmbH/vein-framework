@@ -341,8 +341,7 @@ void SystemModuleEventSystem::setScpiInfo()
     initialData = new VeinComponent::ComponentData();
     param.m_description = "Session name";
     param.m_veinComponentData = initialData;
-    ScpiVeinComponentInfo* scpiInfo = new ScpiVeinComponentInfo("CONFIGURATION", "NAMESESSION", SCPI::isQuery|SCPI::isCmdwP, sessionComponentName, SCPI::isComponent);
-    param.setSCPIInfo(scpiInfo);
+    param.setScpiInfo("CONFIGURATION", "NAMESESSION", SCPI::isQuery|SCPI::isCmdwP, sessionComponentName, SCPI::isComponent);
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     param.setValidator(sValidator);
     m_veinParameterMap[sessionComponentName] = param;
@@ -351,17 +350,24 @@ void SystemModuleEventSystem::setScpiInfo()
     initialData = new VeinComponent::ComponentData();
     param.m_description = "XSession name";
     param.m_veinComponentData = initialData;
-    scpiInfo = new ScpiVeinComponentInfo("CONFIGURATION", "XSESSION", SCPI::isQuery|SCPI::isCmdwP, xSessionComponentName, SCPI::isComponent);
-    param.setSCPIInfo(scpiInfo);
+    param.setScpiInfo("CONFIGURATION", "XSESSION", SCPI::isQuery|SCPI::isCmdwP, xSessionComponentName, SCPI::isComponent);
     sValidator = new cStringValidator(m_lxdmConfFile.getAvailableXSessionNames());
     param.setValidator(sValidator);
     m_veinParameterMap[xSessionComponentName] = param;
     m_scpiCatalogCmdList.append(new ScpiVeinComponentInfo("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
 }
 
-void SystemModuleEventSystem::TVeinParam::setSCPIInfo(ScpiVeinComponentInfo *scpiinfo)
+void SystemModuleEventSystem::TVeinParam::setScpiInfo(const QString &model,
+                                                      const QString &cmd,
+                                                      int cmdTypeMask,
+                                                      const QString &veinComponentName,
+                                                      SCPI::eSCPIEntryType entryType)
 {
-    m_scpiinfo = scpiinfo;
+    m_scpiinfo = std::make_shared<ScpiVeinComponentInfo>(model,
+                                                         cmd,
+                                                         cmdTypeMask,
+                                                         veinComponentName,
+                                                         entryType);
 }
 
 void SystemModuleEventSystem::TVeinParam::setValidator(ValidatorInterface *validator)

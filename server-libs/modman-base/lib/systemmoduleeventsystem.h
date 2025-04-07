@@ -51,13 +51,17 @@ private:
     {
         QString m_description;
         VeinComponent::ComponentData* m_veinComponentData = nullptr;
-        void setSCPIInfo(ScpiVeinComponentInfo* scpiinfo);
+        void setScpiInfo(const QString &model,
+                         const QString &cmd,
+                         int cmdTypeMask, // e.g SCPI::isQuery|SCPI::isCmdwP
+                         const QString &veinComponentName,
+                         SCPI::eSCPIEntryType entryType);
         void setValidator(ValidatorInterface* validator);
 
         void exportSCPIInfo(QJsonArray &jsArr);
         void exportMetaData(QJsonObject &jsonObj) const;
     private:
-        ScpiVeinComponentInfo* m_scpiinfo = nullptr;
+        std::shared_ptr<ScpiVeinComponentInfo> m_scpiinfo;
         ValidatorInterface* m_pValidator = nullptr;
     };
     QMap<QString, TVeinParam> m_veinParameterMap;
