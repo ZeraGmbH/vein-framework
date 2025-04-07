@@ -8,6 +8,7 @@
 #include <vf_server_component_setter.h>
 #include <vf_server_component_add.h>
 #include <zera-jsonfileloader.h>
+#include <scpi.h>
 #include <QJsonArray>
 #include <QDateTime>
 
@@ -340,22 +341,22 @@ void SystemModuleEventSystem::setScpiInfo()
     initialData = new VeinComponent::ComponentData();
     param.m_description = "Session name";
     param.m_veinComponentData = initialData;
-    cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", "10", sessionComponentName, "0", "");
+    cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", SCPI::isQuery|SCPI::isCmdwP, sessionComponentName, SCPI::isComponent);
     param.setSCPIInfo(scpiInfo);
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     param.setValidator(sValidator);
     m_veinParameterMap[sessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", "2", sessionComponentName, "1", ""));
+    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", SCPI::isQuery, sessionComponentName, SCPI::isCatalog));
 
     initialData = new VeinComponent::ComponentData();
     param.m_description = "XSession name";
     param.m_veinComponentData = initialData;
-    scpiInfo = new cSCPIInfo("CONFIGURATION", "XSESSION", "10", xSessionComponentName, "0", "");
+    scpiInfo = new cSCPIInfo("CONFIGURATION", "XSESSION", SCPI::isQuery|SCPI::isCmdwP, xSessionComponentName, SCPI::isComponent);
     param.setSCPIInfo(scpiInfo);
     sValidator = new cStringValidator(m_lxdmConfFile.getAvailableXSessionNames());
     param.setValidator(sValidator);
     m_veinParameterMap[xSessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "XSESSION:CATALOG", "2", xSessionComponentName, "1", ""));
+    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
 }
 
 void SystemModuleEventSystem::TVeinParam::setSCPIInfo(cSCPIInfo *scpiinfo)

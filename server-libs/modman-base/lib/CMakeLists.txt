@@ -21,6 +21,7 @@ target_link_libraries(ModmanBase
     VfNet2
     VfStorage
     VfConvenientCode
+    Zera::SCPI
     )
 
 set_target_properties(ModmanBase PROPERTIES VERSION ${PROJECT_VERSION})
