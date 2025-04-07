@@ -3,11 +3,11 @@
 
 #include "lxdmsessionchangeparam.h"
 #include "lxdmconfigfile.h"
+#include "validatorinterface.h"
 #include <ve_eventsystem.h>
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
-#include "scpiinfo.h"
-#include "validatorinterface.h"
+#include <scpiveincomponentinfo.h>
 #include <QJsonDocument>
 
 class SystemModuleEventSystem : public VeinEvent::EventSystem
@@ -51,17 +51,17 @@ private:
     {
         QString m_description;
         VeinComponent::ComponentData* m_veinComponentData = nullptr;
-        void setSCPIInfo(cSCPIInfo* scpiinfo);
+        void setSCPIInfo(ScpiVeinComponentInfo* scpiinfo);
         void setValidator(ValidatorInterface* validator);
 
         void exportSCPIInfo(QJsonArray &jsArr);
         void exportMetaData(QJsonObject &jsonObj) const;
     private:
-        cSCPIInfo* m_scpiinfo = nullptr;
+        ScpiVeinComponentInfo* m_scpiinfo = nullptr;
         ValidatorInterface* m_pValidator = nullptr;
     };
     QMap<QString, TVeinParam> m_veinParameterMap;
-    QList<cSCPIInfo*> m_scpiCatalogCmdList;
+    QList<ScpiVeinComponentInfo*> m_scpiCatalogCmdList;
     LxdmConfigFile m_lxdmConfFile;
     std::function<bool ()> m_restartService;
     bool m_initDone=false;

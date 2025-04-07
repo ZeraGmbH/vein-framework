@@ -341,25 +341,25 @@ void SystemModuleEventSystem::setScpiInfo()
     initialData = new VeinComponent::ComponentData();
     param.m_description = "Session name";
     param.m_veinComponentData = initialData;
-    cSCPIInfo* scpiInfo = new cSCPIInfo("CONFIGURATION", "NAMESESSION", SCPI::isQuery|SCPI::isCmdwP, sessionComponentName, SCPI::isComponent);
+    ScpiVeinComponentInfo* scpiInfo = new ScpiVeinComponentInfo("CONFIGURATION", "NAMESESSION", SCPI::isQuery|SCPI::isCmdwP, sessionComponentName, SCPI::isComponent);
     param.setSCPIInfo(scpiInfo);
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     param.setValidator(sValidator);
     m_veinParameterMap[sessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "SESSION:CATALOG", SCPI::isQuery, sessionComponentName, SCPI::isCatalog));
+    m_scpiCatalogCmdList.append(new ScpiVeinComponentInfo("CONFIGURATION", "SESSION:CATALOG", SCPI::isQuery, sessionComponentName, SCPI::isCatalog));
 
     initialData = new VeinComponent::ComponentData();
     param.m_description = "XSession name";
     param.m_veinComponentData = initialData;
-    scpiInfo = new cSCPIInfo("CONFIGURATION", "XSESSION", SCPI::isQuery|SCPI::isCmdwP, xSessionComponentName, SCPI::isComponent);
+    scpiInfo = new ScpiVeinComponentInfo("CONFIGURATION", "XSESSION", SCPI::isQuery|SCPI::isCmdwP, xSessionComponentName, SCPI::isComponent);
     param.setSCPIInfo(scpiInfo);
     sValidator = new cStringValidator(m_lxdmConfFile.getAvailableXSessionNames());
     param.setValidator(sValidator);
     m_veinParameterMap[xSessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new cSCPIInfo("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
+    m_scpiCatalogCmdList.append(new ScpiVeinComponentInfo("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
 }
 
-void SystemModuleEventSystem::TVeinParam::setSCPIInfo(cSCPIInfo *scpiinfo)
+void SystemModuleEventSystem::TVeinParam::setSCPIInfo(ScpiVeinComponentInfo *scpiinfo)
 {
     m_scpiinfo = scpiinfo;
 }
