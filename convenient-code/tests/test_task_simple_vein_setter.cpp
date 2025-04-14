@@ -103,8 +103,8 @@ void test_task_simple_vein_setter::setTimeout()
         timeout = TimeMachineForTest::getInstance()->getCurrentTimeMs();
     });
     taskSet->start();
-    TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
+    TimeMachineForTest::getInstance()->processTimers(stdTimeout);
 
     QVERIFY(!receivedOk);
-    QCOMPARE(timeout, 2*stdTimeout); // TaskSimpleVeinSetter is butchered to run a second task inside which will create a "double" timeout
+    QCOMPARE(timeout, stdTimeout);
 }
