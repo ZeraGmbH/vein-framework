@@ -26,17 +26,21 @@ TaskSimpleVeinSetter::TaskSimpleVeinSetter(int entityId, QString componentName, 
         qWarning("Getter Task failed");
     }));
     connect(&m_taskGet, &TaskTemplate::sigFinish, this, [this, componentName, newValue, timeout](bool ok, int taskId) {
-        QVariant valueToBeSent = newValue;
-        if (static_cast<QMetaType::Type>(m_oldValue->type()) == QMetaType::QJsonObject) {
-            QString data(valueToBeSent.toString());
-            QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
-            valueToBeSent = doc.object();
+        if(ok) {
+            QVariant valueToBeSent = newValue;
+            if (static_cast<QMetaType::Type>(m_oldValue->type()) == QMetaType::QJsonObject) {
+                QString data(valueToBeSent.toString());
+                QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
+                valueToBeSent = doc.object();
+            }
+            m_taskSet.addSub(TaskClientComponentSetter::create(m_entityItem, componentName, *m_oldValue, valueToBeSent, timeout, []() {
+                qWarning("Setter Task failed");
+            }));
+            connect(&m_taskSet, &TaskTemplate::sigFinish, this, &TaskSimpleVeinSetter::sigFinish);
+            m_taskSet.start();
         }
-        m_taskSet.addSub(TaskClientComponentSetter::create(m_entityItem, componentName, *m_oldValue, valueToBeSent, timeout, []() {
-            qWarning("Setter Task failed");
-        }));
-        connect(&m_taskSet, &TaskTemplate::sigFinish, this, &TaskSimpleVeinSetter::sigFinish);
-        m_taskSet.start();
+        else
+            emit sigFinish(ok, taskId);
     });
 }
 
