@@ -9,8 +9,8 @@ class XiQNetWrapper
 {
 public:
     virtual ~XiQNetWrapper() = default;
-    virtual std::shared_ptr<google::protobuf::Message> byteArrayToProtobuf(QByteArray t_byteArray);
-    virtual QByteArray protobufToByteArray(const google::protobuf::Message &t_protobufMessage);
+    virtual std::shared_ptr<google::protobuf::Message> byteArrayToProtobuf(const QByteArray &byteArray);
+    virtual QByteArray protobufToByteArray(const google::protobuf::Message &protobufMessage);
 };
 
 #endif // PROTOWRAPPER_H

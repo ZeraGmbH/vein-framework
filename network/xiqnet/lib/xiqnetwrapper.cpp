@@ -1,18 +1,18 @@
 #include "xiqnetwrapper.h"
 #include <netmessages.pb.h>
 
-std::shared_ptr<google::protobuf::Message> XiQNetWrapper::byteArrayToProtobuf(QByteArray t_byteArray)
+std::shared_ptr<google::protobuf::Message> XiQNetWrapper::byteArrayToProtobuf(const QByteArray &byteArray)
 {
     ProtobufMessage::NetMessage *intermediate = new ProtobufMessage::NetMessage();
-    if(!intermediate->ParseFromArray(t_byteArray, t_byteArray.size())) {
+    if(!intermediate->ParseFromArray(byteArray, byteArray.size())) {
         ProtobufMessage::NetMessage::ScpiCommand *cmd = intermediate->mutable_scpi();
-        cmd->set_command(t_byteArray.data(), t_byteArray.size());
+        cmd->set_command(byteArray.data(), byteArray.size());
     }
     std::shared_ptr<google::protobuf::Message> proto {intermediate};
     return proto;
 }
 
-QByteArray XiQNetWrapper::protobufToByteArray(const google::protobuf::Message &t_protobufMessage)
+QByteArray XiQNetWrapper::protobufToByteArray(const google::protobuf::Message &protobufMessage)
 {
-  return QByteArray(t_protobufMessage.SerializeAsString().c_str(), t_protobufMessage.ByteSizeLong());
+    return QByteArray(protobufMessage.SerializeAsString().c_str(), protobufMessage.ByteSizeLong());
 }
