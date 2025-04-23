@@ -19,10 +19,11 @@ class VFEVENT_EXPORT EventSystem : public QObject
     Q_OBJECT
 public:
     explicit EventSystem(QObject *parent = nullptr);
-    ~EventSystem() {}
+    ~EventSystem();
     virtual void processEvent(QEvent *event) = 0;
     void attach(EventHandler *eventHandler);
     void detach();
+    static int getInstanceCount();
 
 signals:
     void sigSendEvent(QEvent *event);
@@ -32,6 +33,7 @@ private slots:
 
 private:
     EventHandler *m_eventHandler = nullptr;
+    static int m_instanceCount;
 };
 }
 #endif // EVENTSYSTEM_H

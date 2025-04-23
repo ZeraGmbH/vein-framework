@@ -1,16 +1,8 @@
 #include "vfeventsystemcommandfilter.h"
 
-int VfEventSystemCommandFilter::m_instanceCount = 0;
-
 VfEventSystemCommandFilter::VfEventSystemCommandFilter(VeinEvent::CommandEvent::EventSubtype subtypeToFilter) :
     m_subtypeToFilter(subtypeToFilter)
 {
-    m_instanceCount++;
-}
-
-VfEventSystemCommandFilter::~VfEventSystemCommandFilter()
-{
-    m_instanceCount--;
 }
 
 void VfEventSystemCommandFilter::processEvent(QEvent *event)
@@ -21,9 +13,4 @@ void VfEventSystemCommandFilter::processEvent(QEvent *event)
             processCommandEvent(commandEvent);
         }
     }
-}
-
-int VfEventSystemCommandFilter::getInstanceCount()
-{
-    return m_instanceCount;
 }
