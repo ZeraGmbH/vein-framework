@@ -31,7 +31,7 @@ bool TcpPeer::isConnected() const
     return m_worker->isConnected();
 }
 
-void TcpPeer::startConnection(QString ipAddress, quint16 port)
+void TcpPeer::startConnection(const QString &ipAddress, quint16 port)
 {
     m_worker->startConnection(ipAddress, port);
 }
@@ -46,12 +46,12 @@ void TcpPeer::setPeerId(QUuid peerId)
     m_worker->setPeerId(peerId);
 }
 
-void TcpPeer::writeRaw(QByteArray message) const
+void TcpPeer::writeRaw(const QByteArray &message) const
 {
     m_worker->writeRaw(message);
 }
 
-void TcpPeer::sendMessage(QByteArray message) const
+void TcpPeer::sendMessage(const QByteArray &message) const
 {
     m_worker->sendArray(message);
 }

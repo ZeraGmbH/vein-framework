@@ -26,13 +26,13 @@ public:
     virtual QString getIpAddress() const override;
     virtual quint16 getPort() const override;
     bool isConnected() const override;
-    void writeRaw(QByteArray message) const override;
+    void writeRaw(const QByteArray &message) const override;
 
-    void startConnection(QString ipAddress, quint16 port) override;
+    void startConnection(const QString &ipAddress, quint16 port) override;
     void sendArray(const QByteArray &byteArray) const override;
 
     QUuid getPeerId() const override;
-    void setPeerId(QUuid peerId) override;
+    void setPeerId(const QUuid &peerId) override;
 
 private slots:
     void doEmitSigConnectionEstablished();

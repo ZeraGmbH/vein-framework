@@ -60,7 +60,7 @@ TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret) :
     }
 }
 
-void TcpPeerWorker::startConnection(QString ipAddress, quint16 port)
+void TcpPeerWorker::startConnection(const QString &ipAddress, quint16 port)
 {
     Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
     m_tcpSock = new QTcpSocket(m_peer);
@@ -74,7 +74,7 @@ bool TcpPeerWorker::isConnected() const
            (m_tcpSock->state() == QTcpSocket::ConnectedState || m_tcpSock->state()==QTcpSocket::BoundState);
 }
 
-void TcpPeerWorker::writeRaw(QByteArray message) const
+void TcpPeerWorker::writeRaw(const QByteArray &message) const
 {
     m_tcpSock->write(message);
 }
@@ -116,7 +116,7 @@ QUuid TcpPeerWorker::getPeerId() const
     return m_peerId;
 }
 
-void TcpPeerWorker::setPeerId(QUuid peerId)
+void TcpPeerWorker::setPeerId(const QUuid &peerId)
 {
     Q_ASSERT(!peerId.isNull());
     m_peerId = peerId;

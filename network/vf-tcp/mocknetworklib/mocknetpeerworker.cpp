@@ -29,7 +29,7 @@ MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, se
 }
 
 // client only
-void MockNetPeerWorker::startConnection(QString ipAddress, quint16 port)
+void MockNetPeerWorker::startConnection(const QString &ipAddress, quint16 port)
 {
     if(ipAddress != "localhost" && ipAddress != "127.0.0.1")
         emitSigSocketError(QAbstractSocket::HostNotFoundError);
@@ -68,7 +68,7 @@ bool MockNetPeerWorker::isConnected() const
 }
 
 // client & server
-void MockNetPeerWorker::writeRaw(QByteArray message) const
+void MockNetPeerWorker::writeRaw(const QByteArray &message) const
 {
     emitMessageReceived(message);
 }
@@ -83,7 +83,7 @@ QUuid MockNetPeerWorker::getPeerId() const
     return m_peerId;
 }
 
-void MockNetPeerWorker::setPeerId(QUuid peerId)
+void MockNetPeerWorker::setPeerId(const QUuid &peerId)
 {
     Q_ASSERT(!peerId.isNull());
     m_peerId = peerId;
