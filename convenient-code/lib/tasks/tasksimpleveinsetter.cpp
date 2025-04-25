@@ -28,10 +28,14 @@ TaskSimpleVeinSetter::TaskSimpleVeinSetter(int entityId, QString componentName, 
     connect(&m_taskGet, &TaskTemplate::sigFinish, this, [this, componentName, newValue, timeout](bool ok, int taskId) {
         if(ok) {
             QVariant valueToBeSent = newValue;
-            if (static_cast<QMetaType::Type>(m_oldValue->type()) == QMetaType::QJsonObject) {
+            if (static_cast<QMetaType::Type>(m_oldValue->type()) == QMetaType::QJsonObject || static_cast<QMetaType::Type>(m_oldValue->type()) == QMetaType::QVariantMap) {
                 QString data(valueToBeSent.toString());
                 QJsonDocument doc = QJsonDocument::fromJson(data.toUtf8());
                 valueToBeSent = doc.object();
+                if (doc.isNull()) {
+                    emit sigFinish(false, taskId);
+                    return;
+                }
             }
             m_taskSet.addSub(TaskClientComponentSetter::create(m_entityItem, componentName, *m_oldValue, valueToBeSent, timeout, []() {
                 qWarning("Setter Task failed");
