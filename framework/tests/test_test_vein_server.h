@@ -17,6 +17,10 @@ private slots:
     void completeSessionWithValidXSession();
     void completeSessionXSessionChangePass();
     void completeSessionXSessionChangeFail();
+
+    void invokeRpc();
+    void invokeInvalidRpc();
+    void invokeRpcTwice();
 private:
     void startServer(bool restartServicePasses);
     std::unique_ptr<TestVeinServer> m_server;

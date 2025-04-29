@@ -18,7 +18,8 @@ TestVeinServer::TestVeinServer(const LxdmSessionChangeParam& lxdmParam) :
     m_serverCmdEventSpyTop(&m_JsonEventLog, "server-enter"),
     m_serverCmdEventSpyBottom(&m_JsonEventLog, "server-fallthrough"),
     m_systemModuleSystem(false, lxdmParam),
-    m_introspectionSystem(&m_storageSystem)
+    m_introspectionSystem(&m_storageSystem),
+    m_cmdEventHandlerSystem(VfCmdEventHandlerSystem::create())
 {
     ModuleManagerSetupFacade::registerMetaTypeStreamOperators();
     m_systemModuleSystem.setStorage(&m_storageSystem);
@@ -30,6 +31,7 @@ TestVeinServer::TestVeinServer(const LxdmSessionChangeParam& lxdmParam) :
     m_vfEventHandler.addSubsystem(&m_systemModuleSystem);
     m_vfEventHandler.addSubsystem(&m_introspectionSystem);
     m_vfEventHandler.addSubsystem(&m_storageSystem);
+    m_vfEventHandler.addSubsystem(m_cmdEventHandlerSystem.get());
     m_vfEventHandler.addSubsystem(&m_serverCmdEventSpyBottom);
     QObject::connect(&m_vfEventHandler, &VeinEvent::EventHandler::sigEventAccepted,
                      &m_serverCmdEventSpyBottom, &TestJsonSpyEventSystem::onEventAccepted);
@@ -118,6 +120,19 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
     QEvent* event = VfServerComponentSetter::generateEvent(entityId, componentName, oldValue, newValue);
     sendEvent(event);
     TimeMachineObject::feedEventLoop();
+}
+
+QUuid TestVeinServer::clientInvokeRpc(int entityId, QString procedureName, QVariantMap paramters)
+{
+    if(!m_rpcInvokers.contains(entityId)) {
+        VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(entityId);
+        m_cmdEventHandlerSystem->addItem(rpcInvoker);
+        m_rpcInvokers.insert(entityId, rpcInvoker);
+        connect(rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, &TestVeinServer::sigRPCFinished);
+    }
+    QUuid id = m_rpcInvokers.value(entityId)->invokeRPC(procedureName, paramters);
+    TimeMachineObject::feedEventLoop();
+    return id;
 }
 
 QVariant TestVeinServer::getValue(int entityId, QString componentName)
