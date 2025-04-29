@@ -6,10 +6,12 @@
 #include "lxdmsessionchangeparam.h"
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
+#include "vf_cmd_event_handler_system.h"
 #include "vn_introspectionsystem.h"
 #include "vs_storageeventsystem.h"
 #include "vftestentityspy.h"
 #include "vftestcomponentspy.h"
+#include "vf_client_rpc_invoker.h"
 #include "mocklxdmsessionchangeparamgenerator.h"
 #include <memory>
 #include <unordered_map>
@@ -32,6 +34,7 @@ public:
     void removeComponent(int entityId, QString componentName);
     void setComponentClientTransaction(int entityId, QString componentName, QVariant newValue);
     void setComponentServerNotification(int entityId, QString componentName, QVariant newValue);
+    QUuid clientInvokeRpc(int entityId, QString procedureName, QVariantMap paramters);
     QVariant getValue(int entityId, QString componentName);
     void removeEntitiesAdded();
     QMap<int, QList<QString>> getTestEntityComponentInfo();
@@ -46,6 +49,8 @@ public:
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
     void resetEventSpyData();
+signals:
+    void sigRPCFinished(bool ok, QUuid identifier, const QVariantMap &resultData);
 private:
     VeinEvent::EventHandler m_vfEventHandler;
 
@@ -62,6 +67,9 @@ private:
 
     std::unordered_map<int, std::unique_ptr<VfCpp::VfCppEntity>> m_entities;
     QStringList m_sessionList;
+
+    VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
+    QHash<int, VfClientRPCInvokerPtr> m_rpcInvokers;
 };
 
 #endif // TESTVEINSERVER_H

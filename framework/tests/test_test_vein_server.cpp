@@ -1,6 +1,8 @@
 #include "test_test_vein_server.h"
 #include "mocklxdmsessionchangeparamgenerator.h"
 #include "testloghelpers.h"
+#include "vf_entity_rpc_event_handler.h"
+#include <QSignalSpy>
 #include <timemachineobject.h>
 #include <QTest>
 
@@ -134,6 +136,82 @@ void test_test_vein_server::completeSessionXSessionChangeFail()
     jsonExpected = fileStorage.readAll();
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
     QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+}
+
+void test_test_vein_server::invokeRpc()
+{
+    startServer(false);
+
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_server->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
+    QVariantMap parameters;
+    parameters["p_param"] = true;
+    QUuid id = m_server->clientInvokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+
+    QCOMPARE(invokerSpy.count(), 1);
+    QList<QVariant> arguments = invokerSpy[0];
+    QCOMPARE(arguments.at(0), true);
+    QCOMPARE(arguments.at(1), id);
+    QVariantMap argMap = arguments[2].toMap();
+    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QCOMPARE(resultData, false);
+}
+
+void test_test_vein_server::invokeInvalidRpc()
+{
+    startServer(false);
+
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_server->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
+    QVariantMap parameters;
+    parameters["p_param"] = true;
+    QUuid id = m_server->clientInvokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "foo", parameters);
+
+    QCOMPARE(invokerSpy.count(), 1);
+    QList<QVariant> arguments = invokerSpy[0];
+    QCOMPARE(arguments.at(0), false);
+    QCOMPARE(arguments.at(1), id);
+    QVariantMap argMap = arguments[2].toMap();
+    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QCOMPARE(resultData, QVariant());
+}
+
+void test_test_vein_server::invokeRpcTwice()
+{
+    startServer(false);
+
+    vfEntityRpcEventHandler rpcEventHandler;
+    m_server->appendEventSystem(rpcEventHandler.getVeinEntity());
+    rpcEventHandler.initOnce();
+    TimeMachineObject::feedEventLoop();
+
+    QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
+    QVariantMap parameters;
+    parameters["p_param"] = true;
+    QUuid id1 = m_server->clientInvokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+    parameters["p_param"] = false;
+    QUuid id2 = m_server->clientInvokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+
+    QCOMPARE(invokerSpy.count(), 2);
+    QList<QVariant> arguments = invokerSpy[0];
+    QCOMPARE(arguments.at(0), true);
+    QCOMPARE(arguments.at(1), id1);
+    QVariant resultData = arguments[2].toMap()["RemoteProcedureData::Return"];
+    QCOMPARE(resultData, false);
+
+    arguments = invokerSpy[1];
+    QCOMPARE(arguments.at(0), true);
+    QCOMPARE(arguments.at(1), id2);
+    resultData = arguments[2].toMap()["RemoteProcedureData::Return"];
+    QCOMPARE(resultData, true);
 }
 
 void test_test_vein_server::startServer(bool restartServicePasses)
