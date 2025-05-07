@@ -63,7 +63,7 @@ void cVeinModuleRpc::callFunctionPrivate(const QUuid p_callId, const QUuid p_pee
         requiredParamKeys.subtract(QSet<QString>(searchParamList.begin(), searchParamList.end()));
 
         bool callOk = false;
-        RPCResultCodes resultCode = RPCResultCodes::RPC_EINVAL;
+        VeinComponent::RemoteProcedureData::RPCResultCodes resultCode = VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_EINVAL;
         QString errorMsg;
         QVariant returnedResult;
         if(requiredParamKeys.isEmpty()) {
@@ -75,16 +75,16 @@ void cVeinModuleRpc::callFunctionPrivate(const QUuid p_callId, const QUuid p_pee
                                                  Q_ARG(QVariantMap,rpcParameters)
                                                  );
             if(callOk) {
-                resultCode = RPCResultCodes::RPC_SUCCESS;
+                resultCode = VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS;
             } else {
-                resultCode = RPCResultCodes::RPC_EINVAL;
+                resultCode = VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_EINVAL;
                 errorMsg = QStringLiteral("Function not implemented");
             }
         }
         else {
             // write error msg on error
             returnedResult = t_rpcParameters;
-            resultCode = RPCResultCodes::RPC_EINVAL;
+            resultCode = VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_EINVAL;
             errorMsg = QString("Missing required parameters: [%1]").arg(requiredParamList.join(','));
         }
         m_pendingRpcHash[p_callId] = p_peerId;
@@ -101,7 +101,7 @@ void cVeinModuleRpc::callFunctionPrivate(const QUuid p_callId, const QUuid p_pee
     }
 }
 
-void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult)
+void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult)
 {
     QHash<QUuid, QUuid>::iterator iter = m_pendingRpcHash.find(p_callId);
     if(iter != m_pendingRpcHash.end()) {
