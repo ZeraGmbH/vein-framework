@@ -20,6 +20,12 @@ public:
         RPCMD_CANCELLATION = 4 /**< currently unused */
     };
 
+    enum RPCResultCodes {
+        RPC_CANCELED = -64,
+        RPC_EINVAL = -EINVAL, //invalid parameters
+        RPC_SUCCESS = 0
+    };
+
     /**
      * @brief used to unambiguously store a client scope unique identifier of an invokation
      * @note the CallID is used to track progress or cancellation messages
