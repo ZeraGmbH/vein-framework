@@ -17,7 +17,7 @@ bool vfEntityRpcEventHandler::initOnce()
         m_isInitalized = true;
         m_entity->initModule();
         m_entity->createComponent("EntityName", "RPCEventHandler", true);
-        m_entity->createRpc(this, "RPC_forTest", VfCpp::cVeinModuleRpc::Param({{"p_param", "bool"}}), false);
+        m_entity->createRpc(this, "RPC_forTest", VfCpp::cVeinModuleRpcMultithreadBlocked::Param({{"p_param", "bool"}}), false);
     }
     return true;
 }

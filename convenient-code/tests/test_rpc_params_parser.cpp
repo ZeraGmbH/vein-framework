@@ -1,6 +1,6 @@
 #include "test_rpc_params_parser.h"
 #include "vf_rpc_params_parser.h"
-#include "vf-cpp-rpc.h"
+#include "vf-cpp-rpc-multithread-blocked.h"
 #include <QTest>
 
 QTEST_MAIN(test_rpc_params_parser)
@@ -9,7 +9,7 @@ void test_rpc_params_parser::parseNoParam()
 {
     QString rpcName = "RPC_test";
     QVariantMap params;
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, QMap<QString, QString>());
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, QMap<QString, QString>());
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -21,7 +21,7 @@ void test_rpc_params_parser::parseIntSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "int";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -33,7 +33,7 @@ void test_rpc_params_parser::parseBoolSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "bool";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -45,7 +45,7 @@ void test_rpc_params_parser::parseStringSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "QString";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -57,7 +57,7 @@ void test_rpc_params_parser::parseStringListSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "QStringList";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -69,7 +69,7 @@ void test_rpc_params_parser::parseDoubleNumberSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "double";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -81,7 +81,7 @@ void test_rpc_params_parser::parseFloatNumberSingleParam()
 
     QMap<QString, QString> signature;
     signature["firstParam"] = "float";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -95,7 +95,7 @@ void test_rpc_params_parser::parseBoolBoolParam()
     QMap<QString, QString> signature;
     signature["z"] = "bool";
     signature["a"] = "bool";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }
 
@@ -109,6 +109,6 @@ void test_rpc_params_parser::parseIntBoolParam()
     QMap<QString, QString> signature;
     signature["a"] = "int";
     signature["z"] = "bool";
-    QString rpcSignature = VfCpp::cVeinModuleRpc::createRpcSignature(rpcName, signature);
+    QString rpcSignature = VfCpp::cVeinModuleRpcMultithreadBlocked::createRpcSignature(rpcName, signature);
     QCOMPARE(VfRpcParamsParser::parseRpcParams(rpcName, params), rpcSignature);
 }

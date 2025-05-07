@@ -58,9 +58,9 @@ int VfCppEntity::getEntityId() const
     return m_entityId;
 }
 
-cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
+cVeinModuleRpcMultithreadBlocked::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
 {
-    cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,
+    cVeinModuleRpcMultithreadBlocked::Ptr tmpPtr = cVeinModuleRpcMultithreadBlocked::Ptr(new cVeinModuleRpcMultithreadBlocked(m_entityId,
                                                                         this,
                                                                         object,
                                                                         funcName,

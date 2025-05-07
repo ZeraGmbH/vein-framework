@@ -2,7 +2,7 @@
 #define VFCPPENTITY_H
 
 #include "vf-cpp-component.h"
-#include "vf-cpp-rpc.h"
+#include "vf-cpp-rpc-multithread-blocked.h"
 #include <QMap>
 
 namespace VfCpp {
@@ -24,7 +24,7 @@ public:
     // Notes
     // * parameter: the expected parameters key: name / value: metatype: e.g "int"
     // * There is no reason to use the rpc handler object
-    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true);
+    cVeinModuleRpcMultithreadBlocked::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true);
 
     void initModule();
 signals:
@@ -36,7 +36,7 @@ private:
     void handleRpcs(VeinEvent::CommandEvent *cmdEvent);
     int m_entityId;
     QMap<QString,VfCppComponent::Ptr> m_componentList;
-    QMap<QString,cVeinModuleRpc::Ptr> m_rpcList;
+    QMap<QString,cVeinModuleRpcMultithreadBlocked::Ptr> m_rpcList;
 };
 
 }

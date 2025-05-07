@@ -1,5 +1,5 @@
-#ifndef VEINMODULERPC_H
-#define VEINMODULERPC_H
+#ifndef VEINMODULERPCMULTITHREADBLOCKED_H
+#define VEINMODULERPCMULTITHREADBLOCKED_H
 
 #include <QObject>
 #include <QString>
@@ -28,23 +28,23 @@ class EventSystem;
 namespace VfCpp {
 
 /**
- * @brief The cVeinModuleRpc class
+ * @brief The cVeinModuleRpcMultithreadBlocked class
  */
-class cVeinModuleRpc: public QObject
+class cVeinModuleRpcMultithreadBlocked: public QObject
 {
     Q_OBJECT
 public:
-    typedef  QSharedPointer< cVeinModuleRpc > Ptr;
+    typedef  QSharedPointer< cVeinModuleRpcMultithreadBlocked > Ptr;
     typedef  QMap<QString, QString> Param;
 
-    cVeinModuleRpc(int entityId,
+    cVeinModuleRpcMultithreadBlocked(int entityId,
                    VeinEvent::EventSystem *eventsystem,
                    QObject *p_object,
                    QString p_funcName,
                    QMap<QString,QString> p_parameter,
                    bool p_threaded = true,
                    bool pFunctionBlocks = true);
-    ~cVeinModuleRpc();
+    ~cVeinModuleRpcMultithreadBlocked();
 
     QString rpcName() const;
 
@@ -78,4 +78,4 @@ private:
 
 }
 
-#endif // VEINMODULERPC_H
+#endif // VEINMODULERPCMULTITHREADBLOCKED_H

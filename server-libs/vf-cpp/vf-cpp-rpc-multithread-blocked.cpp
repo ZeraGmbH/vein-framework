@@ -1,10 +1,10 @@
-#include "vf-cpp-rpc.h"
+#include "vf-cpp-rpc-multithread-blocked.h"
 
 #include <QtConcurrent/QtConcurrentRun>
 
 using namespace VfCpp;
 
-cVeinModuleRpc::cVeinModuleRpc(int entityId,
+cVeinModuleRpcMultithreadBlocked::cVeinModuleRpcMultithreadBlocked(int entityId,
                                VeinEvent::EventSystem *eventsystem,
                                QObject *p_object,
                                QString p_funcName,
@@ -31,26 +31,26 @@ cVeinModuleRpc::cVeinModuleRpc(int entityId,
     rpcData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
     rpcData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
 
-    QObject::connect(this,&cVeinModuleRpc::callFunctionPrivateSignal,this,&cVeinModuleRpc::callFunctionPrivate,Qt::QueuedConnection);
+    QObject::connect(this,&cVeinModuleRpcMultithreadBlocked::callFunctionPrivateSignal,this,&cVeinModuleRpcMultithreadBlocked::callFunctionPrivate,Qt::QueuedConnection);
 
     emit  m_pEventSystem->sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, rpcData));
 }
 
-cVeinModuleRpc::~cVeinModuleRpc()
+cVeinModuleRpcMultithreadBlocked::~cVeinModuleRpcMultithreadBlocked()
 {
 }
 
-QString cVeinModuleRpc::rpcName() const
+QString cVeinModuleRpcMultithreadBlocked::rpcName() const
 {
     return m_rpcName;
 }
 
-void cVeinModuleRpc::callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters)
+void cVeinModuleRpcMultithreadBlocked::callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters)
 {
     emit callFunctionPrivateSignal(p_callId, p_peerId, t_rpcParameters);
 }
 
-void cVeinModuleRpc::callFunctionPrivate(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters)
+void cVeinModuleRpcMultithreadBlocked::callFunctionPrivate(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters)
 {
     const auto rpcHandling = [=]() {
         QMutexLocker locker(&(this->m_mutex));
@@ -101,7 +101,7 @@ void cVeinModuleRpc::callFunctionPrivate(const QUuid p_callId, const QUuid p_pee
     }
 }
 
-void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult)
+void cVeinModuleRpcMultithreadBlocked::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult)
 {
     QHash<QUuid, QUuid>::iterator iter = m_pendingRpcHash.find(p_callId);
     if(iter != m_pendingRpcHash.end()) {
@@ -131,7 +131,7 @@ void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteP
     }
 }
 
-QString cVeinModuleRpc::createRpcSignature(QString rpcName, QMap<QString, QString> paramDescriptions)
+QString cVeinModuleRpcMultithreadBlocked::createRpcSignature(QString rpcName, QMap<QString, QString> paramDescriptions)
 {
     QString signature;
     signature = rpcName;

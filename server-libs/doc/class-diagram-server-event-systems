@@ -13,7 +13,7 @@ class VfEventSystemCommandFilter {
 class VfCppEntity {
     void processEvent(...)
     VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false)
-    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true)
+    cVeinModuleRpcMultithreadBlocked::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true)
     void initModule()
     signal void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value)
 }
