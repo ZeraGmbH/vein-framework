@@ -43,13 +43,15 @@ void test_task_client_rpc_invoker::invokeSubscribedRPC()
 
     QVariantMap parameters;
     parameters["p_param"] = true;
+    std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
     taskInvoker->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
     QCOMPARE(spy.count(), 1);
     QCOMPARE(spy[0][0].toBool(), true);
+    QVERIFY(rpcSuccessful);
 }
 
 void test_task_client_rpc_invoker::invokeSubscribedRPCTwice()
@@ -73,8 +75,9 @@ void test_task_client_rpc_invoker::invokeSubscribedRPCTwice()
 
     QVariantMap parameters;
     parameters["p_param"] = true;
+    std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
     taskInvoker->start();
     taskInvoker->start();
@@ -82,6 +85,7 @@ void test_task_client_rpc_invoker::invokeSubscribedRPCTwice()
 
     QCOMPARE(spy.count(), 1); // starting tasks multiple times responds once
     QCOMPARE(spy[0][0].toBool(), true);
+    QVERIFY(rpcSuccessful);
 }
 
 void test_task_client_rpc_invoker::timeout()
@@ -91,8 +95,9 @@ void test_task_client_rpc_invoker::timeout()
 
     QVariantMap parameters;
     parameters["p_param"] = true;
+    std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
 
     bool receivedOk = true;
     int timeout = 0;

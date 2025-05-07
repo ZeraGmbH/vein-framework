@@ -9,9 +9,11 @@
 class TaskClientRPCInvoker : public TaskTemplate
 {
 public:
-    static TaskTemplatePtr create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler,
+    static TaskTemplatePtr create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+                                  std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler,
                                   int timeout, std::function<void()> additionalErrorHandler = []{});
-    TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler);
+    TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+                        std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler);
     ~TaskClientRPCInvoker();
     void start() override;
 private:
@@ -20,6 +22,7 @@ private:
     QString m_procedureName;
     QVariantMap m_parameters;
     std::shared_ptr<QVariant> m_resultData;
+    std::shared_ptr<bool> m_rpcSuccessful;
 };
 
 #endif // TASK_CLIENT_RPC_INVOKER_H
