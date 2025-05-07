@@ -37,8 +37,9 @@ void test_task_simple_vein_rpc_invoker::getValid()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
+    std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, result,
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result,
                                                                 clientStack.getCmdEventHandlerSystem(), stdTimeout);
     bool receivedOk = false;
     int timeout=0;
@@ -51,6 +52,7 @@ void test_task_simple_vein_rpc_invoker::getValid()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
 
     QVERIFY(receivedOk);
+    QVERIFY(rpcSuccessful);
     QCOMPARE(result->toBool(), true);
 }
 
@@ -68,8 +70,8 @@ void test_task_simple_vein_rpc_invoker::getInvalid()
 
     QVariantMap parameters;
     parameters["p_param"] = false;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<QVariant>(),
-                                                                        clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<bool>(),
+                                                                        std::make_shared<QVariant>(), clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(task.get(), &TaskTemplate::sigFinish);
     task->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
@@ -83,8 +85,8 @@ void test_task_simple_vein_rpc_invoker::getTimeout()
     VfCmdEventHandlerSystemPtr cmdEventHandlerSystem = VfCmdEventHandlerSystem::create();
     QVariantMap parameters;
     parameters["p_param"] = true;
-    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<QVariant>(),
-                                                                cmdEventHandlerSystem, stdTimeout);
+    TaskSimpleVeinRPCInvokerPtr task = TaskSimpleVeinRPCInvoker::create(rpcHandlerId, "RPC_foo(bool p_param)",parameters, std::make_shared<bool>(),
+                                                                        std::make_shared<QVariant>(), cmdEventHandlerSystem, stdTimeout);
 
     bool receivedOk = true;
     int timeout=0;

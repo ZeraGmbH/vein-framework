@@ -1,18 +1,22 @@
 #include "task_client_rpc_invoker.h"
 #include <taskdecoratortimeout.h>
+#include <vcmp_remoteproceduredata.h>
 
-TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler,
-                                             int timeout, std::function<void ()> additionalErrorHandler)
+TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+                                             std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler, int timeout,
+                                             std::function<void ()> additionalErrorHandler)
 {
     return TaskDecoratorTimeout::wrapTimeout(timeout,
-                                             std::make_unique<TaskClientRPCInvoker>(entityId, procedureName, parameters, result, commandEventHandler),
+                                             std::make_unique<TaskClientRPCInvoker>(entityId, procedureName, parameters, rpcSuccessful, result, commandEventHandler),
                                              additionalErrorHandler);
 
 }
 
-TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler) :
+TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+                                           std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr commandEventHandler) :
     m_procedureName(procedureName),
     m_parameters(parameters),
+    m_rpcSuccessful(rpcSuccessful),
     m_resultData(result),
     m_commandEventHandler(commandEventHandler)
 {
@@ -30,6 +34,7 @@ void TaskClientRPCInvoker::start()
     //calling this multiple times overwrites connections
     m_rpcInvoker->invokeRPC(m_procedureName, m_parameters);
     connect(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, [=](bool ok, QUuid identifier, const QVariantMap &resultData) {
+        *m_rpcSuccessful = (resultData[VeinComponent::RemoteProcedureData::s_resultCodeString] == VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS);
         *m_resultData = resultData["RemoteProcedureData::Return"];
         finishTask(ok);
     });
