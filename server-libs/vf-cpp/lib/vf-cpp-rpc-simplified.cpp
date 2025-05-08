@@ -9,6 +9,16 @@ VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int 
     emit m_eventSystem->sigSendEvent(VfServerRpcRegister::generateEvent(m_entityId, m_rpcSignature));
 }
 
+QString VfCppRpcSimplified::getSignature()
+{
+    return m_rpcSignature;
+}
+
+void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
+{
+
+}
+
 QString VfCppRpcSimplified::createRpcSignature(QString rpcName, QMap<QString, QString> paramDescriptions)
 {
     QString signature;
