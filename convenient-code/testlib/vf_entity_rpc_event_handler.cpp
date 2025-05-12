@@ -1,4 +1,5 @@
 #include "vf_entity_rpc_event_handler.h"
+#include "vf-cpp-rpc-signature.h"
 
 vfEntityRpcEventHandler::vfEntityRpcEventHandler(int id)
 {
@@ -17,7 +18,7 @@ bool vfEntityRpcEventHandler::initOnce()
         m_isInitalized = true;
         m_entity->initModule();
         m_entity->createComponent("EntityName", "RPCEventHandler", true);
-        m_entity->createRpc(this, "RPC_forTest", VfCpp::cVeinModuleRpc::Param({{"p_param", "bool"}}), false);
+        m_entity->createRpc(this, "RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "bool"}}), false);
     }
     return true;
 }
