@@ -7,7 +7,8 @@ class test_rpc_simplified : public QObject
 {
     Q_OBJECT
 private slots:
-    void callRpc();
+    void callRpcValidParam();
+    void callRpcInvalidParam();
 };
 
 #endif // TEST_RPC_SIMPLIFIED_H

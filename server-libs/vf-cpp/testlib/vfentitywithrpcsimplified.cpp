@@ -31,6 +31,11 @@ void VfEntityWithRpcSimplified::sendRpcResult(const QUuid &callId, QString rpcNa
     m_rpcHandlerList[m_rpcSignatureList[rpcName]]->sendRpcResult(callId, result);
 }
 
+void VfEntityWithRpcSimplified::sendRpcError(const QUuid &callId, QString rpcName, QString errorStr)
+{
+    m_rpcHandlerList[m_rpcSignatureList[rpcName]]->sendRpcError(callId, errorStr);
+}
+
 void VfEntityWithRpcSimplified::processEvent(QEvent *event)
 {
     if(event->type()==VeinEvent::CommandEvent::getQEventType()) {
