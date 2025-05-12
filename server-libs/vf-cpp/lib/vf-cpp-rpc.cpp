@@ -1,5 +1,5 @@
 #include "vf-cpp-rpc.h"
-
+#include "vf-cpp-rpc-signature.h"
 #include <QtConcurrent/QtConcurrentRun>
 
 using namespace VfCpp;
@@ -22,7 +22,7 @@ cVeinModuleRpc::cVeinModuleRpc(int entityId,
     if(p_threaded && !pFunctionBlocks) {
         qFatal("Do not use unblocking functions with threading - signal won't reach their slots!!");
     }
-    m_rpcName = createRpcSignature(p_funcName, p_parameter);
+    m_rpcName = VfCppRpcSignature::createRpcSignature(p_funcName, p_parameter);
 
     VeinComponent::RemoteProcedureData *rpcData = new VeinComponent::RemoteProcedureData();
     rpcData->setEntityId(m_nEntityId);
@@ -129,22 +129,4 @@ void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteP
         m_pendingRpcHash.erase(iter);
         emit m_pEventSystem->sigSendEvent(rpcResultEvent);
     }
-}
-
-QString cVeinModuleRpc::createRpcSignature(QString rpcName, QMap<QString, QString> paramDescriptions)
-{
-    QString signature;
-    signature = rpcName;
-    signature.append("(");
-    const QStringList params = paramDescriptions.keys();
-    for(const QString &param : params) {
-        signature.append(paramDescriptions[param]);
-        signature.append(" ");
-        signature.append(param);
-        signature.append(",");
-    }
-    if(signature.at(signature.size()-1) == ",")
-        signature.remove(signature.size()-1,1);
-    signature.append(")");
-    return signature;
 }

@@ -35,7 +35,6 @@ class cVeinModuleRpc: public QObject
     Q_OBJECT
 public:
     typedef  QSharedPointer< cVeinModuleRpc > Ptr;
-    typedef  QMap<QString, QString> Param;
 
     cVeinModuleRpc(int entityId,
                    VeinEvent::EventSystem *eventsystem,
@@ -50,7 +49,6 @@ public:
 
     void callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters);
     void sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult);
-    static QString createRpcSignature(QString rpcName, QMap<QString,QString> paramDescriptions);
 
 private slots:
     void callFunctionPrivate(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters);

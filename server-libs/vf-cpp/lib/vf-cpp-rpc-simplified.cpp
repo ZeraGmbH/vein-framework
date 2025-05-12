@@ -1,11 +1,11 @@
 #include "vf-cpp-rpc-simplified.h"
 #include "vf_server_rpc_register.h"
 
-VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcName, QMap<QString,QString> parameters) :
+VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcName, VfCpp::VfCppRpcSignature::RPCParams parameters) :
     m_eventSystem(eventsystem),
     m_entityId(entityId)
 {
-    m_rpcSignature = createRpcSignature(rpcName, parameters);
+    m_rpcSignature = VfCpp::VfCppRpcSignature::createRpcSignature(rpcName, parameters);
     emit m_eventSystem->sigSendEvent(VfServerRpcRegister::generateEvent(m_entityId, m_rpcSignature));
 }
 
@@ -17,22 +17,4 @@ QString VfCppRpcSimplified::getSignature()
 void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
 {
 
-}
-
-QString VfCppRpcSimplified::createRpcSignature(QString rpcName, QMap<QString, QString> paramDescriptions)
-{
-    QString signature;
-    signature = rpcName;
-    signature.append("(");
-    const QStringList params = paramDescriptions.keys();
-    for(const QString &param : params) {
-        signature.append(paramDescriptions[param]);
-        signature.append(" ");
-        signature.append(param);
-        signature.append(",");
-    }
-    if(signature.at(signature.size()-1) == ",")
-        signature.remove(signature.size()-1,1);
-    signature.append(")");
-    return signature;
 }
