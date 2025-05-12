@@ -19,7 +19,14 @@ void VfTestRpcSimplified::initOnce()
         m_initialized = true;
         m_entity->initModule();
         m_entity->createRpc(this, "RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
+        m_entity->createRpc(this, "RPC_PrivateMethod", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
+        m_entity->createRpc(this, "RPC_PublicMethod", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
     }
+}
+
+QVariant VfTestRpcSimplified::RPC_PublicMethod(QVariantMap parameters)
+{
+    return QVariant();
 }
 
 QVariant VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
@@ -35,4 +42,9 @@ QVariant VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
     else
         m_entity->sendRpcError(callId, "RPC_forTest", "Error");
     return result;
+}
+
+QVariant VfTestRpcSimplified::RPC_PrivateMethod(QVariantMap parameters)
+{
+    return QVariant();
 }

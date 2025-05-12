@@ -88,3 +88,27 @@ void test_rpc_simplified::callInvalidRpc()
     QList<QVariant> arguments = spyRpcFinish[0];
     QCOMPARE(arguments.at(0), false);
 }
+
+void test_rpc_simplified::callRegisteredButInaccessibleRpc()
+{
+    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QVariantMap rpcParams;
+    rpcParams.insert("p_param", 72);
+    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_PrivateMethod", rpcParams);
+    QCOMPARE(spyRpcFinish.count(), 1);
+
+    QList<QVariant> arguments = spyRpcFinish[0];
+    QCOMPARE(arguments.at(0), true);
+    QVariantMap argMap = arguments[2].toMap();
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
+    QCOMPARE(resultData, "Function not implemented/accessible");
+
+    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_PublicMethod", rpcParams);
+    QCOMPARE(spyRpcFinish.count(), 2);
+
+    arguments = spyRpcFinish[1];
+    QCOMPARE(arguments.at(0), true);
+    argMap = arguments[2].toMap();
+    resultData = argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
+    QCOMPARE(resultData, "Function not implemented/accessible");
+}
