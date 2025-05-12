@@ -16,7 +16,7 @@ private:
     void processEvent(QEvent *event) override;
     void handleRpcs(VeinEvent::CommandEvent *cmdEvent);
     int m_entityId;
-    QMap<QString,VfCppRpcSimplifiedPtr> m_rpcList;
+    QMap<QString,VfCpp::VfCppRpcSimplifiedPtr> m_rpcList;
 };
 
 #endif // VFENTITYWITHRPCSIMPLIFIED_H
