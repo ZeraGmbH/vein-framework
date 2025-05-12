@@ -24,7 +24,9 @@ void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, 
 {
     QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
     params.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
-    QMetaObject::invokeMethod(m_object, m_rpcName.toUtf8(), Qt::DirectConnection, Q_ARG(QVariantMap, params));
+    bool methodFound = QMetaObject::invokeMethod(m_object, m_rpcName.toUtf8(), Qt::DirectConnection, Q_ARG(QVariantMap, params));
+    if(!methodFound)
+        sendRpcError(callId, "Function not implemented/accessible");
 }
 
 void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
