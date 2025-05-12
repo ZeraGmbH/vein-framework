@@ -5,11 +5,11 @@
 #include "ve_eventsystem.h"
 #include "vf-cpp-rpc-simplified.h"
 
-class VfTEntityWithRpcSimplified : public VeinEvent::EventSystem
+class VfEntityWithRpcSimplified : public VeinEvent::EventSystem
 {
 public:
-    VfTEntityWithRpcSimplified(int entityId);
-    ~VfTEntityWithRpcSimplified();
+    VfEntityWithRpcSimplified(int entityId);
+    ~VfEntityWithRpcSimplified();
     void initModule();
     void createRpc(QString rpcName, QMap<QString,QString> parameters);
 private:
