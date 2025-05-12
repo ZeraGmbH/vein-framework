@@ -5,27 +5,27 @@
 #include "vcmp_remoteproceduredata.h"
 #include "vcmp_errordatasender.h"
 
-VfTEntityWithRpcSimplified::VfTEntityWithRpcSimplified(int entityId) :
+VfEntityWithRpcSimplified::VfEntityWithRpcSimplified(int entityId) :
     m_entityId(entityId)
 {}
 
-VfTEntityWithRpcSimplified::~VfTEntityWithRpcSimplified()
+VfEntityWithRpcSimplified::~VfEntityWithRpcSimplified()
 {
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
 }
 
-void VfTEntityWithRpcSimplified::initModule()
+void VfEntityWithRpcSimplified::initModule()
 {
     emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
 }
 
-void VfTEntityWithRpcSimplified::createRpc(QString rpcName, QMap<QString, QString> parameters)
+void VfEntityWithRpcSimplified::createRpc(QString rpcName, QMap<QString, QString> parameters)
 {
     VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCpp::VfCppRpcSimplified>(this, m_entityId, rpcName, parameters);
     m_rpcList[rpc->getSignature()] = rpc;
 }
 
-void VfTEntityWithRpcSimplified::processEvent(QEvent *event)
+void VfEntityWithRpcSimplified::processEvent(QEvent *event)
 {
     if(event->type()==VeinEvent::CommandEvent::getQEventType()) {
         VeinEvent::CommandEvent *cmdEvent = static_cast<VeinEvent::CommandEvent *>(event);
@@ -37,7 +37,7 @@ void VfTEntityWithRpcSimplified::processEvent(QEvent *event)
     }
 }
 
-void VfTEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
+void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
 {
     VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
     if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
