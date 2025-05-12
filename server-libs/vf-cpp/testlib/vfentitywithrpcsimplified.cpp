@@ -19,10 +19,16 @@ void VfEntityWithRpcSimplified::initModule()
     emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
 }
 
-void VfEntityWithRpcSimplified::createRpc(QString rpcName, QMap<QString, QString> parameters)
+void VfEntityWithRpcSimplified::createRpc(QObject *object, QString rpcName, QMap<QString, QString> parameters)
 {
-    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCpp::VfCppRpcSimplified>(this, m_entityId, rpcName, parameters);
-    m_rpcList[rpc->getSignature()] = rpc;
+    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCpp::VfCppRpcSimplified>(object, this, m_entityId, rpcName, parameters);
+    m_rpcHandlerList[rpc->getSignature()] = rpc;
+    m_rpcSignatureList[rpcName] = rpc->getSignature();
+}
+
+void VfEntityWithRpcSimplified::sendRpcResult(const QUuid &callId, QString rpcName, QVariant result)
+{
+    m_rpcHandlerList[m_rpcSignatureList[rpcName]]->sendRpcResult(callId, result);
 }
 
 void VfEntityWithRpcSimplified::processEvent(QEvent *event)
@@ -41,10 +47,10 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
 {
     VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
     if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
-        if(m_rpcList.contains(rpcData->procedureName())) {
+        if(m_rpcHandlerList.contains(rpcData->procedureName())) {
             const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
             Q_ASSERT(!callId.isNull());
-            m_rpcList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
+            m_rpcHandlerList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
             cmdEvent->accept();
         }
         else

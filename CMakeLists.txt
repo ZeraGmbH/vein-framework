@@ -52,7 +52,7 @@ function(SETUP_TESTS)
             PUBLIC
             Qt5::Test
             VfComponentTest
-            VfCpp
+            VfCpp-testlib
             VfNet2
             VfQml
             vf-tcp-mock-networklib
