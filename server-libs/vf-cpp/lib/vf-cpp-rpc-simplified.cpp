@@ -1,6 +1,6 @@
 #include "vf-cpp-rpc-simplified.h"
-#include "ve_commandevent.h"
 #include "vf_server_rpc_register.h"
+#include "vf_server_rpc_result.h"
 #include "vcmp_remoteproceduredata.h"
 
 using namespace VfCpp;
@@ -35,13 +35,5 @@ void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
     if(!result.isNull()) {
         returnVal.insert("RemoteProcedureData::Return", result);
     }
-
-    VeinComponent::RemoteProcedureData *resultData = new VeinComponent::RemoteProcedureData();
-    resultData->setEntityId(m_entityId);
-    resultData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-    resultData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-    resultData->setCommand(VeinComponent::RemoteProcedureData::Command::RPCMD_RESULT);
-    resultData->setProcedureName(m_rpcSignature);
-    resultData->setInvokationData(returnVal);
-    emit m_eventSystem->sigSendEvent(new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, resultData));
+    emit m_eventSystem->sigSendEvent(VfServerRpcResult::generateEvent(m_entityId, m_rpcSignature, returnVal));
 }
