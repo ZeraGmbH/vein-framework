@@ -37,3 +37,14 @@ void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
     }
     emit m_eventSystem->sigSendEvent(VfServerRpcResult::generateEvent(m_entityId, m_rpcSignature, returnVal));
 }
+
+void VfCppRpcSimplified::sendRpcError(const QUuid &callId, QString errorStr)
+{
+    QVariantMap returnVal;
+    returnVal.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
+    returnVal.insert(VeinComponent::RemoteProcedureData::s_resultCodeString, VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_EINVAL);
+    if(!errorStr.isEmpty()) {
+        returnVal.insert(VeinComponent::RemoteProcedureData::s_errorMessageString, errorStr);
+    }
+    emit m_eventSystem->sigSendEvent(VfServerRpcResult::generateEvent(m_entityId, m_rpcSignature, returnVal));
+}

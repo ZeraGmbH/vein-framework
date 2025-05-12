@@ -13,6 +13,7 @@ public:
     void initModule();
     void createRpc(QObject *object, QString rpcName, QMap<QString,QString> parameters);
     void sendRpcResult(const QUuid &callId, QString rpcName, QVariant result);
+    void sendRpcError(const QUuid &callId, QString rpcName, QString errorStr);
 private:
     void processEvent(QEvent *event) override;
     void handleRpcs(VeinEvent::CommandEvent *cmdEvent);
