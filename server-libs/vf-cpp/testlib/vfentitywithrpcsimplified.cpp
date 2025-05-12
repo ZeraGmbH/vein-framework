@@ -21,7 +21,7 @@ void VfTEntityWithRpcSimplified::initModule()
 
 void VfTEntityWithRpcSimplified::createRpc(QString rpcName, QMap<QString, QString> parameters)
 {
-    VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCppRpcSimplified>(this, m_entityId, rpcName, parameters);
+    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCpp::VfCppRpcSimplified>(this, m_entityId, rpcName, parameters);
     m_rpcList[rpc->getSignature()] = rpc;
 }
 

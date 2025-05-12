@@ -5,6 +5,8 @@
 #include "vf-cpp-rpc-signature.h"
 #include <QString>
 
+namespace VfCpp {
+
 class VfCppRpcSimplified
 {
 public:
@@ -18,5 +20,6 @@ private:
     QString m_rpcSignature;
 };
 typedef std::shared_ptr<VfCppRpcSimplified> VfCppRpcSimplifiedPtr;
+}
 
 #endif // VFCPPRPCSIMPLIFIED_H
