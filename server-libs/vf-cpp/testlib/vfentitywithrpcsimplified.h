@@ -11,12 +11,14 @@ public:
     VfEntityWithRpcSimplified(int entityId);
     ~VfEntityWithRpcSimplified();
     void initModule();
-    void createRpc(QString rpcName, QMap<QString,QString> parameters);
+    void createRpc(QObject *object, QString rpcName, QMap<QString,QString> parameters);
+    void sendRpcResult(const QUuid &callId, QString rpcName, QVariant result);
 private:
     void processEvent(QEvent *event) override;
     void handleRpcs(VeinEvent::CommandEvent *cmdEvent);
     int m_entityId;
-    QMap<QString,VfCpp::VfCppRpcSimplifiedPtr> m_rpcList;
+    QMap<QString, QString> m_rpcSignatureList;
+    QMap<QString, VfCpp::VfCppRpcSimplifiedPtr> m_rpcHandlerList;
 };
 
 #endif // VFENTITYWITHRPCSIMPLIFIED_H
