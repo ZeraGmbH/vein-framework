@@ -24,27 +24,20 @@ void VfTestRpcSimplified::initOnce()
     }
 }
 
-QVariant VfTestRpcSimplified::RPC_PublicMethod(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_PublicMethod(QVariantMap parameters)
 {
-    return QVariant();
 }
 
-QVariant VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
 {
     QUuid callId = parameters[VeinComponent::RemoteProcedureData::s_callIdString].toUuid();
     int input = parameters["p_param"].toInt();
-    QVariant result;
-
-    if(input > 0) {
-        result = QString::number(input);
+    if(input > 0)
         m_entity->sendRpcResult(callId, "RPC_forTest", QString::number(input));
-    }
     else
         m_entity->sendRpcError(callId, "RPC_forTest", "Error");
-    return result;
 }
 
-QVariant VfTestRpcSimplified::RPC_PrivateMethod(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_PrivateMethod(QVariantMap parameters)
 {
-    return QVariant();
 }
