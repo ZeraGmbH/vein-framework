@@ -3,10 +3,12 @@
 
 ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                                                    bool devMode,
-                                                   const LxdmSessionChangeParam &lxdmParam) :
+                                                   const LxdmSessionChangeParam &lxdmParam,
+                                                   const QString persistencyBasePath) :
     m_systemModuleSystem(devMode, lxdmParam),
     m_introspectionSystem(&m_storSystem),
-    m_licenseSystem(licenseSystem)
+    m_licenseSystem(licenseSystem),
+    m_persistencyBasePath(persistencyBasePath)
 {
     Q_ASSERT(m_licenseSystem != nullptr);
     m_eventHandler.addSubsystem(&m_systemModuleSystem);
@@ -54,5 +56,10 @@ VeinStorage::AbstractEventSystem *ModuleManagerSetupFacade::getStorageSystem()
 LicenseSystemInterface *ModuleManagerSetupFacade::getLicenseSystem()
 {
     return m_licenseSystem;
+}
+
+QString ModuleManagerSetupFacade::getPersistencyBasePath()
+{
+    return m_persistencyBasePath;
 }
 
