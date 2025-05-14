@@ -56,7 +56,7 @@ void test_client_rpc_invoker::errorSignalFromUnsubscribedEntityInvalidRPCNoNet()
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), false);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
 
@@ -88,7 +88,7 @@ void test_client_rpc_invoker::unsubscribedEntityValidRPCNoNet()
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
 
@@ -153,7 +153,7 @@ void test_client_rpc_invoker::subscribedEntityValidRPCNet()
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
 

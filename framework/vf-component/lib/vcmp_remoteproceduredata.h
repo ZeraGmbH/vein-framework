@@ -44,6 +44,7 @@ public:
      * @brief used to unambiguously store the call parameters
      */
     static const QLatin1String s_parameterString;
+    static const QLatin1String s_returnString;
 
     RemoteProcedureData();
 

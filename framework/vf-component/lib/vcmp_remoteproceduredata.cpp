@@ -8,7 +8,7 @@ const QLatin1String RemoteProcedureData::s_callIdString = QLatin1String("RemoteP
 const QLatin1String RemoteProcedureData::s_resultCodeString = QLatin1String("RemoteProcedureData::resultCode");
 const QLatin1String RemoteProcedureData::s_errorMessageString = QLatin1String("RemoteProcedureData::errorMessage");
 const QLatin1String RemoteProcedureData::s_parameterString = QLatin1String("RemoteProcedureData::callParameters");
-
+const QLatin1String RemoteProcedureData::s_returnString = QLatin1String("RemoteProcedureData::Return");
 
 RemoteProcedureData::RemoteProcedureData() : VeinEvent::EventData()
 {

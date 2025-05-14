@@ -39,7 +39,7 @@ void test_rpc_simplified::callRpcValidParam()
     QList<QVariant> arguments = spyRpcFinish[0];
     QCOMPARE(arguments.at(0), true);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, "72");
 }
 
@@ -128,9 +128,9 @@ void test_rpc_simplified::callRPCTwice()
     QCOMPARE(spyRpcFinish.count(), 2);
 
     QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
-    QCOMPARE(spyRpcFinish[0][2].toMap()["RemoteProcedureData::Return"], "72");
+    QCOMPARE(spyRpcFinish[0][2].toMap()[VeinComponent::RemoteProcedureData::s_returnString], "72");
     QCOMPARE(spyRpcFinish[1][1].toUuid(), id2);
-    QCOMPARE(spyRpcFinish[1][2].toMap()["RemoteProcedureData::Return"], "48");
+    QCOMPARE(spyRpcFinish[1][2].toMap()[VeinComponent::RemoteProcedureData::s_returnString], "48");
 }
 
 void test_rpc_simplified::callRPCRespondingAfterDelay()
@@ -145,5 +145,5 @@ void test_rpc_simplified::callRPCRespondingAfterDelay()
     TimeMachineForTest::getInstance()->processTimers(5000);
     QCOMPARE(spyRpcFinish.count(), 1);
     QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
-    QCOMPARE(spyRpcFinish[0][2].toMap()["RemoteProcedureData::Return"], "72");
+    QCOMPARE(spyRpcFinish[0][2].toMap()[VeinComponent::RemoteProcedureData::s_returnString], "72");
 }
