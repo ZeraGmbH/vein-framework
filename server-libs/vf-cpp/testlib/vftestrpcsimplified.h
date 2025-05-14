@@ -11,12 +11,12 @@ public:
     VfTestRpcSimplified(int entityId);
     VfEntityWithRpcSimplified *getEntity();
     void initOnce();
-    void RPC_PublicMethod(QVariantMap parameters);
+    void RPC_PublicMethod(QUuid callId, QVariantMap parameters);
 public slots:
-    void RPC_forTest(QVariantMap parameters);
-    void RPC_addDelay(QVariantMap parameters);
+    void RPC_forTest(QUuid callId, QVariantMap parameters);
+    void RPC_addDelay(QUuid callId, QVariantMap parameters);
 private:
-    void RPC_PrivateMethod(QVariantMap parameters);
+    void RPC_PrivateMethod(QUuid callId, QVariantMap parameters);
     std::shared_ptr<VfEntityWithRpcSimplified> m_entity;
     bool m_initialized = false;
     TimerTemplateQtPtr m_delayResponse;

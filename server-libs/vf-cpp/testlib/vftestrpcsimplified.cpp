@@ -25,13 +25,12 @@ void VfTestRpcSimplified::initOnce()
     }
 }
 
-void VfTestRpcSimplified::RPC_PublicMethod(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_PublicMethod(QUuid callId, QVariantMap parameters)
 {
 }
 
-void VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_forTest(QUuid callId, QVariantMap parameters)
 {
-    QUuid callId = parameters[VeinComponent::RemoteProcedureData::s_callIdString].toUuid();
     int input = parameters["p_param"].toInt();
     if(input > 0)
         m_entity->sendRpcResult(callId, "RPC_forTest", QString::number(input));
@@ -39,9 +38,8 @@ void VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
         m_entity->sendRpcError(callId, "RPC_forTest", "Error");
 }
 
-void VfTestRpcSimplified::RPC_addDelay(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_addDelay(QUuid callId, QVariantMap parameters)
 {
-    QUuid callId = parameters[VeinComponent::RemoteProcedureData::s_callIdString].toUuid();
     int input = parameters["p_param"].toInt();
     int delayMs = parameters["p_delayMs"].toInt();
 
@@ -56,6 +54,6 @@ void VfTestRpcSimplified::RPC_addDelay(QVariantMap parameters)
         m_entity->sendRpcError(callId, "RPC_addDelay", "Error");
 }
 
-void VfTestRpcSimplified::RPC_PrivateMethod(QVariantMap parameters)
+void VfTestRpcSimplified::RPC_PrivateMethod(QUuid callId, QVariantMap parameters)
 {
 }

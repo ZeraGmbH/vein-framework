@@ -23,8 +23,7 @@ QString VfCppRpcSimplified::getSignature()
 void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
 {
     QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
-    params.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
-    bool methodFound = QMetaObject::invokeMethod(m_object, m_rpcName.toUtf8(), Qt::DirectConnection, Q_ARG(QVariantMap, params));
+    bool methodFound = QMetaObject::invokeMethod(m_object, m_rpcName.toUtf8(), Qt::DirectConnection, Q_ARG(QUuid, callId), Q_ARG(QVariantMap, params));
     if(!methodFound)
         sendRpcError(callId, "Function not implemented/accessible");
 }
