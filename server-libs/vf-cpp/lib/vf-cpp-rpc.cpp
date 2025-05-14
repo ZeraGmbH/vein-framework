@@ -112,7 +112,7 @@ void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteP
             returnVal.insert(VeinComponent::RemoteProcedureData::s_errorMessageString, errorMsg);
         }
         if(!returnedResult.isNull()) {
-            returnVal.insert("RemoteProcedureData::Return", returnedResult);
+            returnVal.insert(VeinComponent::RemoteProcedureData::s_returnString, returnedResult);
         }
 
         VeinComponent::RemoteProcedureData *resultData = new VeinComponent::RemoteProcedureData();

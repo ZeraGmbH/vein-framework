@@ -157,7 +157,7 @@ void test_test_vein_server::invokeRpc()
     QCOMPARE(arguments.at(0), true);
     QCOMPARE(arguments.at(1), id);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
 
@@ -180,7 +180,7 @@ void test_test_vein_server::invokeInvalidRpc()
     QCOMPARE(arguments.at(0), false);
     QCOMPARE(arguments.at(1), id);
     QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap["RemoteProcedureData::Return"];
+    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
 
@@ -204,13 +204,13 @@ void test_test_vein_server::invokeRpcTwice()
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
     QCOMPARE(arguments.at(1), id1);
-    QVariant resultData = arguments[2].toMap()["RemoteProcedureData::Return"];
+    QVariant resultData = arguments[2].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 
     arguments = invokerSpy[1];
     QCOMPARE(arguments.at(0), true);
     QCOMPARE(arguments.at(1), id2);
-    resultData = arguments[2].toMap()["RemoteProcedureData::Return"];
+    resultData = arguments[2].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, true);
 }
 

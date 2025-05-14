@@ -34,7 +34,7 @@ void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
     returnVal.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
     returnVal.insert(VeinComponent::RemoteProcedureData::s_resultCodeString, VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS);
     if(!result.isNull()) {
-        returnVal.insert("RemoteProcedureData::Return", result);
+        returnVal.insert(VeinComponent::RemoteProcedureData::s_returnString, result);
     }
     emit m_eventSystem->sigSendEvent(VfServerRpcResult::generateEvent(m_entityId, m_rpcSignature, returnVal));
 }

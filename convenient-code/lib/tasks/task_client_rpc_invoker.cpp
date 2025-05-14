@@ -35,7 +35,7 @@ void TaskClientRPCInvoker::start()
     m_rpcInvoker->invokeRPC(m_procedureName, m_parameters);
     connect(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, [=](bool ok, QUuid identifier, const QVariantMap &resultData) {
         *m_rpcSuccessful = (resultData[VeinComponent::RemoteProcedureData::s_resultCodeString] == VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS);
-        *m_resultData = resultData["RemoteProcedureData::Return"];
+        *m_resultData = resultData[VeinComponent::RemoteProcedureData::s_returnString];
         finishTask(ok);
     });
 }
