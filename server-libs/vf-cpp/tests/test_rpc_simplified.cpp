@@ -1,5 +1,6 @@
 #include "test_rpc_simplified.h"
 #include "vftestrpcsimplified.h"
+#include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QSignalSpy>
 #include <QTest>
@@ -11,6 +12,9 @@ static constexpr int entityIdWithRpc = 1111;
 
 void test_rpc_simplified::init()
 {
+    TimerFactoryQtForTest::enableTest();
+    TimeMachineForTest::reset();
+
     m_serverNet = std::make_unique<TestVeinServerWithMockNet>(serverPort);
     m_additionalEntityWithRpc = std::make_unique<VfTestRpcSimplified>(entityIdWithRpc);
     m_serverNet->getServer()->appendEventSystem(m_additionalEntityWithRpc->getEntity());
@@ -111,4 +115,35 @@ void test_rpc_simplified::callRegisteredButInaccessibleRpc()
     argMap = arguments[2].toMap();
     resultData = argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
     QCOMPARE(resultData, "Function not implemented/accessible");
+}
+
+void test_rpc_simplified::callRPCTwice()
+{
+    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QVariantMap rpcParams;
+    rpcParams.insert("p_param", 72);
+    QUuid id1 = m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    rpcParams.insert("p_param", 48);
+    QUuid id2 = m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    QCOMPARE(spyRpcFinish.count(), 2);
+
+    QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
+    QCOMPARE(spyRpcFinish[0][2].toMap()["RemoteProcedureData::Return"], "72");
+    QCOMPARE(spyRpcFinish[1][1].toUuid(), id2);
+    QCOMPARE(spyRpcFinish[1][2].toMap()["RemoteProcedureData::Return"], "48");
+}
+
+void test_rpc_simplified::callRPCRespondingAfterDelay()
+{
+    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QVariantMap rpcParams;
+    rpcParams.insert("p_param", 72);
+    rpcParams.insert("p_delayMs", 5000);
+    QUuid id1 = m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_addDelay", rpcParams);
+
+    QCOMPARE(spyRpcFinish.count(), 0);
+    TimeMachineForTest::getInstance()->processTimers(5000);
+    QCOMPARE(spyRpcFinish.count(), 1);
+    QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
+    QCOMPARE(spyRpcFinish[0][2].toMap()["RemoteProcedureData::Return"], "72");
 }

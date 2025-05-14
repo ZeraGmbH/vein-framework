@@ -17,6 +17,8 @@ private slots:
     void callRpcMissingParam();
     void callInvalidRpc();
     void callRegisteredButInaccessibleRpc();
+    void callRPCTwice();
+    void callRPCRespondingAfterDelay();
 private:
     std::unique_ptr<TestVeinServerWithMockNet> m_serverNet;
     std::unique_ptr<VfTestRpcSimplified> m_additionalEntityWithRpc;

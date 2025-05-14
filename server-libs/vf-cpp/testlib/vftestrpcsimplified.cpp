@@ -19,6 +19,7 @@ void VfTestRpcSimplified::initOnce()
         m_initialized = true;
         m_entity->initModule();
         m_entity->createRpc(this, "RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
+        m_entity->createRpc(this, "RPC_addDelay", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}, {"p_delayMs", "int"}}));
         m_entity->createRpc(this, "RPC_PrivateMethod", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
         m_entity->createRpc(this, "RPC_PublicMethod", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}));
     }
@@ -36,6 +37,23 @@ void VfTestRpcSimplified::RPC_forTest(QVariantMap parameters)
         m_entity->sendRpcResult(callId, "RPC_forTest", QString::number(input));
     else
         m_entity->sendRpcError(callId, "RPC_forTest", "Error");
+}
+
+void VfTestRpcSimplified::RPC_addDelay(QVariantMap parameters)
+{
+    QUuid callId = parameters[VeinComponent::RemoteProcedureData::s_callIdString].toUuid();
+    int input = parameters["p_param"].toInt();
+    int delayMs = parameters["p_delayMs"].toInt();
+
+    if(delayMs > 0) {
+        m_delayResponse = TimerFactoryQt::createSingleShot(delayMs);
+        connect(m_delayResponse.get(), &TimerTemplateQt::sigExpired, this, [callId, input, this](){
+            m_entity->sendRpcResult(callId, "RPC_addDelay", QString::number(input));
+        });
+        m_delayResponse->start();
+    }
+    else
+        m_entity->sendRpcError(callId, "RPC_addDelay", "Error");
 }
 
 void VfTestRpcSimplified::RPC_PrivateMethod(QVariantMap parameters)
