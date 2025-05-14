@@ -35,6 +35,7 @@ class cVeinModuleRpc: public QObject
     Q_OBJECT
 public:
     typedef  QSharedPointer< cVeinModuleRpc > Ptr;
+    typedef QMap<QString, QString> Param;
 
     cVeinModuleRpc(int entityId,
                    VeinEvent::EventSystem *eventsystem,
