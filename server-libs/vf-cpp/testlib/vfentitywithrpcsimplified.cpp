@@ -1,4 +1,6 @@
 #include "vfentitywithrpcsimplified.h"
+#include "rpcfortest.h"
+#include "rpcadddelay.h"
 #include "ve_eventdata.h"
 #include "vf_server_entity_add.h"
 #include "vf_server_entity_remove.h"
@@ -17,23 +19,10 @@ VfEntityWithRpcSimplified::~VfEntityWithRpcSimplified()
 void VfEntityWithRpcSimplified::initModule()
 {
     emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
-}
-
-void VfEntityWithRpcSimplified::createRpc(QObject *object, QString rpcName, QMap<QString, QString> parameters)
-{
-    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<VfCpp::VfCppRpcSimplified>(object, this, m_entityId, rpcName, parameters);
+    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<RpcForTest>(this, m_entityId);
     m_rpcHandlerList[rpc->getSignature()] = rpc;
-    m_rpcSignatureList[rpcName] = rpc->getSignature();
-}
-
-void VfEntityWithRpcSimplified::sendRpcResult(const QUuid &callId, QString rpcName, QVariant result)
-{
-    m_rpcHandlerList[m_rpcSignatureList[rpcName]]->sendRpcResult(callId, result);
-}
-
-void VfEntityWithRpcSimplified::sendRpcError(const QUuid &callId, QString rpcName, QString errorStr)
-{
-    m_rpcHandlerList[m_rpcSignatureList[rpcName]]->sendRpcError(callId, errorStr);
+    rpc = std::make_shared<RpcAddDelay>(this, m_entityId);
+    m_rpcHandlerList[rpc->getSignature()] = rpc;
 }
 
 void VfEntityWithRpcSimplified::processEvent(QEvent *event)
@@ -55,7 +44,8 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
         if(m_rpcHandlerList.contains(rpcData->procedureName())) {
             const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
             Q_ASSERT(!callId.isNull());
-            m_rpcHandlerList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
+            QVariantMap params = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
+            m_rpcHandlerList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), params);
             cmdEvent->accept();
         }
         else

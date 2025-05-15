@@ -5,8 +5,7 @@
 
 using namespace VfCpp;
 
-VfCppRpcSimplified::VfCppRpcSimplified(QObject *object, VeinEvent::EventSystem *eventsystem, int entityId, QString rpcName, VfCppRpcSignature::RPCParams parameters) :
-    m_object(object),
+VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcName, VfCppRpcSignature::RPCParams parameters) :
     m_eventSystem(eventsystem),
     m_entityId(entityId),
     m_rpcName(rpcName)
@@ -18,14 +17,6 @@ VfCppRpcSimplified::VfCppRpcSimplified(QObject *object, VeinEvent::EventSystem *
 QString VfCppRpcSimplified::getSignature()
 {
     return m_rpcSignature;
-}
-
-void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
-{
-    QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
-    bool methodFound = QMetaObject::invokeMethod(m_object, m_rpcName.toUtf8(), Qt::DirectConnection, Q_ARG(QUuid, callId), Q_ARG(QVariantMap, params));
-    if(!methodFound)
-        sendRpcError(callId, "Function not implemented/accessible");
 }
 
 void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)

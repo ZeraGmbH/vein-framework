@@ -2,7 +2,7 @@
 #define TEST_RPC_SIMPLIFIED_H
 
 #include "testveinserverwithmocknet.h"
-#include "vftestrpcsimplified.h"
+#include "vfentitywithrpcsimplified.h"
 #include <QObject>
 
 class test_rpc_simplified : public QObject
@@ -16,12 +16,11 @@ private slots:
     void callRpcInvalidParamName();
     void callRpcMissingParam();
     void callInvalidRpc();
-    void callRegisteredButInaccessibleRpc();
     void callRPCTwice();
     void callRPCRespondingAfterDelay();
 private:
     std::unique_ptr<TestVeinServerWithMockNet> m_serverNet;
-    std::unique_ptr<VfTestRpcSimplified> m_additionalEntityWithRpc;
+    std::unique_ptr<VfEntityWithRpcSimplified> m_additionalEntityWithRpc;
 };
 
 #endif // TEST_RPC_SIMPLIFIED_H
