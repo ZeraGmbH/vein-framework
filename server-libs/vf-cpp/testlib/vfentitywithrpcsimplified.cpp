@@ -2,6 +2,7 @@
 #include "rpcfortest.h"
 #include "rpcadddelay.h"
 #include "ve_eventdata.h"
+#include "vf-cpp-component.h"
 #include "vf_server_entity_add.h"
 #include "vf_server_entity_remove.h"
 #include "vcmp_remoteproceduredata.h"
@@ -19,6 +20,11 @@ VfEntityWithRpcSimplified::~VfEntityWithRpcSimplified()
 void VfEntityWithRpcSimplified::initModule()
 {
     emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
+    VfCpp::VfCppComponent::Ptr tmpPtr = VfCpp::VfCppComponent::Ptr(new VfCpp::VfCppComponent(m_entityId,
+                                                                        this,
+                                                                        "TestEntity",
+                                                                        "EntityName",
+                                                                        true));
     m_rpcHandlerList.append(std::make_shared<RpcForTest>(this, m_entityId));
     m_rpcHandlerList.append(std::make_shared<RpcAddDelay>(this, m_entityId));
 }

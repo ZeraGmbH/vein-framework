@@ -1,4 +1,5 @@
 #include "test_rpc_simplified.h"
+#include "mocktcpnetworkfactory.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QSignalSpy>
@@ -19,20 +20,32 @@ void test_rpc_simplified::init()
     m_serverNet->getServer()->appendEventSystem(m_additionalEntityWithRpc.get());
     m_additionalEntityWithRpc->initModule();
     TimeMachineObject::feedEventLoop();
+
+    m_clientStack = std::make_unique<VfCoreStackClient>(VeinTcp::MockTcpNetworkFactory::create());
+    m_clientStack->connectToServer("127.0.0.1", serverPort);
+    TimeMachineObject::feedEventLoop();
+    m_clientStack->subscribeEntity(entityIdWithRpc);
+    TimeMachineObject::feedEventLoop();
+
+    m_rpcInvoker = std::make_shared<VfClientRPCInvoker>(entityIdWithRpc);
+    m_clientStack->addItem(m_rpcInvoker);
 }
 
 void test_rpc_simplified::cleanup()
 {
+    m_rpcInvoker = nullptr;
+    m_clientStack = nullptr;
     m_additionalEntityWithRpc = nullptr;
     m_serverNet = nullptr;
 }
 
 void test_rpc_simplified::callRpcValidParam()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("p_param", 72);
-    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 1);
 
     QList<QVariant> arguments = spyRpcFinish[0];
@@ -44,10 +57,11 @@ void test_rpc_simplified::callRpcValidParam()
 
 void test_rpc_simplified::callRpcInvalidParamValue()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("p_param", -72);
-    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 1);
 
     QList<QVariant> arguments = spyRpcFinish[0];
