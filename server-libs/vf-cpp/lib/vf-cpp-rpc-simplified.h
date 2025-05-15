@@ -20,9 +20,11 @@ signals:
 private slots:
     virtual void callRPCFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters) = 0;
 private:
+    void sendRPCresultEvent(const QUuid &callId, QVariantMap returnVal);
     VeinEvent::EventSystem *m_eventSystem;
     int m_entityId;
     QString m_rpcSignature;
+    QHash<QUuid, QUuid> m_callIdPeerIdHash;
 };
 typedef std::shared_ptr<VfCppRpcSimplified> VfCppRpcSimplifiedPtr;
 }
