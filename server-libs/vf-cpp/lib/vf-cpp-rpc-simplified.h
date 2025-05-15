@@ -16,7 +16,6 @@ public:
     void sendRpcResult(const QUuid &callId, QVariant result);
     void sendRpcError(const QUuid &callId, QString errorStr);
 private:
-    QString createRpcSignature(QString rpcName, QMap<QString,QString> paramDescriptions);
     VeinEvent::EventSystem *m_eventSystem;
     int m_entityId;
     QString m_rpcSignature;
