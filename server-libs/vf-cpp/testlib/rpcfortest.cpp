@@ -1,7 +1,10 @@
 #include "rpcfortest.h"
+#include "vf-cpp-rpc-signature.h"
 
 RpcForTest::RpcForTest(VeinEvent::EventSystem *eventSystem, int entityId) :
-    VfCpp::VfCppRpcSimplified(eventSystem, entityId, "RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}}))
+    VfCpp::VfCppRpcSimplified(eventSystem,
+                                entityId,
+                                VfCpp::VfCppRpcSignature::createRpcSignature("RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}})))
 {
 }
 

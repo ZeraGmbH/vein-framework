@@ -5,13 +5,12 @@
 
 using namespace VfCpp;
 
-VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcName, VfCppRpcSignature::RPCParams parameters) :
+VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcSignature) :
     m_eventSystem(eventsystem),
     m_entityId(entityId),
-    m_rpcName(rpcName)
+    m_rpcSignature(rpcSignature)
 {
-    m_rpcSignature = VfCppRpcSignature::createRpcSignature(m_rpcName, parameters);
-    emit m_eventSystem->sigSendEvent(VfServerRpcRegister::generateEvent(m_entityId, m_rpcSignature));
+    emit m_eventSystem->sigSendEvent(VfServerRpcRegister::generateEvent(m_entityId, rpcSignature));
 }
 
 QString VfCppRpcSimplified::getSignature()
