@@ -3,6 +3,7 @@
 
 #include "testveinserverwithmocknet.h"
 #include "vfentitywithrpcsimplified.h"
+#include "vf_core_stack_client.h"
 #include <QObject>
 
 class test_rpc_simplified : public QObject
@@ -21,6 +22,8 @@ private slots:
 private:
     std::unique_ptr<TestVeinServerWithMockNet> m_serverNet;
     std::unique_ptr<VfEntityWithRpcSimplified> m_additionalEntityWithRpc;
+    std::unique_ptr<VfCoreStackClient> m_clientStack;
+    VfClientRPCInvokerPtr m_rpcInvoker;
 };
 
 #endif // TEST_RPC_SIMPLIFIED_H
