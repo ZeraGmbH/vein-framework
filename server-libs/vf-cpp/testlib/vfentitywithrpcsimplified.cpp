@@ -19,10 +19,8 @@ VfEntityWithRpcSimplified::~VfEntityWithRpcSimplified()
 void VfEntityWithRpcSimplified::initModule()
 {
     emit sigSendEvent(VfServerEntityAdd::generateEvent(m_entityId));
-    VfCpp::VfCppRpcSimplifiedPtr rpc = std::make_shared<RpcForTest>(this, m_entityId);
-    m_rpcHandlerList[rpc->getSignature()] = rpc;
-    rpc = std::make_shared<RpcAddDelay>(this, m_entityId);
-    m_rpcHandlerList[rpc->getSignature()] = rpc;
+    m_rpcHandlerList.append(std::make_shared<RpcForTest>(this, m_entityId));
+    m_rpcHandlerList.append(std::make_shared<RpcAddDelay>(this, m_entityId));
 }
 
 void VfEntityWithRpcSimplified::processEvent(QEvent *event)
@@ -41,14 +39,18 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
 {
     VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
     if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
-        if(m_rpcHandlerList.contains(rpcData->procedureName())) {
-            const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
-            Q_ASSERT(!callId.isNull());
-            QVariantMap params = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
-            m_rpcHandlerList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), params);
-            cmdEvent->accept();
+        const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
+        Q_ASSERT(!callId.isNull());
+        bool rpcFound = false;
+        for(auto rpc: m_rpcHandlerList) {
+            if(rpc->getSignature() == rpcData->procedureName()) {
+                rpcFound = true;
+                QVariantMap params = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
+                rpc->callFunction(callId, cmdEvent->peerId(), params);
+                cmdEvent->accept();
+            }
         }
-        else
+        if(!rpcFound)
             ErrorDataSender::errorOut(QString("No RPC with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName()),
                                       cmdEvent,
                                       this);
