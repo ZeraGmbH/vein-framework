@@ -1,7 +1,10 @@
 #include "rpcadddelay.h"
+#include "vf-cpp-rpc-signature.h"
 
 RpcAddDelay::RpcAddDelay(VeinEvent::EventSystem *eventSystem, int entityId) :
-        VfCpp::VfCppRpcSimplified(eventSystem, entityId, "RPC_addDelay", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}, {"p_delayMs", "int"}}))
+        VfCpp::VfCppRpcSimplified(eventSystem,
+                                    entityId,
+                                    VfCpp::VfCppRpcSignature::createRpcSignature("RPC_addDelay", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "int"}, {"p_delayMs", "int"}})))
 {
 }
 
