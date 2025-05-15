@@ -11,11 +11,18 @@ VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int 
     m_rpcSignature(rpcSignature)
 {
     emit m_eventSystem->sigSendEvent(VfServerRpcRegister::generateEvent(m_entityId, rpcSignature));
+    connect(this, &VfCppRpcSimplified::callRpc, this, &VfCppRpcSimplified::callRPCFunction, Qt::QueuedConnection);
 }
 
 QString VfCppRpcSimplified::getSignature()
 {
     return m_rpcSignature;
+}
+
+void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
+{
+    QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
+    emit callRpc(callId, peerId, params);
 }
 
 void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)

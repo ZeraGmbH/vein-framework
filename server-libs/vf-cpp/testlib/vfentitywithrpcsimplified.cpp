@@ -45,8 +45,7 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
         for(auto rpc: m_rpcHandlerList) {
             if(rpc->getSignature() == rpcData->procedureName()) {
                 rpcFound = true;
-                QVariantMap params = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
-                rpc->callFunction(callId, cmdEvent->peerId(), params);
+                rpc->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
                 cmdEvent->accept();
             }
         }

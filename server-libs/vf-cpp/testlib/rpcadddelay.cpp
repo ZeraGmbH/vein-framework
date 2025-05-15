@@ -8,7 +8,7 @@ RpcAddDelay::RpcAddDelay(VeinEvent::EventSystem *eventSystem, int entityId) :
 {
 }
 
-void RpcAddDelay::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
+void RpcAddDelay::callRPCFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
 {
     RPC_addDelay(callId, parameters);
 }
