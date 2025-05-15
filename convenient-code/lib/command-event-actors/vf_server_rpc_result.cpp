@@ -2,7 +2,7 @@
 #include "vcmp_remoteproceduredata.h"
 #include "ve_commandevent.h"
 
-QEvent *VfServerRpcResult::generateEvent(int entityId, QString rpcSignature, QVariantMap returnValue)
+VeinEvent::CommandEvent *VfServerRpcResult::generateEvent(int entityId, QString rpcSignature, QVariantMap returnValue)
 {
     VeinComponent::RemoteProcedureData *resultData = new VeinComponent::RemoteProcedureData();
     resultData->setEntityId(entityId);
