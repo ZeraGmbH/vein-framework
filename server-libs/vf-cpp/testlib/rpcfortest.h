@@ -1,0 +1,16 @@
+#ifndef RPCFORTEST_H
+#define RPCFORTEST_H
+
+#include "vf-cpp-rpc-simplified.h"
+#include <QUuid>
+
+class RpcForTest : public VfCpp::VfCppRpcSimplified
+{
+public:
+    RpcForTest(VeinEvent::EventSystem *eventSystem, int entityId);
+    void callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters) override;
+private:
+    void RPC_forTest(QUuid callId, QVariantMap parameters);
+};
+
+#endif // RPCFORTEST_H

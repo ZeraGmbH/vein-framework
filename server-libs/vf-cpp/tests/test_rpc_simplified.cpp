@@ -1,5 +1,4 @@
 #include "test_rpc_simplified.h"
-#include "vftestrpcsimplified.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
 #include <QSignalSpy>
@@ -16,9 +15,9 @@ void test_rpc_simplified::init()
     TimeMachineForTest::reset();
 
     m_serverNet = std::make_unique<TestVeinServerWithMockNet>(serverPort);
-    m_additionalEntityWithRpc = std::make_unique<VfTestRpcSimplified>(entityIdWithRpc);
-    m_serverNet->getServer()->appendEventSystem(m_additionalEntityWithRpc->getEntity());
-    m_additionalEntityWithRpc->initOnce();
+    m_additionalEntityWithRpc = std::make_unique<VfEntityWithRpcSimplified>(entityIdWithRpc);
+    m_serverNet->getServer()->appendEventSystem(m_additionalEntityWithRpc.get());
+    m_additionalEntityWithRpc->initModule();
     TimeMachineObject::feedEventLoop();
 }
 
@@ -91,30 +90,6 @@ void test_rpc_simplified::callInvalidRpc()
 
     QList<QVariant> arguments = spyRpcFinish[0];
     QCOMPARE(arguments.at(0), false);
-}
-
-void test_rpc_simplified::callRegisteredButInaccessibleRpc()
-{
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
-    QVariantMap rpcParams;
-    rpcParams.insert("p_param", 72);
-    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_PrivateMethod", rpcParams);
-    QCOMPARE(spyRpcFinish.count(), 1);
-
-    QList<QVariant> arguments = spyRpcFinish[0];
-    QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
-    QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
-    QCOMPARE(resultData, "Function not implemented/accessible");
-
-    m_serverNet->getServer()->clientInvokeRpc(entityIdWithRpc, "RPC_PublicMethod", rpcParams);
-    QCOMPARE(spyRpcFinish.count(), 2);
-
-    arguments = spyRpcFinish[1];
-    QCOMPARE(arguments.at(0), true);
-    argMap = arguments[2].toMap();
-    resultData = argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
-    QCOMPARE(resultData, "Function not implemented/accessible");
 }
 
 void test_rpc_simplified::callRPCTwice()
