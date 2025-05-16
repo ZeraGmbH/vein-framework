@@ -122,7 +122,7 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
     TimeMachineObject::feedEventLoop();
 }
 
-QUuid TestVeinServer::clientInvokeRpc(int entityId, QString procedureName, QVariantMap paramters)
+QUuid TestVeinServer::invokeRpc(int entityId, QString procedureName, QVariantMap paramters)
 {
     if(!m_rpcInvokers.contains(entityId)) {
         VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(entityId);

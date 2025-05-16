@@ -34,7 +34,7 @@ public:
     void removeComponent(int entityId, QString componentName);
     void setComponentClientTransaction(int entityId, QString componentName, QVariant newValue);
     void setComponentServerNotification(int entityId, QString componentName, QVariant newValue);
-    QUuid clientInvokeRpc(int entityId, QString procedureName, QVariantMap paramters);
+    QUuid invokeRpc(int entityId, QString procedureName, QVariantMap paramters);
     QVariant getValue(int entityId, QString componentName);
     void removeEntitiesAdded();
     QMap<int, QList<QString>> getTestEntityComponentInfo();
