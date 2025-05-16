@@ -59,13 +59,13 @@
             "Entity": 99999,
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_IRRELEVANT",
+            "EventTarget": "ET_ALL",
             "OriginalEventData": {
                 "Attached data": "RemoteProcedureData",
                 "ComponentCommand": "RPCMD_CALL",
                 "Entity": 99999,
                 "EventOrigin": "EO_LOCAL",
-                "EventTarget": "ET_IRRELEVANT",
+                "EventTarget": "ET_ALL",
                 "ProcedureName": "RPC_foo()",
                 "Valid": true
             },

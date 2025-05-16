@@ -256,5 +256,7 @@ void test_client_rpc_invoker::subscribedEntityNonExistentRPCNet()
     invoker->invokeRPC("RPC_foo(bool p_param)",parameters);
     TimeMachineObject::feedEventLoop();
 
-    QCOMPARE(invokerSpy.count(), 0);
+    QCOMPARE(invokerSpy.count(), 1);
+    QList<QVariant> arguments = invokerSpy[0];
+    QCOMPARE(arguments.at(0), false);
 }
