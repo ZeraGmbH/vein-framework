@@ -55,9 +55,11 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
                 cmdEvent->accept();
             }
         }
-        if(!rpcFound)
+        if(!rpcFound) {
+            cmdEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
             ErrorDataSender::errorOut(QString("No RPC with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName()),
                                       cmdEvent,
                                       this);
+        }
     }
 }
