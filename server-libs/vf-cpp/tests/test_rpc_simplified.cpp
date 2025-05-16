@@ -73,10 +73,11 @@ void test_rpc_simplified::callRpcInvalidParamValue()
 
 void test_rpc_simplified::callRpcInvalidParamName()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("foo", 72);
-    m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 1);
 
     QList<QVariant> arguments = spyRpcFinish[0];
@@ -85,9 +86,10 @@ void test_rpc_simplified::callRpcInvalidParamName()
 
 void test_rpc_simplified::callRpcMissingParam()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
-    m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 1);
 
     QList<QVariant> arguments = spyRpcFinish[0];
@@ -96,10 +98,11 @@ void test_rpc_simplified::callRpcMissingParam()
 
 void test_rpc_simplified::callInvalidRpc()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("p_param", -72);
-    m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "foo", rpcParams);
+    m_rpcInvoker->invokeRPC("foo", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 1);
 
     QList<QVariant> arguments = spyRpcFinish[0];
@@ -108,12 +111,14 @@ void test_rpc_simplified::callInvalidRpc()
 
 void test_rpc_simplified::callRPCTwice()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("p_param", 72);
-    QUuid id1 = m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    QUuid id1 = m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     rpcParams.insert("p_param", 48);
-    QUuid id2 = m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "RPC_forTest", rpcParams);
+    QUuid id2 = m_rpcInvoker->invokeRPC("RPC_forTest", rpcParams);
+    TimeMachineObject::feedEventLoop();
     QCOMPARE(spyRpcFinish.count(), 2);
 
     QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
@@ -124,11 +129,12 @@ void test_rpc_simplified::callRPCTwice()
 
 void test_rpc_simplified::callRPCRespondingAfterDelay()
 {
-    QSignalSpy spyRpcFinish(m_serverNet->getServer(), &TestVeinServer::sigRPCFinished);
+    QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished);
     QVariantMap rpcParams;
     rpcParams.insert("p_param", 72);
     rpcParams.insert("p_delayMs", 5000);
-    QUuid id1 = m_serverNet->getServer()->invokeRpc(entityIdWithRpc, "RPC_addDelay", rpcParams);
+    QUuid id1 = m_rpcInvoker->invokeRPC("RPC_addDelay", rpcParams);
+    TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyRpcFinish.count(), 0);
     TimeMachineForTest::getInstance()->processTimers(5000);
