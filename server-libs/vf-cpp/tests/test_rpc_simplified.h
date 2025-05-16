@@ -20,6 +20,10 @@ private slots:
     void callRPCTwice();
     void callRPCRespondingAfterDelay();
 private:
+    QUuid invokeRpc(QString rpcName, QString paramName, QVariant paramValue);
+    bool isRpcFound(QList<QVariant> spyArguments);
+    QVariant getReturnResult(QList<QVariant> spyArguments);
+    QVariant getReturnError(QList<QVariant> spyArguments);
     std::unique_ptr<TestVeinServerWithMockNet> m_serverNet;
     std::unique_ptr<VfEntityWithRpcSimplified> m_additionalEntityWithRpc;
     std::unique_ptr<VfCoreStackClient> m_clientStack;
