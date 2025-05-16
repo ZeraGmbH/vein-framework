@@ -114,9 +114,11 @@ void VfCpp::VfCppEntity::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
             m_rpcList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
             cmdEvent->accept();
         }
-        else
+        else {
+            cmdEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
             ErrorDataSender::errorOut(QString("No RPC with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName()),
                                       cmdEvent,
                                       this);
+        }
     }
 }
