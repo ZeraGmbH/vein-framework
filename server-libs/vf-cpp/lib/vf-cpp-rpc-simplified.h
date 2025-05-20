@@ -16,9 +16,9 @@ public:
     void sendRpcResult(const QUuid &callId, QVariant result);
     void sendRpcError(const QUuid &callId, QString errorStr);
 signals:
-    void callRpc(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters);
+    void callRpc(const QUuid &callId, const QVariantMap &parameters);
 private slots:
-    virtual void callRPCFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters) = 0;
+    virtual void callRPCFunction(const QUuid &callId, const QVariantMap &parameters) = 0;
 private:
     void sendRPCresultEvent(const QUuid &callId, QVariantMap returnVal);
     VeinEvent::EventSystem *m_eventSystem;
