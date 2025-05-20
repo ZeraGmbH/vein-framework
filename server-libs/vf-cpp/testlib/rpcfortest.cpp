@@ -8,7 +8,7 @@ RpcForTest::RpcForTest(VeinEvent::EventSystem *eventSystem, int entityId) :
 {
 }
 
-void RpcForTest::callRPCFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
+void RpcForTest::callRPCFunction(const QUuid &callId, const QVariantMap &parameters)
 {
     RPC_forTest(callId, parameters);
 }

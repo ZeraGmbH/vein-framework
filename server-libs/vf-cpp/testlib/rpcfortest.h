@@ -9,7 +9,7 @@ class RpcForTest : public VfCpp::VfCppRpcSimplified
 public:
     RpcForTest(VeinEvent::EventSystem *eventSystem, int entityId);
 private slots:
-    void callRPCFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters) override;
+    void callRPCFunction(const QUuid &callId, const QVariantMap &parameters) override;
 private:
     void RPC_forTest(QUuid callId, QVariantMap parameters);
 };

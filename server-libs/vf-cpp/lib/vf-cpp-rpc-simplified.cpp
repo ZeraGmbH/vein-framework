@@ -24,7 +24,7 @@ void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, 
 {
     QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
     m_callIdPeerIdHash.insert(callId, peerId);
-    emit callRpc(callId, peerId, params);
+    emit callRpc(callId, params);
 }
 
 void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
