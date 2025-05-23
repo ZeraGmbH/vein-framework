@@ -3,18 +3,18 @@
 #include "task_client_rpc_invoker.h"
 
 std::unique_ptr<TaskSimpleVeinRPCInvoker> TaskSimpleVeinRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters,
-                                                                           std::shared_ptr<bool> rpcSuccessful, std::shared_ptr<QVariant> result,
+                                                                           std::shared_ptr<bool> rpcSuccessful, std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg,
                                                                            VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
-    return std::make_unique<TaskSimpleVeinRPCInvoker>(entityId, procedureName, parameters, rpcSuccessful, result, cmdEventHandlerSystem, timeout);
+    return std::make_unique<TaskSimpleVeinRPCInvoker>(entityId, procedureName, parameters, rpcSuccessful, result, errorMsg, cmdEventHandlerSystem, timeout);
 }
 
 TaskSimpleVeinRPCInvoker::TaskSimpleVeinRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
-                                                   std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
+                                                   std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
     std::shared_ptr<QStringList> componentList = std::make_shared<QStringList>();
     m_task.addSub(TaskClientEntitySubscribe::create(entityId, cmdEventHandlerSystem, componentList, timeout));
-    m_task.addSub(TaskClientRPCInvoker::create(entityId, procedureName, parameters, rpcSuccessful, result, cmdEventHandlerSystem, timeout));
+    m_task.addSub(TaskClientRPCInvoker::create(entityId, procedureName, parameters, rpcSuccessful, result, errorMsg, cmdEventHandlerSystem, timeout));
     connect(&m_task, &TaskTemplate::sigFinish, this, &TaskTemplate::sigFinish);
 }
 
