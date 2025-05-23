@@ -9,9 +9,10 @@ class TaskSimpleVeinRPCInvoker : public TaskTemplate
 {
 public:
     static std::unique_ptr<TaskSimpleVeinRPCInvoker> create(int entityId, QString procedureName, QVariantMap parameters,  std::shared_ptr<bool> rpcSuccessful,
-                                                            std::shared_ptr<QVariant> result, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
+                                                            std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg,
+                                                            VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
     TaskSimpleVeinRPCInvoker(int entityId, QString procedureName, QVariantMap parameters,  std::shared_ptr<bool> rpcSuccessful, std::shared_ptr<QVariant> result,
-                         VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
+                             std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
     void start() override;
 private:
     TaskContainerSequence m_task;

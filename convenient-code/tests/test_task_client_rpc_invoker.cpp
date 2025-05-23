@@ -45,7 +45,9 @@ void test_task_client_rpc_invoker::invokeSubscribedRPC()
     parameters["p_param"] = true;
     std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    std::shared_ptr<QString> error = std::make_shared<QString>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, error,
+                                                               clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
     taskInvoker->start();
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
@@ -77,7 +79,9 @@ void test_task_client_rpc_invoker::invokeSubscribedRPCTwice()
     parameters["p_param"] = true;
     std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    std::shared_ptr<QString> error = std::make_shared<QString>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, error,
+                                                               clientStack.getCmdEventHandlerSystem(), stdTimeout);
     QSignalSpy spy(taskInvoker.get(), &TaskTemplate::sigFinish);
     taskInvoker->start();
     taskInvoker->start();
@@ -97,7 +101,9 @@ void test_task_client_rpc_invoker::timeout()
     parameters["p_param"] = true;
     std::shared_ptr<bool> rpcSuccessful = std::make_shared<bool>();
     std::shared_ptr<QVariant> result = std::make_shared<QVariant>();
-    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, clientStack.getCmdEventHandlerSystem(), stdTimeout);
+    std::shared_ptr<QString> error = std::make_shared<QString>();
+    TaskTemplatePtr taskInvoker = TaskClientRPCInvoker::create(rpcHandlerId, "RPC_forTest",parameters, rpcSuccessful, result, error,
+                                                               clientStack.getCmdEventHandlerSystem(), stdTimeout);
 
     bool receivedOk = true;
     int timeout = 0;
@@ -110,5 +116,4 @@ void test_task_client_rpc_invoker::timeout()
     TimeMachineForTest::getInstance()->processTimers(2*stdTimeout);
     QVERIFY(!receivedOk);
     QCOMPARE(timeout, stdTimeout);
-
 }
