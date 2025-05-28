@@ -33,6 +33,11 @@ void ModuleManagerSetupFacade::addSubsystem(VeinEvent::EventSystem *subsystem)
     m_eventHandler.addSubsystem(subsystem);
 }
 
+void ModuleManagerSetupFacade::prependSubsystem(VeinEvent::EventSystem *subsystem)
+{
+    m_eventHandler.prependSubsystem(subsystem);
+}
+
 void ModuleManagerSetupFacade::addModuleSystem(VeinEvent::EventSystem *system)
 {
     m_eventHandler.addModuleSystem(system);
