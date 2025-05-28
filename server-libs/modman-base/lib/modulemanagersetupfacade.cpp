@@ -28,19 +28,19 @@ void ModuleManagerSetupFacade::registerMetaTypeStreamOperators()
     qRegisterMetaTypeStreamOperators<QList<QVariantMap> >("QList<QVariantMap>");
 }
 
-void ModuleManagerSetupFacade::addSubsystem(VeinEvent::EventSystem *subsystem)
+void ModuleManagerSetupFacade::prependModuleSystem(VeinEvent::EventSystem *subsystem)
 {
-    m_eventHandler.addSubsystem(subsystem);
-}
-
-void ModuleManagerSetupFacade::prependSubsystem(VeinEvent::EventSystem *subsystem)
-{
-    m_eventHandler.prependSubsystem(subsystem);
+    m_eventHandler.prependModuleSystem(subsystem);
 }
 
 void ModuleManagerSetupFacade::addModuleSystem(VeinEvent::EventSystem *system)
 {
     m_eventHandler.addModuleSystem(system);
+}
+
+void ModuleManagerSetupFacade::addSubsystem(VeinEvent::EventSystem *subsystem)
+{
+    m_eventHandler.addSubsystem(subsystem);
 }
 
 void ModuleManagerSetupFacade::clearModuleSystems()
@@ -58,6 +58,11 @@ VeinStorage::AbstractEventSystem *ModuleManagerSetupFacade::getStorageSystem()
     return &m_storSystem;
 }
 
+ModuleEventHandler *ModuleManagerSetupFacade::getEventHandler()
+{
+    return &m_eventHandler;
+}
+
 LicenseSystemInterface *ModuleManagerSetupFacade::getLicenseSystem()
 {
     return m_licenseSystem;
@@ -67,4 +72,3 @@ QString ModuleManagerSetupFacade::getPersistencyBasePath()
 {
     return m_persistencyBasePath;
 }
-

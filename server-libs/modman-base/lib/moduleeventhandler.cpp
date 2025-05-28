@@ -8,6 +8,15 @@ ModuleEventHandler::ModuleEventHandler(QObject *parent) :
             this, &ModuleEventHandler::onAddSilence);
 }
 
+void ModuleEventHandler::prependModuleSystem(VeinEvent::EventSystem *eventSystem)
+{
+    if(m_moduleSystems.contains(eventSystem) == false) {
+        m_waitForAddSilenceToLogTimer->start();
+        m_moduleSystems.prepend(eventSystem);
+        eventSystem->attach(this);
+    }
+}
+
 void ModuleEventHandler::addModuleSystem(VeinEvent::EventSystem *eventSystem)
 {
     if(m_moduleSystems.contains(eventSystem) == false) {

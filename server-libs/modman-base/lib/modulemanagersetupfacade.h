@@ -16,12 +16,15 @@ public:
                              const LxdmSessionChangeParam& lxdmParam = LxdmSessionChangeParam(),
                              const QString persistencyBasePath = "");
     static void registerMetaTypeStreamOperators();
-    void addSubsystem(VeinEvent::EventSystem* subsystem); // append
-    void prependSubsystem(VeinEvent::EventSystem* subsystem);
-    void addModuleSystem(VeinEvent::EventSystem* system);
+
+    void prependModuleSystem(VeinEvent::EventSystem* subsystem);   // prepend to module event systems (topmost)
+    void addModuleSystem(VeinEvent::EventSystem* system);          // append to module event system
+    void addSubsystem(VeinEvent::EventSystem* subsystem);          // append to common event systems (bottommost)
     void clearModuleSystems();
     SystemModuleEventSystem *getSystemModuleEventSystem();
     VeinStorage::AbstractEventSystem *getStorageSystem();
+    ModuleEventHandler *getEventHandler();
+
     LicenseSystemInterface *getLicenseSystem();
     QString getPersistencyBasePath();
 private:

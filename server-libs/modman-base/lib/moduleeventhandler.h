@@ -10,6 +10,7 @@ class ModuleEventHandler : public VeinEvent::EventHandler
     Q_OBJECT
 public:
     explicit ModuleEventHandler(QObject *parent = nullptr);
+    void prependModuleSystem(VeinEvent::EventSystem *eventSystem);
     void addModuleSystem(VeinEvent::EventSystem *eventSystem);
     void clearModuleSystems();
 protected:
