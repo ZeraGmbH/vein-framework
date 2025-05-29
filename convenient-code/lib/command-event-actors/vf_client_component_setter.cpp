@@ -22,7 +22,15 @@ QEvent *VfClientComponentSetter::generateEvent(int entityId, QString componentNa
     cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
     cData->setComponentName(componentName);
 
-    // The following magic was stolen from vf-qml
+    // The following magic was stolen from vf-qml (now vf-qml re-uses this code)
+    // Background: QML/JavaScript objects enter vein as QJSValue objects which we
+    // do not support as meta objects.
+    // Unfortunately we have to keep this workaround and cannot fix properly
+    // due to:
+    // * missing GUI tests
+    // * ATTOW we found code in vf-logger checking for QVariantMap type when QJsonObject
+    //   was sent - where else would code fail after a proper fix?
+    // => Regressions caused are unpredictable :(
     if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
         cData->setNewValue(newValue.toList());
     else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
