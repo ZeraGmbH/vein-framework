@@ -22,6 +22,9 @@ bool cJsonParamValidator::isValidParam(QVariant &newValue)
             qWarning("%s: %s", qPrintable(err.strID()), qPrintable(err.m_strInfo));
         }
     }
+    else
+        // Undo QVariantList/QVariantMap casts in VfClientComponentSetter::generateEvent
+        newValue = newValue.toJsonObject();
     return valid;
 }
 
