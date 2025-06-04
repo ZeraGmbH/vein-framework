@@ -109,11 +109,6 @@ void VeinQml::processEvent(QEvent *t_event)
                 int entityId = cData->entityId();
                 EntityComponentMap *map = m_entityDict.findById(entityId);
                 if(map) { /// @note component data is only processed after the introspection has been processed
-                    const QString componentName = cData->componentName();
-                    if(cData->eventCommand() != ComponentData::Command::CCMD_REMOVE) {
-                        if(componentName == "EntityName")
-                            m_entityDict.setEntityName(entityId, cData->newValue().toString());
-                    }
                     map->processComponentData(cData);
                 }
                 break;
@@ -138,11 +133,16 @@ void VeinQml::processEvent(QEvent *t_event)
                 int entityId = iData->entityId();
                 vCDebug(VEIN_API_QML_VERBOSE) << "Received introspection data for entity:" << entityId;
                 if(!m_entityDict.findById(entityId)) {
-                    QVariantHash oldStyleIntrospection;
-                    oldStyleIntrospection["components"] = QVariant(iData->componentValues().keys());
-                    oldStyleIntrospection["procedures"] = QVariant(iData->rpcNames());
-                    EntityComponentMap *eMap = new EntityComponentMap(entityId, oldStyleIntrospection, this);
+                    QVariantMap componentValues = iData->componentValues();
+                    EntityComponentMap *eMap = new EntityComponentMap(entityId,
+                                                                      componentValues,
+                                                                      iData->rpcNames(),
+                                                                      this);
                     m_entityDict.insert(entityId, eMap);
+                    if (componentValues.contains("EntityName"))
+                        m_entityDict.setEntityName(entityId, componentValues["EntityName"].toString());
+                    else
+                        qCritical("Entity %i has no component 'EntityName'!", entityId);
                     connect(eMap, &EntityComponentMap::sigSendEvent, this, &VeinQml::sigSendEvent);
                     connect(eMap, &EntityComponentMap::sigEntityComplete, this, &VeinQml::onEntityLoaded);
                     eMap->setState(EntityComponentMap::DataState::ECM_PENDING);

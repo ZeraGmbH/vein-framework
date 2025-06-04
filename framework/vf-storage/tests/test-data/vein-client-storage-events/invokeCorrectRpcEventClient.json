@@ -29,6 +29,20 @@
         },
         {
             "Am command event in": "client",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "EntityName",
+            "Entity": 99999,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": "RPCEventHandler",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "client",
             "Attached data": "RemoteProcedureData",
             "ComponentCommand": "RPCMD_CALL",
             "Entity": 99999,

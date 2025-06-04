@@ -9,27 +9,30 @@
 
 namespace VeinComponent
 {
-  class ComponentData;
-  class RemoteProcedureData;
+class ComponentData;
+class RemoteProcedureData;
 }
 
 namespace VeinApiQml
 {
-  class VFQML_EXPORT EntityComponentMap : public QQmlPropertyMap
-  {
+class VFQML_EXPORT EntityComponentMap : public QQmlPropertyMap
+{
     Q_OBJECT
 
     /// @b away with the stupid default constructor
     EntityComponentMap() = delete;
 
-  public:
-    explicit EntityComponentMap(int entityId, const QVariantHash &entityIntrospection, QObject *parent=nullptr);
+public:
+    explicit EntityComponentMap(int entityId,
+                                const QVariantMap &componentValues,
+                                const QStringList &rpcNames,
+                                QObject *parent = nullptr);
 
     enum class DataState : int {
-      ECM_NONE = -1, /**< uninitialized */
-      ECM_PENDING = 0, /**< introspection is available but values are not initialized */
-      ECM_READY = 1, /**< everything is available */
-      ECM_REMOVED = 2, /**< the entity has been removed from the remote end */
+        ECM_NONE = -1,   /**< uninitialized */
+        ECM_PENDING = 0, /**< introspection is available but values are not initialized */
+        ECM_READY = 1,   /**< everything is available */
+        ECM_REMOVED = 2, /**< the entity has been removed from the remote end */
     };
     Q_ENUM(DataState)
 
@@ -50,7 +53,7 @@ namespace VeinApiQml
     Q_INVOKABLE void cancelRPCInvokation(QUuid identifier);
     Q_INVOKABLE QList<QString> getRemoteProcedureList() const;
 
-  signals:
+signals:
     void sigSendEvent(QEvent *t_cEvent);
     void sigEntityComplete(int t_entityId);
 
@@ -58,7 +61,7 @@ namespace VeinApiQml
     void sigRPCProgress(QUuid t_identifier, const QVariantMap &t_progressData);
     void sigRemoteProceduresChanged(QStringList t_procedureList);
 
-  protected:
+protected:
     /**
      * @brief Intercepts all value changes coming from the qml side and converts them into CommandEvents
      * @note updateValue is NOT called when changes are made by calling insert() or clear() - it is only emitted when a value is updated from QML.
@@ -66,14 +69,13 @@ namespace VeinApiQml
      */
     QVariant updateValue(const QString &t_key, const QVariant &t_newValue) override;
 
-  private:
+private:
     void loadEntityData();
-    QList<QString> m_pendingValues;
-    QList<QString> m_registeredRemoteProcedures;
     QHash<QUuid, QString> m_pendingRPCCallbacks;
-    const QVariantHash m_entityIntrospection;
+    const QVariantMap m_introspectionComponentValues;
+    const QStringList m_introspectionRpcNames;
     DataState m_state = DataState::ECM_NONE;
     const int m_entityId;
-  };
+};
 }
 #endif // ENTITYCOMPONENTMAP_H

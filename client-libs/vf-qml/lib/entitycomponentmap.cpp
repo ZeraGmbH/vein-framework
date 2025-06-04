@@ -12,9 +12,13 @@ Q_LOGGING_CATEGORY(VEIN_API_QML_INTROSPECTION, VEIN_DEBUGNAME_QML_INTROSPECTION)
 
 namespace VeinApiQml
 {
-EntityComponentMap::EntityComponentMap(int entityId, const QVariantHash &entityIntrospection, QObject *parent) :
+EntityComponentMap::EntityComponentMap(int entityId,
+                                       const QVariantMap &componentValues,
+                                       const QStringList &rpcNames,
+                                       QObject *parent) :
     QQmlPropertyMap(this, parent),
-    m_entityIntrospection(entityIntrospection),
+    m_introspectionComponentValues(componentValues),
+    m_introspectionRpcNames(rpcNames),
     m_entityId(entityId)
 {
     Q_ASSERT(m_entityId>=0);
@@ -32,17 +36,6 @@ void EntityComponentMap::processComponentData(const ComponentData *cData)
         /// @note It is not possible to remove keys from the map; once a key has been added, you can only modify or clear its associated value.
         /// @note Keys that have been cleared will still appear in this list, even though their associated values are invalid
         clear(cData->componentName());
-        break;
-    case ComponentData::Command::CCMD_FETCH:
-        if(m_pendingValues.contains(cData->componentName())) {
-            vCDebug(VEIN_API_QML_VERBOSE) << "Fetched value" << cData->componentName() << cData->newValue();
-            insert(cData->componentName(), cData->newValue()); // bypasses the function updateValue(...)
-            m_pendingValues.removeAll(cData->componentName());
-            if(m_pendingValues.isEmpty()) {
-                m_state = DataState::ECM_READY;
-                emit sigEntityComplete(m_entityId);
-            }
-        }
         break;
     default:
         break;
@@ -101,7 +94,7 @@ QUuid EntityComponentMap::invokeRPC(const QString &procedureName, const QVariant
 {
     QUuid rpcIdentifier;
     //check if a component exists that is callable
-    if(m_registeredRemoteProcedures.contains(procedureName)) {
+    if(m_introspectionRpcNames.contains(procedureName)) {
         do {
             rpcIdentifier = QUuid::createUuid();
         } while(m_pendingRPCCallbacks.contains(rpcIdentifier)); //should only run once
@@ -123,10 +116,10 @@ QUuid EntityComponentMap::invokeRPC(const QString &procedureName, const QVariant
         emit sigSendEvent(cEvent);
     }
     else {
-        if(!m_registeredRemoteProcedures.isEmpty()) {
+        if(!m_introspectionRpcNames.isEmpty()) {
             qWarning() << "No rpc with procedure name:" << procedureName;
             qWarning() << "Available:";
-            for(const auto &procedure : qAsConst(m_registeredRemoteProcedures))
+            for(const auto &procedure : m_introspectionRpcNames)
                 qWarning() << procedure;
         }
         else {
@@ -158,7 +151,7 @@ void EntityComponentMap::cancelRPCInvokation(QUuid identifier)
 
 QList<QString> EntityComponentMap::getRemoteProcedureList() const
 {
-    return m_registeredRemoteProcedures;
+    return m_introspectionRpcNames;
 }
 
 QVariant EntityComponentMap::updateValue(const QString &t_key, const QVariant &t_newValue)
@@ -175,12 +168,11 @@ QVariant EntityComponentMap::updateValue(const QString &t_key, const QVariant &t
 
 void EntityComponentMap::loadEntityData()
 {
-    const QList<QString> tmpComponentList = m_entityIntrospection.value(QString("components")).toStringList();
-    m_registeredRemoteProcedures = m_entityIntrospection.value(QString("procedures")).toStringList();
-    m_pendingValues.append(tmpComponentList);
-    for(const QString &tmpKey : tmpComponentList) {
-        insert(tmpKey, QVariant()); // bypasses the function updateValue(...)
-        emit sigSendEvent(VfClientComponentFetcher::generateEvent(m_entityId, tmpKey));
+    for (auto iter=m_introspectionComponentValues.cbegin(); iter!=m_introspectionComponentValues.cend(); ++iter) {
+        const QString componentName = iter.key();
+        insert(componentName, iter.value()); // bypasses the function updateValue(...)
     }
+    m_state = DataState::ECM_READY;
+    emit sigEntityComplete(m_entityId);
 }
 } // end namespace VeinApiQml

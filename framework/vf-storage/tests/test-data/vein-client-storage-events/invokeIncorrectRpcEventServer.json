@@ -55,6 +55,20 @@
         },
         {
             "Am command event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "EntityName",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": "RPCEventHandler",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server",
             "Attached data": "ErrorData",
             "Entity": 99999,
             "EventOrigin": "EO_LOCAL",

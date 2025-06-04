@@ -1,4 +1,5 @@
 #include "vn_introspectionsystem.h"
+#include "vcmp_componentdata.h"
 #include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
@@ -59,6 +60,22 @@ void IntrospectionSystem::processEvent(QEvent *event)
                         vCDebug(VEIN_NET_INTRO_VERBOSE) << "Sending introspection event:" << newEvent;
 
                         emit sigSendEvent(newEvent);
+
+                        // Mimic what vf-qml did before we removed fetch there: Send out initial fetch
+                        for (auto iter = componentValues.cbegin(); iter != componentValues.cend(); ++iter) {
+                            ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_FETCH);
+                            cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+                            cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+                            cData->setComponentName(iter.key());
+
+                            cData->setNewValue(iter.value());
+                            cData->setOldValue(QVariant());
+
+                            CommandEvent *newEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
+                            /// @note sets the peer id to be the sender peer id, used for unicasting the message
+                            newEvent->setPeerId(cEvent->peerId());
+                            emit sigSendEvent(newEvent);
+                        }
                     }
                     else
                         ErrorDataSender::errorOut(QString("No introspection available for requested entity, entity id: %1").arg(entityId), event, this);
