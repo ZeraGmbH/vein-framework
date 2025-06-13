@@ -10,12 +10,13 @@ public:
                                 const QList<LxdmConfigFileParam::XSession> &availableXSessions);
     static void cleanup();
 
+    static QString getLxdmTestDir();
     static QString getLxdmConfFileNameFull();
     // file names just basenames
-    static QString genLastSessionLine(const QString xSessionFileName);
+    static QString genLastSessionLine(const QString &xSessionFileName);
     static void createLxdmConfigFile(const QStringList &lines);
     static void removeLxdmConfigFile();
-    static void removeXsessionFile(const QString xSessionFileName);
+    static void removeXsessionFile(const QString &xSessionFileName);
 
     LxdmConfigFileParam getConfigParam();
 private:

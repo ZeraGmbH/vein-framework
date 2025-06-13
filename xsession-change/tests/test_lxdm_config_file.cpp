@@ -6,8 +6,6 @@
 
 QTEST_MAIN(test_lxdm_config_modify)
 
-static const char* testConfigFileName = "/tmp/lxdmConfTestFile";
-
 void test_lxdm_config_modify::getCurrSessionFileNotFound()
 {
     LxdmConfigFileParam param("foofile");
@@ -29,16 +27,16 @@ void test_lxdm_config_modify::getCurrSessionFileContainsInValidSessionLine()
                                              LxdmConfigFileParam::XSession("Test", "test.desktop"));
     LxdmConfigFile confFile(paramGen.getConfigParam());
 
-    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session /tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session " + MockLxdmConfigFileGenerator::getLxdmTestDir() + "test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << " last_session=/tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << " last_session=" + MockLxdmConfigFileGenerator::getLxdmTestDir() + "test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session = /tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session = " + MockLxdmConfigFileGenerator::getLxdmTestDir() + "test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "");
 
-    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session=/tmp/lxdmtest/test.desktop");
+    MockLxdmConfigFileGenerator::createLxdmConfigFile(QStringList() << "last_session=" + MockLxdmConfigFileGenerator::getLxdmTestDir() + "test.desktop");
     QCOMPARE(confFile.getConfiguredXSessionName(), "Test");
 }
 
@@ -169,5 +167,6 @@ void test_lxdm_config_modify::setCurrSessionValidDoneSessionSetTwice()
     QFile configFileRead(MockLxdmConfigFileGenerator::getLxdmConfFileNameFull());
     configFileRead.open(QFile::ReadOnly);
     QString content = configFileRead.readAll();
-    QCOMPARE(content, "last_session=/tmp/lxdmtest/bar.desktop\n");
+    QString expected = "last_session=" + MockLxdmConfigFileGenerator::getLxdmTestDir() + "bar.desktop\n";
+    QCOMPARE(content, expected);
 }
