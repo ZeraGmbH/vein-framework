@@ -4,16 +4,31 @@
 
 namespace VeinTcp
 {
+int TcpPeer::m_instanceCount = 0;
+
+
 TcpPeer::TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
     QObject(parent),
     m_worker(tcpNetworkFactory->createTcpPeerWorker(this))
 {
+    m_instanceCount++;
 }
 
 TcpPeer::TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface *serverWorker, QObject *parent) :
     QObject(parent),
     m_worker(serverWorker->createServerPeerWorker(this, socketDescriptor))
 {
+    m_instanceCount++;
+}
+
+TcpPeer::~TcpPeer()
+{
+    m_instanceCount--;
+}
+
+int TcpPeer::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 QString TcpPeer::getIpAddress() const

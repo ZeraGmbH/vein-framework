@@ -17,6 +17,8 @@ class VFTCP_EXPORT TcpPeer : public QObject
 public:
     explicit TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent = nullptr);
     explicit TcpPeer(qintptr socketDescriptor, TcpServerWorkerInterface* serverWorker, QObject *parent = nullptr);
+    ~TcpPeer();
+    static int getInstanceCount();
 
     QString getIpAddress() const;
     quint16 getPort() const;
@@ -38,6 +40,7 @@ public slots:
 
 private:
     TcpPeerWorkerInterfacePtr m_worker;
+    static int m_instanceCount;
 };
 }
 
