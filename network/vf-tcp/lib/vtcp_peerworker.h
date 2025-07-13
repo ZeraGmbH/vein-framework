@@ -11,16 +11,10 @@ class TcpPeer;
 class TcpPeerWorker : public TcpPeerWorkerInterface
 {
     Q_OBJECT
-private:
-    // Just our friends can create us (by make_unique) - see
-    // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
-    struct secret { explicit secret() = default; };
-    friend class TcpNetworkFactory;
-    friend class TcpServerWorker;
 public:
-    TcpPeerWorker(TcpPeer *peer, secret);
-    TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);
-    virtual ~TcpPeerWorker();
+    TcpPeerWorker(TcpPeer *peer);
+    TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor);
+    ~TcpPeerWorker() override;
 
     virtual QString getIpAddress() const override;
     virtual quint16 getPort() const override;

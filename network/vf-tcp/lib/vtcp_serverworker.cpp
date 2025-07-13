@@ -6,7 +6,7 @@
 
 namespace VeinTcp
 {
-TcpServerWorker::TcpServerWorker(TcpServer *server, secret) :
+TcpServerWorker::TcpServerWorker(TcpServer *server) :
     m_server(server)
 {
 }
@@ -72,6 +72,6 @@ bool TcpServerWorker::isListenActive()
 
 TcpPeerWorkerInterfacePtr TcpServerWorker::createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor)
 {
-    return std::make_unique<TcpPeerWorker>(peer, socketDescriptor, TcpPeerWorker::secret());
+    return std::make_unique<TcpPeerWorker>(peer, socketDescriptor);
 }
 }

@@ -11,12 +11,12 @@ AbstractTcpNetworkFactoryPtr MockTcpNetworkFactory::create()
 
 TcpPeerWorkerInterfacePtr MockTcpNetworkFactory::createTcpPeerWorker(TcpPeer *peer)
 {
-    return std::make_unique<MockNetPeerWorker>(peer, MockNetPeerWorker::secret());
+    return std::make_unique<MockNetPeerWorker>(peer);
 }
 
 TcpServerWorkerInterfacePtr MockTcpNetworkFactory::createTcpServerWorker(TcpServer *server)
 {
-    return std::make_unique<MockNetServerWorker>(server, MockNetServerWorker::secret());
+    return std::make_unique<MockNetServerWorker>(server);
 }
 
 }

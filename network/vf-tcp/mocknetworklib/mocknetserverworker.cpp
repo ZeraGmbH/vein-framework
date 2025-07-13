@@ -9,7 +9,7 @@ namespace VeinTcp
 
 QHash<quint16 /* port */, MockNetServerWorker*> MockNetServerWorker::m_serverMocks;
 
-MockNetServerWorker::MockNetServerWorker(TcpServer *server, secret) :
+MockNetServerWorker::MockNetServerWorker(TcpServer *server) :
     m_server(server)
 {
 }
@@ -49,7 +49,7 @@ bool MockNetServerWorker::isListenActive()
 
 TcpPeerWorkerInterfacePtr MockNetServerWorker::createServerPeerWorker(TcpPeer *peer, qintptr socketDescriptor)
 {
-    return std::make_unique<MockNetPeerWorker>(peer, socketDescriptor, MockNetPeerWorker::secret());
+    return std::make_unique<MockNetPeerWorker>(peer, socketDescriptor);
 }
 
 MockNetServerWorker* MockNetServerWorker::getServerMock(quint16 port)

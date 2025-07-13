@@ -12,12 +12,12 @@ AbstractTcpNetworkFactoryPtr TcpNetworkFactory::create()
 
 TcpPeerWorkerInterfacePtr TcpNetworkFactory::createTcpPeerWorker(TcpPeer *peer)
 {
-    return std::make_unique<TcpPeerWorker>(peer, TcpPeerWorker::secret());
+    return std::make_unique<TcpPeerWorker>(peer);
 }
 
 TcpServerWorkerInterfacePtr TcpNetworkFactory::createTcpServerWorker(TcpServer *server)
 {
-    return std::make_unique<TcpServerWorker>(server, TcpServerWorker::secret());
+    return std::make_unique<TcpServerWorker>(server);
 }
 
 }

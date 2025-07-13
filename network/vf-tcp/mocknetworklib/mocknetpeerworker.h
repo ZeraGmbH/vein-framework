@@ -12,15 +12,9 @@ class TcpPeer;
 class MockNetPeerWorker : public TcpPeerWorkerInterface
 {
     Q_OBJECT
-private:
-    // Just our friends can create us (by make_unique) - see
-    // https://devblogs.microsoft.com/oldnewthing/20220721-00/?p=106879
-    struct secret { explicit secret() = default; };
-    friend class MockTcpNetworkFactory;
-    friend class MockNetServerWorker;
 public:
-    MockNetPeerWorker(TcpPeer *peer, secret);
-    MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret);
+    MockNetPeerWorker(TcpPeer *peer);
+    MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor);
     virtual ~MockNetPeerWorker();
 
     virtual QString getIpAddress() const override;

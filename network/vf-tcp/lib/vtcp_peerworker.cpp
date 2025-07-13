@@ -7,7 +7,7 @@
 namespace VeinTcp
 {
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, secret) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *peer) :
     m_peer(peer)
 {
 }
@@ -49,7 +49,7 @@ void VeinTcp::TcpPeerWorker::prepareSocket()
     m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret) :
+TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor) :
     m_peer(peer)
 {
     m_tcpSock = new QTcpSocket();

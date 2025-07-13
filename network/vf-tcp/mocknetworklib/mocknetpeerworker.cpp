@@ -6,7 +6,7 @@ namespace VeinTcp
 {
 
 // client
-MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer, secret) :
+MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer) :
     m_amClientPeer(true),
     m_myPeer(peer),
     m_connectionEstablished(false)
@@ -17,7 +17,7 @@ MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer, secret) :
 }
 
 // server
-MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, secret) :
+MockNetPeerWorker::MockNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor) :
     m_amClientPeer(false),
     m_myPeer(peer),
     m_otherPeer(reinterpret_cast<TcpPeer *>(socketDescriptor)),
