@@ -56,6 +56,7 @@ function(SETUP_TESTS)
             VfNet2
             VfQml
             vf-tcp-mock-networklib
+            vf-tcp-mock-testlib
             VfFrameworkTest
             VfConvenientCodeTest
             Zera::testlib-common
