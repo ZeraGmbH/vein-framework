@@ -7,9 +7,24 @@
 namespace VeinTcp
 {
 
+// client side
 TcpPeerWorker::TcpPeerWorker(TcpPeer *peer) :
+    m_tcpSock(new QTcpSocket(peer)),
     m_peer(peer)
 {
+    prepareSocket();
+}
+
+// server side
+TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor) :
+    m_tcpSock(new QTcpSocket),
+    m_peer(peer)
+{
+    prepareSocket();
+    if (!m_tcpSock->setSocketDescriptor(socketDescriptor)) {
+        emit m_peer->sigSocketError(m_peer, m_tcpSock->error());
+        qFatal("[vein-tcp] Error setting clients socket descriptor");
+    }
 }
 
 TcpPeerWorker::~TcpPeerWorker()
@@ -49,22 +64,8 @@ void VeinTcp::TcpPeerWorker::prepareSocket()
     m_tcpSock->setSocketOption(QAbstractSocket::KeepAliveOption, true);
 }
 
-TcpPeerWorker::TcpPeerWorker(TcpPeer *peer, qintptr socketDescriptor) :
-    m_peer(peer)
-{
-    m_tcpSock = new QTcpSocket();
-    prepareSocket();
-    if(m_tcpSock->setSocketDescriptor(socketDescriptor) == false) {
-        emit m_peer->sigSocketError(m_peer, m_tcpSock->error());
-        qFatal("[vein-tcp] Error setting clients socket descriptor");
-    }
-}
-
 void TcpPeerWorker::startConnection(const QString &ipAddress, quint16 port)
 {
-    Q_ASSERT_X(m_tcpSock==0, __PRETTY_FUNCTION__, "[vein-tcp] Do not re-use TcpPeer instances.");
-    m_tcpSock = new QTcpSocket(m_peer);
-    prepareSocket();
     m_tcpSock->connectToHost(ipAddress, port);
 }
 

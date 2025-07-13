@@ -29,11 +29,12 @@ public:
 private slots:
     void onReadyRead();
     void closeConnection();
+protected:
+    QTcpSocket *m_tcpSock = nullptr;
 private:
     void prepareSocket();
     QByteArray readArray() const;
     QUuid m_peerId;
-    QTcpSocket *m_tcpSock = nullptr;
     TcpPeer *m_peer = nullptr;
 };
 }
