@@ -19,14 +19,14 @@ public:
     static void resetReadyReadCount();
 
 private slots:
-    void onPendingTimer();
+    void onBytesWritten(qint64 bytes);
     void handleReadyRead();
 private:
     void sendFraction() const;
     void doConnections();
     qint64 m_writeSize;
+    std::unique_ptr<qint64> m_pendingDataOnSocket;
     std::unique_ptr<QByteArray> m_pendingSendData;
-    TimerTemplateQtPtr m_pendingSendTimer;
     static int m_readyReadCount;
 };
 

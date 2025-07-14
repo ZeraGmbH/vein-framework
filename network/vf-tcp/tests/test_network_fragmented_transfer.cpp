@@ -10,14 +10,30 @@ QTEST_MAIN(test_network_fragmented_transfer)
 
 static constexpr int serverPort = 4242;
 static constexpr int netTimeout = 1000;
-static constexpr qint64 serverFragmentedSize = 1;
-static constexpr qint64 clientFragmentedSize = 1;
 static constexpr int streamDataLen = 4;
 static const char* serverSendStr = "ServerSend";
 static const char* clientSendStr = "ClientSend";
 
+void test_network_fragmented_transfer::initTestCase_data()
+{
+    QTest::addColumn<int>("fragmentedSize");
+
+    QTest::newRow("Unfragmented") << 0;
+    QTest::newRow("Fragmented Size 1") << 1;
+    QTest::newRow("Fragmented Size 2") << 2;
+    QTest::newRow("Fragmented Size 3") << 3;
+    QTest::newRow("Fragmented Size 4") << 4;
+    QTest::newRow("Fragmented Size 8") << 8;
+    QTest::newRow("Fragmented Size 16") << 16;
+    QTest::newRow("Fragmented Size 32") << 32;
+    QTest::newRow("Fragmented Size 64") << 64;
+    QTest::newRow("Fragmented Size 128") << 128;
+}
+
 void test_network_fragmented_transfer::init()
 {
+    QFETCH_GLOBAL(int, fragmentedSize);
+    m_fragmentedSize = fragmentedSize;
     VeinTcp::TestFragmentedNetPeerWorker::resetReadyReadCount();
 }
 
@@ -96,7 +112,7 @@ void test_network_fragmented_transfer::testTestPeerWorkerHugeFragment()
 void test_network_fragmented_transfer::sendServerOneMsgFragmented()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(serverFragmentedSize, 0);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(m_fragmentedSize, 0);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -119,13 +135,14 @@ void test_network_fragmented_transfer::sendServerOneMsgFragmented()
     QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
     QCOMPARE(spyServerSend[0][1], send);
 
-    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(), send.size() + streamDataLen);
+    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
+             calcTransactionCount(SendList() << send));
 }
 
 void test_network_fragmented_transfer::sendServerTwoMsgFragmentedOneTransaction()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(serverFragmentedSize, 0);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(m_fragmentedSize, 0);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -151,13 +168,14 @@ void test_network_fragmented_transfer::sendServerTwoMsgFragmentedOneTransaction(
     QCOMPARE(spyServerSend[1][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
     QCOMPARE(spyServerSend[1][1], send);
 
-    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(), 2 * (send.size() + streamDataLen));
+    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
+             calcTransactionCount(SendList() << send << send));
 }
 
 void test_network_fragmented_transfer::sendServerTwoMsgFragmentedTwoTransactions()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(serverFragmentedSize, 0);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(m_fragmentedSize, 0);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -190,13 +208,13 @@ void test_network_fragmented_transfer::sendServerTwoMsgFragmentedTwoTransactions
     QCOMPARE(spyServerSend2[0][1], send2);
 
     QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
-             send1.size() + send2.size() + 2 * streamDataLen);
+             calcTransactionCount(SendList() << send1) + calcTransactionCount(SendList()<< send2));
 }
 
 void test_network_fragmented_transfer::sendClientOneMsgFragmented()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, clientFragmentedSize);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, m_fragmentedSize);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -219,13 +237,14 @@ void test_network_fragmented_transfer::sendClientOneMsgFragmented()
     QCOMPARE(spyClientSend[0][0].value<VeinTcp::TcpPeer*>(), serverPeer);
     QCOMPARE(spyClientSend[0][1], send);
 
-    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(), send.size() + streamDataLen);
+    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
+             calcTransactionCount(SendList() << send));
 }
 
 void test_network_fragmented_transfer::sendClientTwoMsgFragmentedOneTransaction()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, clientFragmentedSize);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, m_fragmentedSize);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -251,13 +270,14 @@ void test_network_fragmented_transfer::sendClientTwoMsgFragmentedOneTransaction(
     QCOMPARE(spyClientSend[1][0].value<VeinTcp::TcpPeer*>(), serverPeer);
     QCOMPARE(spyClientSend[1][1], send);
 
-    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(), 2 * (send.size() + streamDataLen));
+    QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
+             calcTransactionCount(SendList() << send << send));
 }
 
 void test_network_fragmented_transfer::sendClientTwoMsgFragmentedTwoTransactions()
 {
     VeinTcp::AbstractTcpNetworkFactoryPtr factory =
-        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, clientFragmentedSize);
+        VeinTcp::TestFragmentedTcpNetworkFactory::create(0, m_fragmentedSize);
     VeinTcp::TcpServer server(factory);
     server.startServer(serverPort, false);
     VeinTcp::TcpPeer clientPeer(factory);
@@ -290,5 +310,20 @@ void test_network_fragmented_transfer::sendClientTwoMsgFragmentedTwoTransactions
     QCOMPARE(spyClientSend2[0][1], send2);
 
     QCOMPARE(VeinTcp::TestFragmentedNetPeerWorker::getReadyReadCount(),
-             send1.size() + send2.size() + 2 * streamDataLen);
+             calcTransactionCount(SendList() << send1) + calcTransactionCount(SendList()<< send2));
+}
+
+int test_network_fragmented_transfer::calcTransactionCount(const SendList &transferredStrings)
+{
+    int transferredBytes = 0;
+    for (const QByteArray &send : transferredStrings)
+        transferredBytes += send.size();
+    transferredBytes += streamDataLen * transferredStrings.count();
+
+    if (m_fragmentedSize == 0 || m_fragmentedSize >= transferredBytes)
+        return 1;
+    int transactionCount = transferredBytes / m_fragmentedSize;
+    if (transferredBytes % m_fragmentedSize)
+        transactionCount++;
+    return transactionCount;
 }

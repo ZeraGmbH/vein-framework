@@ -2,8 +2,6 @@
 #include <timersingleshotqt.h>
 #include <QDataStream>
 
-static constexpr int fragmentTimeSendMs = 10;
-
 namespace VeinTcp
 {
 
@@ -13,8 +11,8 @@ int TestFragmentedNetPeerWorker::m_readyReadCount = 0;
 TestFragmentedNetPeerWorker::TestFragmentedNetPeerWorker(TcpPeer *peer, qint64 writeSize) :
     TcpPeerWorker(peer),
     m_writeSize(writeSize),
-    m_pendingSendData(std::make_unique<QByteArray>()),
-    m_pendingSendTimer(std::make_unique<TimerSingleShotQt>(fragmentTimeSendMs))
+    m_pendingDataOnSocket(std::make_unique<qint64>(0)),
+    m_pendingSendData(std::make_unique<QByteArray>())
 {
     doConnections();
 }
@@ -23,31 +21,35 @@ TestFragmentedNetPeerWorker::TestFragmentedNetPeerWorker(TcpPeer *peer, qint64 w
 TestFragmentedNetPeerWorker::TestFragmentedNetPeerWorker(TcpPeer *peer, qintptr socketDescriptor, qint64 writeSize) :
     TcpPeerWorker(peer, socketDescriptor),
     m_writeSize(writeSize),
-    m_pendingSendData(std::make_unique<QByteArray>()),
-    m_pendingSendTimer(std::make_unique<TimerSingleShotQt>(fragmentTimeSendMs))
+    m_pendingDataOnSocket(std::make_unique<qint64>(0)),
+    m_pendingSendData(std::make_unique<QByteArray>())
 {
     doConnections();
 }
 
 void TestFragmentedNetPeerWorker::doConnections()
 {
-    connect(m_pendingSendTimer.get(), &TimerTemplateQt::sigExpired,
-            this, &TestFragmentedNetPeerWorker::onPendingTimer);
     connect(m_tcpSock, &QTcpSocket::readyRead,
             this, &TestFragmentedNetPeerWorker::handleReadyRead);
+    connect(m_tcpSock, &QTcpSocket::bytesWritten,
+            this, &TestFragmentedNetPeerWorker::onBytesWritten, Qt::QueuedConnection);
 }
 
 void VeinTcp::TestFragmentedNetPeerWorker::sendFraction() const
 {
-    QByteArray bytesSendNow = m_pendingSendData->left(m_writeSize);
-    writeRaw(bytesSendNow);
+    qint64 maxBytesSendableNowCount = m_writeSize - *m_pendingDataOnSocket;
+    if (maxBytesSendableNowCount > 0) {
+        qint64 bytesSendNowCount = std::min(maxBytesSendableNowCount, (qint64)m_pendingSendData->size());
+        if (bytesSendNowCount > 0) {
+            QByteArray bytesSendNow = m_pendingSendData->left(bytesSendNowCount);
+            writeRaw(bytesSendNow);
+            *m_pendingDataOnSocket += bytesSendNowCount;
 
-    int byteCountPending = m_pendingSendData->size() - bytesSendNow.size();
-    QByteArray bytesPending = m_pendingSendData->right(byteCountPending);
-    *m_pendingSendData = bytesPending;
-
-    if (byteCountPending > 0)
-        m_pendingSendTimer->start();
+            int byteCountPending = m_pendingSendData->size() - bytesSendNowCount;
+            QByteArray bytesPending = m_pendingSendData->right(byteCountPending);
+            *m_pendingSendData = bytesPending;
+        }
+    }
 }
 
 void TestFragmentedNetPeerWorker::sendArray(const QByteArray &byteArray) const
@@ -61,12 +63,13 @@ void TestFragmentedNetPeerWorker::sendArray(const QByteArray &byteArray) const
     out.setVersion(QDataStream::Qt_5_7);
     out << byteArray;
 
-    if (m_writeSize == 0)
+    if (m_writeSize == 0) {
         writeRaw(rawData);
+        *m_pendingDataOnSocket += rawData.count();
+    }
     else {
         m_pendingSendData->append(rawData);
-        if(!m_pendingSendTimer->isRunning())
-            sendFraction();
+        sendFraction();
     }
 }
 
@@ -80,9 +83,11 @@ void TestFragmentedNetPeerWorker::resetReadyReadCount()
     m_readyReadCount = 0;
 }
 
-void TestFragmentedNetPeerWorker::onPendingTimer()
+void TestFragmentedNetPeerWorker::onBytesWritten(qint64 bytes)
 {
-    sendFraction();
+    *m_pendingDataOnSocket -= bytes;
+    if (*m_pendingDataOnSocket == 0 && m_pendingSendData->size())
+        sendFraction();
 }
 
 void TestFragmentedNetPeerWorker::handleReadyRead()
