@@ -40,7 +40,7 @@ public:
     StorageComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
 
 private:
-    QHash<int, EntityMap> m_entityComponentData;
+    QMap<int, EntityMap> m_entityComponentData;
     QHash<int, EntityMap> m_futureEntityComponentData;
 };
 
