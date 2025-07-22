@@ -30,10 +30,6 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
                 if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
                     QVariantList tmpIntList;
                     auto intList = tmpData.value<QList<int> >();
-                    if(tmpEntityId == 0 && tmpComponentName == "Entities")
-                        std::sort(intList .begin(), intList .end());
-                    else
-                        qFatal("Unexpected int-list: Entity id: %i / comonente %s", tmpEntityId, qPrintable(tmpComponentName));
                     for(const int &tmpInt : qAsConst(intList))
                         tmpIntList.append(tmpInt);
                     toInsert = QJsonArray::fromVariantList(tmpIntList);
