@@ -27,7 +27,7 @@ void test_command_events::clientSubscribeEntity()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::clientSubscribeNonExistingEntity()
@@ -41,7 +41,7 @@ void test_command_events::clientSubscribeNonExistingEntity()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::clientSubscribeUnsubscribeEntity()
@@ -63,7 +63,7 @@ void test_command_events::clientSubscribeUnsubscribeEntity()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::clientFetchComponent()
@@ -83,7 +83,7 @@ void test_command_events::clientFetchComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::clientFetchNonExistingComponent()
@@ -102,7 +102,7 @@ void test_command_events::clientFetchNonExistingComponent()
     QVERIFY(file1.open(QFile::ReadOnly));
     QByteArray jsonExpected1 = file1.readAll();
     QByteArray jsonDumped1 = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected1, jsonDumped1));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected1, jsonDumped1));
 }
 
 void test_command_events::clientSetSytemEnttityComponent()
@@ -120,7 +120,7 @@ void test_command_events::clientSetSytemEnttityComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::clientSetNonExistingComponent()
@@ -138,7 +138,7 @@ void test_command_events::clientSetNonExistingComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 
     // TODO??: This time it is SystemModuleEventSystem missing error handling... How shall we test/handle
     // gazillions of error handling implementations: SystemModuleEventSystem/AbstractEventSystem/IntrospectionSystem/VfCpp/zera-classes modules???
@@ -153,7 +153,7 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonDumped2;
     QBuffer buff(&jsonDumped2);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected2, jsonDumped2));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected2, jsonDumped2));
 }
 
 static constexpr int testEntityId = 37;
@@ -175,7 +175,7 @@ void test_command_events::serverAddEntityAndComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverAddComponentWithSubscribedClient()
@@ -196,7 +196,7 @@ void test_command_events::serverAddComponentWithSubscribedClient()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverAddComponentForNomExistentEntity()
@@ -211,7 +211,7 @@ void test_command_events::serverAddComponentForNomExistentEntity()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverRemoveComponent()
@@ -231,7 +231,7 @@ void test_command_events::serverRemoveComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverRemoveNonExistingComponent()
@@ -253,7 +253,7 @@ void test_command_events::serverRemoveNonExistingComponent()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverRemoveComponentForNomExistentEntity()
@@ -276,7 +276,7 @@ void test_command_events::serverRemoveComponentForNomExistentEntity()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::serverRemoveAllEntities()
@@ -296,7 +296,7 @@ void test_command_events::serverRemoveAllEntities()
     QVERIFY(file.open(QFile::ReadOnly));
     QByteArray jsonExpected = file.readAll();
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiff(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_command_events::init()
