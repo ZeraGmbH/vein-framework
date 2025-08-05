@@ -81,6 +81,8 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         validated = true;
                         setModulesPaused(cData->newValue().toBool());
                     }
+                    else if(componentName == devModeComponentName)
+                        validated = true;
                 }
             }
         }
