@@ -19,7 +19,6 @@ public:
     static QByteArray dumpToByteArray(AbstractDatabase *db,
                                       QList<int> entityFilter = QList<int>(),
                                       QList<int> entitiesIgnored = QList<int>());
-private:
     static double formatDouble(double value);
 };
 
