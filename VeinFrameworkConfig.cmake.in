@@ -4,7 +4,7 @@ find_dependency(Qt5 COMPONENTS Core Qml Test REQUIRED)
 find_dependency(Flatbuffers REQUIRED)
 find_dependency(Protobuf REQUIRED)
 find_dependency(ZenuxCore REQUIRED)
-find_dependency(zera-json-params REQUIRED)
+find_dependency(zera-json-helpers REQUIRED)
 find_dependency(SCPI REQUIRED)
 
 include("${CMAKE_CURRENT_LIST_DIR}/VeinFrameworkTargets.cmake")

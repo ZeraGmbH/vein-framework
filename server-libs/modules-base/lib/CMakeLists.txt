@@ -14,7 +14,7 @@ add_library(modules-vein SHARED
 target_link_libraries(modules-vein
     PUBLIC
     Qt5::Core
-    zera-json-params
+    Zera::zera-json-params
     # ask linker to help us finding unresolved symbols
     "-Wl,--no-undefined"
     )
