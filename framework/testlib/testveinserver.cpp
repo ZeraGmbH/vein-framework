@@ -234,4 +234,9 @@ void TestVeinServer::resetEventSpyData()
     m_JsonEventLog = QJsonObject();
 }
 
+VfCmdEventHandlerSystemPtr TestVeinServer::getCmdEventHandlerSystem()
+{
+    return m_cmdEventHandlerSystem;
+}
+
 
