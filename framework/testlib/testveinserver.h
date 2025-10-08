@@ -49,6 +49,7 @@ public:
     QList<VfTestComponentSpy::TComponentInfo> getComponentAddList() const;
     QList<VfTestComponentSpy::TComponentInfo> getComponentChangeList() const;
     void resetEventSpyData();
+    VfCmdEventHandlerSystemPtr getCmdEventHandlerSystem();
 signals:
     void sigRPCFinished(bool ok, QUuid identifier, const QVariantMap &resultData);
 private:
