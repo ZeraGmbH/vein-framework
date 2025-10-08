@@ -1,5 +1,6 @@
 #include "testveinserver.h"
 #include "vf_client_component_setter.h"
+#include "vf_rpc_invoker.h"
 #include "vf_server_component_setter.h"
 #include "modulemanagersetupfacade.h"
 #include "testloghelpers.h"
@@ -125,10 +126,11 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
 QUuid TestVeinServer::invokeRpc(int entityId, QString procedureName, QVariantMap paramters)
 {
     if(!m_rpcInvokers.contains(entityId)) {
-        VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(entityId);
+        VfClientRPCInvokerPtr client = std::make_unique<VfClientRPCInvoker>();
+        VfRPCInvokerPtr rpcInvoker = VfRPCInvoker::create(entityId, std::move(client));
         m_cmdEventHandlerSystem->addItem(rpcInvoker);
         m_rpcInvokers.insert(entityId, rpcInvoker);
-        connect(rpcInvoker.get(), &VfClientRPCInvoker::sigRPCFinished, this, &TestVeinServer::sigRPCFinished);
+        connect(rpcInvoker.get(), &VfRPCInvoker::sigRPCFinished, this, &TestVeinServer::sigRPCFinished);
     }
     QUuid id = m_rpcInvokers.value(entityId)->invokeRPC(procedureName, paramters);
     TimeMachineObject::feedEventLoop();
