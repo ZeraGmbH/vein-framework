@@ -27,7 +27,7 @@ private:
     std::unique_ptr<TestVeinServerWithMockNet> m_serverNet;
     std::unique_ptr<VfEntityWithRpcSimplified> m_additionalEntityWithRpc;
     std::unique_ptr<VfCoreStackClient> m_clientStack;
-    VfClientRPCInvokerPtr m_rpcInvoker;
+    VfRPCInvokerPtr m_rpcInvoker;
 };
 
 #endif // TEST_RPC_SIMPLIFIED_H

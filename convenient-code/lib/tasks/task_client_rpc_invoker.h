@@ -1,8 +1,8 @@
 #ifndef TASK_CLIENT_RPC_INVOKER_H
 #define TASK_CLIENT_RPC_INVOKER_H
 
-#include "vf_client_rpc_invoker.h"
 #include "vf_cmd_event_handler_system.h"
+#include "vf_rpc_invoker.h"
 #include <tasktemplate.h>
 #include <QObject>
 
@@ -18,7 +18,7 @@ public:
     void start() override;
 private:
     VfCmdEventHandlerSystemPtr m_commandEventHandler;
-    VfClientRPCInvokerPtr m_rpcInvoker;
+    VfRPCInvokerPtr m_rpcInvoker;
     QString m_procedureName;
     QVariantMap m_parameters;
     std::shared_ptr<QVariant> m_resultData;

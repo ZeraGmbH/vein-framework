@@ -208,7 +208,7 @@ void test_client_storage_event_system::clientInvokeNonExistingRPC()
     m_netClient->subscribeEntity(entityID);
     TimeMachineObject::feedEventLoop();
 
-    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    VfRPCInvokerPtr rpcInvoker = VfRPCInvoker::create(99999, std::make_unique<VfClientRPCInvoker>());
     m_netClient->addItem(rpcInvoker);
 
     rpcInvoker->invokeRPC("RPC_foo",QVariantMap());
@@ -245,7 +245,7 @@ void test_client_storage_event_system::clientInvokeExistingRpcCorrectParameter()
     m_netClient->subscribeEntity(entityID);
     TimeMachineObject::feedEventLoop();
 
-    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    VfRPCInvokerPtr rpcInvoker = VfRPCInvoker::create(99999, std::make_unique<VfClientRPCInvoker>());
     m_netClient->addItem(rpcInvoker);
 
     QVariantMap parameters;
@@ -279,7 +279,7 @@ void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
     m_netClient->subscribeEntity(entityID);
     TimeMachineObject::feedEventLoop();
 
-    VfClientRPCInvokerPtr rpcInvoker = VfClientRPCInvoker::create(99999);
+    VfRPCInvokerPtr rpcInvoker = VfRPCInvoker::create(99999, std::make_unique<VfClientRPCInvoker>());
     m_netClient->addItem(rpcInvoker);
 
     QVariantMap parameters;

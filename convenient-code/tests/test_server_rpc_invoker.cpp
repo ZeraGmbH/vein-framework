@@ -41,10 +41,10 @@ void test_server_rpc_invoker::invalidRPCNoNet()
     entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 2);
 
-    VfServerRPCInvokerPtr invoker = VfServerRPCInvoker::create(rpcHandlerId);
+    VfRPCInvokerPtr invoker = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfServerRPCInvoker>());
     server.cmdEventHandlerSystem.addItem(invoker);
 
-    QSignalSpy invokerSpy(invoker.get(), &VfServerRPCInvoker::sigRPCFinished);
+    QSignalSpy invokerSpy(invoker.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
     invoker->invokeRPC("RPC_foo(bool p_param)",parameters);
@@ -75,10 +75,10 @@ void test_server_rpc_invoker::validRPCNoNet()
     entities = server.server.getEntityAddList();
     QCOMPARE(entities.size(), 2);
 
-    VfServerRPCInvokerPtr invoker = VfServerRPCInvoker::create(rpcHandlerId);
+    VfRPCInvokerPtr invoker = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfServerRPCInvoker>());
     server.cmdEventHandlerSystem.addItem(invoker);
 
-    QSignalSpy invokerSpy(invoker.get(), &VfServerRPCInvoker::sigRPCFinished);
+    QSignalSpy invokerSpy(invoker.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
     invoker->invokeRPC("RPC_forTest",parameters);
@@ -100,10 +100,10 @@ void test_server_rpc_invoker::invalidRPCNet()
     rpcEventHandler.initOnce();
     TimeMachineObject::feedEventLoop();
 
-    VfServerRPCInvokerPtr invoker = VfServerRPCInvoker::create(rpcHandlerId);
+    VfRPCInvokerPtr invoker = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfServerRPCInvoker>());
     serverNet.getServer()->getCmdEventHandlerSystem()->addItem(invoker);
 
-    QSignalSpy invokerSpy(invoker.get(), &VfServerRPCInvoker::sigRPCFinished);
+    QSignalSpy invokerSpy(invoker.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
     invoker->invokeRPC("RPC_foo",parameters);
@@ -125,10 +125,10 @@ void test_server_rpc_invoker::validRPCNet()
     rpcEventHandler.initOnce();
     TimeMachineObject::feedEventLoop();
 
-    VfServerRPCInvokerPtr invoker = VfServerRPCInvoker::create(rpcHandlerId);
+    VfRPCInvokerPtr invoker = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfServerRPCInvoker>());
     serverNet.getServer()->getCmdEventHandlerSystem()->addItem(invoker);
 
-    QSignalSpy invokerSpy(invoker.get(), &VfServerRPCInvoker::sigRPCFinished);
+    QSignalSpy invokerSpy(invoker.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
     invoker->invokeRPC("RPC_forTest",parameters);
@@ -150,10 +150,10 @@ void test_server_rpc_invoker::validRPCTwice()
     rpcEventHandler.initOnce();
     TimeMachineObject::feedEventLoop();
 
-    VfServerRPCInvokerPtr invoker = VfServerRPCInvoker::create(rpcHandlerId);
+    VfRPCInvokerPtr invoker = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfServerRPCInvoker>());
     serverNet.getServer()->getCmdEventHandlerSystem()->addItem(invoker);
 
-    QSignalSpy invokerSpy(invoker.get(), &VfServerRPCInvoker::sigRPCFinished);
+    QSignalSpy invokerSpy(invoker.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
     invoker->invokeRPC("RPC_forTest",parameters);

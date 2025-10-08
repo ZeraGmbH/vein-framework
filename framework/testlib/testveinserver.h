@@ -7,6 +7,7 @@
 #include "ve_eventhandler.h"
 #include "vf-cpp-entity.h"
 #include "vf_cmd_event_handler_system.h"
+#include "vf_rpc_invoker.h"
 #include "vn_introspectionsystem.h"
 #include "vs_storageeventsystem.h"
 #include "vftestentityspy.h"
@@ -70,7 +71,7 @@ private:
     QStringList m_sessionList;
 
     VfCmdEventHandlerSystemPtr m_cmdEventHandlerSystem;
-    QHash<int, VfClientRPCInvokerPtr> m_rpcInvokers;
+    QHash<int, VfRPCInvokerPtr> m_rpcInvokers;
 };
 
 #endif // TESTVEINSERVER_H
