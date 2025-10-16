@@ -1,5 +1,5 @@
-#ifndef VEINMODULECOMPONENT_H
-#define VEINMODULECOMPONENT_H
+#ifndef VFCPPCOMPONENT_H
+#define VFCPPCOMPONENT_H
 
 #include <vcmp_componentdata.h>
 #include <vcmp_errordata.h>
@@ -34,4 +34,4 @@ private:
 };
 }
 
-#endif // VEINMODULECOMPONENT_H
+#endif // VFCPPCOMPONENT_H
