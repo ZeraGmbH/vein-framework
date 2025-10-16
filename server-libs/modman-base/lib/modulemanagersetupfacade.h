@@ -21,6 +21,7 @@ public:
     void addModuleSystem(VeinEvent::EventSystem* system);          // append to module event system
     void addSubsystem(VeinEvent::EventSystem* subsystem);          // append to common event systems (bottommost)
     void clearModuleSystems();
+    void clearSubSystem(VeinEvent::EventSystem* subsystem);
     SystemModuleEventSystem *getSystemModuleEventSystem();
     VeinStorage::AbstractEventSystem *getStorageSystem();
     ModuleEventHandler *getEventHandler();
