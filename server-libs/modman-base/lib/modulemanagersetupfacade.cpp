@@ -48,6 +48,11 @@ void ModuleManagerSetupFacade::clearModuleSystems()
     m_eventHandler.clearModuleSystems();
 }
 
+void ModuleManagerSetupFacade::clearSubSystem(VeinEvent::EventSystem *subsystem)
+{
+    m_eventHandler.removeSubsystem(subsystem);
+}
+
 SystemModuleEventSystem *ModuleManagerSetupFacade::getSystemModuleEventSystem()
 {
     return &m_systemModuleSystem;
