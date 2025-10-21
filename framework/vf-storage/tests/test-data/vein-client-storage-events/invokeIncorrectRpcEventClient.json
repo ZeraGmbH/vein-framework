@@ -19,7 +19,8 @@
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_IRRELEVANT",
             "IntrospectionComponentData": {
-                "EntityName": "RPCEventHandler"
+                "EntityName": "RPCEventHandler",
+                "INF_ModuleInterface": "{\n    \"SCPIInfo\": {\n        \"RPC\": [\n            [\n                \"CALCULATE\",\n                \"RPC_forTest(p_param)\",\n                \"2\",\n                \"\",\n                \"0\",\n                \"bool\"\n            ]\n        ]\n    }\n}\n"
             },
             "IntrospectionRPCs": [
                 "RPC_forTest(bool p_param)"
@@ -39,6 +40,19 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "RPCEventHandler",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "client",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "INF_ModuleInterface",
+            "Entity": 99999,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
             "ValueOld": "invalid"
         },
         {

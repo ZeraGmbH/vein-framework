@@ -16,6 +16,7 @@ public slots:
     QVariant RPC_forTest(QVariantMap parameters);
 
 private:
+    QByteArray setModuleInterface();
     VfCpp::VfCppEntity *m_entity;
     bool m_isInitalized;
 };

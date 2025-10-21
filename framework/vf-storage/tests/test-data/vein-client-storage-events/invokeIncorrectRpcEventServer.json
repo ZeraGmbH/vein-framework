@@ -27,6 +27,19 @@
         },
         {
             "Am command event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_ADD",
+            "ComponentName": "INF_ModuleInterface",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server",
             "Attached data": "RemoteProcedureData",
             "ComponentCommand": "RPCMD_REGISTER",
             "Entity": 99999,
@@ -45,7 +58,8 @@
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
             "IntrospectionComponentData": {
-                "EntityName": "RPCEventHandler"
+                "EntityName": "RPCEventHandler",
+                "INF_ModuleInterface": "{\n    \"SCPIInfo\": {\n        \"RPC\": [\n            [\n                \"CALCULATE\",\n                \"RPC_forTest(p_param)\",\n                \"2\",\n                \"\",\n                \"0\",\n                \"bool\"\n            ]\n        ]\n    }\n}\n"
             },
             "IntrospectionRPCs": [
                 "RPC_forTest(bool p_param)"
@@ -65,6 +79,19 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "RPCEventHandler",
+            "ValueOld": "invalid"
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "INF_ModuleInterface",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
             "ValueOld": "invalid"
         },
         {
