@@ -322,7 +322,7 @@ void test_client_storage_event_system::subscribeToExistingEntityWithRpc()
 
     QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
     QVERIFY(rpcs.contains(entityID1));
-    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1].count(), 2);
     QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
 }
 
@@ -336,7 +336,7 @@ void test_client_storage_event_system::subscribeAndUnsubscribeWithRpc()
 
     QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
     QVERIFY(rpcs.contains(entityID1));
-    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1].count(), 2);
     QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
 
     m_netClient->unsubscribeEntity(entityID1);
@@ -356,7 +356,7 @@ void test_client_storage_event_system::subscribeAndEntityRemoveWithRpc()
 
     QMap<int, QStringList> rpcs = m_clientStorageSystem->getRpcs();
     QVERIFY(rpcs.contains(entityID1));
-    QCOMPARE(rpcs[entityID1].count(), 1);
+    QCOMPARE(rpcs[entityID1].count(), 2);
     QCOMPARE(rpcs[entityID1][0], "RPC_forTest(bool p_param)");
 
     m_netServer->getServer()->removeEntitiesAdded();

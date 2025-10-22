@@ -20,10 +20,11 @@
             "EventTarget": "ET_IRRELEVANT",
             "IntrospectionComponentData": {
                 "EntityName": "RPCEventHandler",
-                "INF_ModuleInterface": "{\n    \"SCPIInfo\": {\n        \"RPC\": [\n            [\n                \"CALCULATE\",\n                \"RPC_forTest(p_param)\",\n                \"2\",\n                \"\",\n                \"0\",\n                \"bool\"\n            ]\n        ]\n    }\n}\n"
+                "INF_ModuleInterface": "{\n    \"SCPIInfo\": {\n        \"RPC\": [\n            [\n                \"CALCULATE\",\n                \"RPC_forTest(p_param)\",\n                \"2\",\n                \"\",\n                \"0\",\n                \"bool\"\n            ],\n            [\n                \"CALCULATE\",\n                \"RpcReturnText(p_input,p_readOnly)\",\n                \"2\",\n                \"\",\n                \"0\",\n                \"QString,bool\"\n            ]\n        ]\n    }\n}\n"
             },
             "IntrospectionRPCs": [
-                "RPC_forTest(bool p_param)"
+                "RPC_forTest(bool p_param)",
+                "RpcReturnText(QString p_input,bool p_readOnly)"
             ],
             "Valid": true,
             "ValidPeer": true

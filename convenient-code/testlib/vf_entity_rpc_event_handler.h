@@ -14,6 +14,7 @@ public:
     VfCpp::VfCppEntity *getVeinEntity() const;
 public slots:
     QVariant RPC_forTest(QVariantMap parameters);
+    QVariant RpcReturnText(QVariantMap parameters);
 
 private:
     QByteArray setModuleInterface();
