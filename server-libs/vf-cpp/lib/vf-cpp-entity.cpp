@@ -107,16 +107,25 @@ void VfCpp::VfCppEntity::handleComponents(VeinEvent::CommandEvent *cmdEvent)
 void VfCpp::VfCppEntity::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
 {
     VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
+    bool rpcFound = false;
+    QString procedureName;
     if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
-        if(m_rpcList.contains(rpcData->procedureName())) {
+        for (auto it = m_rpcList.constBegin(); it != m_rpcList.constEnd(); ++it) {
+            procedureName = it.key();
+            if(procedureName.contains(rpcData->procedureName(), Qt::CaseInsensitive)) {
+                rpcFound = true;
+                break ;
+            }
+        }
+        if(rpcFound) {
             const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
             Q_ASSERT(!callId.isNull());
-            m_rpcList[rpcData->procedureName()]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
+            m_rpcList[procedureName]->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());
             cmdEvent->accept();
         }
         else {
             cmdEvent->eventData()->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-            ErrorDataSender::errorOut(QString("No RPC with entityId: %1 name: %2").arg(m_entityId).arg(rpcData->procedureName()),
+            ErrorDataSender::errorOut(QString("No RPC with entityId: %1 name: %2").arg(m_entityId).arg(procedureName),
                                       cmdEvent,
                                       this);
         }
