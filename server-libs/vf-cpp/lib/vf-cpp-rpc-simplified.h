@@ -13,6 +13,7 @@ class VfCppRpcSimplified : public QObject
 public:
     VfCppRpcSimplified(VeinEvent::EventSystem *eventSystem, int entityId, QString rpcSignature);
     QString getSignature();
+    QString getParamterType();
     void callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters);
     void sendRpcResult(const QUuid &callId, QVariant result);
     void sendRpcError(const QUuid &callId, QString errorStr);

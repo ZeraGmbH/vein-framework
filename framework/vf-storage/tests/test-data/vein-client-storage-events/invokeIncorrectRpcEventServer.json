@@ -27,19 +27,6 @@
         },
         {
             "Am command event in": "server",
-            "Attached data": "ComponentData",
-            "ComponentCommand": "CCMD_ADD",
-            "ComponentName": "INF_ModuleInterface",
-            "Entity": 99999,
-            "EventOrigin": "EO_LOCAL",
-            "EventSubtype": "NOTIFICATION",
-            "EventTarget": "ET_ALL",
-            "Valid": true,
-            "ValidPeer": false,
-            "ValueOld": "invalid"
-        },
-        {
-            "Am command event in": "server",
             "Attached data": "RemoteProcedureData",
             "ComponentCommand": "RPCMD_REGISTER",
             "Entity": 99999,
@@ -61,6 +48,19 @@
             "ProcedureName": "RpcReturnText(QString p_input,bool p_readOnly)",
             "Valid": true,
             "ValidPeer": false
+        },
+        {
+            "Am command event in": "server",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_ADD",
+            "ComponentName": "INF_ModuleInterface",
+            "Entity": 99999,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueOld": "invalid"
         },
         {
             "Am command event in": "server",

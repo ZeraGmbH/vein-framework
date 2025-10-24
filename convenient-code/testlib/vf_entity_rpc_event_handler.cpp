@@ -19,9 +19,9 @@ bool vfEntityRpcEventHandler::initOnce()
         m_isInitalized = true;
         m_entity->initModule();
         m_entity->createComponent("EntityName", "RPCEventHandler", true);
-        m_entity->createComponent("INF_ModuleInterface", setModuleInterface());
         m_entity->createRpc(this, "RPC_forTest", VfCpp::VfCppRpcSignature::RPCParams({{"p_param", "bool"}}), false);
-        m_entity->createRpc(this, "RpcReturnText", VfCpp::VfCppRpcSignature::RPCParams({{"p_input", "QString"},{"p_readOnly", "bool"}}), false);
+        m_rpcWithParams = m_entity->createRpc(this, "RpcReturnText", VfCpp::VfCppRpcSignature::RPCParams({{"p_input", "QString"},{"p_readOnly", "bool"}}), false);
+        m_entity->createComponent("INF_ModuleInterface", setModuleInterface());
     }
     return true;
 }
@@ -68,7 +68,7 @@ QByteArray vfEntityRpcEventHandler::setModuleInterface()
     jsonSCPIArr.append("2");
     jsonSCPIArr.append("");
     jsonSCPIArr.append("0");
-    jsonSCPIArr.append("QString,bool");
+    jsonSCPIArr.append(m_rpcWithParams->getParamterType());
     jsonArr.append(jsonSCPIArr);
 
     QJsonObject jsonObj4;

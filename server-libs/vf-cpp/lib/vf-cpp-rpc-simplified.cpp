@@ -3,6 +3,7 @@
 #include "vf_server_rpc_register.h"
 #include "vf_server_rpc_result.h"
 #include "vcmp_remoteproceduredata.h"
+#include <qregularexpression.h>
 
 using namespace VfCpp;
 
@@ -18,6 +19,22 @@ VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int 
 QString VfCppRpcSimplified::getSignature()
 {
     return m_rpcSignature;
+}
+
+QString VfCppRpcSimplified::getParamterType()
+{
+    QRegularExpression re("\\((.*)\\)");
+    QRegularExpressionMatch match = re.match(m_rpcSignature);
+    if (match.hasMatch()) {
+        QString params = match.captured(1).trimmed();
+        QStringList parts = params.split(',', Qt::SkipEmptyParts);
+        for (QString &p : parts) {
+            p = p.trimmed();
+            p.remove(QRegularExpression(R"(\s+\w+$)"));
+        }
+        return parts.join(',');
+    }
+    return QString();
 }
 
 void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)

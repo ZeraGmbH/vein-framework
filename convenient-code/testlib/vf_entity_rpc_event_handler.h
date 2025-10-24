@@ -20,6 +20,7 @@ private:
     QByteArray setModuleInterface();
     VfCpp::VfCppEntity *m_entity;
     bool m_isInitalized;
+    VfCpp::cVeinModuleRpc::Ptr m_rpcWithParams;
 };
 
 #endif // VF_ENTITY_RPC_EVENT_HANDLER_H
