@@ -49,6 +49,22 @@ void VfCppRpcSimplified::sendRpcError(const QUuid &callId, QString errorStr)
     sendRPCresultEvent(callId, returnVal);
 }
 
+void VfCppRpcSimplified::setRPCScpiInfo(const QString &model, const QString &cmd, int cmdTypeMask, const QString &rpcParamsType, SCPI::eSCPIEntryType entryType)
+{
+    m_RpcScpiInfo = std::make_unique<ScpiVeinComponentInfo>(model,
+                                                            cmd,
+                                                            cmdTypeMask,
+                                                            "",
+                                                            entryType);
+    m_RpcScpiInfo->setRpcParams(rpcParamsType);
+}
+
+void VfCppRpcSimplified::exportRpcSCPIInfo(QJsonArray &jsArr)
+{
+    if (m_RpcScpiInfo)
+        m_RpcScpiInfo->appendSCPIInfo(jsArr);
+}
+
 void VfCppRpcSimplified::sendRPCresultEvent(const QUuid &callId, QVariantMap returnVal)
 {
     if(m_callIdPeerIdHash.contains(callId)) {

@@ -14,6 +14,7 @@ add_library(VfCpp SHARED
 target_link_libraries(VfCpp 
     PUBLIC
     Qt5::Core
+    Zera::SCPI
     VfEvent
     VfComponent
     VfConvenientCode
