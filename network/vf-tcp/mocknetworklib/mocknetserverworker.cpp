@@ -74,19 +74,32 @@ TcpPeer* MockNetServerWorker::emitSigClientConnected(TcpPeer* clientPeer)
     m_keyServerValueClient[serverPeer] = clientPeer;
 
     connect(clientPeer, &TcpPeer::sigConnectionClosed,
-            this, &MockNetServerWorker::onPeerClosed);
+            this, &MockNetServerWorker::onClientPeerClosed);
     connect(serverPeer, &TcpPeer::sigConnectionClosed,
-            this, &MockNetServerWorker::onPeerClosed);
+            this, &MockNetServerWorker::onServerPeerClosed);
 
     return serverPeer;
 }
 
-void MockNetServerWorker::onPeerClosed(TcpPeer *peer)
+void MockNetServerWorker::onClientPeerClosed(TcpPeer *peer)
 {
     TcpPeer *peerToNotify = nullptr;
     if(m_keyClientValueServer.contains(peer))
         peerToNotify = m_keyClientValueServer[peer];
-    else if(m_keyServerValueClient.contains(peer))
+    if(peerToNotify) {
+        removePeersFromHashes(peerToNotify);
+        QMetaObject::invokeMethod(peerToNotify,
+                                  "sigConnectionClosed",
+                                  Qt::QueuedConnection,
+                                  Q_ARG(VeinTcp::TcpPeer*, peerToNotify)
+                                  );
+    }
+}
+
+void MockNetServerWorker::onServerPeerClosed(TcpPeer *peer)
+{
+    TcpPeer *peerToNotify = nullptr;
+    if(m_keyServerValueClient.contains(peer))
         peerToNotify = m_keyServerValueClient[peer];
     if(peerToNotify) {
         removePeersFromHashes(peerToNotify);
@@ -96,6 +109,12 @@ void MockNetServerWorker::onPeerClosed(TcpPeer *peer)
                                   Q_ARG(VeinTcp::TcpPeer*, peerToNotify)
                                   );
     }
+    // note that client/server notation is different to production code:
+    // * Production code just handles peers created on connect and calls them clients
+    //   and does cleanup for them - see TcpServerWorker::clientDisconnectedSRV
+    // * Here we have access to peers created by client and leave housekeeping to clients /
+    //   the peers generated at connection are server peers which we have to delete:
+    peer->deleteLater();
 }
 
 void MockNetServerWorker::removePeersFromHashes(TcpPeer *peer)

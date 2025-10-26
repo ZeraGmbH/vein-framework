@@ -22,7 +22,8 @@ public:
     static MockNetServerWorker* getServerMock(quint16 port);
     TcpPeer *emitSigClientConnected(TcpPeer *clientPeer);
 private slots:
-    void onPeerClosed(VeinTcp::TcpPeer *peer);
+    void onClientPeerClosed(VeinTcp::TcpPeer *peer);
+    void onServerPeerClosed(VeinTcp::TcpPeer *peer);
 private:
     void removePeersFromHashes(TcpPeer *peer);
     quint16 m_portListening = 0;
