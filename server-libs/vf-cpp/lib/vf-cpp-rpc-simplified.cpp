@@ -21,22 +21,6 @@ QString VfCppRpcSimplified::getSignature()
     return m_rpcSignature;
 }
 
-QString VfCppRpcSimplified::getParamterType()
-{
-    QRegularExpression re("\\((.*)\\)");
-    QRegularExpressionMatch match = re.match(m_rpcSignature);
-    if (match.hasMatch()) {
-        QString params = match.captured(1).trimmed();
-        QStringList parts = params.split(',', Qt::SkipEmptyParts);
-        for (QString &p : parts) {
-            p = p.trimmed();
-            p.remove(QRegularExpression(R"(\s+\w+$)"));
-        }
-        return parts.join(',');
-    }
-    return QString();
-}
-
 void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &parameters)
 {
     QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();

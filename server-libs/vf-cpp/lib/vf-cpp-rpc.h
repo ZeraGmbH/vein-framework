@@ -47,7 +47,6 @@ public:
     ~cVeinModuleRpc();
 
     QString rpcName() const;
-    QString getParamterType();
 
     void callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters);
     void sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult);

@@ -1,5 +1,6 @@
 #include "vf_entity_rpc_event_handler.h"
 #include "vf-cpp-rpc-signature.h"
+#include "vf-cpp-rpc-helper.h"
 #include <QJsonDocument>
 
 vfEntityRpcEventHandler::vfEntityRpcEventHandler(int id)
@@ -68,7 +69,7 @@ QByteArray vfEntityRpcEventHandler::setModuleInterface()
     jsonSCPIArr.append("2");
     jsonSCPIArr.append("");
     jsonSCPIArr.append("0");
-    jsonSCPIArr.append(m_rpcWithParams->getParamterType());
+    jsonSCPIArr.append(VfCppRpcHelper::getRpcTypesFromSignature(m_rpcWithParams->rpcName()));
     jsonArr.append(jsonSCPIArr);
 
     QJsonObject jsonObj4;

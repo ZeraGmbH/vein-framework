@@ -46,22 +46,6 @@ QString cVeinModuleRpc::rpcName() const
     return m_rpcName;
 }
 
-QString cVeinModuleRpc::getParamterType()
-{
-    QRegularExpression re("\\((.*)\\)");
-    QRegularExpressionMatch match = re.match(m_rpcName);
-    if (match.hasMatch()) {
-        QString params = match.captured(1).trimmed();
-        QStringList parts = params.split(',', Qt::SkipEmptyParts);
-        for (QString &p : parts) {
-            p = p.trimmed();
-            p.remove(QRegularExpression(R"(\s+\w+$)"));
-        }
-        return parts.join(',');
-    }
-    return QString();
-}
-
 void cVeinModuleRpc::callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters)
 {
     emit callFunctionPrivateSignal(p_callId, p_peerId, t_rpcParameters);
