@@ -2,6 +2,7 @@
 #include "mocktcpnetworkfactory.h"
 #include <timerfactoryqtfortest.h>
 #include <timemachinefortest.h>
+#include <testloghelpers.h>
 #include <QSignalSpy>
 #include <QTest>
 
@@ -24,7 +25,10 @@ void test_rpc_simplified::init()
     m_clientStack = std::make_unique<VfCoreStackClient>(VeinTcp::MockTcpNetworkFactory::create());
     m_clientStack->connectToServer("127.0.0.1", serverPort);
     TimeMachineObject::feedEventLoop();
+    m_veinEventDump = QJsonObject();
+    setupSpy(m_veinEventDump);
     m_clientStack->subscribeEntity(entityIdWithRpc);
+
     TimeMachineObject::feedEventLoop();
 
     m_rpcInvoker = std::make_shared<VfRPCInvoker>(entityIdWithRpc, std::make_unique<VfClientRPCInvoker>());
@@ -47,6 +51,12 @@ void test_rpc_simplified::callRpcValidParam()
 
     QVERIFY(isRpcFound(spyRpcFinish[0]));
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
+
+    QFile file(":/vein-event-dumps/dumpCallRpcValidParam.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callRpcInvalidParamValue()
@@ -57,6 +67,12 @@ void test_rpc_simplified::callRpcInvalidParamValue()
 
     QVERIFY(isRpcFound(spyRpcFinish[0]));
     QCOMPARE(getReturnError(spyRpcFinish[0]), "Error");
+
+    QFile file(":/vein-event-dumps/dumpCallRpcInvalidParamValue.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callRpcInvalidParamName()
@@ -67,6 +83,12 @@ void test_rpc_simplified::callRpcInvalidParamName()
 
     QList<QVariant> arguments = spyRpcFinish[0];
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
+
+    QFile file(":/vein-event-dumps/dumpCallRpcInvalidParamName.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callRpcMissingParam()
@@ -77,6 +99,12 @@ void test_rpc_simplified::callRpcMissingParam()
 
     QList<QVariant> arguments = spyRpcFinish[0];
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
+
+    QFile file(":/vein-event-dumps/dumpCallRpcMissingParam.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callInvalidRpc()
@@ -85,8 +113,13 @@ void test_rpc_simplified::callInvalidRpc()
     invokeRpc("foo", "p_param", -72);
     QCOMPARE(spyRpcFinish.count(), 1);
 
-    QList<QVariant> arguments = spyRpcFinish[0];
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
+
+    QFile file(":/vein-event-dumps/dumpCallInvalidRpc.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callRPCTwice()
@@ -100,6 +133,12 @@ void test_rpc_simplified::callRPCTwice()
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
     QCOMPARE(spyRpcFinish[1][1].toUuid(), id2);
     QCOMPARE(getReturnResult(spyRpcFinish[1]), "48");
+
+    QFile file(":/vein-event-dumps/dumpCallRPCTwice.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 void test_rpc_simplified::callRPCRespondingAfterDelay()
@@ -116,6 +155,12 @@ void test_rpc_simplified::callRPCRespondingAfterDelay()
     QCOMPARE(spyRpcFinish.count(), 1);
     QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
+
+    QFile file(":/vein-event-dumps/dumpcallRPCRespondingAfterDelay.json");
+    QVERIFY(file.open(QFile::ReadOnly));
+    QByteArray jsonExpected = file.readAll();
+    QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
 QUuid test_rpc_simplified::invokeRpc(QString rpcName, QString paramName, QVariant paramValue)
@@ -143,4 +188,23 @@ QVariant test_rpc_simplified::getReturnError(QList<QVariant> spyArguments)
 {
     QVariantMap argMap = spyArguments[2].toMap();
     return argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
+}
+
+void test_rpc_simplified::setupSpy(QJsonObject &jsonEvents)
+{
+    m_serverCmdEventSpyTop = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server-enter");
+    m_serverNet->getServer()->prependEventSystem(m_serverCmdEventSpyTop.get());
+
+    m_serverCmdEventSpyBottom = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "server-fallthrough");
+    connect(m_serverNet->getServer()->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
+            m_serverCmdEventSpyBottom.get(), &TestJsonSpyEventSystem::onEventAccepted);
+    m_serverNet->getServer()->appendEventSystem(m_serverCmdEventSpyBottom.get());
+
+    m_clientCmdEventSpyTop = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client-enter");
+    m_clientStack->prependEventSystem(m_clientCmdEventSpyTop.get());
+
+    m_clientCmdEventSpyBottom = std::make_unique<TestJsonSpyEventSystem>(&jsonEvents, "client-fallthrough");
+    connect(m_clientStack->getEventHandler(), &VeinEvent::EventHandler::sigEventAccepted,
+            m_clientCmdEventSpyBottom.get(), &TestJsonSpyEventSystem::onEventAccepted);
+    m_clientStack->appendEventSystem(m_clientCmdEventSpyBottom.get());
 }

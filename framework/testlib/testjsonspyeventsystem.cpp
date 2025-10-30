@@ -116,6 +116,9 @@ void TestJsonSpyEventSystem::handleRpcData(VeinEvent::EventData *evData, QJsonOb
     RemoteProcedureData *rpcData = static_cast<RemoteProcedureData*>(evData);
     jsonEventInfo.insert("Attached data", "RemoteProcedureData");
     jsonEventInfo.insert("ProcedureName", rpcData->procedureName());
+    QJsonObject invokationData = QJsonObject::fromVariantMap(rpcData->invokationData());
+    invokationData.remove("RemoteProcedureData::callID"); // non deterministic
+    jsonEventInfo.insert("InvokationData", invokationData);
     jsonEventInfo.insert("ComponentCommand", TestCommandEventStrings::strRPCCommand(rpcData->command()));
 }
 

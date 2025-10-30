@@ -33,6 +33,8 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
+            "InvokationData": {
+            },
             "ProcedureName": "RPC_forTest(bool p_param)",
             "Valid": true,
             "ValidPeer": false
@@ -45,6 +47,8 @@
             "EventOrigin": "EO_LOCAL",
             "EventSubtype": "NOTIFICATION",
             "EventTarget": "ET_ALL",
+            "InvokationData": {
+            },
             "ProcedureName": "RpcReturnText(QString p_input,bool p_readOnly)",
             "Valid": true,
             "ValidPeer": false
@@ -120,6 +124,10 @@
                 "Entity": 99999,
                 "EventOrigin": "EO_LOCAL",
                 "EventTarget": "ET_ALL",
+                "InvokationData": {
+                    "RemoteProcedureData::callParameters": {
+                    }
+                },
                 "ProcedureName": "RPC_foo()",
                 "Valid": true
             },
@@ -139,6 +147,10 @@
                 "Entity": 99999,
                 "EventOrigin": "EO_FOREIGN",
                 "EventTarget": "ET_IRRELEVANT",
+                "InvokationData": {
+                    "RemoteProcedureData::callParameters": {
+                    }
+                },
                 "ProcedureName": "RPC_foo()",
                 "Valid": true
             },

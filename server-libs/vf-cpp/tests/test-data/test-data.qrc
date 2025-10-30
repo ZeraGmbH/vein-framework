@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>vein-event-dumps/dumpCallInvalidRpc.json</file>
+        <file>vein-event-dumps/dumpCallRpcInvalidParamName.json</file>
+        <file>vein-event-dumps/dumpCallRpcInvalidParamValue.json</file>
+        <file>vein-event-dumps/dumpCallRpcMissingParam.json</file>
+        <file>vein-event-dumps/dumpcallRPCRespondingAfterDelay.json</file>
+        <file>vein-event-dumps/dumpCallRPCTwice.json</file>
+        <file>vein-event-dumps/dumpCallRpcValidParam.json</file>
+    </qresource>
+</RCC>

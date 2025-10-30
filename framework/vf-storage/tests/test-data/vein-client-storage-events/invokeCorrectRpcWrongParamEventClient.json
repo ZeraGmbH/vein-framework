@@ -69,6 +69,11 @@
                 "Entity": 99999,
                 "EventOrigin": "EO_LOCAL",
                 "EventTarget": "ET_ALL",
+                "InvokationData": {
+                    "RemoteProcedureData::callParameters": {
+                        "p_param": 1
+                    }
+                },
                 "ProcedureName": "RPC_forTest(int p_param)",
                 "Valid": true
             },
@@ -88,6 +93,11 @@
                 "Entity": 99999,
                 "EventOrigin": "EO_FOREIGN",
                 "EventTarget": "ET_IRRELEVANT",
+                "InvokationData": {
+                    "RemoteProcedureData::callParameters": {
+                        "p_param": 1
+                    }
+                },
                 "ProcedureName": "RPC_forTest(int p_param)",
                 "Valid": true
             },
