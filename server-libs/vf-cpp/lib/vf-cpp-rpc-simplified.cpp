@@ -3,6 +3,7 @@
 #include "vf_server_rpc_register.h"
 #include "vf_server_rpc_result.h"
 #include "vcmp_remoteproceduredata.h"
+#include "vf-cpp-rpc-helper.h"
 #include <qregularexpression.h>
 
 using namespace VfCpp;
@@ -50,14 +51,16 @@ void VfCppRpcSimplified::sendRpcError(const QUuid &callId, QString errorStr)
     sendRPCresultEvent(callId, returnVal);
 }
 
-void VfCppRpcSimplified::setRPCScpiInfo(const QString &model, const QString &cmd, int cmdTypeMask, const QString &rpcParamsType, SCPI::eSCPIEntryType entryType)
+void VfCppRpcSimplified::setRPCScpiInfo(const QString &model,
+                                         const QString &cmd,
+                                         int cmdTypeMask,
+                                         const QString &rpcSignature)
 {
-    m_RpcScpiInfo = std::make_unique<ScpiVeinComponentInfo>(model,
+    m_RpcScpiInfo = std::make_unique<VfModuleMetaInfoContainer>(model,
                                                             cmd,
                                                             cmdTypeMask,
-                                                            "",
-                                                            entryType);
-    m_RpcScpiInfo->setRpcParams(rpcParamsType);
+                                                            rpcSignature,
+                                                            SCPI::isComponent);
 }
 
 void VfCppRpcSimplified::exportRpcSCPIInfo(QJsonArray &jsArr)

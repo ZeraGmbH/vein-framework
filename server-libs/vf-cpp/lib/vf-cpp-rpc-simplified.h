@@ -2,7 +2,7 @@
 #define VFCPPRPCSIMPLIFIED_H
 
 #include "ve_eventsystem.h"
-#include <scpiveincomponentinfo.h>
+#include "vfmodulemetainfocontainer.h"
 #include <QString>
 
 namespace VfCpp {
@@ -18,8 +18,7 @@ public:
     void sendRpcError(const QUuid &callId, QString errorStr);
     void setRPCScpiInfo(const QString &model, const QString &cmd,
                         int cmdTypeMask, // e.g SCPI::isQuery|SCPI::isCmdwP
-                        const QString &rpcParamsType,
-                        SCPI::eSCPIEntryType entryType = SCPI::isComponent);
+                        const QString &rpcSignature);
     void exportRpcSCPIInfo(QJsonArray &jsArr);
 signals:
     void callRpc(const QUuid &callId, const QVariantMap &parameters);
@@ -31,7 +30,7 @@ private:
     int m_entityId;
     QString m_rpcSignature;
     QHash<QUuid, QUuid> m_callIdPeerIdHash;
-    std::unique_ptr<ScpiVeinComponentInfo> m_RpcScpiInfo;
+    std::unique_ptr<VfModuleMetaInfoContainer> m_RpcScpiInfo;
 };
 typedef std::shared_ptr<VfCppRpcSimplified> VfCppRpcSimplifiedPtr;
 }

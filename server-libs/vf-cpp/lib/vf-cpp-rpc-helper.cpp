@@ -16,3 +16,9 @@ QString VfCppRpcHelper::getRpcTypesFromSignature(const QString &rpcSignature)
     }
     return QString();
 }
+
+QStringList VfCppRpcHelper::getRpcTypesListFromSignature(const QString &rpcSignature)
+{
+    QString typesCommaSeparated = getRpcTypesFromSignature(rpcSignature);
+    return typesCommaSeparated.split(",", Qt::SkipEmptyParts);
+}

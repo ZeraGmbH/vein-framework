@@ -55,19 +55,18 @@ QByteArray vfEntityRpcEventHandler::setModuleInterface()
     QJsonArray jsonSCPIArr;
     QJsonObject jsonObj;
     jsonSCPIArr.append("CALCULATE");
-    jsonSCPIArr.append("RPC_forTest(p_param)");
+    jsonSCPIArr.append("RPC1");
     jsonSCPIArr.append("2");
-    jsonSCPIArr.append("");
+    jsonSCPIArr.append("RPC_forTest(bool p_param)");
     jsonSCPIArr.append("0");
-    jsonSCPIArr.append("bool");
 
     jsonArr.append(jsonSCPIArr);
 
     jsonSCPIArr = QJsonArray();
     jsonSCPIArr.append("CALCULATE");
-    jsonSCPIArr.append("RpcReturnText(p_input,p_readOnly)");
+    jsonSCPIArr.append("RPC2");
     jsonSCPIArr.append("2");
-    jsonSCPIArr.append("");
+    jsonSCPIArr.append(m_rpcWithParams->rpcName());
     jsonSCPIArr.append("0");
     jsonSCPIArr.append(VfCppRpcHelper::getRpcTypesFromSignature(m_rpcWithParams->rpcName()));
     jsonArr.append(jsonSCPIArr);

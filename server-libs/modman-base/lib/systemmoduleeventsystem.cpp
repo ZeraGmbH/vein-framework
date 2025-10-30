@@ -347,7 +347,7 @@ void SystemModuleEventSystem::setScpiInfo()
     cStringValidator *sValidator = new cStringValidator(m_availableSessionsDisplayed);
     param.setValidator(sValidator);
     m_veinParameterMap[sessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new ScpiVeinComponentInfo("CONFIGURATION", "SESSION:CATALOG", SCPI::isQuery, sessionComponentName, SCPI::isCatalog));
+    m_scpiCatalogCmdList.append(new VfModuleMetaInfoContainer("CONFIGURATION", "SESSION:CATALOG", SCPI::isQuery, sessionComponentName, SCPI::isCatalog));
 
     initialData = new VeinComponent::ComponentData();
     param.m_description = "XSession name";
@@ -356,7 +356,7 @@ void SystemModuleEventSystem::setScpiInfo()
     sValidator = new cStringValidator(m_lxdmConfFile.getAvailableXSessionNames());
     param.setValidator(sValidator);
     m_veinParameterMap[xSessionComponentName] = param;
-    m_scpiCatalogCmdList.append(new ScpiVeinComponentInfo("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
+    m_scpiCatalogCmdList.append(new VfModuleMetaInfoContainer("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
 }
 
 void SystemModuleEventSystem::TVeinParam::setScpiInfo(const QString &model,
@@ -365,7 +365,7 @@ void SystemModuleEventSystem::TVeinParam::setScpiInfo(const QString &model,
                                                       const QString &veinComponentName,
                                                       SCPI::eSCPIEntryType entryType)
 {
-    m_scpiinfo = std::make_shared<ScpiVeinComponentInfo>(model,
+    m_scpiinfo = std::make_shared<VfModuleMetaInfoContainer>(model,
                                                          cmd,
                                                          cmdTypeMask,
                                                          veinComponentName,
