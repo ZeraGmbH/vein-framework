@@ -134,7 +134,7 @@ class NetworkSystemPrivate
 
                 else if(m_subscriptions.contains(evData->entityId())) {
                     QList<QUuid> protoReceivers;
-                    if(evData->type() == VeinComponent::IntrospectionData::dataType())
+                    if(evData->type() == VeinComponent::IntrospectionData::dataType() || evData->type() == VeinComponent::RemoteProcedureData::dataType())
                         protoReceivers.append(peerId); // just subscriber
                     else
                         protoReceivers = m_subscriptions.value(evData->entityId()); // all subscribed
