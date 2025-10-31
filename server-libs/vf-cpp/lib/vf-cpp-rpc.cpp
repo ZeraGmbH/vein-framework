@@ -1,5 +1,6 @@
 #include "vf-cpp-rpc.h"
 #include "vf-cpp-rpc-signature.h"
+#include "vf_server_rpc_result.h"
 #include <QtConcurrent/QtConcurrentRun>
 #include <QRegularExpression>
 
@@ -116,15 +117,8 @@ void cVeinModuleRpc::sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteP
             returnVal.insert(VeinComponent::RemoteProcedureData::s_returnString, returnedResult);
         }
 
-        VeinComponent::RemoteProcedureData *resultData = new VeinComponent::RemoteProcedureData();
-        resultData->setEntityId(m_nEntityId);
-        resultData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
-        resultData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
-        resultData->setCommand(VeinComponent::RemoteProcedureData::Command::RPCMD_RESULT);
-        resultData->setProcedureName(m_rpcName);
-        resultData->setInvokationData(returnVal);
+        VeinEvent::CommandEvent *rpcResultEvent = VfServerRpcResult::generateEvent(m_nEntityId, m_rpcName, returnVal);
 
-        VeinEvent::CommandEvent *rpcResultEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, resultData);
         auto peerId = iter.value();
         rpcResultEvent->setPeerId(peerId);
         m_pendingRpcHash.erase(iter);
