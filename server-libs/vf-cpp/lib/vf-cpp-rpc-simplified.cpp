@@ -3,8 +3,6 @@
 #include "vf_server_rpc_register.h"
 #include "vf_server_rpc_result.h"
 #include "vcmp_remoteproceduredata.h"
-#include "vf-cpp-rpc-helper.h"
-#include <qregularexpression.h>
 
 using namespace VfCpp;
 
