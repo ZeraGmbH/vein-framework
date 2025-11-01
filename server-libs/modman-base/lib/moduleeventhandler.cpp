@@ -33,8 +33,12 @@ void ModuleEventHandler::clearModuleSystems()
 
 void ModuleEventHandler::customEvent(QEvent *event)
 {
-    for(int i=0; i < m_moduleSystems.count() && event->isAccepted()==false; ++i)
-        m_moduleSystems.at(i)->processEvent(event);
+    for(int i=0; i < m_moduleSystems.count() && event->isAccepted()==false; ++i) {
+        VeinEvent::EventSystem* eventSystem = m_moduleSystems.at(i);
+        eventSystem->processEvent(event);
+        if(event->isAccepted())
+            emit sigEventAccepted(eventSystem, event);
+    }
     VeinEvent::EventHandler::customEvent(event);
 }
 
