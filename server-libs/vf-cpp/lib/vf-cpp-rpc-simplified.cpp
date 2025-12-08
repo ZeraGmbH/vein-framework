@@ -3,6 +3,8 @@
 #include "vf_server_rpc_register.h"
 #include "vf_server_rpc_result.h"
 #include "vcmp_remoteproceduredata.h"
+#include <QJsonObject>
+#include <QJsonDocument>
 
 using namespace VfCpp;
 
@@ -24,11 +26,27 @@ void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, 
 {
     QVariantMap params = parameters.value(VeinComponent::RemoteProcedureData::s_parameterString).toMap();
     m_callIdPeerIdHash.insert(callId, peerId);
+    QStringList strParams;
+    for (QVariant &entry : params)
+        strParams.append("'" + entry.toString() + "'");
+    qWarning("RPC call %s / %s", qPrintable(m_rpcSignature), qPrintable(strParams.join(",")));
     emit callRpc(callId, params);
 }
 
 void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
 {
+    int payloadSize = 0;
+    if (!result.isNull()) {
+        QString resultStr = result.toString();
+        if(!resultStr.isEmpty())
+            payloadSize = resultStr.size();
+        else {
+            QVariantMap map = result.toMap();
+            QJsonDocument doc(QJsonObject::fromVariantMap(map));
+            payloadSize = doc.toJson(QJsonDocument::Compact).size();
+        }
+    }
+    qWarning("RPC result %s / size: %i", qPrintable(m_rpcSignature), payloadSize);
     QVariantMap returnVal;
     returnVal.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
     returnVal.insert(VeinComponent::RemoteProcedureData::s_resultCodeString, VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS);
