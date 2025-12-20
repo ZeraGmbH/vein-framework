@@ -77,5 +77,11 @@ private:
     DataState m_state = DataState::ECM_NONE;
     const int m_entityId;
 };
+
 }
+
+#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+Q_DECLARE_INTERFACE(VeinApiQml::EntityComponentMap, "org.zera.EntityComponentMap")
+#endif
+
 #endif // ENTITYCOMPONENTMAP_H
