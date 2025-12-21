@@ -5,6 +5,7 @@
 #include "vtcp_peer.h"
 #include "vtcp_serverworkerinterface.h"
 #include <QList>
+#include <QHash>
 
 namespace VeinTcp
 {

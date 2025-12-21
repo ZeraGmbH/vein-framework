@@ -4,6 +4,7 @@
 #include "vfcomponent_export.h"
 #include "globalIncludes.h"
 #include <ve_eventdata.h>
+#include <QVariantMap>
 
 namespace VeinComponent
 {

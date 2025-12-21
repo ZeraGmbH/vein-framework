@@ -2,7 +2,6 @@
 
 #include <QBuffer>
 #include <QDataStream>
-#include <QVariant>
 
 namespace VeinComponent
 {

@@ -3,6 +3,7 @@
 
 #include <ve_eventsystem.h>
 #include <QHash>
+#include <QVariant>
 
 class VfTestComponentData : public VeinEvent::EventSystem
 {

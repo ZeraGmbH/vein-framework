@@ -49,7 +49,7 @@ QUuid ProtocolEvent::peerId() const
 
 void ProtocolEvent::setPeerId(QUuid t_peerId)
 {
-    VF_ASSERT(t_peerId >= 0, "Peer id must be >= 0");
+    VF_ASSERT(!t_peerId.isNull(), "Peer id must be >= 0");
     m_peerId = t_peerId;
 }
 

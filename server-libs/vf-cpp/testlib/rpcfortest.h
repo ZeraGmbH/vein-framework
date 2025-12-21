@@ -3,6 +3,7 @@
 
 #include "vf-cpp-rpc-simplified.h"
 #include <QUuid>
+#include <QVariantMap>
 
 class RpcForTest : public VfCpp::VfCppRpcSimplified
 {

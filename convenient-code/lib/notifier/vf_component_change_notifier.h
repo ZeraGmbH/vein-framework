@@ -2,6 +2,7 @@
 #define VFCOMPONENTCHANGENOTIFIER_H
 
 #include <vf_component_event_item.h>
+#include <QVariant>
 #include <memory>
 
 class VfComponentChangeNotifier : public QObject, public VfComponentEventItem

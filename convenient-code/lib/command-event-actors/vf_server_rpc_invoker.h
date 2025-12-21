@@ -4,6 +4,7 @@
 #include "vfrpceventgenerator.h"
 #include <memory>
 #include <QObject>
+#include <QVariantMap>
 
 class VfServerRPCInvoker : public VfRPCEventGenerator
 {

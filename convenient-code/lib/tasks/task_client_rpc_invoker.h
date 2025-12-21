@@ -4,7 +4,7 @@
 #include "vf_cmd_event_handler_system.h"
 #include "vf_rpc_invoker.h"
 #include <tasktemplate.h>
-#include <QObject>
+#include <QVariantMap>
 
 class TaskClientRPCInvoker : public TaskTemplate
 {

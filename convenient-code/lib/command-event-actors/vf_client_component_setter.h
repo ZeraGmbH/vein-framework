@@ -3,6 +3,7 @@
 
 #include <vf_component_event_item.h>
 #include <QObject>
+#include <QVariant>
 
 class VfClientComponentSetter : public QObject, public VfComponentEventItem
 {

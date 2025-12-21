@@ -4,6 +4,7 @@
 #include "vf_cmd_event_handler_system.h"
 #include <taskcontainersequence.h>
 #include <tasktemplate.h>
+#include <QVariantMap>
 
 class TaskSimpleVeinRPCInvoker : public TaskTemplate
 {

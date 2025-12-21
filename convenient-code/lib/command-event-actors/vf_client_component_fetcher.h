@@ -2,6 +2,7 @@
 #define VFATOMICCLIENTCOMPONENTFETCHER_H
 
 #include <vf_component_event_item.h>
+#include <QVariant>
 #include <memory>
 
 // * Client fetcher
