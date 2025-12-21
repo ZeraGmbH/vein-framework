@@ -111,11 +111,10 @@ QByteArray LicenseSystem::loadCertData() const
 {
     QByteArray retVal;
     QFile certFile(":/license_cert.pem"); //do not use paths from the regular filesystem, with a replaced custom license_cert.pem licenses could be forged
-    Q_ASSERT(certFile.exists());
-
-    certFile.open(QFile::ReadOnly);
-    retVal = certFile.readAll();
-    certFile.close();
+    if (certFile.open(QFile::ReadOnly)) {
+        retVal = certFile.readAll();
+        certFile.close();
+    }
     return retVal;
 }
 
@@ -127,9 +126,10 @@ QByteArray LicenseSystem::loadLicenseFile(const QString &filePath) const
         QFileInfo tmpFileInfo(tmpFile);
         //mimetype is text/plain so use file extension do distinguish licenses from text files
         if(tmpFileInfo.completeSuffix().toLower() == "p7m") { //format: pkcs7 s/mime (Content-Type: multipart/signed; protocol="application/x-pkcs7-signature";)
-            tmpFile.open(QFile::ReadOnly);
-            retVal = tmpFile.readAll();
-            tmpFile.close();
+            if (tmpFile.open(QFile::ReadOnly)) {
+                retVal = tmpFile.readAll();
+                tmpFile.close();
+            }
         }
         else
             qDebug() << "Ignored regular file:" << filePath << "(no .p7m extension)";
