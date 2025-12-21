@@ -15,7 +15,9 @@ include(GenerateExportHeader)
 
 option(useOpenSsl "Using OpenSSL" ON)
 
-find_package(Qt5 COMPONENTS Core Network Qml Test CONFIG REQUIRED)
+set(QT_MAJOR_VER "5" CACHE STRING "Qt major version")
+set(QTX "Qt${QT_MAJOR_VER}")
+find_package(${QTX} COMPONENTS Core Network Qml Test CONFIG REQUIRED)
 find_package(Flatbuffers REQUIRED)
 find_package(Protobuf REQUIRED)
 find_package(PkgConfig REQUIRED)
@@ -50,7 +52,7 @@ function(SETUP_TESTS)
             )
         target_link_libraries(${_testname}
             PUBLIC
-            Qt5::Test
+            ${QTX}::Test
             VfComponentTest
             VfCpp-testlib
             VfNet2

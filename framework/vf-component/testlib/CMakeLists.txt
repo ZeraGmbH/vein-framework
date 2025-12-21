@@ -13,7 +13,7 @@ add_library(VfComponentTest STATIC
 
 target_link_libraries(VfComponentTest
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfComponent
     VfEvent
     VfStorage

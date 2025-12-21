@@ -20,8 +20,8 @@ target_include_directories(xiqnet
 
 target_link_libraries(xiqnet 
     PUBLIC
-    Qt5::Core
-    Qt5::Network
+    ${QTX}::Core
+    ${QTX}::Network
     ${Protobuf_LIBRARIES}   
     zeraprotobuf
     VfTcp

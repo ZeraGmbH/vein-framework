@@ -13,7 +13,7 @@ add_library(vf-tcp-mock-networklib STATIC
 
 target_link_libraries(vf-tcp-mock-networklib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfTcp
     )
 

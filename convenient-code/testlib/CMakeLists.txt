@@ -13,7 +13,7 @@ add_library(VfConvenientCodeTest STATIC
 
 target_link_libraries(VfConvenientCodeTest
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfEvent
     VfTcp
     VfConvenientCode

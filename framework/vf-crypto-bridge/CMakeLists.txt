@@ -13,7 +13,7 @@ add_library(VfCryptoBridge SHARED
 
 target_link_libraries(VfCryptoBridge 
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     )
 
 if(${OpenSSL_FOUND})

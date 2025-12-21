@@ -20,7 +20,7 @@ target_include_directories(VfEvent
 
 target_link_libraries(VfEvent 
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfHelpers
     Zera::zera-timers
     )

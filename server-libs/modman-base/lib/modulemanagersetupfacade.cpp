@@ -20,12 +20,21 @@ ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licen
 
 void ModuleManagerSetupFacade::registerMetaTypeStreamOperators()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<QList<int> >("QList<int>");
     qRegisterMetaTypeStreamOperators<QList<float> >("QList<float>");
     qRegisterMetaTypeStreamOperators<QList<double> >("QList<double>");
     qRegisterMetaTypeStreamOperators<QList<QString> >("QList<QString>");
     qRegisterMetaTypeStreamOperators<QVector<QString> >("QVector<QString>");
     qRegisterMetaTypeStreamOperators<QList<QVariantMap> >("QList<QVariantMap>");
+#else
+    qRegisterMetaType<QList<int> >("QList<int>");
+    qRegisterMetaType<QList<float> >("QList<float>");
+    qRegisterMetaType<QList<double> >("QList<double>");
+    qRegisterMetaType<QList<QString> >("QList<QString>");
+    qRegisterMetaType<QVector<QString> >("QVector<QString>");
+    qRegisterMetaType<QList<QVariantMap> >("QList<QVariantMap>");
+#endif
 }
 
 void ModuleManagerSetupFacade::prependModuleSystem(VeinEvent::EventSystem *subsystem)

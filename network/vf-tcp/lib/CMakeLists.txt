@@ -24,8 +24,8 @@ target_include_directories(VfTcp
 
 target_link_libraries(VfTcp 
     PUBLIC
-    Qt5::Core
-    Qt5::Network
+    ${QTX}::Core
+    ${QTX}::Network
     systemd
     )
 

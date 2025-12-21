@@ -25,8 +25,8 @@ target_include_directories(VfNet2
 
 target_link_libraries(VfNet2
     PUBLIC
-    Qt5::Core
-    Qt5::Network
+    ${QTX}::Core
+    ${QTX}::Network
     VfHelpers
     VfComponent
     VfStorage

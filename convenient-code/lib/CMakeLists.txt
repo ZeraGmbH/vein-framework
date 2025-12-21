@@ -21,8 +21,8 @@ add_library(VfConvenientCode SHARED
 
 target_link_libraries(VfConvenientCode
     PUBLIC
-    Qt5::Core
-    Qt5::Qml
+    ${QTX}::Core
+    ${QTX}::Qml
     VfEvent
     VfComponent
     VfNet2

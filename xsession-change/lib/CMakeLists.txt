@@ -13,7 +13,7 @@ add_library(xsession-change-lib SHARED
 
 target_link_libraries(xsession-change-lib 
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     )
 
 set_target_properties(xsession-change-lib PROPERTIES VERSION ${PROJECT_VERSION})

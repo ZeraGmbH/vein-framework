@@ -20,7 +20,7 @@ target_include_directories(VfComponent
 
 target_link_libraries(VfComponent
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfHelpers
     VfEvent
     )

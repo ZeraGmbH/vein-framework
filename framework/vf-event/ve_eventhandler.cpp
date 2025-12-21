@@ -87,11 +87,19 @@ void EventHandler::onAddSilence()
 
 void registerStreamOperators()
 {
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qRegisterMetaTypeStreamOperators<QList<double> >("QList<double>");
     qRegisterMetaTypeStreamOperators<QList<int> >("QList<int>");
     qRegisterMetaTypeStreamOperators<QList<QString> >("QList<QString>");
     qRegisterMetaTypeStreamOperators<QVariantMap>("QVariantMap");
     qRegisterMetaTypeStreamOperators<QVariantList>("QVariantList");
+#else
+    qRegisterMetaType<QList<double> >("QList<double>");
+    qRegisterMetaType<QList<int> >("QList<int>");
+    qRegisterMetaType<QList<QString> >("QList<QString>");
+    qRegisterMetaType<QVariantMap>("QVariantMap");
+    qRegisterMetaType<QVariantList>("QVariantList");
+#endif
 }
 
 Q_COREAPP_STARTUP_FUNCTION(registerStreamOperators)

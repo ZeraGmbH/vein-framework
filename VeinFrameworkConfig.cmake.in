@@ -1,6 +1,5 @@
 include(CMakeFindDependencyMacro)
 
-find_dependency(Qt5 COMPONENTS Core Qml Test REQUIRED)
 find_dependency(Flatbuffers REQUIRED)
 find_dependency(Protobuf REQUIRED)
 find_dependency(ZenuxCore REQUIRED)

@@ -13,7 +13,7 @@ add_library(vf-tcp-mock-testlib STATIC
 
 target_link_libraries(vf-tcp-mock-testlib
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     VfTcp
     Zera::zera-timers
     )

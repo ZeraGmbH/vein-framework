@@ -13,8 +13,8 @@ add_library(VfQml SHARED
 
 target_link_libraries(VfQml 
     PUBLIC
-    Qt5::Core
-    Qt5::Qml
+    ${QTX}::Core
+    ${QTX}::Qml
     VfHelpers
     VfEvent
     VfComponent

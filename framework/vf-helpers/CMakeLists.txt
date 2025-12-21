@@ -15,7 +15,7 @@ target_include_directories(VfHelpers
 
 target_link_libraries(VfHelpers
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     )
 
 export(TARGETS VfHelpers FILE VeinFrameworkTargets.cmake)

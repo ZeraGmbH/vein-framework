@@ -13,7 +13,7 @@ add_library(VfCpp SHARED
 
 target_link_libraries(VfCpp 
     PUBLIC
-    Qt5::Core
+    ${QTX}::Core
     modules-vein
     VfEvent
     VfComponent
