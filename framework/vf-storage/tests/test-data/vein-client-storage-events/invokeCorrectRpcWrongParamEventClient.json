@@ -41,7 +41,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "RPCEventHandler",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client",
@@ -54,7 +54,28 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": {
+                "SCPIInfo": {
+                    "RPC": [
+                        [
+                            "CALCULATE",
+                            "RPC1",
+                            "2",
+                            "RPC_forTest(bool p_param)",
+                            "0"
+                        ],
+                        [
+                            "CALCULATE",
+                            "RPC2",
+                            "2",
+                            "RpcReturnText(QString p_input,bool p_readOnly)",
+                            "0",
+                            "QString,bool"
+                        ]
+                    ]
+                }
+            },
+            "ValueOld": null
         },
         {
             "Am command event in": "client",

@@ -1,5 +1,6 @@
 #include "testjsonspyeventsystem.h"
 #include "testcommandeventstrings.h"
+#include "vs_dumpjson.h"
 #include <vcmp_errordata.h>
 #include <vcmp_introspectiondata.h>
 #include <vcmp_remoteproceduredata.h>
@@ -89,16 +90,9 @@ void TestJsonSpyEventSystem::handleComponentData(EventData *evData, QJsonObject 
     jsonEventInfo.insert("Attached data", "ComponentData");
     jsonEventInfo.insert("ComponentName", cData->componentName());
     jsonEventInfo.insert("ComponentCommand", TestCommandEventStrings::strComponentCommand(cData->eventCommand()));
-    QVariant oldValue = cData->oldValue();
-    if(oldValue.isValid())
-        jsonEventInfo.insert("ValueOld", oldValue.toJsonValue());
-    else
-        jsonEventInfo.insert("ValueOld", "invalid");
-    QVariant newValue = cData->newValue();
-    if(newValue.isValid())
-        jsonEventInfo.insert("ValueNew", newValue.toJsonValue());
-    else
-        jsonEventInfo.insert("ValueNew", "invalid");
+
+    addValue(jsonEventInfo, OLDVALUE, cData->oldValue());
+    addValue(jsonEventInfo, NEWVALUE, cData->newValue());
 }
 
 void TestJsonSpyEventSystem::handleIntrospectionData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo)
@@ -191,4 +185,10 @@ void TestJsonSpyEventSystem::addJsonInfo(const QJsonObject &jsonEventInfo)
         jsonArray = (*m_jsonEvents)["VeinEvents"].toArray();
     jsonArray.append(jsonEventInfo);
     (*m_jsonEvents)["VeinEvents"] = jsonArray;
+}
+
+void TestJsonSpyEventSystem::addValue(QJsonObject &jsonEventInfo, OldNewType oldNewType, const QVariant &value)
+{
+    QString key = oldNewType == OLDVALUE ? "ValueOld" : "ValueNew";
+    jsonEventInfo.insert(key, VeinStorage::DumpJson::convertToJsonValue(value));
 }

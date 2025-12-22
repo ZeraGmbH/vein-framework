@@ -29,6 +29,11 @@ private:
     void baseInfoFromEventData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo);
     void extendByCommandEventInfo(VeinEvent::CommandEvent *cEvent, QJsonObject &jsonEventInfo);
     void addJsonInfo(const QJsonObject& jsonEventInfo);
+    enum OldNewType {
+        OLDVALUE,
+        NEWVALUE
+    };
+    void addValue(QJsonObject &jsonEventInfo, OldNewType oldNewType, const QVariant &value);
 
     QJsonObject *m_jsonEvents = nullptr;
     QString m_roleName;

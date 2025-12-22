@@ -5,7 +5,9 @@
 #include "vs_abstractdatabase.h"
 #include <QIODevice>
 #include <QByteArray>
+#include <QVariant>
 #include <QList>
+#include <QJsonValue>
 
 namespace VeinStorage
 {
@@ -16,6 +18,7 @@ public:
     static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice,
                            QList<int> entityFilter = QList<int>(),
                            QList<int> entitiesIgnored = QList<int>());
+    static QJsonValue convertToJsonValue(const QVariant &value);
     static QByteArray dumpToByteArray(AbstractDatabase *db,
                                       QList<int> entityFilter = QList<int>(),
                                       QList<int> entitiesIgnored = QList<int>());

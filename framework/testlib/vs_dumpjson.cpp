@@ -25,47 +25,7 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
             std::sort(tmpEntityComponentNames.begin(), tmpEntityComponentNames.end());
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = db->getStoredValue(tmpEntityId, tmpComponentName);
-                QJsonValue toInsert;
-                int tmpDataType = QMetaType::type(tmpData.typeName());
-                if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
-                    QVariantList tmpIntList;
-                    auto intList = tmpData.value<QList<int> >();
-                    for(const int &tmpInt : qAsConst(intList))
-                        tmpIntList.append(tmpInt);
-                    toInsert = QJsonArray::fromVariantList(tmpIntList);
-                }
-                else if(tmpDataType == QMetaType::type("QList<double>"))  { //needs manual conversion
-                    QVariantList tmpDoubleList;
-                    const auto doubleList = tmpData.value<QList<double> >();
-                    for(const double tmpDouble : doubleList)
-                        tmpDoubleList.append(formatDouble(tmpDouble));
-                    toInsert = QJsonArray::fromVariantList(tmpDoubleList);
-                }
-                else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
-                    QVariantList tmpStringList;
-                    const auto stringList = tmpData.value<QStringList>();
-                    for(const QString &tmpString : stringList)
-                        tmpStringList.append(tmpString);
-                    toInsert = QJsonArray::fromVariantList(tmpStringList);
-                }
-                else if(tmpData.canConvert(QMetaType::QVariantList) && tmpData.toList().isEmpty() == false)
-                    toInsert = QJsonArray::fromVariantList(tmpData.toList());
-                else if(tmpData.canConvert(QMetaType::QVariantMap) && tmpData.toMap().isEmpty() == false)
-                    toInsert = QJsonObject::fromVariantMap(tmpData.toMap());
-                else {
-                    if(tmpComponentName == "INF_ModuleInterface" ) {
-                        QJsonDocument doc = QJsonDocument::fromJson(tmpData.toString().toUtf8());
-                        toInsert = doc.object();
-                    }
-                    else if(tmpDataType == QMetaType::Double) // force nan handled
-                        toInsert = tmpData.toDouble();
-                    else if(tmpDataType == QMetaType::Float) // force nan handled
-                        toInsert = tmpData.toFloat();
-                    else
-                        toInsert = QJsonValue::fromVariant(tmpData);
-                }
-                if(!tmpData.isNull() && toInsert.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
-                    qWarning() << "Datatype" << tmpData.typeName() << "from" << tmpEntityId << tmpComponentName << "is not supported by function " << __PRETTY_FUNCTION__;
+                QJsonValue toInsert = convertToJsonValue(tmpData);
                 tmpEntityObject.insert(tmpComponentName, toInsert);
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
@@ -78,6 +38,57 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
     if(outputFileDevice->isOpen())
         outputFileDevice->close();
 
+}
+
+QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
+{
+    if (value.isNull())
+        return QJsonValue();
+
+    QJsonValue converted;
+    int tmpDataType = QMetaType::type(value.typeName());
+    if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
+        QVariantList tmpIntList;
+        auto intList = value.value<QList<int> >();
+        for(const int &tmpInt : qAsConst(intList))
+            tmpIntList.append(tmpInt);
+        converted = QJsonArray::fromVariantList(tmpIntList);
+    }
+    else if(tmpDataType == QMetaType::type("QList<double>"))  { //needs manual conversion
+        QVariantList tmpDoubleList;
+        const auto doubleList = value.value<QList<double> >();
+        for(const double tmpDouble : doubleList)
+            tmpDoubleList.append(formatDouble(tmpDouble));
+        converted = QJsonArray::fromVariantList(tmpDoubleList);
+    }
+    else if(tmpDataType == QMetaType::QStringList) { //needs manual conversion
+        QVariantList tmpStringList;
+        const auto stringList = value.value<QStringList>();
+        for(const QString &tmpString : stringList)
+            tmpStringList.append(tmpString);
+        converted = QJsonArray::fromVariantList(tmpStringList);
+    }
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
+    else if(value.canConvert(QMetaType::QVariantList) && value.toList().isEmpty() == false)
+        converted = QJsonArray::fromVariantList(value.toList());
+    else if(value.canConvert(QMetaType::QVariantMap) && value.toMap().isEmpty() == false)
+        converted = QJsonObject::fromVariantMap(value.toMap());
+#endif
+    else {
+        QJsonParseError error;
+        QJsonDocument doc = QJsonDocument::fromJson(value.toString().toUtf8(), &error);
+        if (error.error == QJsonParseError::NoError)
+            converted = doc.object();
+        else if(tmpDataType == QMetaType::Double) // force nan handled
+            converted = value.toDouble();
+        else if(tmpDataType == QMetaType::Float) // force nan handled
+            converted = value.toFloat();
+        else
+            converted = QJsonValue::fromVariant(value);
+    }
+    if(converted.isNull()) //how to consistently store and retrieve a QVector2D or QDateTime in JSON?
+        qWarning() << "Datatype" << value.typeName() << "is not supported by function " << __PRETTY_FUNCTION__;
+    return converted;
 }
 
 QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db, QList<int> entityFilter, QList<int> entitiesIgnored)

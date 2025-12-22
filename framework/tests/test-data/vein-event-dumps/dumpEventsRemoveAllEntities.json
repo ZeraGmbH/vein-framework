@@ -34,7 +34,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -48,7 +48,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -62,7 +62,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -76,7 +76,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -167,7 +167,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -181,7 +181,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -195,7 +195,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -209,7 +209,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -255,7 +255,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -269,7 +269,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestEntity",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -283,7 +283,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -297,7 +297,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "TestInitialValue",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",

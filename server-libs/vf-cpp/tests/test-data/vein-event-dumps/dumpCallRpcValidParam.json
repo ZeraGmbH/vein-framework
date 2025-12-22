@@ -91,7 +91,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "EntityName",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -105,7 +105,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "EntityName",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -153,7 +153,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "EntityName",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -167,7 +167,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "EntityName",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",

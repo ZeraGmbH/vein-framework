@@ -320,7 +320,7 @@ void test_networkmock::talkBidirectionalRealFactory()
     QCOMPARE(spyClientSend.count(), 1);
     // Again unexpected!!!
     QCOMPARE(spyClientSend[0][0].value<VeinTcp::TcpPeer*>(), serverPeer);
-    QCOMPARE(spyClientSend[0][1], "ClientSend");
+    QCOMPARE(spyClientSend[0][1], QByteArray("ClientSend"));
 
     // server -> client
     // check event loop fired: connect after start
@@ -330,7 +330,7 @@ void test_networkmock::talkBidirectionalRealFactory()
     QCOMPARE(spyServerSend.count(), 1);
     // Again unexpected!!!
     QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
-    QCOMPARE(spyServerSend[0][1], "ServerSend");
+    QCOMPARE(spyServerSend[0][1], QByteArray("ServerSend"));
 }
 
 void test_networkmock::talkBidirectionalMockFactory()
@@ -356,7 +356,7 @@ void test_networkmock::talkBidirectionalMockFactory()
     QCOMPARE(spyClientSend.count(), 1);
     // Again unexpected!!!
     QCOMPARE(spyClientSend[0][0].value<VeinTcp::TcpPeer*>(), serverPeer);
-    QCOMPARE(spyClientSend[0][1], "ClientSend");
+    QCOMPARE(spyClientSend[0][1], QByteArray("ClientSend"));
 
     // server -> client
     // check event loop fired: connect after start
@@ -366,5 +366,5 @@ void test_networkmock::talkBidirectionalMockFactory()
     QCOMPARE(spyServerSend.count(), 1);
     // Again unexpected!!!
     QCOMPARE(spyServerSend[0][0].value<VeinTcp::TcpPeer*>(), &clientPeer);
-    QCOMPARE(spyServerSend[0][1], "ServerSend");
+    QCOMPARE(spyServerSend[0][1], QByteArray("ServerSend"));
 }

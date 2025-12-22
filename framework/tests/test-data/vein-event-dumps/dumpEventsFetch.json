@@ -11,8 +11,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -25,8 +25,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -39,8 +39,8 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -54,7 +54,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -68,7 +68,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -82,7 +82,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         }
     ]
 }

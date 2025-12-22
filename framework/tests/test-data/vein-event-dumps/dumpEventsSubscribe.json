@@ -105,7 +105,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -119,7 +119,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -132,7 +132,10 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": [
+                0
+            ],
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -145,7 +148,10 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": [
+                0
+            ],
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -159,7 +165,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -173,7 +179,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -186,7 +192,72 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": {
+                "ComponentInfo": {
+                    "EntityName": {
+                        "Description": "Module's name"
+                    },
+                    "INF_ModuleInterface": {
+                        "Description": "Module's interface details"
+                    },
+                    "Session": {
+                        "Description": "Session name",
+                        "Validation": {
+                            "Data": [
+                            ],
+                            "Type": "STRING"
+                        }
+                    },
+                    "XSession": {
+                        "Description": "XSession name",
+                        "Validation": {
+                            "Data": [
+                                "Foo",
+                                "Bar"
+                            ],
+                            "Type": "STRING"
+                        }
+                    }
+                },
+                "ModuleInfo": {
+                    "Description": "This module gives general information about the device",
+                    "Name": "_System"
+                },
+                "SCPIInfo": {
+                    "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "NAMESESSION",
+                            "10",
+                            "Session",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION",
+                            "10",
+                            "XSession",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "SESSION:CATALOG",
+                            "2",
+                            "Session",
+                            "1"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION:CATALOG",
+                            "2",
+                            "XSession",
+                            "1"
+                        ]
+                    ],
+                    "Name": "SYST"
+                }
+            },
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -199,7 +270,72 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": {
+                "ComponentInfo": {
+                    "EntityName": {
+                        "Description": "Module's name"
+                    },
+                    "INF_ModuleInterface": {
+                        "Description": "Module's interface details"
+                    },
+                    "Session": {
+                        "Description": "Session name",
+                        "Validation": {
+                            "Data": [
+                            ],
+                            "Type": "STRING"
+                        }
+                    },
+                    "XSession": {
+                        "Description": "XSession name",
+                        "Validation": {
+                            "Data": [
+                                "Foo",
+                                "Bar"
+                            ],
+                            "Type": "STRING"
+                        }
+                    }
+                },
+                "ModuleInfo": {
+                    "Description": "This module gives general information about the device",
+                    "Name": "_System"
+                },
+                "SCPIInfo": {
+                    "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "NAMESESSION",
+                            "10",
+                            "Session",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION",
+                            "10",
+                            "XSession",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "SESSION:CATALOG",
+                            "2",
+                            "Session",
+                            "1"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION:CATALOG",
+                            "2",
+                            "XSession",
+                            "1"
+                        ]
+                    ],
+                    "Name": "SYST"
+                }
+            },
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -213,7 +349,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -227,7 +363,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -241,7 +377,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "session",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -255,7 +391,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "session",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -271,7 +407,7 @@
             "ValueNew": [
                 "sessionList"
             ],
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -287,7 +423,7 @@
             "ValueNew": [
                 "sessionList"
             ],
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -301,7 +437,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "Bar",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -315,7 +451,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "Bar",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -377,7 +513,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -391,7 +527,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -404,7 +540,10 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": [
+                0
+            ],
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -417,7 +556,10 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": [
+                0
+            ],
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -431,7 +573,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -445,7 +587,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "_System",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -458,7 +600,72 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": {
+                "ComponentInfo": {
+                    "EntityName": {
+                        "Description": "Module's name"
+                    },
+                    "INF_ModuleInterface": {
+                        "Description": "Module's interface details"
+                    },
+                    "Session": {
+                        "Description": "Session name",
+                        "Validation": {
+                            "Data": [
+                            ],
+                            "Type": "STRING"
+                        }
+                    },
+                    "XSession": {
+                        "Description": "XSession name",
+                        "Validation": {
+                            "Data": [
+                                "Foo",
+                                "Bar"
+                            ],
+                            "Type": "STRING"
+                        }
+                    }
+                },
+                "ModuleInfo": {
+                    "Description": "This module gives general information about the device",
+                    "Name": "_System"
+                },
+                "SCPIInfo": {
+                    "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "NAMESESSION",
+                            "10",
+                            "Session",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION",
+                            "10",
+                            "XSession",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "SESSION:CATALOG",
+                            "2",
+                            "Session",
+                            "1"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION:CATALOG",
+                            "2",
+                            "XSession",
+                            "1"
+                        ]
+                    ],
+                    "Name": "SYST"
+                }
+            },
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -471,7 +678,72 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueOld": "invalid"
+            "ValueNew": {
+                "ComponentInfo": {
+                    "EntityName": {
+                        "Description": "Module's name"
+                    },
+                    "INF_ModuleInterface": {
+                        "Description": "Module's interface details"
+                    },
+                    "Session": {
+                        "Description": "Session name",
+                        "Validation": {
+                            "Data": [
+                            ],
+                            "Type": "STRING"
+                        }
+                    },
+                    "XSession": {
+                        "Description": "XSession name",
+                        "Validation": {
+                            "Data": [
+                                "Foo",
+                                "Bar"
+                            ],
+                            "Type": "STRING"
+                        }
+                    }
+                },
+                "ModuleInfo": {
+                    "Description": "This module gives general information about the device",
+                    "Name": "_System"
+                },
+                "SCPIInfo": {
+                    "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "NAMESESSION",
+                            "10",
+                            "Session",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION",
+                            "10",
+                            "XSession",
+                            "0"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "SESSION:CATALOG",
+                            "2",
+                            "Session",
+                            "1"
+                        ],
+                        [
+                            "CONFIGURATION",
+                            "XSESSION:CATALOG",
+                            "2",
+                            "XSession",
+                            "1"
+                        ]
+                    ],
+                    "Name": "SYST"
+                }
+            },
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -485,7 +757,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -499,7 +771,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -513,7 +785,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "session",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -527,7 +799,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "session",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -543,7 +815,7 @@
             "ValueNew": [
                 "sessionList"
             ],
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -559,7 +831,7 @@
             "ValueNew": [
                 "sessionList"
             ],
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-enter",
@@ -573,7 +845,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "Bar",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -587,7 +859,7 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": "Bar",
-            "ValueOld": "invalid"
+            "ValueOld": null
         }
     ]
 }

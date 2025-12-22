@@ -34,7 +34,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "EntityName10",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -48,7 +48,7 @@
             "Valid": true,
             "ValidPeer": false,
             "ValueNew": "EntityName10",
-            "ValueOld": "invalid"
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -61,8 +61,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -75,8 +75,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         }
     ]
 }

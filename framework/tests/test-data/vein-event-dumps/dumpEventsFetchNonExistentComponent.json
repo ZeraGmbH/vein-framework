@@ -11,8 +11,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "client-fallthrough",
@@ -25,8 +25,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -39,8 +39,8 @@
             "EventTarget": "ET_IRRELEVANT",
             "Valid": true,
             "ValidPeer": true,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Accepted (finalized) by": "VeinStorage::StorageEventSystem",
@@ -54,8 +54,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": true,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-enter",
@@ -72,8 +72,8 @@
                 "EventOrigin": "EO_LOCAL",
                 "EventTarget": "ET_ALL",
                 "Valid": true,
-                "ValueNew": "invalid",
-                "ValueOld": "invalid"
+                "ValueNew": null,
+                "ValueOld": null
             },
             "Valid": true,
             "ValidPeer": true
@@ -93,8 +93,8 @@
                 "EventOrigin": "EO_LOCAL",
                 "EventTarget": "ET_ALL",
                 "Valid": true,
-                "ValueNew": "invalid",
-                "ValueOld": "invalid"
+                "ValueNew": null,
+                "ValueOld": null
             },
             "Valid": true,
             "ValidPeer": true
@@ -114,8 +114,8 @@
                 "EventOrigin": "EO_FOREIGN",
                 "EventTarget": "ET_IRRELEVANT",
                 "Valid": true,
-                "ValueNew": "invalid",
-                "ValueOld": "invalid"
+                "ValueNew": null,
+                "ValueOld": null
             },
             "Valid": true,
             "ValidPeer": true
@@ -135,8 +135,8 @@
                 "EventOrigin": "EO_FOREIGN",
                 "EventTarget": "ET_IRRELEVANT",
                 "Valid": true,
-                "ValueNew": "invalid",
-                "ValueOld": "invalid"
+                "ValueNew": null,
+                "ValueOld": null
             },
             "Valid": true,
             "ValidPeer": true

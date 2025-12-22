@@ -11,8 +11,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         },
         {
             "Am command event in": "server-fallthrough",
@@ -25,8 +25,8 @@
             "EventTarget": "ET_ALL",
             "Valid": true,
             "ValidPeer": false,
-            "ValueNew": "invalid",
-            "ValueOld": "invalid"
+            "ValueNew": null,
+            "ValueOld": null
         }
     ]
 }
