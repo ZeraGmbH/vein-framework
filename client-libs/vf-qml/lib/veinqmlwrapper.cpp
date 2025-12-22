@@ -25,7 +25,7 @@ void registerTypes()
     // @uri Vein
     using namespace VeinApiQml;
     qmlRegisterSingletonType<VeinQml>("VeinEntity", 1, 0, "VeinEntity", QmlWrapper::getSingletonInstance);
-#if QT_VERSION < QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     qmlRegisterInterface<EntityComponentMap>("EntityComponentMap");
 #else
     qmlRegisterInterface<EntityComponentMap>("EntityComponentMap", 1);

@@ -80,7 +80,7 @@ private:
 
 }
 
-#if QT_VERSION >= QT_VERSION_CHECK(5, 15, 0)
+#if QT_VERSION >= QT_VERSION_CHECK(6, 0, 0)
 Q_DECLARE_INTERFACE(VeinApiQml::EntityComponentMap, "org.zera.EntityComponentMap")
 #endif
 
