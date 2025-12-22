@@ -31,11 +31,13 @@ QEvent *VfClientComponentSetter::generateEvent(int entityId, QString componentNa
     // * ATTOW we found code in vf-logger checking for QVariantMap type when QJsonObject
     //   was sent - where else would code fail after a proper fix?
     // => Regressions caused are unpredictable :(
+#if QT_VERSION < QT_VERSION_CHECK(6, 0, 0)
     if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantList) && newValue.toList().isEmpty() == false))
         cData->setNewValue(newValue.toList());
     else if(Q_UNLIKELY(newValue.canConvert(QMetaType::QVariantMap)))
         cData->setNewValue(newValue.toMap());
     else
+#endif
         cData->setNewValue(newValue);
     cData->setOldValue(oldValue);
 
