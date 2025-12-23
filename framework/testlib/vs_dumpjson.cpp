@@ -42,7 +42,9 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
 
 QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
 {
-    if (value.isNull())
+    const QString typeName = value.typeName();
+    // Qt5 handles empty string as null => check empty type name too
+    if (value.isNull() && typeName.isEmpty())
         return QJsonValue();
 
     QJsonValue converted;

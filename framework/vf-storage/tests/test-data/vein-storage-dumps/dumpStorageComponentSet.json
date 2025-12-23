@@ -69,7 +69,7 @@
             }
         },
         "ModulesPaused": false,
-        "Session": null,
+        "Session": "",
         "SessionsAvailable": [
         ],
         "XSession": "Bar"
