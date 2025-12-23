@@ -49,8 +49,8 @@ QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
     int tmpDataType = QMetaType::type(value.typeName());
     if(tmpDataType == QMetaType::type("QList<int>")) { //needs manual conversion
         QVariantList tmpIntList;
-        auto intList = value.value<QList<int> >();
-        for(const int &tmpInt : qAsConst(intList))
+        const auto intList = value.value<QList<int> >();
+        for(const int &tmpInt : intList)
             tmpIntList.append(tmpInt);
         converted = QJsonArray::fromVariantList(tmpIntList);
     }

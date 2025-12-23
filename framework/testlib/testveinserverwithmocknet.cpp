@@ -2,10 +2,10 @@
 #include "mocktcpnetworkfactory.h"
 #include <timemachineobject.h>
 
-TestVeinServerWithMockNet::TestVeinServerWithMockNet(int serverPort, QList<VeinEvent::EventSystem *> aboveNetworkSystems) :
+TestVeinServerWithMockNet::TestVeinServerWithMockNet(int serverPort, const QList<VeinEvent::EventSystem *> &aboveNetworkSystems) :
     m_tcpSystem(VeinTcp::MockTcpNetworkFactory::create())
 {
-    for(const auto system : qAsConst(aboveNetworkSystems))
+    for(const auto system : aboveNetworkSystems)
         m_server.appendEventSystem(system);
     m_server.appendEventSystem(&m_netSystem);
     m_server.appendEventSystem(&m_tcpSystem);

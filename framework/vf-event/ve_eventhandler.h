@@ -24,7 +24,7 @@ public:
     QList<EventSystem*> subsystems() const;
 public slots:
     // EventHandler is not owner and therefore not responsible for deleting subsystems
-    void setSubsystems(QList<EventSystem*> subsystems);
+    void setSubsystems(const QList<EventSystem*> &subsystems);
     void addSubsystem(VeinEvent::EventSystem* subsystem);
     void prependSubsystem(VeinEvent::EventSystem* subsystem);
     void removeSubsystem(VeinEvent::EventSystem* subsystem);

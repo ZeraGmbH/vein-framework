@@ -42,9 +42,9 @@ QString MockLxdmConfigFileGenerator::genLastSessionLine(const QString &xSessionF
 void MockLxdmConfigFileGenerator::createLxdmConfigFile(const QStringList &lines)
 {
     QFile file(getLxdmConfFileNameFull());
-    file.open(QFile::WriteOnly);
-    for(const auto &line : lines)
-        file.write(line.toLatin1() + "\n");
+    if(file.open(QFile::WriteOnly))
+        for(const auto &line : lines)
+            file.write(line.toLatin1() + "\n");
 }
 
 void MockLxdmConfigFileGenerator::removeLxdmConfigFile()
@@ -72,9 +72,8 @@ QList<LxdmConfigFileParam::XSession> MockLxdmConfigFileGenerator::toFullPath(con
     return availableXSessionsFullPath;
 }
 
-
-void MockLxdmConfigFileGenerator::createTestSessionFile(const QString &fileName)
+bool MockLxdmConfigFileGenerator::createTestSessionFile(const QString &fileName)
 {
     QFile file(getLxdmTestDir() + fileName);
-    file.open(QFile::WriteOnly);
+    return file.open(QFile::WriteOnly);
 }

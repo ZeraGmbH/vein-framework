@@ -26,12 +26,12 @@ QList<EventSystem *> EventHandler::subsystems() const
     return m_subsystems;
 }
 
-void EventHandler::setSubsystems(QList<EventSystem *> subsystems)
+void EventHandler::setSubsystems(const QList<EventSystem *> &subsystems)
 {
     if(m_subsystems != subsystems) {
         m_waitForAddSilenceToLogTimer->start();
         m_subsystems = subsystems;
-        for(EventSystem *tmpSystem : qAsConst(m_subsystems))
+        for(EventSystem *tmpSystem : subsystems)
             tmpSystem->attach(this);
         emit subsystemsChanged(m_subsystems);
     }

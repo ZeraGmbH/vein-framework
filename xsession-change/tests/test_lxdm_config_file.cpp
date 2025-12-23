@@ -165,8 +165,9 @@ void test_lxdm_config_modify::setCurrSessionValidDoneSessionSetTwice()
     QCOMPARE(confFile.getConfiguredXSessionName(), "Bar");
 
     QFile configFileRead(MockLxdmConfigFileGenerator::getLxdmConfFileNameFull());
-    configFileRead.open(QFile::ReadOnly);
-    QString content = configFileRead.readAll();
+    QString content;
+    if(configFileRead.open(QFile::ReadOnly))
+        content = configFileRead.readAll();
     QString expected = "last_session=" + MockLxdmConfigFileGenerator::getLxdmTestDir() + "bar.desktop\n";
     QCOMPARE(content, expected);
 }

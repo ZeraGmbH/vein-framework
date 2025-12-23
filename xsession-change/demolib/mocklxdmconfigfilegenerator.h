@@ -21,7 +21,7 @@ public:
     LxdmConfigFileParam getConfigParam();
 private:
     static QList<LxdmConfigFileParam::XSession> toFullPath(const QList<LxdmConfigFileParam::XSession> &availableXSessions);
-    void createTestSessionFile(const QString &fileName);
+    static bool createTestSessionFile(const QString &fileName);
 
     LxdmConfigFileParam m_configParam;
 };

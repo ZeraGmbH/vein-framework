@@ -65,7 +65,7 @@ void TestFragmentedNetPeerWorker::sendArray(const QByteArray &byteArray) const
 
     if (m_writeSize == 0) {
         writeRaw(rawData);
-        *m_pendingDataOnSocket += rawData.count();
+        *m_pendingDataOnSocket += rawData.size();
     }
     else {
         m_pendingSendData->append(rawData);
