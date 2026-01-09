@@ -4,6 +4,7 @@
 #include "vfevent_export.h"
 #include "vs_abstractdatabase.h"
 #include "ve_eventsystem.h"
+#include <memory>
 
 namespace VeinStorage
 {
@@ -18,6 +19,8 @@ public:
     virtual QMap<int, QStringList> getRpcs() const = 0;
 };
 }
+
+typedef std::shared_ptr<VeinStorage::AbstractEventSystem> AbstractEventSystemPtr;
 
 #endif // VS_ABSTRACTSTORAGESYSTEM_H
 
