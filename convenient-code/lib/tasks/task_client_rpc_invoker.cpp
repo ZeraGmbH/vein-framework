@@ -16,14 +16,13 @@ TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName
 TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
                                            std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr commandEventHandler) :
     m_commandEventHandler(commandEventHandler),
+    m_rpcInvoker(VfRPCInvoker::create(entityId, std::make_unique<VfClientRPCInvoker>())),
     m_procedureName(procedureName),
     m_parameters(parameters),
     m_resultData(result),
     m_errorMsg(errorMsg),
     m_rpcSuccessful(rpcSuccessful)
 {
-    VfClientRPCInvokerPtr client = std::make_unique<VfClientRPCInvoker>();
-    m_rpcInvoker = VfRPCInvoker::create(entityId, std::move(client));
     m_commandEventHandler->addItem(m_rpcInvoker);
 }
 
