@@ -44,6 +44,9 @@ void VfRPCInvoker::processErrorCommandEventData(VeinEvent::EventData *originalEv
     if(originalEventData->type() == RemoteProcedureData::dataType()) {
         RemoteProcedureData *rpcData = static_cast<RemoteProcedureData *>(originalEventData);
         const QUuid rpcIdentifier = rpcData->invokationData().value(RemoteProcedureData::s_callIdString).toUuid();
-        emit sigRPCFinished(false, rpcIdentifier, rpcData->invokationData());
+        if(m_pendingRPCs.contains(rpcIdentifier)) {
+            m_pendingRPCs.remove(rpcIdentifier);
+            emit sigRPCFinished(false, rpcIdentifier, rpcData->invokationData());
+        }
     }
 }
