@@ -53,7 +53,7 @@ void test_server_rpc_invoker::invalidRPCNoNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), false); //no signal detected
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[0].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
@@ -84,7 +84,7 @@ void test_server_rpc_invoker::invalidRPCNoNetNoCrossTalk()
     QCOMPARE(invokerSpy1.count(), 1);
     QList<QVariant> arguments = invokerSpy1[0];
     QCOMPARE(arguments.at(0), false);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
     QCOMPARE(invokerSpy2.count(), 0);
@@ -119,7 +119,7 @@ void test_server_rpc_invoker::validRPCNoNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
@@ -144,7 +144,7 @@ void test_server_rpc_invoker::invalidRPCNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), false);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
@@ -169,7 +169,7 @@ void test_server_rpc_invoker::validRPCNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
@@ -195,7 +195,7 @@ void test_server_rpc_invoker::validRPCTwice()
     QCOMPARE(invokerSpy.count(), 2);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }

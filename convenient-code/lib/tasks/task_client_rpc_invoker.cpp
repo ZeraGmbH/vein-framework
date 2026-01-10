@@ -35,7 +35,7 @@ void TaskClientRPCInvoker::start()
 {
     //calling this multiple times overwrites connections
     m_rpcInvoker->invokeRPC(m_procedureName, m_parameters);
-    connect(m_rpcInvoker.get(), &VfRPCInvoker::sigRPCFinished, this, [=](bool ok, QUuid identifier, const QVariantMap &resultData) {
+    connect(m_rpcInvoker.get(), &VfRPCInvoker::sigRPCFinished, this, [=](bool ok, const QVariantMap &resultData) {
         *m_rpcSuccessful = (resultData[VeinComponent::RemoteProcedureData::s_resultCodeString] == VeinComponent::RemoteProcedureData::RPCResultCodes::RPC_SUCCESS);
         *m_resultData = resultData[VeinComponent::RemoteProcedureData::s_returnString];
         *m_errorMsg = resultData[VeinComponent::RemoteProcedureData::s_errorMessageString].toString();

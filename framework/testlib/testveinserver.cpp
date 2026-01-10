@@ -123,7 +123,7 @@ void TestVeinServer::setComponentServerNotification(int entityId, QString compon
     TimeMachineObject::feedEventLoop();
 }
 
-QUuid TestVeinServer::invokeRpc(int entityId, QString procedureName, QVariantMap paramters)
+void TestVeinServer::invokeRpc(int entityId, QString procedureName, QVariantMap paramters)
 {
     if(!m_rpcInvokers.contains(entityId)) {
         VfClientRPCInvokerPtr client = std::make_unique<VfClientRPCInvoker>();
@@ -132,9 +132,8 @@ QUuid TestVeinServer::invokeRpc(int entityId, QString procedureName, QVariantMap
         m_rpcInvokers.insert(entityId, rpcInvoker);
         connect(rpcInvoker.get(), &VfRPCInvoker::sigRPCFinished, this, &TestVeinServer::sigRPCFinished);
     }
-    QUuid id = m_rpcInvokers.value(entityId)->invokeRPC(procedureName, paramters);
+    m_rpcInvokers.value(entityId)->invokeRPC(procedureName, paramters);
     TimeMachineObject::feedEventLoop();
-    return id;
 }
 
 QVariant TestVeinServer::getValue(int entityId, QString componentName)

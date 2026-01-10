@@ -55,7 +55,7 @@ void test_client_rpc_invoker::errorSignalFromUnsubscribedEntityInvalidRPCNoNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), false);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
@@ -87,7 +87,7 @@ void test_client_rpc_invoker::unsubscribedEntityValidRPCNoNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
@@ -152,7 +152,7 @@ void test_client_rpc_invoker::subscribedEntityValidRPCNet()
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
@@ -212,21 +212,18 @@ void test_client_rpc_invoker::subscribedEntityValidRPCTwoInvokers()
     QSignalSpy invokerSpyOne(invokerOne.get(), &VfRPCInvoker::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    QUuid idOne = invokerOne->invokeRPC("RPC_forTest",parameters);
+    invokerOne->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     VfRPCInvokerPtr invokerTwo = VfRPCInvoker::create(rpcHandlerId, std::make_unique<VfClientRPCInvoker>());
     clientStack.addItem(invokerTwo);
 
     QSignalSpy invokerSpyTwo(invokerTwo.get(), &VfRPCInvoker::sigRPCFinished);
-    QUuid idTwo = invokerTwo->invokeRPC("RPC_forTest",parameters);
+    invokerTwo->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(invokerSpyOne.count(), 1);
-    QCOMPARE(invokerSpyOne[0][1], idOne);
-
     QCOMPARE(invokerSpyTwo.count(), 1);
-    QCOMPARE(invokerSpyTwo[0][1], idTwo);
 }
 
 void test_client_rpc_invoker::subscribedEntityNonExistentRPCNet()

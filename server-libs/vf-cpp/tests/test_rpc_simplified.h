@@ -21,7 +21,7 @@ private slots:
     void callRPCTwice();
     void callRPCRespondingAfterDelay();
 private:
-    QUuid invokeRpc(QString rpcName, QString paramName, QVariant paramValue);
+    void invokeRpc(QString rpcName, QString paramName, QVariant paramValue);
     bool isRpcFound(QList<QVariant> spyArguments);
     QVariant getReturnResult(QList<QVariant> spyArguments);
     QVariant getReturnError(QList<QVariant> spyArguments);

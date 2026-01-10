@@ -150,13 +150,12 @@ void test_test_vein_server::invokeRpc()
     QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    QUuid id = m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+    m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
 
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QCOMPARE(arguments.at(1), id);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 }
@@ -173,13 +172,12 @@ void test_test_vein_server::invokeInvalidRpc()
     QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    QUuid id = m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "foo", parameters);
+    m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "foo", parameters);
 
     QCOMPARE(invokerSpy.count(), 1);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), false);
-    QCOMPARE(arguments.at(1), id);
-    QVariantMap argMap = arguments[2].toMap();
+    QVariantMap argMap = arguments[1].toMap();
     QVariant resultData = argMap[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, QVariant());
 }
@@ -196,21 +194,19 @@ void test_test_vein_server::invokeRpcTwice()
     QSignalSpy invokerSpy(m_server.get(), &TestVeinServer::sigRPCFinished);
     QVariantMap parameters;
     parameters["p_param"] = true;
-    QUuid id1 = m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+    m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
     parameters["p_param"] = false;
-    QUuid id2 = m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
+    m_server->invokeRpc(rpcEventHandler.getVeinEntity()->getEntityId(), "RPC_forTest", parameters);
 
     QCOMPARE(invokerSpy.count(), 2);
     QList<QVariant> arguments = invokerSpy[0];
     QCOMPARE(arguments.at(0), true);
-    QCOMPARE(arguments.at(1), id1);
-    QVariant resultData = arguments[2].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
+    QVariant resultData = arguments[1].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, false);
 
     arguments = invokerSpy[1];
     QCOMPARE(arguments.at(0), true);
-    QCOMPARE(arguments.at(1), id2);
-    resultData = arguments[2].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
+    resultData = arguments[1].toMap()[VeinComponent::RemoteProcedureData::s_returnString];
     QCOMPARE(resultData, true);
 }
 

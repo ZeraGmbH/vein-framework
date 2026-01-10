@@ -125,13 +125,11 @@ void test_rpc_simplified::callInvalidRpc()
 void test_rpc_simplified::callRPCTwice()
 {
     QSignalSpy spyRpcFinish(m_rpcInvoker.get(), &VfRPCInvoker::sigRPCFinished);
-    QUuid id1 = invokeRpc("RPC_forTest", "p_param", 72);
-    QUuid id2 = invokeRpc("RPC_forTest", "p_param", 48);
+    invokeRpc("RPC_forTest", "p_param", 72);
+    invokeRpc("RPC_forTest", "p_param", 48);
     QCOMPARE(spyRpcFinish.count(), 2);
 
-    QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
-    QCOMPARE(spyRpcFinish[1][1].toUuid(), id2);
     QCOMPARE(getReturnResult(spyRpcFinish[1]), "48");
 
     QFile file(":/vein-event-dumps/dumpCallRPCTwice.json");
@@ -147,13 +145,12 @@ void test_rpc_simplified::callRPCRespondingAfterDelay()
     QVariantMap rpcParams;
     rpcParams.insert("p_param", 72);
     rpcParams.insert("p_delayMs", 5000);
-    QUuid id1 = m_rpcInvoker->invokeRPC("RPC_addDelay", rpcParams);
+    m_rpcInvoker->invokeRPC("RPC_addDelay", rpcParams);
     TimeMachineObject::feedEventLoop();
 
     QCOMPARE(spyRpcFinish.count(), 0);
     TimeMachineForTest::getInstance()->processTimers(5000);
     QCOMPARE(spyRpcFinish.count(), 1);
-    QCOMPARE(spyRpcFinish[0][1].toUuid(), id1);
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
 
     QFile file(":/vein-event-dumps/dumpcallRPCRespondingAfterDelay.json");
@@ -163,14 +160,13 @@ void test_rpc_simplified::callRPCRespondingAfterDelay()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
 }
 
-QUuid test_rpc_simplified::invokeRpc(QString rpcName, QString paramName, QVariant paramValue)
+void test_rpc_simplified::invokeRpc(QString rpcName, QString paramName, QVariant paramValue)
 {
     QVariantMap rpcParams;
     if(!paramName.isEmpty())
         rpcParams.insert(paramName, paramValue);
-    QUuid id = m_rpcInvoker->invokeRPC(rpcName, rpcParams);
+    m_rpcInvoker->invokeRPC(rpcName, rpcParams);
     TimeMachineObject::feedEventLoop();
-    return id;
 }
 
 bool test_rpc_simplified::isRpcFound(QList<QVariant> spyArguments)
@@ -180,13 +176,13 @@ bool test_rpc_simplified::isRpcFound(QList<QVariant> spyArguments)
 
 QVariant test_rpc_simplified::getReturnResult(QList<QVariant> spyArguments)
 {
-    QVariantMap argMap = spyArguments[2].toMap();
+    QVariantMap argMap = spyArguments[1].toMap();
     return argMap[VeinComponent::RemoteProcedureData::s_returnString];
 }
 
 QVariant test_rpc_simplified::getReturnError(QList<QVariant> spyArguments)
 {
-    QVariantMap argMap = spyArguments[2].toMap();
+    QVariantMap argMap = spyArguments[1].toMap();
     return argMap[VeinComponent::RemoteProcedureData::s_errorMessageString];
 }
 

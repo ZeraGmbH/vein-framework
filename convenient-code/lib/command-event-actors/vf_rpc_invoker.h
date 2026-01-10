@@ -11,10 +11,10 @@ class VfRPCInvoker : public QObject, public VfEntityEventItem
 public:
     static std::shared_ptr<VfRPCInvoker> create(int entityId, std::unique_ptr<VfRPCEventGenerator> invokerType);
     explicit VfRPCInvoker(int entityId, std::unique_ptr<VfRPCEventGenerator> invokerType);
-    QUuid invokeRPC(QString procedureName, QVariantMap paramters);
+    void invokeRPC(QString procedureName, QVariantMap paramters);
 
 signals:
-    void sigRPCFinished(bool ok, QUuid identifier, const QVariantMap &resultData);
+    void sigRPCFinished(bool ok, const QVariantMap &resultData);
 
 private:
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent) override;

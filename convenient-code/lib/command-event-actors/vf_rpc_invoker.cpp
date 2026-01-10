@@ -14,14 +14,13 @@ VfRPCInvoker::VfRPCInvoker(int entityId, std::unique_ptr<VfRPCEventGenerator> in
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QUuid VfRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
+void VfRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
 {
     QUuid identifier = QUuid::createUuid();
     m_pendingRPCs.insert(identifier);
     QString rpcSignature = VfRpcParamsParser::parseRpcParams(procedureName, paramters);
     QEvent *newEvent = m_invokerType->generateEvent(getEntityId(), rpcSignature, paramters, identifier);
     sendEvent(newEvent);
-    return identifier;
 }
 
 void VfRPCInvoker::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
@@ -33,7 +32,7 @@ void VfRPCInvoker::processCommandEvent(VeinEvent::CommandEvent *cmdEvent)
             const QUuid rpcIdentifier = rpcData->invokationData().value(RemoteProcedureData::s_callIdString).toUuid();
             if(m_pendingRPCs.contains(rpcIdentifier)) {
                 m_pendingRPCs.remove(rpcIdentifier);
-                emit sigRPCFinished(true, rpcIdentifier, rpcData->invokationData());
+                emit sigRPCFinished(true, rpcData->invokationData());
             }
         }
     }
@@ -46,7 +45,7 @@ void VfRPCInvoker::processErrorCommandEventData(VeinEvent::EventData *originalEv
         const QUuid rpcIdentifier = rpcData->invokationData().value(RemoteProcedureData::s_callIdString).toUuid();
         if(m_pendingRPCs.contains(rpcIdentifier)) {
             m_pendingRPCs.remove(rpcIdentifier);
-            emit sigRPCFinished(false, rpcIdentifier, rpcData->invokationData());
+            emit sigRPCFinished(false, rpcData->invokationData());
         }
     }
 }
