@@ -94,8 +94,15 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
         entityMap = m_privHash->findEntity(entityId);
 
         const QVariantMap componentMap = iData->componentValues();
-        for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter)
-            m_privHash->insertComponentValue(entityMap, iter.key(), iter.value());
+        for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter) {
+            const QString componentName = iter.key();
+            const QVariant value = iter.value();
+            StorageComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
+            if(futureComponent)
+                m_privHash->insertFutureComponent(entityId, componentName, futureComponent, value);
+            else
+                m_privHash->insertComponentValue(entityMap, componentName, value);
+        }
 
         QStringList rpcs = iData->rpcNames();
         insertRpc(entityId, rpcs);
@@ -117,6 +124,8 @@ void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
             ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), cEvent, this);
         else if(!component)
             ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
+        else if(m_privHash->hasStoredValue(entityId, componentName))
+            m_privHash->changeComponentValue(component, cData->newValue());
         else
             m_privHash->insertComponentValue(entity, componentName, cData->newValue());
         break;

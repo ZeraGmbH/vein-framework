@@ -24,6 +24,7 @@ private slots:
     void serverRemoveEntity();
     void serverAddComponent();
     void clientSetComponent();
+    void fetchExistingFutureComponent();
 
     void clientInvokeNonExistingRPC();
     void clientInvokeExistingRpcCorrectParameter();

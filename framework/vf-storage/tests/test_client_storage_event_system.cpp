@@ -187,6 +187,29 @@ void test_client_storage_event_system::clientSetComponent()
     QCOMPARE(m_clientStorageSystem->getDb()->getStoredValue(entityID1, "component1"), "abc");
 }
 
+void test_client_storage_event_system::fetchExistingFutureComponent()
+{
+    VeinStorage::StorageComponentPtr component = m_clientStorageSystem->getDb()->getFutureComponent(entityID1, "Bar");
+    QSignalSpy spy(component.get(), &VeinStorage::AbstractComponent::sigValueChange);
+    QCOMPARE(component->getValue(), QVariant());
+
+    addAndSubscribeToEntity(entityID1, "Foo", QVariantMap{{"Bar", QVariant(42)}, {"Baz", QVariant(37)}});
+    QVERIFY(m_clientStorageSystem->getDb()->areFutureComponentsEmpty());
+    QCOMPARE(spy.count(), 1);
+    QCOMPARE(component->getValue(), QVariant(42));
+
+    m_netServer->getServer()->setComponentServerNotification(entityID1, "Bar", 45);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spy.count(), 2);
+    QCOMPARE(component->getValue(), QVariant(45));
+
+    subscribeEntity(entityID1);
+    m_netServer->getServer()->setComponentServerNotification(entityID1, "Bar", 50);
+    TimeMachineObject::feedEventLoop();
+    QCOMPARE(spy.count(), 3);
+    QCOMPARE(component->getValue(), QVariant(50));
+}
+
 void test_client_storage_event_system::clientInvokeNonExistingRPC()
 {
     int entityID = 99999;
