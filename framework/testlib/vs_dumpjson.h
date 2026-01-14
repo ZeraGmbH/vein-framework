@@ -16,13 +16,13 @@ class VFSTORAGE_EXPORT DumpJson
 {
 public:
     static void dumpToFile(AbstractDatabase *db, QIODevice *outputFileDevice,
-                           QList<int> entityFilter = QList<int>(),
-                           QList<int> entitiesIgnored = QList<int>(),
+                           const QList<int> &entityFilter = QList<int>(),
+                           const QList<int> &entitiesIgnored = QList<int>(),
                            bool skipComponentDescription = false);
     static QJsonValue convertToJsonValue(const QVariant &value);
     static QByteArray dumpToByteArray(AbstractDatabase *db,
-                                      QList<int> entityFilter = QList<int>(),
-                                      QList<int> entitiesIgnored = QList<int>(),
+                                      const QList<int> &entityFilter = QList<int>(),
+                                      const QList<int> &entitiesIgnored = QList<int>(),
                                       bool skipComponentDescription = false);
     static double formatDouble(double value);
 private:

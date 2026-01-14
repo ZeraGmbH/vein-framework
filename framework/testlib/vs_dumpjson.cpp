@@ -10,8 +10,8 @@ namespace VeinStorage
 
 void DumpJson::dumpToFile(AbstractDatabase* db,
                           QIODevice *outputFileDevice,
-                          QList<int> entityFilter,
-                          QList<int> entitiesIgnored,
+                          const QList<int> &entityFilter,
+                          const QList<int> &entitiesIgnored,
                           bool skipComponentDescription)
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
@@ -102,8 +102,8 @@ QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
 }
 
 QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db,
-                                     QList<int> entityFilter,
-                                     QList<int> entitiesIgnored,
+                                     const QList<int> &entityFilter,
+                                     const QList<int> &entitiesIgnored,
                                      bool skipComponentDescription)
 {
     QByteArray jsonDumped;
