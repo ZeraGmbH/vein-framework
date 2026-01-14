@@ -3,15 +3,27 @@
 
 namespace VeinStorage
 {
+int StorageComponent::m_instanceCount = 0;
 
 StorageComponent::StorageComponent(QVariant value) :
     m_value(value)
 {
+    m_instanceCount ++;
+}
+
+StorageComponent::~StorageComponent()
+{
+    m_instanceCount --;
 }
 
 QVariant StorageComponent::getValue() const
 {
     return m_value;
+}
+
+int StorageComponent::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 void StorageComponent::setValue(QVariant value)
