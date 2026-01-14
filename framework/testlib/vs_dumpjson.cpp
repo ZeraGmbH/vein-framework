@@ -8,7 +8,11 @@
 namespace VeinStorage
 {
 
-void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QList<int> entityFilter, QList<int> entitiesIgnored)
+void DumpJson::dumpToFile(AbstractDatabase* db,
+                          QIODevice *outputFileDevice,
+                          QList<int> entityFilter,
+                          QList<int> entitiesIgnored,
+                          bool skipComponentDescription)
 {
     if((outputFileDevice->isOpen() || outputFileDevice->open(QIODevice::WriteOnly)) &&
         outputFileDevice->isWritable()) {
@@ -26,7 +30,7 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = db->getStoredValue(tmpEntityId, tmpComponentName);
                 QJsonValue toInsert = convertToJsonValue(tmpData);
-                if (tmpComponentName == "INF_ModuleInterface" && toInsert.isObject()) {
+                if (skipComponentDescription && tmpComponentName == "INF_ModuleInterface" && toInsert.isObject()) {
                     skipDescrptionInModuleInterface(tmpEntityObject, toInsert);
                     continue;
                 }
@@ -97,11 +101,14 @@ QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
     return converted;
 }
 
-QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db, QList<int> entityFilter, QList<int> entitiesIgnored)
+QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db,
+                                     QList<int> entityFilter,
+                                     QList<int> entitiesIgnored,
+                                     bool skipComponentDescription)
 {
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
-    VeinStorage::DumpJson::dumpToFile(db, &buff, entityFilter, entitiesIgnored);
+    VeinStorage::DumpJson::dumpToFile(db, &buff, entityFilter, entitiesIgnored, skipComponentDescription);
     return jsonDumped;
 }
 
