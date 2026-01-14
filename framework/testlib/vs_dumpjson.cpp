@@ -26,6 +26,10 @@ void DumpJson::dumpToFile(AbstractDatabase* db, QIODevice *outputFileDevice, QLi
             for(const QString &tmpComponentName : tmpEntityComponentNames) {
                 QVariant tmpData = db->getStoredValue(tmpEntityId, tmpComponentName);
                 QJsonValue toInsert = convertToJsonValue(tmpData);
+                if (tmpComponentName == "INF_ModuleInterface" && toInsert.isObject()) {
+                    skipDescrptionInModuleInterface(tmpEntityObject, toInsert);
+                    continue;
+                }
                 tmpEntityObject.insert(tmpComponentName, toInsert);
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
@@ -104,6 +108,24 @@ QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db, QList<int> entityFilt
 double DumpJson::formatDouble(double value)
 {
     return QString("%1").arg(value, 0, 'g', 6).toDouble();
+}
+
+void DumpJson::skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, const QJsonValue &toInsert)
+{
+    QJsonObject toInsertAdjusted = toInsert.toObject();
+    QJsonObject componentInfo = toInsert["ComponentInfo"].toObject();
+    if (!componentInfo.isEmpty()) {
+        for(auto iter=componentInfo.begin(); iter != componentInfo.end(); ++iter) {
+            QString componentName = iter.key();
+            QJsonObject componentData = iter.value().toObject();
+            if (componentData.contains("Description")) {
+                componentData["Description"] = QString("<skipped>");
+                componentInfo[componentName] = componentData;
+            }
+        }
+        toInsertAdjusted["ComponentInfo"] = componentInfo;
+    }
+    tmpEntityObject.insert("INF_ModuleInterface", toInsertAdjusted);
 }
 
 }

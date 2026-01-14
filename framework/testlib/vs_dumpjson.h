@@ -23,6 +23,8 @@ public:
                                       QList<int> entityFilter = QList<int>(),
                                       QList<int> entitiesIgnored = QList<int>());
     static double formatDouble(double value);
+private:
+    static void skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, const QJsonValue &toInsert);
 };
 
 }
