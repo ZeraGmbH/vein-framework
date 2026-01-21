@@ -38,7 +38,7 @@ void IntrospectionSystem::processEvent(QEvent *event)
                 case EntityData::Command::ECMD_SUBSCRIBE:
                 {
                     vCDebug(VEIN_NET_INTRO_VERBOSE) << "Processing command event:" << cEvent << "with command ECMD_SUBSCRIBE, entityId:" << entityId;
-                    VeinStorage::AbstractDatabase* storageDb = m_storageSystem->getDb();
+                    const VeinStorage::AbstractDatabase* storageDb = m_storageSystem->getDb();
                     const QStringList componentList = storageDb->getComponentList(entityId);
                     if (!componentList.isEmpty()) {
                         IntrospectionData *newData = new IntrospectionData();

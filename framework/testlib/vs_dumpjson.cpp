@@ -8,7 +8,7 @@
 namespace VeinStorage
 {
 
-void DumpJson::dumpToFile(AbstractDatabase* db,
+void DumpJson::dumpToFile(const AbstractDatabase* db,
                           QIODevice *outputFileDevice,
                           const QList<int> &entityFilter,
                           const QList<int> &entitiesIgnored,
