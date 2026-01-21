@@ -18,11 +18,11 @@ public:
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
-    StorageComponentPtr findComponent(const int entityId, const QString &componentName) const override;
+    const StorageComponentPtr findComponent(const int entityId, const QString &componentName) const override;
     QList<QString> getComponentList(int entityId) const override;
 
     bool areFutureComponentsEmpty() const override;
-    StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
+    const StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
 
     // Event system interface
     // ATOW event systems use conrete DatabaseHash. Once we add another implementation

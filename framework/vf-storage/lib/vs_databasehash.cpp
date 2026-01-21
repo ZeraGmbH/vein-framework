@@ -5,7 +5,7 @@
 namespace VeinStorage
 {
 
-StorageComponentPtr DatabaseHash::getFutureComponent(int entityId, const QString &componentName)
+const StorageComponentPtr DatabaseHash::getFutureComponent(int entityId, const QString &componentName)
 {
     if(m_entityComponentData.contains(entityId) && m_entityComponentData[entityId].contains(componentName))
         return m_entityComponentData[entityId][componentName];
@@ -114,7 +114,7 @@ StorageComponentPtr DatabaseHash::findComponent(EntityMap *entityMap, const QStr
     return iter.value();
 }
 
-StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName) const
+const StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName) const
 {
     auto iterEntity = m_entityComponentData.constFind(entityId);
     if(iterEntity == m_entityComponentData.constEnd())
