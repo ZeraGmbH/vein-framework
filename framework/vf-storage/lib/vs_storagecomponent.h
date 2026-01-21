@@ -13,11 +13,11 @@ public:
     StorageComponent(QVariant value);
     virtual ~StorageComponent();
 
-    QVariant getValue() const override;
+    const QVariant &getValue() const override;
     static int getInstanceCount();
 private:
     friend class DatabaseHash;
-    void setValue(QVariant value);
+    void setValue(const QVariant &value);
     QVariant m_value;
     static int m_instanceCount;
 };

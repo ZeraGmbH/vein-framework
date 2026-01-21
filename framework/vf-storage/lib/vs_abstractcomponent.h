@@ -16,7 +16,7 @@ signals:
     void sigValueSet(QVariant setValue);
     void sigValueChange(QVariant newValue);
 public:
-    virtual QVariant getValue() const = 0;
+    virtual const QVariant &getValue() const = 0;
 };
 
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;

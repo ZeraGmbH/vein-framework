@@ -16,7 +16,7 @@ StorageComponent::~StorageComponent()
     m_instanceCount --;
 }
 
-QVariant StorageComponent::getValue() const
+const QVariant &StorageComponent::getValue() const
 {
     return m_value;
 }
@@ -26,7 +26,7 @@ int StorageComponent::getInstanceCount()
     return m_instanceCount;
 }
 
-void StorageComponent::setValue(QVariant value)
+void StorageComponent::setValue(const QVariant &value)
 {
     emit sigValueSet(value);
     if(value != m_value) {
