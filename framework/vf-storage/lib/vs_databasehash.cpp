@@ -18,20 +18,19 @@ const StorageComponentPtr DatabaseHash::getFutureComponent(int entityId, const Q
     return newFuture;
 }
 
-void DatabaseHash::insertComponentValue(EntityMap *entityChecked, const QString &componentName, QVariant value)
+void DatabaseHash::insertComponentValue(EntityMap *entityChecked, const QString &componentName, const QVariant &value)
 {
     (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
-    StorageComponentPtr component = (*entityChecked)[componentName];
 }
 
-void DatabaseHash::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value)
+void DatabaseHash::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, const QVariant &value)
 {
     Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
     component->setValue(value);
     m_entityComponentData[entityId][componentName] = component;
 }
 
-void DatabaseHash::changeComponentValue(StorageComponentPtr componentChecked, QVariant value)
+void DatabaseHash::changeComponentValue(StorageComponentPtr componentChecked, const QVariant &value)
 {
     componentChecked->setValue(value);
 }

@@ -32,11 +32,11 @@ public:
     void removeEntity(const int entityId);
 
     StorageComponentPtr findComponent(EntityMap *entityMap, const QString &componentName);
-    void insertComponentValue(EntityMap* entityChecked, const QString &componentName, QVariant value);
-    void changeComponentValue(StorageComponentPtr componentChecked, QVariant value);
+    void insertComponentValue(EntityMap* entityChecked, const QString &componentName, const QVariant &value);
+    void changeComponentValue(StorageComponentPtr componentChecked, const QVariant &value);
     void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
 
-    void insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, QVariant value);
+    void insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, const QVariant &value);
     StorageComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
 
 private:
