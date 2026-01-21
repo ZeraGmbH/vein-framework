@@ -19,7 +19,7 @@ public:
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:
-    void sigGetFinish(bool ok, QVariant value);
+    void sigGetFinish(bool ok, const QVariant &value);
 };
 
 typedef std::shared_ptr<VfClientComponentFetcher> VfClientComponentFetcherPtr;

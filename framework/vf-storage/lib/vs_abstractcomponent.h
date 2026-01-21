@@ -13,8 +13,8 @@ class VFEVENT_EXPORT AbstractComponent : public QObject
 {
     Q_OBJECT
 signals:
-    void sigValueSet(QVariant setValue);
-    void sigValueChange(QVariant newValue);
+    void sigValueSet(const QVariant &setValue);
+    void sigValueChange(const QVariant &newValue);
 public:
     virtual const QVariant &getValue() const = 0;
 };

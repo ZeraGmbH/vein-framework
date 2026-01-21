@@ -10,7 +10,7 @@ class VfCppRpcSignature
 {
 public:
     typedef  QMap<QString, QString> RPCParams;
-    static QString createRpcSignature(QString rpcName, RPCParams paramDescriptions);
+    static QString createRpcSignature(const QString &rpcName, const RPCParams &paramDescriptions);
 };
 }
 

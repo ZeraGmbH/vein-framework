@@ -12,10 +12,10 @@ class VfEventSystemCommandFilter {
 
 class VfCppEntity {
     void processEvent(...)
-    VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false)
-    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true)
+    VfCppComponent::Ptr createComponent(const QString &name, const QVariant &initval, bool readOnly = false)
+    cVeinModuleRpc::Ptr createRpc(QObject *object, const QString &funcName, const QMap<QString,QString> &parameter, bool thread = true)
     void initModule()
-    signal void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value)
+    signal void sigWatchedComponentChanged(int entityId, const QString &componentName, const QVariant &value)
 }
 
 

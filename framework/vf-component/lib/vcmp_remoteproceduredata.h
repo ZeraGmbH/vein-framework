@@ -56,7 +56,7 @@ public:
     void setProcedureName(const QString &t_procedureName);
 
     QVariantMap invokationData() const;
-    void setInvokationData(QVariantMap t_invokationData);
+    void setInvokationData(const QVariantMap &t_invokationData);
 
     static constexpr int dataType() { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }
     int type() const override { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }

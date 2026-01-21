@@ -13,16 +13,20 @@ class VfCppComponent: public QObject
     Q_OBJECT
 public:
     typedef  QSharedPointer< VfCppComponent > Ptr;
-    VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly=false);
+    VfCppComponent(int entityId,
+                   VeinEvent::EventSystem *eventsystem,
+                   const QString &name,
+                   const QVariant &initval,
+                   bool readOnly = false);
     QVariant getValue();
     QString getName();
 
-    void setValue(QVariant value); // spawn vein event
-    void setValueFromVein(QVariant value); // just for VfCppEntity...
+    void setValue(const QVariant &value); // spawn vein event
+    void setValueFromVein(const QVariant &value); // just for VfCppEntity...
     void changeComponentReadWriteType(bool readWrite);
 
 signals:
-    void sigValueChanged(QVariant);
+    void sigValueChanged(const QVariant &value);
 
 private:
     void sendNotification(VeinComponent::ComponentData::Command vcmd);

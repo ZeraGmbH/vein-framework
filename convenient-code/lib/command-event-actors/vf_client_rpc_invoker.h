@@ -10,7 +10,10 @@ class VfClientRPCInvoker : public VfRPCEventGenerator
 {
     Q_OBJECT
 protected:
-    QEvent *generateEvent(int entityId, QString procedureName, QVariantMap parameters, QUuid identifier) override;
+    QEvent *generateEvent(int entityId,
+                          const QString &procedureName,
+                          const QVariantMap &parameters,
+                          const QUuid &identifier) override;
 };
 typedef std::unique_ptr<VfClientRPCInvoker> VfClientRPCInvokerPtr;
 

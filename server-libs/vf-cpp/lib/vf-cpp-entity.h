@@ -14,21 +14,24 @@ public:
     VfCppEntity(int entityId);
     ~VfCppEntity();
 
-    VfCppComponent::Ptr createComponent(QString name, QVariant initval, bool readOnly = false);
+    VfCppComponent::Ptr createComponent(const QString &name, const QVariant &initval, bool readOnly = false);
     void removeEntity();
-    void removeComponent(QString componentName);
+    void removeComponent(const QString &componentName);
     int getEntityId() const;
-    bool hasComponent(const QString name);
+    bool hasComponent(const QString &name);
     QMap<QString,VfCppComponent::Ptr> getComponents() const;
 
     // Notes
     // * parameter: the expected parameters key: name / value: metatype: e.g "int"
     // * There is no reason to use the rpc handler object
-    cVeinModuleRpc::Ptr createRpc(QObject *object, QString funcName, QMap<QString,QString> parameter, bool thread = true);
+    cVeinModuleRpc::Ptr createRpc(QObject *object,
+                                  const QString &funcName,
+                                  const QMap<QString,QString> &parameter,
+                                  bool thread = true);
 
     void initModule();
 signals:
-    void sigWatchedComponentChanged(int entityId, QString componentName, QVariant value);
+    void sigWatchedComponentChanged(int entityId, const QString &componentName, const QVariant &value);
 
 private:
     void processEvent(QEvent *event) override;

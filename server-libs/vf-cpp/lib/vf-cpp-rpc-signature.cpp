@@ -1,6 +1,6 @@
 #include "vf-cpp-rpc-signature.h"
 
-QString VfCpp::VfCppRpcSignature::createRpcSignature(QString rpcName, RPCParams paramDescriptions)
+QString VfCpp::VfCppRpcSignature::createRpcSignature(const QString &rpcName, const RPCParams &paramDescriptions)
 {
     QString signature;
     signature = rpcName;

@@ -23,7 +23,7 @@ QStringList VfCppRpcHelper::getRpcTypesListFromSignature(const QString &rpcSigna
     return typesCommaSeparated.split(",", Qt::SkipEmptyParts);
 }
 
-QStringList VfCppRpcHelper::getRpcParamNamesList(QString RPC)
+QStringList VfCppRpcHelper::getRpcParamNamesList(const QString &RPC)
 {
     // RPC_name(type p_paramName1, type p_paramName2)
     QStringList parameterNames;
@@ -43,7 +43,7 @@ QStringList VfCppRpcHelper::getRpcParamNamesList(QString RPC)
     return parameterNames;
 }
 
-QString VfCppRpcHelper::getRpcName(QString RPC)
+QString VfCppRpcHelper::getRpcName(const QString &RPC)
 {
     QString RPCName = RPC.section('(', 0, 0);
     return RPCName;

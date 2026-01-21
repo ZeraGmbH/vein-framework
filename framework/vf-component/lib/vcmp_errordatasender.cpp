@@ -6,7 +6,7 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void ErrorDataSender::errorOut(QString errorMessage, QEvent *event, VeinEvent::EventSystem *eventSystem)
+void ErrorDataSender::errorOut(const QString &errorMessage, QEvent *event, VeinEvent::EventSystem *eventSystem)
 {
     qWarning() << errorMessage;
 

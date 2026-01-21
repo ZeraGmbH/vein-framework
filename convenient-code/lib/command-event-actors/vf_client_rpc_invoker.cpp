@@ -7,7 +7,10 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QEvent *VfClientRPCInvoker::generateEvent(int entityId, QString procedureName, QVariantMap parameters, QUuid identifier)
+QEvent *VfClientRPCInvoker::generateEvent(int entityId,
+                                          const QString &procedureName,
+                                          const QVariantMap &parameters,
+                                          const QUuid &identifier)
 {
     QVariantMap rpcParamData;
     rpcParamData.insert(RemoteProcedureData::s_callIdString, identifier);

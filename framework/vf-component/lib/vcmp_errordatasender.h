@@ -7,7 +7,7 @@
 class ErrorDataSender
 {
 public:
-    static void errorOut(QString errorMessage, QEvent* event, VeinEvent::EventSystem *eventSystem);
+    static void errorOut(const QString &errorMessage, QEvent* event, VeinEvent::EventSystem *eventSystem);
 };
 
 #endif // ERRORDATASENDER_H

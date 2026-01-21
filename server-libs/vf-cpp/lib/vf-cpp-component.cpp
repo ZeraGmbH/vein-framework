@@ -5,7 +5,11 @@
 
 using namespace VfCpp;
 
-VfCppComponent::VfCppComponent(int entityId, VeinEvent::EventSystem *eventsystem, QString name, QVariant initval, bool readOnly) :
+VfCppComponent::VfCppComponent(int entityId,
+                               VeinEvent::EventSystem *eventsystem,
+                               const QString &name,
+                               const QVariant &initval,
+                               bool readOnly) :
     m_nEntityId(entityId),
     m_pEventSystem(eventsystem),
     m_sName(name),
@@ -25,13 +29,13 @@ QString VfCppComponent::getName()
     return m_sName;
 }
 
-void VfCppComponent::setValue(QVariant value)
+void VfCppComponent::setValue(const QVariant &value)
 {
     m_vValue = value;
     sendNotification(VeinComponent::ComponentData::Command::CCMD_SET);
 }
 
-void VfCppComponent::setValueFromVein(QVariant value)
+void VfCppComponent::setValueFromVein(const QVariant &value)
 {
     if(value != getValue()) {
         if(!m_readOnly)

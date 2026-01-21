@@ -16,7 +16,7 @@ VfCppEntity::~VfCppEntity()
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
 }
 
-bool VfCppEntity::hasComponent(const QString name)
+bool VfCppEntity::hasComponent(const QString &name)
 {
     return m_componentList.contains(name);
 }
@@ -26,7 +26,7 @@ QMap<QString, VfCppComponent::Ptr> VfCppEntity::getComponents() const
     return m_componentList;
 }
 
-VfCppComponent::Ptr VfCppEntity::createComponent(QString name, QVariant initval, bool readOnly)
+VfCppComponent::Ptr VfCppEntity::createComponent(const QString &name, const QVariant &initval, bool readOnly)
 {
     if(!hasComponent(name)) {
         VfCppComponent::Ptr tmpPtr = VfCppComponent::Ptr(new VfCppComponent(m_entityId,
@@ -47,7 +47,7 @@ void VfCppEntity::removeEntity()
     emit sigSendEvent(VfServerEntityRemove::generateEvent(m_entityId));
 }
 
-void VfCppEntity::removeComponent(QString componentName)
+void VfCppEntity::removeComponent(const QString &componentName)
 {
     if(m_componentList.contains(componentName))
         emit sigSendEvent(VfServerComponentRemove::generateEvent(m_entityId, componentName));
@@ -58,7 +58,10 @@ int VfCppEntity::getEntityId() const
     return m_entityId;
 }
 
-cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object, QString funcName, QMap<QString, QString> parameter, bool thread)
+cVeinModuleRpc::Ptr VfCppEntity::createRpc(QObject *object,
+                                           const QString &funcName,
+                                           const QMap<QString, QString> &parameter,
+                                           bool thread)
 {
     cVeinModuleRpc::Ptr tmpPtr = cVeinModuleRpc::Ptr(new cVeinModuleRpc(m_entityId,
                                                                         this,

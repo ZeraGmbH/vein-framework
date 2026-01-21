@@ -39,7 +39,7 @@ QVariantMap RemoteProcedureData::invokationData() const
     return m_invokationData;
 }
 
-void RemoteProcedureData::setInvokationData(QVariantMap t_invokationData)
+void RemoteProcedureData::setInvokationData(const QVariantMap &t_invokationData)
 {
     m_invokationData = t_invokationData;
 }

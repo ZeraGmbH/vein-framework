@@ -6,7 +6,7 @@
 
 using namespace VfCpp;
 
-VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, QString rpcSignature) :
+VfCppRpcSimplified::VfCppRpcSimplified(VeinEvent::EventSystem *eventsystem, int entityId, const QString &rpcSignature) :
     m_eventSystem(eventsystem),
     m_entityId(entityId),
     m_rpcSignature(rpcSignature)
@@ -27,7 +27,7 @@ void VfCppRpcSimplified::callFunction(const QUuid &callId, const QUuid &peerId, 
     emit callRpc(callId, params);
 }
 
-void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
+void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, const QVariant &result)
 {
     QVariantMap returnVal;
     returnVal.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
@@ -38,7 +38,7 @@ void VfCppRpcSimplified::sendRpcResult(const QUuid &callId, QVariant result)
     sendRPCresultEvent(callId, returnVal);
 }
 
-void VfCppRpcSimplified::sendRpcError(const QUuid &callId, QString errorStr)
+void VfCppRpcSimplified::sendRpcError(const QUuid &callId, const QString &errorStr)
 {
     QVariantMap returnVal;
     returnVal.insert(VeinComponent::RemoteProcedureData::s_callIdString, callId);
@@ -49,7 +49,7 @@ void VfCppRpcSimplified::sendRpcError(const QUuid &callId, QString errorStr)
     sendRPCresultEvent(callId, returnVal);
 }
 
-void VfCppRpcSimplified::sendRPCresultEvent(const QUuid &callId, QVariantMap returnVal)
+void VfCppRpcSimplified::sendRPCresultEvent(const QUuid &callId, const QVariantMap &returnVal)
 {
     if(m_callIdPeerIdHash.contains(callId)) {
         VeinEvent::CommandEvent *rpcResultEvent = VfServerRpcResult::generateEvent(m_entityId, m_rpcSignature, returnVal);
