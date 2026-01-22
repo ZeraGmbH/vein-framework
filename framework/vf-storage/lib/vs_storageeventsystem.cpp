@@ -63,6 +63,11 @@ AbstractDatabase *StorageEventSystem::getDb() const
     return m_privHash;
 }
 
+AbstractDatabaseDirectWrite *StorageEventSystem::getDbWritable() const
+{
+    return m_privHash;
+}
+
 QMap<int, QStringList> StorageEventSystem::getRpcs() const
 {
     return m_entityRpcNames;
@@ -146,8 +151,17 @@ void StorageEventSystem::processComponentData(QEvent *event)
     case ComponentData::Command::CCMD_FETCH:
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), event, this);
-        else if(!component)
-            ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+        else if(!component) { // For now we make vein entity generation mandatory on futures
+            StorageComponentPtr future = m_privHash->findFutureComponent(entityId, componentName);
+            if (future != nullptr) {
+                ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
+                cData->setNewValue(future->getValue());
+                cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
+                cData->setEventTarget(ComponentData::EventTarget::ET_ALL);
+            }
+            else
+                ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
+        }
         else {
             ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
             cData->setNewValue(component->getValue());

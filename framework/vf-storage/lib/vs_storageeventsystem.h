@@ -2,13 +2,14 @@
 #define VS_STORAGEEVENTSYSTEM_H
 
 #include "vfstorage_export.h"
+#include "vs_abstractstoragewritable.h"
 #include "vs_databasehash.h"
 #include <vs_abstracteventsystem.h>
 #include <ve_eventdata.h>
 
 namespace VeinStorage
 {
-class VFSTORAGE_EXPORT StorageEventSystem : public AbstractEventSystem
+class VFSTORAGE_EXPORT StorageEventSystem : public AbstractEventSystem, public AbstractStorageWritable
 {
     Q_OBJECT
 public:
@@ -17,6 +18,7 @@ public:
 
     void processEvent(QEvent *event) override;
     AbstractDatabase* getDb() const override;
+    AbstractDatabaseDirectWrite* getDbWritable() const override;
     QMap<int,QStringList> getRpcs() const override;
 
 private:

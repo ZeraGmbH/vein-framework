@@ -12,6 +12,7 @@ public:
                               const QList<VeinEvent::EventSystem*> &aboveNetworkSystems = QList<VeinEvent::EventSystem*>());
     TestVeinServer* getServer();
     VeinStorage::AbstractEventSystem* getStorage();
+    VeinStorage::AbstractStorageWritable* getStorageWritable();
     int getSubscriberCount(int entityId);
 private:
     VeinNet::NetworkSystem m_netSystem;

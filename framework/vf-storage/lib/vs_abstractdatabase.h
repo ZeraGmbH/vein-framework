@@ -21,6 +21,8 @@ public:
 
     virtual bool areFutureComponentsEmpty() const = 0;
     virtual const StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) = 0;
+    virtual const StorageComponentPtr findFutureComponent(int entityId, const QString &componentName) const = 0;
+    virtual QList<QString> getComponentListWithFutures(int entityId) const = 0;
 };
 
 }

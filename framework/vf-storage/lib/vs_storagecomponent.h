@@ -14,6 +14,8 @@ public:
     virtual ~StorageComponent();
 
     const QVariant &getValue() const override;
+    QVariant &getValueForWrite();
+
     static int getInstanceCount();
 private:
     friend class DatabaseHash;

@@ -6,5 +6,9 @@
         <file>vein-storage-dumps/dumpStorageEntityAddRemove.json</file>
         <file>vein-storage-dumps/dumpStorageEntityComponentAdd.json</file>
         <file>vein-storage-dumps/dumpStorageInitial.json</file>
+        <file>vein-storage-events/add-future-add-vein-introspection.json</file>
+        <file>vein-storage-events/add-future-add-vein-fetch.json</file>
+        <file>vein-storage-events/add-future-no-vein-introspection.json</file>
+        <file>vein-storage-events/add-future-no-vein-fetch.json</file>
     </qresource>
 </RCC>

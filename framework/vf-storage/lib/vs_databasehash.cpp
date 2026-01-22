@@ -5,7 +5,67 @@
 namespace VeinStorage
 {
 
+bool DatabaseHash::hasEntity(int entityId) const
+{
+    return m_entityComponentData.constFind(entityId) != m_entityComponentData.constEnd();
+}
+
+QList<int> DatabaseHash::getEntityList() const
+{
+    return m_entityComponentData.keys();
+}
+
+bool DatabaseHash::hasStoredValue(int entityId, const QString &componentName) const
+{
+    return findComponent(entityId, componentName) != nullptr;
+}
+
+QVariant DatabaseHash::getStoredValue(int entityId, const QString &componentName) const
+{
+    const StorageComponentPtr component = findComponent(entityId, componentName);
+    if (component != nullptr)
+        return component->getValue();
+    qWarning("Stored value not found: EntityId: %i / ComponentName: %s", entityId, qPrintable(componentName));
+    return QVariant();
+}
+
+const StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName) const
+{
+    auto iterEntity = m_entityComponentData.constFind(entityId);
+    if(iterEntity == m_entityComponentData.constEnd())
+        return nullptr;
+    const EntityMap &entityMap = iterEntity.value();
+    return findComponent(&entityMap, componentName);
+}
+
+QList<QString> DatabaseHash::getComponentList(int entityId) const
+{
+    auto iter = m_entityComponentData.constFind(entityId);
+    if(iter != m_entityComponentData.constEnd())
+        return iter.value().keys();
+    return QList<QString>();
+}
+
+bool DatabaseHash::areFutureComponentsEmpty() const
+{
+    return m_futureEntityComponentData.isEmpty();
+}
+
+const StorageComponentPtr DatabaseHash::findFutureComponent(int entityId, const QString &componentName) const
+{
+    auto iterEntity = m_futureEntityComponentData.constFind(entityId);
+    if(iterEntity == m_futureEntityComponentData.constEnd())
+        return nullptr;
+    const EntityMap &entityMap = iterEntity.value();
+    return findComponent(&entityMap, componentName);
+}
+
 const StorageComponentPtr DatabaseHash::getFutureComponent(int entityId, const QString &componentName)
+{
+    return getFutureComponentForWrite(entityId, componentName);
+}
+
+StorageComponentPtr DatabaseHash::getFutureComponentForWrite(int entityId, const QString &componentName)
 {
     if(m_entityComponentData.contains(entityId) && m_entityComponentData[entityId].contains(componentName))
         return m_entityComponentData[entityId][componentName];
@@ -18,16 +78,47 @@ const StorageComponentPtr DatabaseHash::getFutureComponent(int entityId, const Q
     return newFuture;
 }
 
+QList<QString> DatabaseHash::getComponentListWithFutures(int entityId) const
+{
+    auto iter = m_futureEntityComponentData.constFind(entityId);
+    QList<QString> componentsFuture;
+    if(iter != m_futureEntityComponentData.constEnd())
+        componentsFuture = iter.value().keys();
+
+    return getComponentList(entityId) + componentsFuture;
+}
+
+EntityMap *DatabaseHash::findEntity(int entityId)
+{
+    auto iter = m_entityComponentData.find(entityId);
+    if(iter == m_entityComponentData.end())
+        return nullptr;
+    return &(iter.value());
+}
+
+void DatabaseHash::insertEntity(int entityId)
+{
+    m_entityComponentData.insert(entityId, EntityMap());
+}
+
+void DatabaseHash::removeEntity(int entityId)
+{
+    m_entityComponentData.remove(entityId);
+}
+
+StorageComponentPtr DatabaseHash::findComponent(const EntityMap *entityMap, const QString &componentName) const
+{
+    if(!entityMap)
+        return nullptr;
+    auto iter = entityMap->constFind(componentName);
+    if(iter == entityMap->end())
+        return nullptr;
+    return iter.value();
+}
+
 void DatabaseHash::insertComponentValue(EntityMap *entityChecked, const QString &componentName, const QVariant &value)
 {
     (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
-}
-
-void DatabaseHash::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, const QVariant &value)
-{
-    Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
-    component->setValue(value);
-    m_entityComponentData[entityId][componentName] = component;
 }
 
 void DatabaseHash::changeComponentValue(StorageComponentPtr componentChecked, const QVariant &value)
@@ -40,89 +131,11 @@ void DatabaseHash::removeComponentValue(EntityMap *entityChecked, const QString 
     entityChecked->remove(componentName);
 }
 
-void DatabaseHash::insertEntity(const int entityId)
+void DatabaseHash::insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, const QVariant &value)
 {
-    m_entityComponentData.insert(entityId, EntityMap());
-}
-
-void DatabaseHash::removeEntity(const int entityId)
-{
-    m_entityComponentData.remove(entityId);
-}
-
-bool DatabaseHash::hasStoredValue(int entityId, const QString &componentName) const
-{
-    auto entityIter = m_entityComponentData.constFind(entityId);
-    if(m_entityComponentData.constFind(entityId) == m_entityComponentData.constEnd())
-        return false;
-    auto components = entityIter.value();
-    auto componentIter = components.constFind(componentName);
-    return componentIter != components.constEnd();
-}
-
-QVariant DatabaseHash::getStoredValue(int entityId, const QString &componentName) const
-{
-    auto entityIter = m_entityComponentData.constFind(entityId);
-    if(m_entityComponentData.constFind(entityId) == m_entityComponentData.constEnd()) {
-        qWarning() << "Unknown entity with id:" <<  entityId;
-        return QVariant();
-    }
-    auto components = entityIter.value();
-    auto componentIter = components.constFind(componentName);
-    if(componentIter == components.constEnd()) {
-        qWarning() << "Unknown entity with id:" <<  entityId << "component" << componentName;
-        return QVariant();
-    }
-    return componentIter.value()->m_value;
-}
-
-QList<int> DatabaseHash::getEntityList() const
-{
-    return m_entityComponentData.keys();
-}
-
-QList<QString> DatabaseHash::getComponentList(int entityId) const
-{
-    auto iter = m_entityComponentData.constFind(entityId);
-    QList<QString> componentList;
-    if(iter != m_entityComponentData.constEnd())
-        componentList = iter.value().keys();
-    return componentList;
-}
-
-bool DatabaseHash::hasEntity(int entityId) const
-{
-    return m_entityComponentData.constFind(entityId) != m_entityComponentData.constEnd();
-}
-
-EntityMap *DatabaseHash::findEntity(const int entityId)
-{
-    auto iter = m_entityComponentData.find(entityId);
-    if(iter == m_entityComponentData.end())
-        return nullptr;
-    return &(iter.value());
-}
-
-StorageComponentPtr DatabaseHash::findComponent(EntityMap *entityMap, const QString &componentName)
-{
-    if(!entityMap)
-        return nullptr;
-    auto iter = entityMap->find(componentName);
-    if(iter == entityMap->end())
-        return nullptr;
-    return iter.value();
-}
-
-const StorageComponentPtr DatabaseHash::findComponent(const int entityId, const QString &componentName) const
-{
-    auto iterEntity = m_entityComponentData.constFind(entityId);
-    if(iterEntity == m_entityComponentData.constEnd())
-        return nullptr;
-    const auto entityMap = iterEntity.value();
-    auto iterComponent = entityMap.constFind(componentName);
-    if(iterComponent == entityMap.constEnd())
-        return nullptr;
-    return iterComponent.value();
+    Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
+    component->setValue(value);
+    m_entityComponentData[entityId][componentName] = component;
 }
 
 StorageComponentPtr DatabaseHash::takeFutureComponent(const int entityId, const QString &componentName)
@@ -136,11 +149,6 @@ StorageComponentPtr DatabaseHash::takeFutureComponent(const int entityId, const 
     if(entities.isEmpty())
         m_futureEntityComponentData.remove(entityId);
     return futureComponent;
-}
-
-bool DatabaseHash::areFutureComponentsEmpty() const
-{
-    return m_futureEntityComponentData.isEmpty();
 }
 
 }

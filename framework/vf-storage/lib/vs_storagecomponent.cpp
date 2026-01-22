@@ -21,6 +21,11 @@ const QVariant &StorageComponent::getValue() const
     return m_value;
 }
 
+QVariant &StorageComponent::getValueForWrite()
+{
+    return m_value;
+}
+
 int StorageComponent::getInstanceCount()
 {
     return m_instanceCount;

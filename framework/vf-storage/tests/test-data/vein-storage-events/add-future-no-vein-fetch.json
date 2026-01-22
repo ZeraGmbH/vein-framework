@@ -1,0 +1,46 @@
+{
+    "VeinEvents": [
+        {
+            "Am command event in": "client-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": null,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "TRANSACTION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": null,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "client-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "TestComponent",
+            "Entity": 37,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": "future",
+            "ValueOld": null
+        }
+    ]
+}
