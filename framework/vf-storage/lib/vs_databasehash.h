@@ -12,7 +12,7 @@ namespace VeinStorage
 class DatabaseHash : public AbstractDatabaseDirectWrite
 {
 public:
-    // Outer interface to vein/enttity components / future components are ignored
+    // Consumer interface to vein / entity components available at the time of call
     bool hasEntity(int entityId) const override;
     QList<int> getEntityList() const override;
 
@@ -21,9 +21,15 @@ public:
     const StorageComponentPtr findComponent(const int entityId, const QString &componentName) const override;
     QList<QString> getComponentList(int entityId) const override;
 
-    // Outer interface to future components
-    // 'future' means maybe added by vein later (or maybe never)
-    // Futures are ignored by introspection but can be fetched
+    // Consumer interface to future components - where 'future' means:
+    // * getFutureComponent(ForWrite) always return a storage component whether or not the component
+    //   is known to vein at the time of call => modules can access components of modules that are started later
+    // * In case getFutureComponent(ForWrite) generates components that are never added to vein they remain hidden
+    //   to introspection and will not send out any notifications with one exception: Future-only components
+    //   respond to CCMD_FETCH so data is made available on demand. Note: future components with entity IDs not
+    //   known to vein are competely ignored
+    // * To make them discoverable getComponentListWithFutures was added
+    // TODO: reset future components on session change / handle CCMD_REMOVE?
     bool areFutureComponentsEmpty() const override;
     const StorageComponentPtr findFutureComponent(int entityId, const QString &componentName) const override;
     const StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
