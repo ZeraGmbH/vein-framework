@@ -1,9 +1,11 @@
 file(GLOB SOURCES 
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.cpp
+    *.cpp
+    recorder/*.cpp
     )
 
 file(GLOB HEADER
-    ${CMAKE_CURRENT_SOURCE_DIR}/*.h
+    *.h
+    recorder/*.h
     )
 
 add_library(VfStorage SHARED
@@ -15,6 +17,7 @@ target_include_directories(VfStorage
     PUBLIC
     $<INSTALL_INTERFACE:include/VfStorage>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}>
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/recorder>
     $<BUILD_INTERFACE:${CMAKE_CURRENT_BINARY_DIR}>
     )
 
