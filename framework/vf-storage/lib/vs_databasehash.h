@@ -1,7 +1,7 @@
 #ifndef VS_DATABASE_HASH
 #define VS_DATABASE_HASH
 
-#include "vs_abstractdatabasedirectwrite.h"
+#include "vs_abstractdatabase.h"
 #include <QObject>
 #include <QHash>
 #include <QDateTime>
@@ -9,7 +9,7 @@
 namespace VeinStorage
 {
 
-class DatabaseHash : public AbstractDatabaseDirectWrite
+class DatabaseHash : public AbstractDatabase
 {
 public:
     // Consumer interface to vein / entity components available at the time of call
@@ -18,7 +18,7 @@ public:
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
-    const StorageComponentPtr findComponent(const int entityId, const QString &componentName) const override;
+    const AbstractComponentPtr findComponent(const int entityId, const QString &componentName) const override;
     QList<QString> getComponentList(int entityId) const override;
 
     // Consumer interface to future components - where 'future' means:
@@ -31,9 +31,8 @@ public:
     // * To make them discoverable getComponentListWithFutures was added
     // TODO: reset future components on session change / handle CCMD_REMOVE?
     bool areFutureComponentsEmpty() const override;
-    const StorageComponentPtr findFutureComponent(int entityId, const QString &componentName) const override;
-    const StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
-    StorageComponentPtr getFutureComponentForWrite(int entityId, const QString &componentName) override;
+    const AbstractComponentPtr findFutureComponent(int entityId, const QString &componentName) const override;
+    const AbstractComponentPtr getFutureComponent(int entityId, const QString &componentName) override;
     QList<QString> getComponentListWithFutures(int entityId) const override;
 
     // Event system (vein) interface
@@ -41,13 +40,13 @@ public:
     void insertEntity(int entityId);
     void removeEntity(int entityId);
 
-    StorageComponentPtr findComponent(const EntityMap *entityMap, const QString &componentName) const;
+    AbstractComponentPtr findComponent(const EntityMap *entityMap, const QString &componentName) const;
     void insertComponentValue(EntityMap* entityChecked, const QString &componentName, const QVariant &value);
-    void changeComponentValue(StorageComponentPtr componentChecked, const QVariant &value);
+    void changeComponentValue(AbstractComponentPtr componentChecked, const QVariant &value);
     void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
 
-    void insertFutureComponent(int entityId, QString componentName, StorageComponentPtr component, const QVariant &value);
-    StorageComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
+    void insertFutureComponent(int entityId, QString componentName, AbstractComponentPtr component, const QVariant &value);
+    AbstractComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
 
 private:
     QMap<int, EntityMap> m_entityComponentData;

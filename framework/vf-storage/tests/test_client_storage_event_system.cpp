@@ -189,7 +189,7 @@ void test_client_storage_event_system::clientSetComponent()
 
 void test_client_storage_event_system::fetchExistingFutureComponent()
 {
-    VeinStorage::StorageComponentPtr component = m_clientStorageSystem->getDb()->getFutureComponent(entityID1, "Bar");
+    VeinStorage::AbstractComponentPtr component = m_clientStorageSystem->getDb()->getFutureComponent(entityID1, "Bar");
     QSignalSpy spy(component.get(), &VeinStorage::AbstractComponent::sigValueChange);
     QCOMPARE(component->getValue(), QVariant());
 

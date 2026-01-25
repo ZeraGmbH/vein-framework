@@ -42,7 +42,6 @@ public:
 
     VeinEvent::EventHandler* getEventHandler();
     VeinStorage::AbstractEventSystem* getStorage();
-    VeinStorage::AbstractStorageWritable* getStorageWritable();
     QByteArray dumpStorage(QList<int> entities);
     QByteArray dumpEvents();
     void sendEvent(QEvent *event);

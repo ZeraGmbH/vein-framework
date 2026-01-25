@@ -97,7 +97,7 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
         for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter) {
             const QString componentName = iter.key();
             const QVariant value = iter.value();
-            StorageComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
+            AbstractComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
             if(futureComponent)
                 m_privHash->insertFutureComponent(entityId, componentName, futureComponent, value);
             else
@@ -115,7 +115,7 @@ void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
     const QString componentName = cData->componentName();
     const int entityId = cData->entityId();
     EntityMap* entity = m_privHash->findEntity(entityId);
-    StorageComponentPtr component = m_privHash->findComponent(entity, componentName);
+    AbstractComponentPtr component = m_privHash->findComponent(entity, componentName);
 
     switch(cData->eventCommand())
     {

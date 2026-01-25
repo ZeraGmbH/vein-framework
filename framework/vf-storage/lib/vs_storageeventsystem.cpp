@@ -63,11 +63,6 @@ AbstractDatabase *StorageEventSystem::getDb() const
     return m_privHash;
 }
 
-AbstractDatabaseDirectWrite *StorageEventSystem::getDbWritable() const
-{
-    return m_privHash;
-}
-
 QMap<int, QStringList> StorageEventSystem::getRpcs() const
 {
     return m_entityRpcNames;
@@ -111,12 +106,12 @@ void StorageEventSystem::processComponentData(QEvent *event)
     const QString componentName = cData->componentName();
     const int entityId = cData->entityId();
     EntityMap* entity = m_privHash->findEntity(entityId);
-    StorageComponentPtr component = m_privHash->findComponent(entity, componentName);
+    AbstractComponentPtr component = m_privHash->findComponent(entity, componentName);
 
     switch(cData->eventCommand())
     {
     case ComponentData::Command::CCMD_ADD: {
-        StorageComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
+        AbstractComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
         if(futureComponent)
             m_privHash->insertFutureComponent(entityId, componentName, futureComponent, cData->newValue());
         else if(!entity)
@@ -152,7 +147,7 @@ void StorageEventSystem::processComponentData(QEvent *event)
         if(!entity)
             ErrorDataSender::errorOut(QString("Cannot fetch component for not existing entity id: %1").arg(entityId), event, this);
         else if(!component) { // For now we make vein entity generation mandatory on futures
-            StorageComponentPtr future = m_privHash->findFutureComponent(entityId, componentName);
+            AbstractComponentPtr future = m_privHash->findFutureComponent(entityId, componentName);
             if (future != nullptr) {
                 ///@todo @bug remove inconsistent behavior by sending a new event instead of rewriting the current event
                 cData->setNewValue(future->getValue());

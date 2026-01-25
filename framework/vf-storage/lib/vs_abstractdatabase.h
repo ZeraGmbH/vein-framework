@@ -16,12 +16,12 @@ public:
 
     virtual bool hasStoredValue(int entityId, const QString &componentName) const = 0;
     virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
-    virtual const StorageComponentPtr findComponent(const int entityId, const QString &componentName) const = 0;
+    virtual const AbstractComponentPtr findComponent(const int entityId, const QString &componentName) const = 0;
     virtual QList<QString> getComponentList(int entityId) const = 0;
 
     virtual bool areFutureComponentsEmpty() const = 0;
-    virtual const StorageComponentPtr getFutureComponent(int entityId, const QString &componentName) = 0;
-    virtual const StorageComponentPtr findFutureComponent(int entityId, const QString &componentName) const = 0;
+    virtual const AbstractComponentPtr getFutureComponent(int entityId, const QString &componentName) = 0;
+    virtual const AbstractComponentPtr findFutureComponent(int entityId, const QString &componentName) const = 0;
     virtual QList<QString> getComponentListWithFutures(int entityId) const = 0;
 };
 

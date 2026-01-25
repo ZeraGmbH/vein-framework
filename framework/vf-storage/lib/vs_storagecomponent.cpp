@@ -21,16 +21,6 @@ const QVariant &StorageComponent::getValue() const
     return m_value;
 }
 
-QVariant &StorageComponent::getValueForWrite()
-{
-    return m_value;
-}
-
-int StorageComponent::getInstanceCount()
-{
-    return m_instanceCount;
-}
-
 void StorageComponent::setValue(const QVariant &value)
 {
     emit sigValueSet(value);
@@ -38,6 +28,11 @@ void StorageComponent::setValue(const QVariant &value)
         m_value = value;
         emit sigValueChange(value);
     }
+}
+
+int StorageComponent::getInstanceCount()
+{
+    return m_instanceCount;
 }
 
 }

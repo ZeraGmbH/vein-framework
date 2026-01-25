@@ -23,11 +23,6 @@ VeinStorage::AbstractEventSystem *TestVeinServerWithMockNet::getStorage()
     return getServer()->getStorage();
 }
 
-VeinStorage::AbstractStorageWritable *TestVeinServerWithMockNet::getStorageWritable()
-{
-    return getServer()->getStorageWritable();
-}
-
 int TestVeinServerWithMockNet::getSubscriberCount(int entityId)
 {
     return m_netSystem.getSubscriberCount(entityId);

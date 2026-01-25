@@ -20,18 +20,16 @@ void test_storage_direct_write::addFuturesChangeValue()
     server->addEntity(testEntityId, entityName);
     TimeMachineObject::feedEventLoop();
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
 
-    QVERIFY(!writableDb->hasStoredValue(testEntityId, testComponentName));
-    QCOMPARE(writableDb->findComponent(testEntityId, testComponentName), nullptr);
-    QCOMPARE(writableDb->getStoredValue(testEntityId, testComponentName), QVariant());
-    QVERIFY(!writableDb->getComponentList(testEntityId).contains(testComponentName));
-
-    QVERIFY(checkAllFutureGetters(writableDb, QString("future")));
-    QVERIFY(writableDb->getComponentListWithFutures(testEntityId).contains(testComponentName));
+    QVERIFY(!db->hasStoredValue(testEntityId, testComponentName));
+    QCOMPARE(db->findComponent(testEntityId, testComponentName), nullptr);
+    QCOMPARE(db->getStoredValue(testEntityId, testComponentName), QVariant());
+    QVERIFY(!db->getComponentList(testEntityId).contains(testComponentName));
+    QVERIFY(db->getComponentListWithFutures(testEntityId).contains(testComponentName));
 }
 
 void test_storage_direct_write::addFuturesChangeValueVeinAdd()
@@ -41,19 +39,17 @@ void test_storage_direct_write::addFuturesChangeValueVeinAdd()
     server->addEntity(testEntityId, entityName);
     TimeMachineObject::feedEventLoop();
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
     server->addComponent(testEntityId, testComponentName, QString("vein"), true);
 
-    QVERIFY(writableDb->hasStoredValue(testEntityId, testComponentName));
-    QCOMPARE(writableDb->findComponent(testEntityId, testComponentName)->getValue(), "vein");
-    QCOMPARE(writableDb->getStoredValue(testEntityId, testComponentName), "vein");
-    QVERIFY(writableDb->getComponentList(testEntityId).contains(testComponentName));
-
-    QVERIFY(checkAllFutureGetters(writableDb, QString("vein")));
-    QVERIFY(writableDb->getComponentListWithFutures(testEntityId).contains(testComponentName));
+    QVERIFY(db->hasStoredValue(testEntityId, testComponentName));
+    QCOMPARE(db->findComponent(testEntityId, testComponentName)->getValue(), "vein");
+    QCOMPARE(db->getStoredValue(testEntityId, testComponentName), "vein");
+    QVERIFY(db->getComponentList(testEntityId).contains(testComponentName));
+    QVERIFY(db->getComponentListWithFutures(testEntityId).contains(testComponentName));
 }
 
 void test_storage_direct_write::addFutureDumpIntrospection()
@@ -62,10 +58,10 @@ void test_storage_direct_write::addFutureDumpIntrospection()
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
 
     VfCoreStackClient clientNet(VeinTcp::MockTcpNetworkFactory::create());
     clientNet.connectToServer("127.0.0.1", serverPort);
@@ -86,10 +82,10 @@ void test_storage_direct_write::addFutureAddVeinDumpIntrospection()
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
     server->addComponent(testEntityId, testComponentName, QString("vein"), true);
 
     VfCoreStackClient clientNet(VeinTcp::MockTcpNetworkFactory::create());
@@ -111,10 +107,10 @@ void test_storage_direct_write::addFutureFetch()
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
 
     VfCoreStackClient clientNet(VeinTcp::MockTcpNetworkFactory::create());
     clientNet.connectToServer("127.0.0.1", serverPort);
@@ -142,10 +138,10 @@ void test_storage_direct_write::addFutureAddVeinFetch()
     TestVeinServer* server = serverNet.getServer();
     server->addEntity(testEntityId, entityName);
 
-    VeinStorage::AbstractStorageWritable* storage = serverNet.getStorageWritable();
-    AbstractDatabaseDirectWrite *writableDb = storage->getDbWritable();
-    StorageComponentPtr future = writableDb->getFutureComponentForWrite(testEntityId, testComponentName);
-    future->getValueForWrite() = QString("future");
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+    future->setValue(QString("future"));
     server->addComponent(testEntityId, testComponentName, QString("vein"), true);
 
     VfCoreStackClient clientNet(VeinTcp::MockTcpNetworkFactory::create());
@@ -168,40 +164,14 @@ void test_storage_direct_write::addFutureAddVeinFetch()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }
 
-bool test_storage_direct_write::checkAllFutureGetters(AbstractDatabaseDirectWrite *writableDb, const QVariant &expectedValue)
+bool test_storage_direct_write::checkSameIdentities(AbstractDatabase *db, const AbstractComponentPtr component)
 {
     bool ok = true;
-    if (writableDb->getFutureComponent(testEntityId, testComponentName)->getValue() != expectedValue) {
-        qWarning("getFutureComponent()->getValue() unequal");
-        ok = false;
-    }
-    if (writableDb->getFutureComponent(testEntityId, testComponentName)->getValueForWrite() != expectedValue) {
-        qWarning("getFutureComponent()->getValueForWrite()() unequal");
-        ok = false;
-    }
-    if (writableDb->getFutureComponentForWrite(testEntityId, testComponentName)->getValue() != expectedValue) {
-        qWarning("getEntityComponentForWrite()->getValue() unequal");
-        ok = false;
-    }
-    if (writableDb->getFutureComponentForWrite(testEntityId, testComponentName)->getValueForWrite() != expectedValue) {
-        qWarning("getFutureComponentForWrite()->getValueForWrite() unequal");
-        ok = false;
-    }
-    return ok;
-}
-
-bool test_storage_direct_write::checkSameIdentities(AbstractDatabaseDirectWrite *writableDb, const StorageComponentPtr component)
-{
-    bool ok = true;
-    if (component != writableDb->getFutureComponent(testEntityId, testComponentName)) {
+    if (component != db->getFutureComponent(testEntityId, testComponentName)) {
         qWarning("getFutureComponent()");
         ok = false;
     }
-    if (component != writableDb->getFutureComponentForWrite(testEntityId, testComponentName)) {
-        qWarning("getFutureComponentForWrite()");
-        ok = false;
-    }
-    if (component != writableDb->findComponent(testEntityId, testComponentName)) {
+    if (component != db->findComponent(testEntityId, testComponentName)) {
         qWarning("findComponent()");
         ok = false;
     }

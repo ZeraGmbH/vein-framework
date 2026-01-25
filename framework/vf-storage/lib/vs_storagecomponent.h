@@ -14,18 +14,14 @@ public:
     virtual ~StorageComponent();
 
     const QVariant &getValue() const override;
-    QVariant &getValueForWrite();
+    void setValue(const QVariant &value) override;
 
     static int getInstanceCount();
+
 private:
-    friend class DatabaseHash;
-    void setValue(const QVariant &value);
     QVariant m_value;
     static int m_instanceCount;
 };
-
-typedef std::shared_ptr<StorageComponent> StorageComponentPtr;
-typedef QHash<QString, StorageComponentPtr> EntityMap;
 
 }
 #endif // VS_STORAGECOMPONENT_H

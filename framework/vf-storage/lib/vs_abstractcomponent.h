@@ -17,9 +17,11 @@ signals:
     void sigValueChange(const QVariant &newValue);
 public:
     virtual const QVariant &getValue() const = 0;
+    virtual void setValue(const QVariant &value) = 0;
 };
 
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;
+typedef QHash<QString, AbstractComponentPtr> EntityMap;
 
 }
 #endif // VS_ABSTRACTCOMPONENT_H

@@ -178,11 +178,6 @@ VeinStorage::AbstractEventSystem *TestVeinServer::getStorage()
     return &m_storageSystem;
 }
 
-VeinStorage::AbstractStorageWritable *TestVeinServer::getStorageWritable()
-{
-    return &m_storageSystem;
-}
-
 QByteArray TestVeinServer::dumpStorage(QList<int> entities)
 {
     QByteArray jsonDumped;
