@@ -1,6 +1,6 @@
 #include "vs_databasehash.h"
+#include "vs_storagecomponent.h"
 #include <QDateTime>
-#include <QDebug>
 
 namespace VeinStorage
 {

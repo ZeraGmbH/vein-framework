@@ -1,7 +1,7 @@
 #ifndef VS_ABSTRACTDATABASE_H
 #define VS_ABSTRACTDATABASE_H
 
-#include "vs_storagecomponent.h"
+#include "vs_abstractcomponent.h"
 
 namespace VeinStorage
 {
