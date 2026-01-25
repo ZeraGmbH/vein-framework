@@ -41,14 +41,12 @@ public:
     void removeEntity(int entityId);
 
     AbstractComponentPtr findComponent(const EntityMap *entityMap, const QString &componentName) const;
-    void insertComponentValue(EntityMap* entityChecked, const QString &componentName, const QVariant &value);
-    void changeComponentValue(AbstractComponentPtr componentChecked, const QVariant &value);
+    void insertComponentValue(int entityId, const QString &componentName, const QVariant &value);
     void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
 
-    void insertFutureComponent(int entityId, QString componentName, AbstractComponentPtr component, const QVariant &value);
+private:
     AbstractComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
 
-private:
     QMap<int, EntityMap> m_entityComponentData;
     QMap<int, EntityMap> m_futureEntityComponentData;
 };

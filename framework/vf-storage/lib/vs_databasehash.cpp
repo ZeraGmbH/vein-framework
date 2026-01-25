@@ -111,26 +111,20 @@ AbstractComponentPtr DatabaseHash::findComponent(const EntityMap *entityMap, con
     return iter.value();
 }
 
-void DatabaseHash::insertComponentValue(EntityMap *entityChecked, const QString &componentName, const QVariant &value)
+void DatabaseHash::insertComponentValue(int entityId, const QString &componentName, const QVariant &value)
 {
-    (*entityChecked)[componentName] = std::make_shared<StorageComponent>(value);
-}
-
-void DatabaseHash::changeComponentValue(AbstractComponentPtr componentChecked, const QVariant &value)
-{
-    componentChecked->setValue(value);
+    AbstractComponentPtr future = takeFutureComponent(entityId, componentName);
+    if(future) {
+        future->setValue(value);
+        m_entityComponentData[entityId][componentName] = future;
+        return;
+    }
+    m_entityComponentData[entityId][componentName] = std::make_shared<StorageComponent>(value);
 }
 
 void DatabaseHash::removeComponentValue(EntityMap *entityChecked, const QString &componentName)
 {
     entityChecked->remove(componentName);
-}
-
-void DatabaseHash::insertFutureComponent(int entityId, QString componentName, AbstractComponentPtr component, const QVariant &value)
-{
-    Q_ASSERT(!m_entityComponentData.contains(entityId) || !m_entityComponentData[entityId].contains(componentName));
-    component->setValue(value);
-    m_entityComponentData[entityId][componentName] = component;
 }
 
 AbstractComponentPtr DatabaseHash::takeFutureComponent(const int entityId, const QString &componentName)

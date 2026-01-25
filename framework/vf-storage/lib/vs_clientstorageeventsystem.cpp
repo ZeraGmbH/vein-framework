@@ -87,21 +87,16 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
     CommandEvent *cEvent = static_cast<CommandEvent *>(event);
     IntrospectionData *iData = static_cast<IntrospectionData *>(cEvent->eventData());
     const int entityId = iData->entityId();
-    EntityMap* entityMap = m_privHash->findEntity(entityId);
 
-    if(!entityMap) { // multiple subscriptions/introspections are perfectly fine
+    // add on first only / multiple subscriptions/introspections are perfectly fine
+    if(!m_privHash->hasEntity(entityId)) {
         m_privHash->insertEntity(entityId);
-        entityMap = m_privHash->findEntity(entityId);
 
         const QVariantMap componentMap = iData->componentValues();
         for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter) {
             const QString componentName = iter.key();
             const QVariant value = iter.value();
-            AbstractComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
-            if(futureComponent)
-                m_privHash->insertFutureComponent(entityId, componentName, futureComponent, value);
-            else
-                m_privHash->insertComponentValue(entityMap, componentName, value);
+            m_privHash->insertComponentValue(entityId, componentName, value);
         }
 
         QStringList rpcs = iData->rpcNames();
@@ -125,9 +120,9 @@ void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
         else if(!component)
             ErrorDataSender::errorOut(QString("Cannot fetch not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else if(m_privHash->hasStoredValue(entityId, componentName))
-            m_privHash->changeComponentValue(component, cData->newValue());
+            component->setValue(cData->newValue());
         else
-            m_privHash->insertComponentValue(entity, componentName, cData->newValue());
+            m_privHash->insertComponentValue(entityId, componentName, cData->newValue());
         break;
     case ComponentData::Command::CCMD_REMOVE:
         if(!entity)
@@ -143,7 +138,7 @@ void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
         else if(!component)
             ErrorDataSender::errorOut(QString("Cannot set not existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
-            m_privHash->changeComponentValue(component, cData->newValue());
+            component->setValue(cData->newValue());
         break;
     case ComponentData::Command::CCMD_ADD:
         if(!entity)
@@ -151,7 +146,7 @@ void ClientStorageEventSystem::processComponentData(CommandEvent *cEvent)
         else if(component)
             ErrorDataSender::errorOut(QString("Cannot add existing component: %1 %2").arg(entityId).arg(cData->componentName()), cEvent, this);
         else
-            m_privHash->insertComponentValue(entity, componentName, cData->newValue());
+            m_privHash->insertComponentValue(entityId, componentName, cData->newValue());
         break;
     default:
         break;

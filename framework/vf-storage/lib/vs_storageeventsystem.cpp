@@ -111,15 +111,12 @@ void StorageEventSystem::processComponentData(QEvent *event)
     switch(cData->eventCommand())
     {
     case ComponentData::Command::CCMD_ADD: {
-        AbstractComponentPtr futureComponent = m_privHash->takeFutureComponent(entityId, componentName);
-        if(futureComponent)
-            m_privHash->insertFutureComponent(entityId, componentName, futureComponent, cData->newValue());
-        else if(!entity)
+        if(!entity)
             ErrorDataSender::errorOut(QString("Cannot add component for invalid entity id: %1").arg(entityId), event, this);
         else if(component)
             ErrorDataSender::errorOut(QString("Value already exists for component: %1 %2").arg(entityId).arg(cData->componentName()), event, this);
         else
-            m_privHash->insertComponentValue(entity, componentName, cData->newValue());
+            m_privHash->insertComponentValue(entityId, componentName, cData->newValue());
         break;
     }
     case ComponentData::Command::CCMD_REMOVE:
@@ -140,7 +137,7 @@ void StorageEventSystem::processComponentData(QEvent *event)
                 qWarning("QVariant type change detected on entity %i / component %s: Old %s / new %s",
                          entityId, qPrintable(componentName),
                          qPrintable(component->getValue().typeName()), qPrintable(cData->newValue().typeName()));
-            m_privHash->changeComponentValue(component, cData->newValue());
+            component->setValue(cData->newValue());
         }
         break;
     case ComponentData::Command::CCMD_FETCH:
