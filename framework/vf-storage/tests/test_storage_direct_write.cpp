@@ -127,6 +127,7 @@ void test_storage_direct_write::addFutureFetch()
     fetcher->startGetComponent();
     TimeMachineObject::feedEventLoop();
 
+    QVERIFY(!db->areFutureComponentsEmpty());
     QByteArray expected = TestLogHelpers::loadFile(":/vein-storage-events/add-future-no-vein-fetch.json");
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
@@ -159,6 +160,7 @@ void test_storage_direct_write::addFutureAddVeinFetch()
     fetcher->startGetComponent();
     TimeMachineObject::feedEventLoop();
 
+    QVERIFY(db->areFutureComponentsEmpty());
     QByteArray expected = TestLogHelpers::loadFile(":/vein-storage-events/add-future-add-vein-fetch.json");
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
