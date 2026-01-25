@@ -2,6 +2,7 @@
 #define VS_ABSTRACTCOMPONENT_H
 
 #include "vfevent_export.h"
+#include "vs_abstractcomponentgetcustomizer.h"
 #include <QVariant>
 #include <QDateTime>
 #include <memory>
@@ -18,6 +19,7 @@ signals:
 public:
     virtual const QVariant &getValue() const = 0;
     virtual void setValue(const QVariant &value) = 0;
+    virtual void setGetValueCustomizer(AbstractComponentGetCustomizerPtr getCustomizer) = 0;
 };
 
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;

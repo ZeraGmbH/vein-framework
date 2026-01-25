@@ -164,6 +164,41 @@ void test_storage_direct_write::addFutureAddVeinFetch()
     QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(expected, dumped));
 }
 
+class TestCustomizer : public AbstractComponentGetCustomizer
+{
+public:
+    const QVariant &getCustomizedValue(const QVariant &currentValue) override
+    {
+        m_currentValueGot = currentValue;
+        m_customizedValue = QString("customized");
+        return m_customizedValue;
+    }
+    const QVariant &getCurrentValueGot() { return m_currentValueGot; }
+private:
+    QVariant m_customizedValue;
+    QVariant m_currentValueGot;
+};
+
+void test_storage_direct_write::addFutureWithCustomizer()
+{
+    TestVeinServerWithMockNet serverNet(serverPort);
+    TestVeinServer* server = serverNet.getServer();
+    server->addEntity(testEntityId, entityName);
+    TimeMachineObject::feedEventLoop();
+
+    VeinStorage::AbstractEventSystem* storage = serverNet.getStorage();
+    AbstractDatabase *db = storage->getDb();
+    AbstractComponentPtr future = db->getFutureComponent(testEntityId, testComponentName);
+
+    std::shared_ptr<TestCustomizer> customizer = std::make_shared<TestCustomizer>();
+    future->setGetValueCustomizer(customizer);
+
+    future->setValue(QString("future"));
+
+    QCOMPARE(future->getValue(), QString("customized"));
+    QCOMPARE(customizer->getCurrentValueGot(), QString("future"));
+}
+
 bool test_storage_direct_write::checkSameIdentities(AbstractDatabase *db, const AbstractComponentPtr component)
 {
     bool ok = true;

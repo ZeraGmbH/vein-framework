@@ -15,11 +15,13 @@ public:
 
     const QVariant &getValue() const override;
     void setValue(const QVariant &value) override;
+    void setGetValueCustomizer(AbstractComponentGetCustomizerPtr customizer) override;
 
     static int getInstanceCount();
 
 private:
     QVariant m_value;
+    AbstractComponentGetCustomizerPtr m_getCustomizer;
     static int m_instanceCount;
 };
 

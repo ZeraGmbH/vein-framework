@@ -19,10 +19,7 @@ private slots:
     void addFutureFetch();
     void addFutureAddVeinFetch();
 
-    // TODO
-    // * introspection: ignore those directly added only OR send empty on post fetch?
-    // * fetch test (vf-logger)
-    // * SCPI meta only component
+    void addFutureWithCustomizer();
 
 private:
     bool checkSameIdentities(AbstractDatabase *db, const AbstractComponentPtr component);

@@ -18,6 +18,8 @@ StorageComponent::~StorageComponent()
 
 const QVariant &StorageComponent::getValue() const
 {
+    if (m_getCustomizer)
+        return m_getCustomizer->getCustomizedValue(m_value);
     return m_value;
 }
 
@@ -28,6 +30,11 @@ void StorageComponent::setValue(const QVariant &value)
         m_value = value;
         emit sigValueChange(value);
     }
+}
+
+void StorageComponent::setGetValueCustomizer(AbstractComponentGetCustomizerPtr customizer)
+{
+    m_getCustomizer = customizer;
 }
 
 int StorageComponent::getInstanceCount()
