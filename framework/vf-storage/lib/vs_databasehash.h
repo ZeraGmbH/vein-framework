@@ -22,9 +22,9 @@ public:
     QList<QString> getComponentList(int entityId) const override;
 
     // Consumer interface to future components - where 'future' means:
-    // * getFutureComponent(ForWrite) always return a storage component whether or not the component
+    // * getFutureComponent always return a storage component whether or not the component
     //   is known to vein at the time of call => modules can access components of modules that are started later
-    // * In case getFutureComponent(ForWrite) generates components that are never added to vein they remain hidden
+    // * In case getFutureComponent generates components that are never added to vein they remain hidden
     //   to introspection and will not send out any notifications with one exception: Future-only components
     //   respond to CCMD_FETCH so data is made available on demand. Note: future components with entity IDs not
     //   known to vein are competely ignored
