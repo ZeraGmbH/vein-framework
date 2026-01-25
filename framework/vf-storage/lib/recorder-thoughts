@@ -1,7 +1,0 @@
-Problems:
-
-* Timetamp reorder / restamp -> Inject stampers creating stamps as needed
-* Huge data transfer server / client -> add storage to client
-    * We had to add the timer not transferring on each change
-    * The whole history is transferred always
-
