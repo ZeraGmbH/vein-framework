@@ -18,6 +18,7 @@ private slots:
 
     void checkValidComponentInfo();
     void oneRecordValidComponentInfo();
+    void serializeComponentInfo();
 
     void emptyCheckCount();
     void oneRecordCheckCount();

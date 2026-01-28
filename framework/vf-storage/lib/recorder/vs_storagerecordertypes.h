@@ -18,6 +18,17 @@ struct RecordComponent {
 };
 typedef QMap<int, QList<RecordComponent>> RecordEntityComponents;
 
+// Extract squence from Parameter definitions => RecordEntityComponentSequence::toSequence
+struct RecordEntityComponent {
+    int m_entityId;
+    RecordComponent m_component;
+};
+typedef QList<RecordEntityComponent> RecordEntityComponentSequence;
+
+namespace RecordParamSequencer {
+    RecordEntityComponentSequence toSequence(const RecordEntityComponents &entityComponentsParam);
+};
+
 
 // Result definitions
 struct RecordEntryStored {

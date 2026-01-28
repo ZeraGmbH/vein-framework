@@ -20,5 +20,17 @@ void StorageRecordData::resetRecords() {
     m_recordedData.clear();
 }
 
+RecordEntityComponentSequence RecordParamSequencer::toSequence(const RecordEntityComponents &entityComponentsParam)
+{
+    QList<RecordEntityComponent> entityComponentSequence;
+    for(auto iter = entityComponentsParam.constBegin(); iter != entityComponentsParam.constEnd(); ++iter) {
+        int entityId = iter.key();
+        const QList<RecordComponent> &components = iter.value();
+        for (const RecordComponent &component : components) {
+            entityComponentSequence.append({entityId, {component.m_componentName, component.m_label}});
+        }
+    }
+    return entityComponentSequence;
+}
 
 }

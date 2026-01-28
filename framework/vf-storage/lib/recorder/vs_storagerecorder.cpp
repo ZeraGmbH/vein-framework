@@ -16,12 +16,10 @@ StorageRecorder::StorageRecorder(const RecordEntityComponents &componentsRecorde
 
 void StorageRecorder::setupVeinLoggedComponents(const RecordEntityComponents &componentsRecorded, AbstractDatabase *storage)
 {
-    for (auto iter=componentsRecorded.constBegin(); iter!=componentsRecorded.constEnd(); ++iter) {
-        int entityId = iter.key();
-        const QList<RecordComponent> &components = iter.value();
-        for (const RecordComponent &component : components)
-            m_veinValuesRecorded.append(storage->getFutureComponent(entityId, component.m_componentName));
-    }
+    const RecordEntityComponentSequence sequence = RecordParamSequencer::toSequence(componentsRecorded);
+    for (const RecordEntityComponent &entry : sequence)
+        m_veinValuesRecorded.append(storage->getFutureComponent(entry.m_entityId,
+                                                                entry.m_component.m_componentName));
 }
 
 void StorageRecorder::startLogging()

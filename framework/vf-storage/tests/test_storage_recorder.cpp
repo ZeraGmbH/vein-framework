@@ -68,6 +68,29 @@ void test_storage_recorder::oneRecordValidComponentInfo()
     QCOMPARE(recorded->m_componentInfo, components);
 }
 
+void test_storage_recorder::serializeComponentInfo()
+{
+    RecordEntityComponents components = createStandardRecorderComponents();
+    RecordEntityComponentSequence sequence = RecordParamSequencer::toSequence(components);
+
+    QCOMPARE(sequence.count(), 4);
+    QCOMPARE(sequence[0].m_entityId, entityIdWithValue1);
+    QCOMPARE(sequence[0].m_component.m_componentName, componentName1);
+    QCOMPARE(sequence[0].m_component.m_label, labelName1);
+
+    QCOMPARE(sequence[1].m_entityId, entityIdWithValue1);
+    QCOMPARE(sequence[1].m_component.m_componentName, componentName2);
+    QCOMPARE(sequence[1].m_component.m_label, labelName2);
+
+    QCOMPARE(sequence[2].m_entityId, entityIdWithValue2);
+    QCOMPARE(sequence[2].m_component.m_componentName, componentName1);
+    QCOMPARE(sequence[2].m_component.m_label, labelName1);
+
+    QCOMPARE(sequence[3].m_entityId, entityIdWithValue2);
+    QCOMPARE(sequence[3].m_component.m_componentName, componentName2);
+    QCOMPARE(sequence[3].m_component.m_label, labelName2);
+}
+
 void test_storage_recorder::emptyCheckCount()
 {
     RecordEntityComponents emptyComponents;
