@@ -32,7 +32,7 @@ public:
 signals:
     void sigConnectionEstablished(VeinTcp::TcpPeer *thisPeer);
     void sigConnectionClosed(VeinTcp::TcpPeer *thisPeer);
-    void sigMessageReceived(VeinTcp::TcpPeer *thisPeer, QByteArray message);
+    void sigMessageReceived(VeinTcp::TcpPeer *thisPeer, const QByteArray &message);
     void sigSocketError(VeinTcp::TcpPeer *thisPeer, QAbstractSocket::SocketError socketError);
 public slots:
     void sendMessage(const QByteArray &message) const;
