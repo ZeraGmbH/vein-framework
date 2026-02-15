@@ -129,12 +129,12 @@ bool SystemModuleEventSystem::handleXSessionSet(const QString &xSession)
     return false;
 }
 
-void SystemModuleEventSystem::setConfigFileName(QString configFileName)
+void SystemModuleEventSystem::setConfigFileName(const QString &configFileName)
 {
     m_configFileName = configFileName;
 }
 
-void SystemModuleEventSystem::setAvailableSessionList(QStringList availableSessionList)
+void SystemModuleEventSystem::setAvailableSessionList(const QStringList &availableSessionList)
 {
     QStringList setter;
     for(int i = 0; i < availableSessionList.count(); i++) {

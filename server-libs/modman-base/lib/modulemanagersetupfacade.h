@@ -14,7 +14,7 @@ public:
     ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                              bool devMode = false,
                              const LxdmSessionChangeParam& lxdmParam = LxdmSessionChangeParam(),
-                             const QString persistencyBasePath = "");
+                             const QString &persistencyBasePath = "");
     static void registerMetaTypeStreamOperators();
 
     void prependModuleSystem(VeinEvent::EventSystem* subsystem);   // prepend to module event systems (topmost)

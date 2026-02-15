@@ -4,7 +4,7 @@
 ModuleManagerSetupFacade::ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                                                    bool devMode,
                                                    const LxdmSessionChangeParam &lxdmParam,
-                                                   const QString persistencyBasePath) :
+                                                   const QString &persistencyBasePath) :
     m_systemModuleSystem(devMode, lxdmParam),
     m_introspectionSystem(&m_storSystem),
     m_licenseSystem(licenseSystem),

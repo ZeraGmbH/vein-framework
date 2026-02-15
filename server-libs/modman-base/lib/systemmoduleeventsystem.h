@@ -19,8 +19,8 @@ public:
     static constexpr int getEntityId();
     void setStorage(VeinStorage::AbstractEventSystem *t_storageSystem);
     void processEvent(QEvent *t_event) override;
-    void setConfigFileName(QString configFileName);
-    void setAvailableSessionList(QStringList availableSessionList);
+    void setConfigFileName(const QString &configFileName);
+    void setAvailableSessionList(const QStringList &availableSessionList);
 signals:
     void sigChangeSession(const QString &t_newSession);
     void sigModulesPausedChanged(bool t_paused);
