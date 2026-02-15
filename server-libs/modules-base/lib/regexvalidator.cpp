@@ -3,14 +3,14 @@
 #include <QRegularExpression>
 #include "regexvalidator.h"
 
-cRegExValidator::cRegExValidator(QString regex)
+cRegExValidator::cRegExValidator(const QString &regex) :
+    m_sRegEx(regex)
 {
-    m_sRegEx = regex;
 }
 
-cRegExValidator::cRegExValidator(const cRegExValidator &ref)
+cRegExValidator::cRegExValidator(const cRegExValidator &ref) :
+    m_sRegEx(ref.m_sRegEx)
 {
-    m_sRegEx = ref.m_sRegEx;
 }
 
 bool cRegExValidator::isValidParam(QVariant& newValue)
@@ -24,7 +24,7 @@ void cRegExValidator::exportMetaData(QJsonObject& jsObj)
     jsObj.insert("Data", m_sRegEx);
 }
 
-void cRegExValidator::setValidator(QString regex)
+void cRegExValidator::setValidator(const QString &regex)
 {
     m_sRegEx = regex;
 }

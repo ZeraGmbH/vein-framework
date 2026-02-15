@@ -2,12 +2,12 @@
 #include <QJsonObject>
 #include "stringvalidator.h"
 
-cStringValidator::cStringValidator(QString possibilities)
+cStringValidator::cStringValidator(const QString &possibilities)
 {
     m_sPossibilitiesList = possibilities.split(';');
 }
 
-cStringValidator::cStringValidator(QStringList possibilities)
+cStringValidator::cStringValidator(const QStringList &possibilities)
     :m_sPossibilitiesList(possibilities)
 {
 }
@@ -29,12 +29,12 @@ void cStringValidator::exportMetaData(QJsonObject& jsObj)
     jsObj.insert("Data", jsonArr);
 }
 
-void cStringValidator::setValidator(QString possibilities)
+void cStringValidator::setValidator(const QString &possibilities)
 {
     m_sPossibilitiesList = possibilities.split(';');
 }
 
-void cStringValidator::setValidator(QStringList possibilities)
+void cStringValidator::setValidator(const QStringList &possibilities)
 {
     m_sPossibilitiesList = possibilities;
 }

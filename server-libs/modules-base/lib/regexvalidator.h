@@ -6,11 +6,11 @@
 class cRegExValidator: public ValidatorInterface
 {
 public:
-    cRegExValidator(QString regex);
+    cRegExValidator(const QString &regex);
     cRegExValidator(const cRegExValidator& ref);
     bool isValidParam(QVariant& newValue) override;
     void exportMetaData(QJsonObject& jsObj) override;
-    void setValidator(QString regex);
+    void setValidator(const QString &regex);
 private:
     QString m_sRegEx;
 };

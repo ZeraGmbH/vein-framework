@@ -7,12 +7,12 @@
 class cStringValidator: public ValidatorInterface
 {
 public:
-    cStringValidator(QString possibilities); // all possible strings with ';' delimiter
-    cStringValidator(QStringList possibilities); // same but as qstringlist
+    cStringValidator(const QString &possibilities); // all possible strings with ';' delimiter
+    cStringValidator(const QStringList &possibilities); // same but as qstringlist
     bool isValidParam(QVariant &newValue) override;
     void exportMetaData(QJsonObject& jsObj) override;
-    void setValidator(QString possibilities);
-    void setValidator(QStringList possibilities);
+    void setValidator(const QString &possibilities);
+    void setValidator(const QStringList &possibilities);
 private:
     QStringList m_sPossibilitiesList;
 };
