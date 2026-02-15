@@ -42,7 +42,7 @@ public:
 
     AbstractComponentPtr findComponent(const EntityMap *entityMap, const QString &componentName) const;
     void insertComponentValue(int entityId, const QString &componentName, const QVariant &value);
-    void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
+    static void removeComponentValue(EntityMap* entityChecked, const QString &componentName);
 
 private:
     AbstractComponentPtr takeFutureComponent(const int entityId, const QString &componentName);
