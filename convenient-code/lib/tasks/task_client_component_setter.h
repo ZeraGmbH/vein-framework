@@ -9,10 +9,10 @@ class TaskClientComponentSetter : public TaskTemplate
     Q_OBJECT
 public:
     static TaskTemplatePtr create(VfCmdEventItemEntityPtr entityItem,
-                                  QString componentName, QVariant oldValue, QVariant newValue,
+                                  const QString &componentName, const QVariant &oldValue, const QVariant &newValue,
                                   int timeout, std::function<void()> additionalErrorHandler = []{});
     TaskClientComponentSetter(VfCmdEventItemEntityPtr entityItem,
-                              QString componentName, QVariant oldValue, QVariant newValue);
+                              const QString &componentName, const QVariant &oldValue, const QVariant &newValue);
     ~TaskClientComponentSetter();
     void start() override;
 private:

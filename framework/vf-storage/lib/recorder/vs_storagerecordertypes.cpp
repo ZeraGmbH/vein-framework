@@ -10,7 +10,7 @@ bool RecordComponent::operator == (const RecordComponent& other) const {
 }
 
 
-StorageRecordData::StorageRecordData(const RecordEntityComponents componentInfo) :
+StorageRecordData::StorageRecordData(const RecordEntityComponents &componentInfo) :
     m_componentInfo(componentInfo)
 {
 }

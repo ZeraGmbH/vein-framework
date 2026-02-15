@@ -24,7 +24,7 @@ namespace VeinNet
 
 
 
-    NetworkStatusEvent(NetworkStatus t_status, QUuid t_peerId);
+    NetworkStatusEvent(NetworkStatus t_status, const QUuid &peerId);
 
     static int getQEventType();
 

@@ -11,7 +11,7 @@ class VfRPCInvoker : public QObject, public VfEntityEventItem
 public:
     static std::shared_ptr<VfRPCInvoker> create(int entityId, std::unique_ptr<VfRPCEventGenerator> invokerType);
     explicit VfRPCInvoker(int entityId, std::unique_ptr<VfRPCEventGenerator> invokerType);
-    void invokeRPC(QString procedureName, QVariantMap paramters);
+    void invokeRPC(const QString &procedureName, const QVariantMap &paramters);
 
 signals:
     void sigRPCFinished(bool ok, const QVariantMap &resultData);

@@ -7,7 +7,7 @@
 class VfServerRpcRegister
 {
 public:
-    static QEvent* generateEvent(int entityId, QString rpcSignature);
+    static QEvent* generateEvent(int entityId, const QString &rpcSignature);
 };
 
 #endif // VF_SERVER_RPC_REGISTER_H

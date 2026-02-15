@@ -2,14 +2,14 @@
 #include "task_client_entity_subscribe.h"
 #include "task_client_rpc_invoker.h"
 
-std::unique_ptr<TaskSimpleVeinRPCInvoker> TaskSimpleVeinRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters,
+std::unique_ptr<TaskSimpleVeinRPCInvoker> TaskSimpleVeinRPCInvoker::create(int entityId, const QString &procedureName, const QVariantMap &parameters,
                                                                            std::shared_ptr<bool> rpcSuccessful, std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg,
                                                                            VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
     return std::make_unique<TaskSimpleVeinRPCInvoker>(entityId, procedureName, parameters, rpcSuccessful, result, errorMsg, cmdEventHandlerSystem, timeout);
 }
 
-TaskSimpleVeinRPCInvoker::TaskSimpleVeinRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+TaskSimpleVeinRPCInvoker::TaskSimpleVeinRPCInvoker(int entityId, const QString &procedureName, const QVariantMap &parameters, std::shared_ptr<bool> rpcSuccessful,
                                                    std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout)
 {
     std::shared_ptr<QStringList> componentList = std::make_shared<QStringList>();

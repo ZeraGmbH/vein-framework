@@ -7,7 +7,7 @@
 class VfComponentEventItem
 {
 public:
-    VfComponentEventItem(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfComponentEventItem(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
     int getEntityId() const;
     const QString &getComponentName() const;
     void sendEvent(QEvent *event) const;

@@ -1,7 +1,7 @@
 #include "task_client_component_fetcher.h"
 #include <taskdecoratortimeout.h>
 
-TaskTemplatePtr TaskClientComponentFetcher::create(QString componentName, VfCmdEventItemEntityPtr entityItem,
+TaskTemplatePtr TaskClientComponentFetcher::create(const QString &componentName, VfCmdEventItemEntityPtr entityItem,
                                                    std::shared_ptr<QVariant> value, int timeout, std::function<void ()> additionalErrorHandler)
 {
     return TaskDecoratorTimeout::wrapTimeout(timeout,
@@ -9,7 +9,7 @@ TaskTemplatePtr TaskClientComponentFetcher::create(QString componentName, VfCmdE
                                              additionalErrorHandler);
 }
 
-TaskClientComponentFetcher::TaskClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem,
+TaskClientComponentFetcher::TaskClientComponentFetcher(const QString &componentName, VfCmdEventItemEntityPtr entityItem,
                                                        std::shared_ptr<QVariant> value) :
     m_value(value),
     m_entityItem(entityItem)

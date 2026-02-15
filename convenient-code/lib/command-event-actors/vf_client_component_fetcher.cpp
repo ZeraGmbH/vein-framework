@@ -2,12 +2,12 @@
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 
-std::shared_ptr<VfClientComponentFetcher> VfClientComponentFetcher::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
+std::shared_ptr<VfClientComponentFetcher> VfClientComponentFetcher::create(const QString &componentName, VfCmdEventItemEntityPtr entityItem)
 {
     return std::make_shared<VfClientComponentFetcher>(componentName, entityItem);
 }
 
-VfClientComponentFetcher::VfClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfClientComponentFetcher::VfClientComponentFetcher(const QString &componentName, VfCmdEventItemEntityPtr entityItem) :
     VfComponentEventItem(componentName, entityItem)
 {
 }
@@ -15,7 +15,7 @@ VfClientComponentFetcher::VfClientComponentFetcher(QString componentName, VfCmdE
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QEvent *VfClientComponentFetcher::generateEvent(int entityId, QString componentName)
+QEvent *VfClientComponentFetcher::generateEvent(int entityId, const QString &componentName)
 {
     ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_FETCH);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);

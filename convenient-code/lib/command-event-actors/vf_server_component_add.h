@@ -7,7 +7,7 @@
 class VfServerComponentAdd
 {
 public:
-    static QEvent *generateEvent(int entityId, QString componentName, QVariant initialValue);
+    static QEvent *generateEvent(int entityId, const QString &componentName, const QVariant &initialValue);
 };
 
 #endif // VF_SERVER_COMPONENT_ADD_H

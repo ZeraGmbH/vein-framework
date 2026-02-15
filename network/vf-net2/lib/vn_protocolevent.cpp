@@ -21,10 +21,10 @@ QByteArray ProtocolEvent::buffer() const
     return m_flatBuffer;
 }
 
-void ProtocolEvent::setBuffer(QByteArray t_buffer)
+void ProtocolEvent::setBuffer(const QByteArray &buffer)
 {
-    Q_ASSERT(t_buffer.isEmpty() == false);
-    m_flatBuffer = t_buffer;
+    Q_ASSERT(buffer.isEmpty() == false);
+    m_flatBuffer = buffer;
 }
 
 QList<QUuid> ProtocolEvent::receivers() const

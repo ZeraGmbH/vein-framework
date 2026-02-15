@@ -2,12 +2,12 @@
 #include <vcmp_componentdata.h>
 
 
-std::shared_ptr<VfComponentChangeNotifier> VfComponentChangeNotifier::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
+std::shared_ptr<VfComponentChangeNotifier> VfComponentChangeNotifier::create(const QString &componentName, VfCmdEventItemEntityPtr entityItem)
 {
     return std::make_shared<VfComponentChangeNotifier>(componentName, entityItem);
 }
 
-VfComponentChangeNotifier::VfComponentChangeNotifier(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfComponentChangeNotifier::VfComponentChangeNotifier(const QString &componentName, VfCmdEventItemEntityPtr entityItem) :
     VfComponentEventItem(componentName, entityItem)
 {
 }

@@ -9,7 +9,7 @@
 class VfTestTemplate
 {
 protected:
-    void addEntityComponent(int entityId, QString componentName);
+    void addEntityComponent(int entityId, const QString &componentName);
     void _init();
     void _cleanup();
 

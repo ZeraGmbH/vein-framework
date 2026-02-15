@@ -2,7 +2,7 @@
 #include "vf_server_component_add.h"
 #include "vf_server_entity_add.h"
 
-bool VfTestEntityComponentCreator::createEntityComponent(int entityId, QString componentName, QVariant initialValue)
+bool VfTestEntityComponentCreator::createEntityComponent(int entityId, const QString &componentName, const QVariant &initialValue)
 {
     bool alreadyInserted = m_entityComponentsCreated.contains(entityId) && m_entityComponentsCreated[entityId].contains(componentName);
     m_entityComponentsCreated[entityId].insert(componentName);
@@ -16,7 +16,7 @@ void VfTestEntityComponentCreator::createEntity(int entityId)
     emit sigSendEvent(VfServerEntityAdd::generateEvent(entityId));
 }
 
-void VfTestEntityComponentCreator::createComponent(int entityId, QString componentName, QVariant initialValue)
+void VfTestEntityComponentCreator::createComponent(int entityId, const QString &componentName, const QVariant &initialValue)
 {
     emit sigSendEvent(VfServerComponentAdd::generateEvent(entityId, componentName, initialValue));
 }

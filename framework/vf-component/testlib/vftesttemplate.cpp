@@ -1,7 +1,7 @@
 #include "vftesttemplate.h"
 #include <QCoreApplication>
 
-void VfTestTemplate::addEntityComponent(int entityId, QString componentName)
+void VfTestTemplate::addEntityComponent(int entityId, const QString &componentName)
 {
     m_vfEntity->createEntityComponent(entityId, componentName);
     QCoreApplication::processEvents();

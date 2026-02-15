@@ -5,7 +5,7 @@
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QEvent *VfServerComponentSetter::generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue)
+QEvent *VfServerComponentSetter::generateEvent(int entityId, const QString &componentName, const QVariant &oldValue, const QVariant &newValue)
 {
     ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_SET);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);

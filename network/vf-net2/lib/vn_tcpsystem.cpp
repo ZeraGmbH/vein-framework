@@ -87,24 +87,24 @@ void TcpSystem::onClientDisconnected(VeinTcp::TcpPeer *t_peer)
     delete t_peer;
 }
 
-void TcpSystem::onMessageReceived(VeinTcp::TcpPeer *t_sender, QByteArray t_buffer)
+void TcpSystem::onMessageReceived(VeinTcp::TcpPeer *sender, const QByteArray &buffer)
 {
-    Q_ASSERT(t_buffer.isNull() == false);
-    Q_ASSERT(t_sender!=nullptr);
+    Q_ASSERT(buffer.isNull() == false);
+    Q_ASSERT(sender!=nullptr);
     //vCDebug(VEIN_NET_TCP_VERBOSE)  << "Message received:" << proto->DebugString().c_str();
-    if(m_waitingAuth.contains(t_sender))
+    if(m_waitingAuth.contains(sender))
     {
         QUuid newId = QUuid::createUuid();
-        m_peerList.insert(newId, t_sender);
+        m_peerList.insert(newId, sender);
         vCDebug(VEIN_NET_TCP) << "New connection with id:" << newId;
-        t_sender->setPeerId(newId);
+        sender->setPeerId(newId);
 
-        m_waitingAuth.removeAll(t_sender);
+        m_waitingAuth.removeAll(sender);
         emit sigConnnectionEstablished(newId);
     }
     ProtocolEvent *tmpEvent = new ProtocolEvent(ProtocolEvent::EventOrigin::EO_REMOTE);
-    tmpEvent->setBuffer(t_buffer);
-    tmpEvent->setPeerId(t_sender->getPeerId());
+    tmpEvent->setBuffer(buffer);
+    tmpEvent->setPeerId(sender->getPeerId());
     emit sigSendEvent(tmpEvent);
 }
 
@@ -121,8 +121,7 @@ void TcpSystem::processEvent(QEvent *t_event)
 {
     Q_ASSERT(t_event != nullptr);
     if(t_event->type()==ProtocolEvent::getQEventType()) {
-        ProtocolEvent *pEvent=nullptr;
-        pEvent = static_cast<ProtocolEvent *>(t_event);
+        const ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
         /// @todo rework event origin concept
         // do not process protocol events from foreign systems, that is the job of NetworkSystem

@@ -38,7 +38,7 @@ struct RecordEntryStored {
 typedef QList<RecordEntryStored> RecordListStored;
 
 struct StorageRecordData {
-    StorageRecordData(const RecordEntityComponents componentInfo);
+    StorageRecordData(const RecordEntityComponents &componentInfo);
     void resetRecords();
 
     const RecordEntityComponents m_componentInfo;

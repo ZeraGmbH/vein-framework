@@ -9,10 +9,10 @@
 class TaskClientComponentFetcher : public TaskTemplate
 {
 public:
-    static TaskTemplatePtr create(QString componentName, VfCmdEventItemEntityPtr entityItem,
+    static TaskTemplatePtr create(const QString &componentName, VfCmdEventItemEntityPtr entityItem,
                                   std::shared_ptr<QVariant> value,
                                   int timeout, std::function<void()> additionalErrorHandler = []{});
-    TaskClientComponentFetcher(QString componentName, VfCmdEventItemEntityPtr entityItem,
+    TaskClientComponentFetcher(const QString &componentName, VfCmdEventItemEntityPtr entityItem,
                                std::shared_ptr<QVariant> value);
     ~TaskClientComponentFetcher();
     void start() override;

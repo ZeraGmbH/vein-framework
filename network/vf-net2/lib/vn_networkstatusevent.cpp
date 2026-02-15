@@ -4,11 +4,11 @@ namespace VeinNet
 {
 const int NetworkStatusEvent::m_registeredQEventType = QEvent::registerEventType();
 
-NetworkStatusEvent::NetworkStatusEvent(NetworkStatus t_status, QUuid t_peerId) :
+NetworkStatusEvent::NetworkStatusEvent(NetworkStatus t_status, const QUuid &peerId) :
     QEvent(static_cast<QEvent::Type>(getQEventType())),
     m_status(t_status),
     m_socketError(),
-    m_peerId(t_peerId)
+    m_peerId(peerId)
 {
     this->setAccepted(false);
 }

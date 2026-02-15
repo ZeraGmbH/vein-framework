@@ -1,6 +1,6 @@
 #include "vf_component_event_item.h"
 
-VfComponentEventItem::VfComponentEventItem(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfComponentEventItem::VfComponentEventItem(const QString &componentName, VfCmdEventItemEntityPtr entityItem) :
     m_componentName(componentName),
     m_entityItem(entityItem)
 {

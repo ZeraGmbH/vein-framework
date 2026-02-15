@@ -7,7 +7,7 @@
 class VfRpcParamsParser
 {
 public:
-    static QString parseRpcParams(QString rpcName, QVariantMap params);
+    static QString parseRpcParams(const QString &rpcName, const QVariantMap &params);
 };
 
 #endif // VF_RPC_PARAMS_PARSER_H

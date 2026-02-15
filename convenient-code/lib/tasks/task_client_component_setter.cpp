@@ -2,7 +2,7 @@
 #include <taskdecoratortimeout.h>
 
 TaskTemplatePtr TaskClientComponentSetter::create(VfCmdEventItemEntityPtr entityItem,
-                                                  QString componentName, QVariant oldValue, QVariant newValue,
+                                                  const QString &componentName, const QVariant &oldValue, const QVariant &newValue,
                                                   int timeout, std::function<void ()> additionalErrorHandler)
 {
     return TaskDecoratorTimeout::wrapTimeout(timeout,
@@ -11,7 +11,7 @@ TaskTemplatePtr TaskClientComponentSetter::create(VfCmdEventItemEntityPtr entity
 }
 
 TaskClientComponentSetter::TaskClientComponentSetter(VfCmdEventItemEntityPtr entityItem,
-                                                     QString componentName, QVariant oldValue, QVariant newValue) :
+                                                     const QString &componentName, const QVariant &oldValue, const QVariant &newValue) :
     m_entityItem(entityItem),
     m_oldValue(oldValue),
     m_newValue(newValue)

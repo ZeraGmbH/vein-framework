@@ -7,7 +7,7 @@
 class VfServerComponentRemove
 {
 public:
-    static QEvent *generateEvent(int entityId, QString componentName);
+    static QEvent *generateEvent(int entityId, const QString &componentName);
 };
 
 #endif // VFSERVERCOMPONENTREMOVE_H

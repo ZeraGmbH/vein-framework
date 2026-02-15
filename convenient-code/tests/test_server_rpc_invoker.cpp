@@ -62,7 +62,6 @@ void test_server_rpc_invoker::invalidRPCNoNetNoCrossTalk()
 {
     ServerNoNet server;
     TimeMachineObject::feedEventLoop();
-    QList<int> entities = server.server.getEntityAddList();
 
     vfEntityRpcEventHandler rpcEventHandler;
     server.server.appendEventSystem(rpcEventHandler.getVeinEntity());

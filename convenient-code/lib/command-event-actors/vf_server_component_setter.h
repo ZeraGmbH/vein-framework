@@ -7,7 +7,7 @@
 class VfServerComponentSetter
 {
 public:
-    static QEvent *generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue);
+    static QEvent *generateEvent(int entityId, const QString &componentName, const QVariant &oldValue, const QVariant &newValue);
 };
 
 #endif // VFSERVERCOMPONENTSETTER_H

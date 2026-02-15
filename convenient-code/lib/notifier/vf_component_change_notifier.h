@@ -9,8 +9,8 @@ class VfComponentChangeNotifier : public QObject, public VfComponentEventItem
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfComponentChangeNotifier> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
-    VfComponentChangeNotifier(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    static std::shared_ptr<VfComponentChangeNotifier> create(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
+    VfComponentChangeNotifier(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
 
     const QVariant &getValue() const;
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;

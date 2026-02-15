@@ -1,6 +1,6 @@
 #include "vf_rpc_params_parser.h"
 
-QString VfRpcParamsParser::parseRpcParams(QString rpcName, QVariantMap params)
+QString VfRpcParamsParser::parseRpcParams(const QString &rpcName, const QVariantMap &params)
 {
     QStringList paramStrings;
     for(auto i = params.constBegin(); i != params.constEnd(); i++) {

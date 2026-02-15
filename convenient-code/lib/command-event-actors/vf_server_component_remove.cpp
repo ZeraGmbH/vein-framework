@@ -2,7 +2,7 @@
 #include "vcmp_componentdata.h"
 #include "ve_commandevent.h"
 
-QEvent *VfServerComponentRemove::generateEvent(int entityId, QString componentName)
+QEvent *VfServerComponentRemove::generateEvent(int entityId, const QString &componentName)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(entityId);

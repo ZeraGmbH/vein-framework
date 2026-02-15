@@ -9,7 +9,7 @@
 class VfServerRpcResult
 {
 public:
-    static VeinEvent::CommandEvent *generateEvent(int entityId, QString rpcSignature, QVariantMap returnValue);
+    static VeinEvent::CommandEvent *generateEvent(int entityId, const QString &rpcSignature, const QVariantMap &returnValue);
 };
 
 #endif // VFSERVERRPCRESULT_H

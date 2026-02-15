@@ -20,7 +20,7 @@ public:
     void processEvent(QEvent *event) override;
 
 private:
-    void insertRpc(const int entityId, QStringList rpcs);
+    void insertRpc(const int entityId, const QStringList &rpcs);
     void processIntrospectionData(QEvent *event);
     void processComponentData(VeinEvent::CommandEvent *cEvent);
     void processRpcData(VeinEvent::CommandEvent *cEvent);

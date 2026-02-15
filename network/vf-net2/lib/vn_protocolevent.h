@@ -25,7 +25,7 @@ public:
     static int getQEventType();
 
     QByteArray buffer() const;
-    void setBuffer(QByteArray t_buffer);
+    void setBuffer(const QByteArray &buffer);
 
     QList<QUuid> receivers() const;
     void setReceivers(const QList<QUuid> &t_receivers);

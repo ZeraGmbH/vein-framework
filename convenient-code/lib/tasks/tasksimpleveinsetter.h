@@ -10,9 +10,9 @@ class TaskSimpleVeinSetter : public TaskTemplate
 {
     Q_OBJECT
 public:
-    static std::unique_ptr<TaskSimpleVeinSetter> create(int entityId, QString componentName, QVariant newValue,
+    static std::unique_ptr<TaskSimpleVeinSetter> create(int entityId, const QString &componentName, const QVariant &newValue,
                                                  VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout = 1000);
-    TaskSimpleVeinSetter(int entityId, QString componentName, QVariant newValue,
+    TaskSimpleVeinSetter(int entityId, const QString &componentName, const QVariant &newValue,
                          VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout);
     virtual ~TaskSimpleVeinSetter();
     void start() override;

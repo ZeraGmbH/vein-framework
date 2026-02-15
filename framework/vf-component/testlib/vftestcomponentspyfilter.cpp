@@ -4,7 +4,7 @@ QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpyFilter::filter(const
                                                                            int entityId)
 {
     QList<VfTestComponentSpy::TComponentInfo> found;
-    for(auto &component : componentList) {
+    for(const auto &component : componentList) {
         if(component.entityId == entityId)
             found.append(component);
     }
@@ -28,7 +28,7 @@ QList<VfTestComponentSpy::TComponentInfo> VfTestComponentSpyFilter::filter(const
                                                                            const QString &componentName)
 {
     QList<VfTestComponentSpy::TComponentInfo> found;
-    for(auto &component : componentList) {
+    for(const auto &component : componentList) {
         if(component.componentName == componentName)
             found.append(component);
     }

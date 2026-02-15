@@ -1,21 +1,21 @@
 #include "vftestentityspyfilter.h"
 
-QList<int> VfTestEntitySpyFilter::filter(QList<int> entityList, int entityId)
+QList<int> VfTestEntitySpyFilter::filter(const QList<int> &entityList, int entityId)
 {
     QList<int> found;
-    for(auto &entity : entityList) {
+    for(const auto &entity : entityList) {
         if(entity == entityId)
             found.append(entity);
     }
     return found;
 }
 
-bool VfTestEntitySpyFilter::hasOne(QList<int> entityList, int entityId)
+bool VfTestEntitySpyFilter::hasOne(const QList<int> &entityList, int entityId)
 {
     return filter(entityList, entityId).size() == 1;
 }
 
-int VfTestEntitySpyFilter::first(QList<int> entityList, int entityId)
+int VfTestEntitySpyFilter::first(const QList<int> &entityList, int entityId)
 {
     QList<int> list = filter(entityList, entityId);
     return list[0];

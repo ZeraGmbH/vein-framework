@@ -75,7 +75,7 @@ void ClientStorageEventSystem::processEvent(QEvent *event)
     }
 }
 
-void ClientStorageEventSystem::insertRpc(const int entityId, QStringList rpcs)
+void ClientStorageEventSystem::insertRpc(const int entityId, const QStringList &rpcs)
 {
     if(m_entityRpcNames.contains(entityId))
         qWarning("Entity %i already contains Rpcs", entityId);

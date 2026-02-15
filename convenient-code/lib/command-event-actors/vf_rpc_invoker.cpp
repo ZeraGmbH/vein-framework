@@ -14,7 +14,7 @@ VfRPCInvoker::VfRPCInvoker(int entityId, std::unique_ptr<VfRPCEventGenerator> in
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-void VfRPCInvoker::invokeRPC(QString procedureName, QVariantMap paramters)
+void VfRPCInvoker::invokeRPC(const QString &procedureName, const QVariantMap &paramters)
 {
     QUuid identifier = QUuid::createUuid();
     m_pendingRPCs.insert(identifier);

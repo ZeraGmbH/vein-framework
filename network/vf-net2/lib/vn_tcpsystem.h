@@ -23,10 +23,10 @@ public:
     virtual ~TcpSystem();
 signals:
     // client part
-    void sigConnnectionEstablished(QUuid t_connectionId);
+    void sigConnnectionEstablished(const QUuid &t_connectionId);
     // server part
-    void sigClientConnected(QUuid t_connectionId);
-    void sigClientDisconnected(QUuid t_connectionId);
+    void sigClientConnected(const QUuid &t_connectionId);
+    void sigClientDisconnected(const QUuid &t_connectionId);
 public slots:
     bool startServer(quint16 t_port, bool t_systemdSocket=true);
     void connectToServer(const QString &t_host, quint16 t_port);
@@ -58,7 +58,7 @@ private slots:
      * @brief onMessageReceived
      * @todo add support for multiple commands in one protobuf message
      */
-    void onMessageReceived(VeinTcp::TcpPeer *t_sender, QByteArray t_buffer);
+    void onMessageReceived(VeinTcp::TcpPeer *sender, const QByteArray &buffer);
 
     /**
      * @brief sends a NetworkStatusEvent about the socketerror

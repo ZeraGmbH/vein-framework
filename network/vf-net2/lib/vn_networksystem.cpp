@@ -33,7 +33,7 @@ class NetworkSystemPrivate
 
     void deserializeIncomingAndSendCmdEvent(QEvent *t_event)
     {
-        ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
+        const ProtocolEvent *pEvent = static_cast<ProtocolEvent *>(t_event);
         Q_ASSERT(pEvent != nullptr);
         //do not process messages from this instance
         if(!pEvent->isOfLocalOrigin()) {
@@ -190,7 +190,7 @@ class NetworkSystemPrivate
         return isSubscription;
     }
 
-    void handleNetworkStatusEvent(NetworkStatusEvent *sEvent)
+    void handleNetworkStatusEvent(const NetworkStatusEvent *sEvent)
     {
         Q_ASSERT(sEvent != nullptr);
         vCDebug(VEIN_NET_VERBOSE) << "processing NetworkStatusEvent:" << sEvent;
@@ -244,7 +244,7 @@ class NetworkSystemPrivate
         return retVal;
     }
 
-    void sendNetworkEvent(QList<QUuid> receivers, QByteArray data)
+    void sendNetworkEvent(const QList<QUuid> &receivers, const QByteArray &data)
     {
         Q_ASSERT(data.isNull() == false);
         ProtocolEvent *protoEvent = new ProtocolEvent(ProtocolEvent::EventOrigin::EO_LOCAL); //create a new event of local origin
@@ -299,7 +299,7 @@ void NetworkSystem::processEvent(QEvent *event)
     else if(event->type() == CommandEvent::getQEventType())
         d_ptr->processCmdEvents(event);
     else if(event->type() == NetworkStatusEvent::getQEventType()) {
-        NetworkStatusEvent *sEvent = static_cast<NetworkStatusEvent *>(event);
+        const NetworkStatusEvent *sEvent = static_cast<NetworkStatusEvent *>(event);
         Q_ASSERT(sEvent != nullptr);
         d_ptr->handleNetworkStatusEvent(sEvent);
     }

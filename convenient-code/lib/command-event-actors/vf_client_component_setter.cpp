@@ -2,12 +2,12 @@
 #include "ve_commandevent.h"
 #include <vcmp_componentdata.h>
 
-std::shared_ptr<VfClientComponentSetter> VfClientComponentSetter::create(QString componentName, VfCmdEventItemEntityPtr entityItem)
+std::shared_ptr<VfClientComponentSetter> VfClientComponentSetter::create(const QString &componentName, VfCmdEventItemEntityPtr entityItem)
 {
     return std::make_shared<VfClientComponentSetter>(componentName, entityItem);
 }
 
-VfClientComponentSetter::VfClientComponentSetter(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfClientComponentSetter::VfClientComponentSetter(const QString &componentName, VfCmdEventItemEntityPtr entityItem) :
     VfComponentEventItem(componentName, entityItem)
 {
 }
@@ -15,7 +15,7 @@ VfClientComponentSetter::VfClientComponentSetter(QString componentName, VfCmdEve
 using namespace VeinEvent;
 using namespace VeinComponent;
 
-QEvent *VfClientComponentSetter::generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue)
+QEvent *VfClientComponentSetter::generateEvent(int entityId, const QString &componentName, const QVariant &oldValue, const QVariant &newValue)
 {
     ComponentData *cData = new ComponentData(entityId, ComponentData::Command::CCMD_SET);
     cData->setEventOrigin(ComponentData::EventOrigin::EO_LOCAL);
@@ -46,7 +46,7 @@ QEvent *VfClientComponentSetter::generateEvent(int entityId, QString componentNa
 }
 
 
-void VfClientComponentSetter::startSetComponent(QVariant oldValue, QVariant newValue)
+void VfClientComponentSetter::startSetComponent(const QVariant &oldValue, const QVariant &newValue)
 {
     if(!newValue.isValid())
         emitSigSetFinish(false);

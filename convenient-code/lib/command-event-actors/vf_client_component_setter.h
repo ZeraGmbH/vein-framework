@@ -9,11 +9,11 @@ class VfClientComponentSetter : public QObject, public VfComponentEventItem
 {
     Q_OBJECT
 public:
-    static std::shared_ptr<VfClientComponentSetter> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
-    VfClientComponentSetter(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    static std::shared_ptr<VfClientComponentSetter> create(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
+    VfClientComponentSetter(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
 
-    static QEvent *generateEvent(int entityId, QString componentName, QVariant oldValue, QVariant newValue);
-    void startSetComponent(QVariant oldValue, QVariant newValue);
+    static QEvent *generateEvent(int entityId, const QString &componentName, const QVariant &oldValue, const QVariant &newValue);
+    void startSetComponent(const QVariant &oldValue, const QVariant &newValue);
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;
 signals:

@@ -3,7 +3,7 @@
 #include <taskdecoratortimeout.h>
 #include <vcmp_remoteproceduredata.h>
 
-TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, const QString &procedureName, const QVariantMap &parameters, std::shared_ptr<bool> rpcSuccessful,
                                              std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr commandEventHandler, int timeout,
                                              std::function<void ()> additionalErrorHandler)
 {
@@ -13,7 +13,7 @@ TaskTemplatePtr TaskClientRPCInvoker::create(int entityId, QString procedureName
 
 }
 
-TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, QString procedureName, QVariantMap parameters, std::shared_ptr<bool> rpcSuccessful,
+TaskClientRPCInvoker::TaskClientRPCInvoker(int entityId, const QString &procedureName, const QVariantMap &parameters, std::shared_ptr<bool> rpcSuccessful,
                                            std::shared_ptr<QVariant> result, std::shared_ptr<QString> errorMsg, VfCmdEventHandlerSystemPtr commandEventHandler) :
     m_commandEventHandler(commandEventHandler),
     m_rpcInvoker(VfRPCInvoker::create(entityId, std::make_unique<VfClientRPCInvoker>())),
