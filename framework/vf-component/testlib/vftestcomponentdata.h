@@ -8,11 +8,11 @@
 class VfTestComponentData : public VeinEvent::EventSystem
 {
 public:
-    void setValue(int entityId, QString componentName, QVariant newValue);
-    QVariant getValue(int entityId, QString componentName) const;
+    void setValue(int entityId, const QString &componentName, const QVariant &newValue);
+    QVariant getValue(int entityId, const QString &componentName) const;
 private:
     void processEvent(QEvent *t_event) override;
-    void notifyValueChange(int entityId, QString componentName, QVariant newValue);
+    void notifyValueChange(int entityId, const QString &componentName, const QVariant &newValue);
 
     QHash<int, QHash<QString, QVariant>> m_valueHash;
 };

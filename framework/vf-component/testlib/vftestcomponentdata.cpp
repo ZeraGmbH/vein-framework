@@ -4,7 +4,7 @@
 #include <vcmp_componentdata.h>
 #include <vcmp_entitydata.h>
 
-void VfTestComponentData::setValue(int entityId, QString componentName, QVariant newValue)
+void VfTestComponentData::setValue(int entityId, const QString &componentName, const QVariant &newValue)
 {
     QVariant &hashValue = m_valueHash[entityId][componentName];
     if(hashValue != newValue) {
@@ -13,7 +13,7 @@ void VfTestComponentData::setValue(int entityId, QString componentName, QVariant
     }
 }
 
-QVariant VfTestComponentData::getValue(int entityId, QString componentName) const
+QVariant VfTestComponentData::getValue(int entityId, const QString &componentName) const
 {
     return m_valueHash[entityId][componentName];
 }
@@ -22,7 +22,7 @@ void VfTestComponentData::processEvent(QEvent *)
 {
 }
 
-void VfTestComponentData::notifyValueChange(int entityId, QString componentName, QVariant newValue)
+void VfTestComponentData::notifyValueChange(int entityId, const QString &componentName, const QVariant &newValue)
 {
     VeinComponent::ComponentData *cData = new VeinComponent::ComponentData();
     cData->setEntityId(entityId);
