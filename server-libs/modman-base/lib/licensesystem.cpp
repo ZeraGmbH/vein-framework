@@ -158,23 +158,23 @@ QHash<QString, QByteArray> LicenseSystem::getLicenseFilesFromPath(const QString 
     return retVal;
 }
 
-bool LicenseSystem::isValidLicenseExpiryDate(const QString t_dateString) const
+bool LicenseSystem::isValidLicenseExpiryDate(const QString &dateString) const
 {
     bool retVal = false;
-    if(t_dateString == s_expiresNeverDescriptor)
+    if(dateString == s_expiresNeverDescriptor)
         retVal = true;
     else {
         //the license expires at the end of the given month so add 1 month here
-        const QDateTime tmpExpiryDate = QDateTime::fromString(t_dateString, "yyyy/MM").addMonths(1);
+        const QDateTime tmpExpiryDate = QDateTime::fromString(dateString, "yyyy/MM").addMonths(1);
         if(tmpExpiryDate.isValid() && tmpExpiryDate.isNull() == false && tmpExpiryDate >= QDateTime::currentDateTime())
             retVal = true;
     }
     return retVal;
 }
 
-bool LicenseSystem::isValidLicenseDeviceSerial(const QString t_deviceSerial) const
+bool LicenseSystem::isValidLicenseDeviceSerial(const QString &deviceSerial) const
 {
-    return (t_deviceSerial == s_universalSerialDescriptor || t_deviceSerial == m_deviceSerial);
+    return (deviceSerial == s_universalSerialDescriptor || deviceSerial == m_deviceSerial);
 }
 
 void LicenseSystem::processEvent(QEvent *t_event)

@@ -44,16 +44,16 @@ private:
 
     /**
    * @brief Validates the expiry date against QDateTime::currentDateTime()
-   * @param t_dateString
+   * @param dateString
    * @return success indicator
    */
-    bool isValidLicenseExpiryDate(const QString t_dateString) const;
+    bool isValidLicenseExpiryDate(const QString &dateString) const;
     /**
    * @brief Validates the device serial against the StatusModule1.PAR_SerialNr
-   * @param t_deviceSerial
+   * @param deviceSerial
    * @return success indicator
    */
-    bool isValidLicenseDeviceSerial(const QString t_deviceSerial) const;
+    bool isValidLicenseDeviceSerial(const QString &deviceSerial) const;
 
     ///@todo allows multiple paths to load licenses from, but lacks implementations for them (e.g. http://$LICENSE_SERVER:8080/licenses/$SERIALNO)
     const QSet<QUrl> m_licenseURLs;
