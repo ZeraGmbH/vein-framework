@@ -88,11 +88,6 @@ bool LicenseSystem::isSystemLicensed(const QString &t_uniqueSystemName)
     return retVal;
 }
 
-QVariantMap LicenseSystem::systemLicenseConfiguration(const QString &t_systemName) const
-{
-    return m_verifiedLicenseDataTable.value(t_systemName);
-}
-
 void LicenseSystem::setDeviceSerial(const QString &serialNumber)
 {
     if(serialNumber.isEmpty() == false) {

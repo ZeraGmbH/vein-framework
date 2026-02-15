@@ -14,12 +14,6 @@ public:
     LicenseSystem(const QSet<QUrl> &t_licenseURLs, QObject *parent = nullptr);
 
     bool isSystemLicensed(const QString &uniqueModuleName) override;
-    /**
-   * @brief Returns the data of the license json objects for the given system
-   * @param t_systemName
-   * @return empty QVariantMap() if no system exists with t_systemName
-   */
-    QVariantMap systemLicenseConfiguration(const QString &t_systemName) const;
 
     void setDeviceSerial(const QString &serialNumber) override;
     /**
