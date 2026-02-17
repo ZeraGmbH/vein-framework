@@ -1,4 +1,5 @@
 #include "vs_dumpjson.h"
+#include "jsonprecisionexport.h"
 #include <QBuffer>
 #include <QJsonObject>
 #include <QJsonArray>
@@ -38,9 +39,8 @@ void DumpJson::dumpToFile(const AbstractDatabase* db,
             }
             rootObject.insert(QString::number(tmpEntityId), tmpEntityObject);
         }
-        QJsonDocument tmpDoc;
-        tmpDoc.setObject(rootObject);
-        outputFileDevice->write(tmpDoc.toJson());
+
+        outputFileDevice->write(JsonPrecisionExport::objectToString(rootObject, 4).toUtf8());
     }
 
     if(outputFileDevice->isOpen())
