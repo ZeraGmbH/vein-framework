@@ -1,13 +1,14 @@
 #ifndef STORAGEDATACOLLECTOR_H
 #define STORAGEDATACOLLECTOR_H
 
+#include "abstractstoragerecorder.h"
 #include "vs_storagerecordertypes.h"
 #include "vs_abstractdatabase.h"
 #include <QDateTime>
 
 namespace VeinStorage {
 
-class StorageRecorder : public QObject
+class StorageRecorder : public AbstractStorageRecorder
 {
     Q_OBJECT
 public:
@@ -17,9 +18,7 @@ public:
 
     void startLogging();
     void stopLogging();
-    StorageRecordDataPtr getRecordedData() const;
-signals:
-    void sigRecordCountChanged(int count);
+    StorageRecordDataPtr getRecordedData() const override;
 
 private slots:
     void onTrigger(const QVariant &value);
