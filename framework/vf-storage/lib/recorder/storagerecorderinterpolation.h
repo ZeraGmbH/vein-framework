@@ -13,7 +13,7 @@ public:
 private slots:
     void onNewValueRecorded(int count);
 private:
-    void calculateValuesAverage(StorageRecordDataPtr storageRecorder, int startIdx, int endIdx);
+    void calculateJsonAverage(StorageRecordDataPtr storageRecorder, int startIdx, int endIdx);
     int calculateTimeDiffAverage(QList<int> timeDiffList);
     QVector<float> calculateValuesAverage(QList<QVector<float>> valuesList);
     void appendToRecordData(int timeDiff, QVector<float> values);
