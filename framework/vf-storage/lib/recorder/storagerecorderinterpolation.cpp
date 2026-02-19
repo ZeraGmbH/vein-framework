@@ -15,14 +15,19 @@ StorageRecordDataPtr StorageRecorderInterpolation::getRecordedData() const
 
 void StorageRecorderInterpolation::onNewValueRecorded(int count)
 {
-    if(count % m_factor == 0) {
+    if(count == 0) {
+        m_recordData->resetRecords();
+        m_count = 0;
+    }
+
+    else if(count % m_factor == 0) {
         StorageRecordDataPtr storageRecorder= m_recorder.get()->getRecordedData();
-        calculateValuesAverage(storageRecorder, m_count, count);
+        calculateJsonAverage(storageRecorder, m_count, count);
         m_count = count;
     }
 }
 
-void StorageRecorderInterpolation::calculateValuesAverage(StorageRecordDataPtr storageRecorder, int startIdx, int endIdx)
+void StorageRecorderInterpolation::calculateJsonAverage(StorageRecordDataPtr storageRecorder, int startIdx, int endIdx)
 {
     QList<int> timeDiffList;
     QList<QVector<float>> valuesList;
