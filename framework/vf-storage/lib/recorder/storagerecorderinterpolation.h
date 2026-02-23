@@ -2,12 +2,11 @@
 #define STORAGERECORDERINTERPOLATION_H
 
 #include "abstractstoragerecorder.h"
-#include "vs_storagerecorder.h"
 
 class StorageRecorderInterpolation : public AbstractStorageRecorder
 {
 public:
-    StorageRecorderInterpolation(const RecordEntityComponents &componentsRecorded, std::shared_ptr<StorageRecorder> recorder);
+    StorageRecorderInterpolation(const RecordEntityComponents &componentsRecorded, std::shared_ptr<AbstractStorageRecorder> recorder, int factor = 4);
     StorageRecordDataPtr getRecordedData() const override;
 
 private slots:
@@ -18,10 +17,10 @@ private:
     QVector<float> calculateValuesAverage(QList<QVector<float>> valuesList);
     void appendToRecordData(int timeDiff, QVector<float> values);
 
-    std::shared_ptr<StorageRecorder> m_recorder;
+    std::shared_ptr<AbstractStorageRecorder> m_recorder;
     std::shared_ptr<StorageRecordData> m_recordData;
 
-    const int m_factor = 4;
+    int m_factor;
     int m_count = 0;
 };
 
