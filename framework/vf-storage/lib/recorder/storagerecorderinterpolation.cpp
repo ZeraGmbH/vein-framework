@@ -1,9 +1,11 @@
 #include "storagerecorderinterpolation.h"
+#include "vs_storagerecorder.h"
 #include <timerfactoryqt.h>
 
-StorageRecorderInterpolation::StorageRecorderInterpolation(const RecordEntityComponents &componentsRecorded, std::shared_ptr<StorageRecorder> recorder) :
+StorageRecorderInterpolation::StorageRecorderInterpolation(const RecordEntityComponents &componentsRecorded, std::shared_ptr<AbstractStorageRecorder> recorder, int factor) :
     m_recordData(std::make_shared<StorageRecordData>(componentsRecorded)),
-    m_recorder(recorder)
+    m_recorder(recorder),
+    m_factor(factor)
 {
     connect(m_recorder.get(), &StorageRecorder::sigRecordCountChanged, this, &StorageRecorderInterpolation::onNewValueRecorded);
 }
