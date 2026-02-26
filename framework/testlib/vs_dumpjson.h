@@ -28,6 +28,7 @@ public:
     static double formatDouble(double value);
 private:
     static void skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, const QJsonValue &toInsert);
+    static void skipDescrptionInInfo(QJsonObject &toInsert, const QString infoLabel);
 };
 
 }

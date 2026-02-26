@@ -120,19 +120,27 @@ double DumpJson::formatDouble(double value)
 void DumpJson::skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, const QJsonValue &toInsert)
 {
     QJsonObject toInsertAdjusted = toInsert.toObject();
-    QJsonObject componentInfo = toInsert["ComponentInfo"].toObject();
-    if (!componentInfo.isEmpty()) {
-        for(auto iter=componentInfo.begin(); iter != componentInfo.end(); ++iter) {
-            QString componentName = iter.key();
-            QJsonObject componentData = iter.value().toObject();
-            if (componentData.contains("Description")) {
-                componentData["Description"] = QString("<skipped>");
-                componentInfo[componentName] = componentData;
-            }
-        }
-        toInsertAdjusted["ComponentInfo"] = componentInfo;
-    }
+    skipDescrptionInInfo(toInsertAdjusted, "ComponentInfo");
+    skipDescrptionInInfo(toInsertAdjusted, "RpcInfo");
     tmpEntityObject.insert("INF_ModuleInterface", toInsertAdjusted);
+}
+
+void DumpJson::skipDescrptionInInfo(QJsonObject &toInsertAdjusted, const QString infoLabel)
+{
+    if (toInsertAdjusted.contains(infoLabel)) {
+        QJsonObject componentInfo = toInsertAdjusted[infoLabel].toObject();
+        if (!componentInfo.isEmpty()) {
+            for(auto iter=componentInfo.begin(); iter != componentInfo.end(); ++iter) {
+                QString componentName = iter.key();
+                QJsonObject componentData = iter.value().toObject();
+                if (componentData.contains("Description")) {
+                    componentData["Description"] = QString("<skipped>");
+                    componentInfo[componentName] = componentData;
+                }
+            }
+            toInsertAdjusted[infoLabel] = componentInfo;
+        }
+    }
 }
 
 }
