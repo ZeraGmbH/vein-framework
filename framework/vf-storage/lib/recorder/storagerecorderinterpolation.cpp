@@ -23,6 +23,8 @@ void StorageRecorderInterpolation::onNewValueRecorded(int count)
     }
 
     else if(count % m_factor == 0) {
+        if (count <= m_count)
+            return;  // ignore backwards or duplicate signals
         StorageRecordDataPtr storageRecorder= m_recorder.get()->getRecordedData();
         calculateJsonAverage(storageRecorder, m_count, count);
         m_count = count;
