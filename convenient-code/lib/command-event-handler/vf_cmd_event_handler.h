@@ -19,7 +19,7 @@ public:
 private:
     typedef ContainerSafeDeleteWhileLoop<VfCmdEventItemPtr, std::unordered_set<VfCmdEventItemPtr>> SafeDeleteSet;
     void processCommandEvent(VeinEvent::CommandEvent *cmdEvent);
-    void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, SafeDeleteSet>::iterator iter);
+    static void handleErrorData(VeinEvent::EventData *&eventData, QHash<int, SafeDeleteSet>::iterator iter);
     QHash<int, SafeDeleteSet> m_entityItems;
     const VeinEvent::CommandEvent::EventSubtype m_eventSubtypeFilter;
 };

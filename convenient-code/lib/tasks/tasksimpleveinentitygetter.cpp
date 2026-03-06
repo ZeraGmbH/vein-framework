@@ -8,11 +8,11 @@ std::unique_ptr<TaskSimpleVeinEntityGetter> TaskSimpleVeinEntityGetter::create(i
 }
 
 TaskSimpleVeinEntityGetter::TaskSimpleVeinEntityGetter(int entityId, VfCmdEventHandlerSystemPtr cmdEventHandlerSystem, int timeout) :
+    m_timeout(timeout),
+    m_componentList(std::make_shared<QStringList>()),
     m_entityItem(VfEntityComponentEventItem::create(entityId)),
-    m_cmdEventHandlerSystem(cmdEventHandlerSystem),
-    m_timeout(timeout)
+    m_cmdEventHandlerSystem(cmdEventHandlerSystem)
 {
-    m_componentList = std::make_shared<QStringList>();
     m_cmdEventHandlerSystem->addItem(m_entityItem);
     m_fetcherTasks = TaskContainerParallel::create();
     m_task = TaskClientEntitySubscribe::create(entityId, cmdEventHandlerSystem, m_componentList, timeout);

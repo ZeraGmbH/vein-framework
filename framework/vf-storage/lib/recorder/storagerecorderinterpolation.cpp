@@ -46,7 +46,7 @@ void StorageRecorderInterpolation::calculateJsonAverage(StorageRecordDataPtr sto
     appendToRecordData(timeDiffAverage, valuesAverage);
 }
 
-int StorageRecorderInterpolation::calculateTimeDiffAverage(QList<int> timeDiffList)
+int StorageRecorderInterpolation::calculateTimeDiffAverage(const QList<int> &timeDiffList)
 {
     int addedVals = 0;
     for(int timeDiffToFirstInMs : timeDiffList)
@@ -54,7 +54,7 @@ int StorageRecorderInterpolation::calculateTimeDiffAverage(QList<int> timeDiffLi
     return static_cast<int>(addedVals/m_factor);
 }
 
-QVector<float> StorageRecorderInterpolation::calculateValuesAverage(QList<QVector<float> > valuesList)
+QVector<float> StorageRecorderInterpolation::calculateValuesAverage(const QList<QVector<float> > &valuesList)
 {
     QVector<float> result;
     if(valuesList.isEmpty())
@@ -72,7 +72,7 @@ QVector<float> StorageRecorderInterpolation::calculateValuesAverage(QList<QVecto
     return result;
 }
 
-void StorageRecorderInterpolation::appendToRecordData(int timeDiff, QVector<float> values)
+void StorageRecorderInterpolation::appendToRecordData(int timeDiff, const QVector<float> &values)
 {
     RecordEntryStored entryStored;
     entryStored.m_timeDiffToFirstInMs = timeDiff;

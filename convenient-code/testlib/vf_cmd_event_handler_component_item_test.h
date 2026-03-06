@@ -9,7 +9,7 @@ class VfCmdEventHandlerComponentItemTest : public QObject, public VfComponentEve
     Q_OBJECT
 public:
     static std::shared_ptr<VfCmdEventHandlerComponentItemTest> create(QString componentName, VfCmdEventItemEntityPtr entityItem);
-    VfCmdEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem);
+    VfCmdEventHandlerComponentItemTest(const QString &componentName, VfCmdEventItemEntityPtr entityItem);
 
     void processComponentEventData(const VeinComponent::ComponentData *componentData) override;
     void processErrorComponentEventData(const VeinComponent::ComponentData *originalComponentData) override;

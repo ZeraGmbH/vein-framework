@@ -5,7 +5,7 @@ std::shared_ptr<VfCmdEventHandlerComponentItemTest> VfCmdEventHandlerComponentIt
     return std::make_shared<VfCmdEventHandlerComponentItemTest>(componentName, entityItem);
 }
 
-VfCmdEventHandlerComponentItemTest::VfCmdEventHandlerComponentItemTest(QString componentName, VfCmdEventItemEntityPtr entityItem) :
+VfCmdEventHandlerComponentItemTest::VfCmdEventHandlerComponentItemTest(const QString &componentName, VfCmdEventItemEntityPtr entityItem) :
     VfComponentEventItem{componentName, entityItem}
 {
 }

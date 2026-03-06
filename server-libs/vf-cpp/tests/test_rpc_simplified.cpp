@@ -81,7 +81,6 @@ void test_rpc_simplified::callRpcInvalidParamName()
     invokeRpc("RPC_forTest", "foo", 72);
     QCOMPARE(spyRpcFinish.count(), 1);
 
-    QList<QVariant> arguments = spyRpcFinish[0];
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
 
     QFile file(":/vein-event-dumps/dumpCallRpcInvalidParamName.json");
@@ -97,7 +96,6 @@ void test_rpc_simplified::callRpcMissingParam()
     invokeRpc("RPC_forTest", "", "");
     QCOMPARE(spyRpcFinish.count(), 1);
 
-    QList<QVariant> arguments = spyRpcFinish[0];
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
 
     QFile file(":/vein-event-dumps/dumpCallRpcMissingParam.json");

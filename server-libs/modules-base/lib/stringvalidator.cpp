@@ -2,13 +2,13 @@
 #include <QJsonObject>
 #include "stringvalidator.h"
 
-cStringValidator::cStringValidator(const QString &possibilities)
+cStringValidator::cStringValidator(const QString &possibilities) :
+    m_sPossibilitiesList(possibilities.split(';'))
 {
-    m_sPossibilitiesList = possibilities.split(';');
 }
 
-cStringValidator::cStringValidator(const QStringList &possibilities)
-    :m_sPossibilitiesList(possibilities)
+cStringValidator::cStringValidator(const QStringList &possibilities) :
+    m_sPossibilitiesList(possibilities)
 {
 }
 

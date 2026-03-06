@@ -110,9 +110,9 @@ void VfCpp::VfCppEntity::handleComponents(VeinEvent::CommandEvent *cmdEvent)
 void VfCpp::VfCppEntity::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
 {
     VeinComponent::RemoteProcedureData *rpcData = static_cast<VeinComponent::RemoteProcedureData *>(cmdEvent->eventData());
-    bool rpcFound = false;
-    QString procedureName;
     if(rpcData->command() == VeinComponent::RemoteProcedureData::Command::RPCMD_CALL) {
+        bool rpcFound = false;
+        QString procedureName;
         for (auto it = m_rpcList.constBegin(); it != m_rpcList.constEnd(); ++it) {
             procedureName = it.key();
             if(procedureName.contains(rpcData->procedureName(), Qt::CaseInsensitive)) {

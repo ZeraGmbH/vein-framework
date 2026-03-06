@@ -125,7 +125,7 @@ void DumpJson::skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, con
     tmpEntityObject.insert("INF_ModuleInterface", toInsertAdjusted);
 }
 
-void DumpJson::skipDescrptionInInfo(QJsonObject &toInsertAdjusted, const QString infoLabel)
+void DumpJson::skipDescrptionInInfo(QJsonObject &toInsertAdjusted, const QString &infoLabel)
 {
     if (toInsertAdjusted.contains(infoLabel)) {
         QJsonObject componentInfo = toInsertAdjusted[infoLabel].toObject();

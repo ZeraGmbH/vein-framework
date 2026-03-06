@@ -13,9 +13,9 @@ private slots:
     void onNewValueRecorded(int count);
 private:
     void calculateJsonAverage(StorageRecordDataPtr storageRecorder, int startIdx, int endIdx);
-    int calculateTimeDiffAverage(QList<int> timeDiffList);
-    QVector<float> calculateValuesAverage(QList<QVector<float>> valuesList);
-    void appendToRecordData(int timeDiff, QVector<float> values);
+    int calculateTimeDiffAverage(const QList<int> &timeDiffList);
+    QVector<float> calculateValuesAverage(const QList<QVector<float>> &valuesList);
+    void appendToRecordData(int timeDiff, const QVector<float> &values);
 
     std::shared_ptr<AbstractStorageRecorder> m_recorder;
     std::shared_ptr<StorageRecordData> m_recordData;

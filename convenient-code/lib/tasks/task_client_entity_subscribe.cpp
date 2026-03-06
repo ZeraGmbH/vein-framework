@@ -12,9 +12,10 @@ TaskTemplatePtr TaskClientEntitySubscribe::create(int entityId, VfCmdEventHandle
 TaskClientEntitySubscribe::TaskClientEntitySubscribe(int entityId, VfCmdEventHandlerSystemPtr commandEventHandler,
                                                      std::shared_ptr<QStringList> componentNames) :
     m_commandEventHandler(commandEventHandler),
+    m_subscriber(VfClientEntitySubscriber::create(entityId)),
     m_componentNames(componentNames)
+
 {
-    m_subscriber = VfClientEntitySubscriber::create(entityId);
     m_commandEventHandler->addItem(m_subscriber);
 }
 

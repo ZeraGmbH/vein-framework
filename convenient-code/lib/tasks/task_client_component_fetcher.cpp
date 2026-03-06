@@ -12,9 +12,9 @@ TaskTemplatePtr TaskClientComponentFetcher::create(const QString &componentName,
 TaskClientComponentFetcher::TaskClientComponentFetcher(const QString &componentName, VfCmdEventItemEntityPtr entityItem,
                                                        std::shared_ptr<QVariant> value) :
     m_value(value),
-    m_entityItem(entityItem)
+    m_entityItem(entityItem),
+    m_fetcher(VfClientComponentFetcher::create(componentName, entityItem))
 {
-    m_fetcher = VfClientComponentFetcher::create(componentName, entityItem);
     m_entityItem->addItem(m_fetcher);
 }
 
