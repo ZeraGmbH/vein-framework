@@ -1,7 +1,6 @@
 #include "vcmp_introspectiondata.h"
 #include <QBuffer>
 #include <QDataStream>
-#include <QJsonDocument>
 #include <QJsonObject>
 
 namespace VeinComponent
@@ -45,7 +44,6 @@ QByteArray IntrospectionData::serialize() const
     QDataStream dataStream(&dataBuffer);
     dataStream.setVersion(QDataStream::Qt_5_0);
 
-    QJsonDocument dummyDoc;
     dataStream << entityId();
     dataStream << m_componentValues;
     dataStream << m_rpcNames;
