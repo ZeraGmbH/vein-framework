@@ -165,18 +165,16 @@ void VeinQml::processEvent(QEvent *t_event)
     }
 }
 
-void VeinQml::onEntityLoaded(int t_entityId)
+void VeinQml::onEntityLoaded(int entityId)
 {
-    if(m_entitySubscriptionReferenceTables.contains(t_entityId)) {
-        vCDebug(VEIN_API_QML) << "Fetched required entity:" << t_entityId;
-        m_resolvedIds.insert(t_entityId);
-        emit sigEntityAvailable(m_entityDict.nameFromId(t_entityId));
-        if (t_entityId == 0)
+    if(m_entitySubscriptionReferenceTables.contains(entityId)) {
+        m_resolvedIds.insert(entityId);
+        emit sigEntityAvailable(m_entityDict.nameFromId(entityId));
+        if (entityId == 0)
             emit sigSystemEntityAvailable();
         if(m_state != ConnectionState::VQ_LOADED) {
             QList<int> entitySubscriptionReferenceTableList = m_entitySubscriptionReferenceTables.keys();
             if(m_resolvedIds.contains(QSet<int>(entitySubscriptionReferenceTableList.begin(), entitySubscriptionReferenceTableList.end()))) {
-                vCDebug(VEIN_API_QML) << "All required entities resolved";
                 m_state = ConnectionState::VQ_LOADED;
                 emit sigStateChanged(m_state);
             }

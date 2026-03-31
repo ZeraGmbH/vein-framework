@@ -46,7 +46,7 @@ signals:
     void sigSystemEntityAvailable();
 
 private slots:
-    void onEntityLoaded(int t_entityId);
+    void onEntityLoaded(int entityId);
 private:
     void removeEntity(int t_entityId);
 
