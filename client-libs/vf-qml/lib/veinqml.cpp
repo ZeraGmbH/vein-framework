@@ -182,10 +182,10 @@ void VeinQml::onEntityLoaded(int entityId)
     }
 }
 
-void VeinQml::removeEntity(int t_entityId)
+void VeinQml::removeEntity(int entityId)
 {
-    m_entitySubscriptionReferenceTables.remove(t_entityId);
-    m_resolvedIds.remove(t_entityId);
+    m_entitySubscriptionReferenceTables.remove(entityId);
+    m_resolvedIds.remove(entityId);
     // Hack: As soon as an entity is removed we assume there will be
     // * others to leave
     // * new set coming back
@@ -195,7 +195,7 @@ void VeinQml::removeEntity(int t_entityId)
         m_state = ConnectionState::VQ_IDLE;
         emit sigStateChanged(m_state);
     }
-    EntityComponentMap *toDelete = m_entityDict.remove(t_entityId);
+    EntityComponentMap *toDelete = m_entityDict.remove(entityId);
     if(toDelete) {
         toDelete->setState(EntityComponentMap::DataState::ECM_REMOVED);
         toDelete->deleteLater();

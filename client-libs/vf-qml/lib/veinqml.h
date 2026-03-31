@@ -48,7 +48,7 @@ signals:
 private slots:
     void onEntityLoaded(int entityId);
 private:
-    void removeEntity(int t_entityId);
+    void removeEntity(int entityId);
 
     ConnectionState m_state = ConnectionState::VQ_IDLE;
     QHash<int, quint32> m_entitySubscriptionReferenceTables;
