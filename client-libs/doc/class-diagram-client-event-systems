@@ -20,7 +20,7 @@ class VeinQml {
     void entityUnsubscribeById(int entityId)
 
     signal void sigStateChanged(ConnectionState state)
-    signal sigEntityAvailable(QString entityName)
+    signal sigSystemEntityAvailable()
 }
 
 EventSystem <|-- VeinQml

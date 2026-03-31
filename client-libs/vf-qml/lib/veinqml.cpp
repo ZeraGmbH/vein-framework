@@ -169,7 +169,6 @@ void VeinQml::onEntityLoaded(int entityId)
 {
     if(m_entitySubscriptionReferenceTables.contains(entityId)) {
         m_resolvedIds.insert(entityId);
-        emit sigEntityAvailable(m_entityDict.nameFromId(entityId));
         if (entityId == 0)
             emit sigSystemEntityAvailable();
         if(m_state != ConnectionState::VQ_LOADED) {
