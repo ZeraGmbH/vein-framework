@@ -171,6 +171,8 @@ void VeinQml::onEntityLoaded(int t_entityId)
         vCDebug(VEIN_API_QML) << "Fetched required entity:" << t_entityId;
         m_resolvedIds.insert(t_entityId);
         emit sigEntityAvailable(m_entityDict.nameFromId(t_entityId));
+        if (t_entityId == 0)
+            emit sigSystemEntityAvailable();
         if(m_state != ConnectionState::VQ_LOADED) {
             QList<int> entitySubscriptionReferenceTableList = m_entitySubscriptionReferenceTables.keys();
             if(m_resolvedIds.contains(QSet<int>(entitySubscriptionReferenceTableList.begin(), entitySubscriptionReferenceTableList.end()))) {

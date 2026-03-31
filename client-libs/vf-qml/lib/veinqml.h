@@ -43,6 +43,7 @@ public:
 signals:
     void sigStateChanged(ConnectionState t_state);
     void sigEntityAvailable(QString t_entityName);
+    void sigSystemEntityAvailable();
 
 private slots:
     void onEntityLoaded(int t_entityId);
