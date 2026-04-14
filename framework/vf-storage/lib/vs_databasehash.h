@@ -17,7 +17,9 @@ public:
     QList<int> getEntityList() const override;
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
+    bool hasFutureStoredValue(int entityId, const QString &componentName) const override;
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
+    QVariant getFutureStoredValue(int entityId, const QString &componentName) const override;
     const AbstractComponentPtr findComponent(const int entityId, const QString &componentName) const override;
     QList<QString> getComponentList(int entityId) const override;
 
