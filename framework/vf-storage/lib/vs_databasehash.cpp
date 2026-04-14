@@ -20,9 +20,23 @@ bool DatabaseHash::hasStoredValue(int entityId, const QString &componentName) co
     return findComponent(entityId, componentName) != nullptr;
 }
 
+bool DatabaseHash::hasFutureStoredValue(int entityId, const QString &componentName) const
+{
+    return findFutureComponent(entityId, componentName) != nullptr;;
+}
+
 QVariant DatabaseHash::getStoredValue(int entityId, const QString &componentName) const
 {
     const AbstractComponentPtr component = findComponent(entityId, componentName);
+    if (component != nullptr)
+        return component->getValue();
+    qWarning("Stored value not found: EntityId: %i / ComponentName: %s", entityId, qPrintable(componentName));
+    return QVariant();
+}
+
+QVariant DatabaseHash::getFutureStoredValue(int entityId, const QString &componentName) const
+{
+    const AbstractComponentPtr component = findFutureComponent(entityId, componentName);
     if (component != nullptr)
         return component->getValue();
     qWarning("Stored value not found: EntityId: %i / ComponentName: %s", entityId, qPrintable(componentName));
