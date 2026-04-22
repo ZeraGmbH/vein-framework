@@ -19,8 +19,6 @@ LxdmConfigFile::LxdmConfigFile(const LxdmConfigFileParam &param) :
                 qWarning("XSession file '%s' does not exist. Skip session '%s'!",
                          qPrintable(session.m_sessionFileName), qPrintable(session.m_sessionName));
         }
-        qInfo("XSession manager config file: %s", qPrintable(m_configFileName));
-        qInfo("XSession files: %s", qPrintable(sessionFilesFound.join(" / ")));
         qInfo("XSession selected: %s", qPrintable(getConfiguredXSessionName()));
     }
     else
