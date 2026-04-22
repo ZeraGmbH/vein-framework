@@ -108,10 +108,6 @@ class NetworkSystemPrivate
         Q_ASSERT(evData != nullptr);
         switch (m_operationMode)
         {
-        case VeinNet::NetworkSystem::VNOM_DEBUG:
-            vCDebug(VEIN_NET_VERBOSE) << "Debug mode is enabled, dropped event:" << t_event;
-            t_event->accept();
-            break;
         case VeinNet::NetworkSystem::VNOM_PASS_THROUGH:
             if(evData->eventOrigin() == VeinEvent::EventData::EventOrigin::EO_LOCAL
                 && evData->eventTarget() == VeinEvent::EventData::EventTarget::ET_ALL) {

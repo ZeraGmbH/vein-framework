@@ -20,8 +20,7 @@ public:
     virtual ~NetworkSystem();
 
     enum OperationMode {
-        VNOM_DEBUG =0, /**< do nothing and only print the debug message */
-        VNOM_PASS_THROUGH, /**< pass all events to the other site */
+        VNOM_PASS_THROUGH = 0, /**< pass all events to the other site */
         VNOM_SUBSCRIPTION /**< [default] only pass events when the other site subscribed to it */
     };
     OperationMode operationMode() const;
