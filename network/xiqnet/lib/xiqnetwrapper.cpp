@@ -1,7 +1,7 @@
 #include "xiqnetwrapper.h"
 #include <netmessages.pb.h>
 
-std::shared_ptr<google::protobuf::Message> XiQNetWrapper::byteArrayToProtobuf(const QByteArray &byteArray)
+std::shared_ptr<google::protobuf::Message> XiQNetWrapper::byteArrayToProto(const QByteArray &byteArray)
 {
     ProtobufMessage::NetMessage *intermediate = new ProtobufMessage::NetMessage();
     if(!intermediate->ParseFromArray(byteArray, byteArray.size())) {
@@ -12,7 +12,7 @@ std::shared_ptr<google::protobuf::Message> XiQNetWrapper::byteArrayToProtobuf(co
     return proto;
 }
 
-QByteArray XiQNetWrapper::protobufToByteArray(const google::protobuf::Message &protobufMessage)
+QByteArray XiQNetWrapper::protoToByteArray(const google::protobuf::Message &protobufMessage)
 {
     return QByteArray(protobufMessage.SerializeAsString().c_str(), protobufMessage.ByteSizeLong());
 }
