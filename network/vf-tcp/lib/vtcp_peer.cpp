@@ -7,7 +7,7 @@ namespace VeinTcp
 int TcpPeer::m_instanceCount = 0;
 
 
-TcpPeer::TcpPeer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
+TcpPeer::TcpPeer(const AbstractTcpNetworkFactoryPtr &tcpNetworkFactory, QObject *parent) :
     QObject(parent),
     m_worker(tcpNetworkFactory->createTcpPeerWorker(this))
 {

@@ -2,7 +2,7 @@
 
 namespace VeinTcp
 {
-TcpServer::TcpServer(AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *parent) :
+TcpServer::TcpServer(const AbstractTcpNetworkFactoryPtr &tcpNetworkFactory, QObject *parent) :
     QObject(parent),
     m_serverWorker(tcpNetworkFactory->createTcpServerWorker(this))
 {
