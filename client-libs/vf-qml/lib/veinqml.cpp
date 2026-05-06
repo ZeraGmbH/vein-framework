@@ -176,6 +176,7 @@ void VeinQml::onEntityLoaded(int entityId)
             if(m_resolvedIds.contains(QSet<int>(entitySubscriptionReferenceTableList.begin(), entitySubscriptionReferenceTableList.end()))) {
                 m_state = ConnectionState::VQ_LOADED;
                 emit sigStateChanged(m_state);
+                emit sigEntitiesLoaded();
             }
         }
     }
