@@ -28,14 +28,14 @@ int CommandEvent::getQEventType()
     return m_registeredQEventType;
 }
 
-QUuid CommandEvent::peerId() const
+const QUuid &CommandEvent::peerId() const
 {
     return m_peerId;
 }
 
-void CommandEvent::setPeerId(QUuid t_pPeerId)
+void CommandEvent::setPeerId(const QUuid &peerId)
 {
-    m_peerId = t_pPeerId;
+    m_peerId = peerId;
 }
 
 CommandEvent::EventSubtype CommandEvent::eventSubtype() const
@@ -43,9 +43,9 @@ CommandEvent::EventSubtype CommandEvent::eventSubtype() const
     return m_subtype;
 }
 
-void CommandEvent::setEventSubtype(CommandEvent::EventSubtype t_newType)
+void CommandEvent::setEventSubtype(CommandEvent::EventSubtype newType)
 {
-    m_subtype = t_newType;
+    m_subtype = newType;
 }
 
 EventData *CommandEvent::eventData() const

@@ -18,16 +18,16 @@ public:
         TRANSACTION = 1 /**< The event requires to be inspected about its authoritative status */
     };
 
-    explicit CommandEvent(EventSubtype t_subtype, EventData *t_data);
+    explicit CommandEvent(EventSubtype subtype, EventData *data);
     ~CommandEvent();
 
     static int getQEventType();
 
-    QUuid peerId() const;
-    void setPeerId(QUuid t_pPeerId);
+    const QUuid &peerId() const;
+    void setPeerId(const QUuid &peerId);
 
     EventSubtype eventSubtype() const;
-    void setEventSubtype(EventSubtype t_newType);
+    void setEventSubtype(EventSubtype newType);
 
     EventData *eventData() const;
 
