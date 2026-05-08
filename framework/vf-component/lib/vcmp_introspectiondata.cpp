@@ -10,7 +10,7 @@ IntrospectionData::IntrospectionData() :
 {
 }
 
-QVariantMap IntrospectionData::componentValues() const
+const QVariantMap &IntrospectionData::componentValues() const
 {
     return m_componentValues;
 }
@@ -20,7 +20,7 @@ void IntrospectionData::setComponentValues(const QVariantMap &componentValues)
     m_componentValues = componentValues;
 }
 
-QStringList IntrospectionData::rpcNames() const
+const QStringList &IntrospectionData::rpcNames() const
 {
     return m_rpcNames;
 }
@@ -52,9 +52,9 @@ QByteArray IntrospectionData::serialize() const
     return tmpData;
 }
 
-void IntrospectionData::deserialize(const QByteArray &t_data)
+void IntrospectionData::deserialize(const QByteArray &data)
 {
-    QByteArray tmpData = t_data;
+    QByteArray tmpData = data;
     QBuffer dataBuffer(&tmpData);
     dataBuffer.open(QIODevice::ReadOnly);
 

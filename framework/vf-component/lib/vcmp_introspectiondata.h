@@ -14,16 +14,16 @@ class VFCOMPONENT_EXPORT IntrospectionData : public VeinEvent::EventData
 public:
     IntrospectionData();
 
-    QVariantMap componentValues() const;
+    const QVariantMap &componentValues() const;
     void setComponentValues(const QVariantMap &componentValues);
-    QStringList rpcNames() const;
+    const QStringList &rpcNames() const;
     void setRpcNames(const QStringList &rpcNames);
 
     static constexpr int dataType() { return VCMP_INTROSPECTIONDATA_DATATYPE; }
     bool isValid() const override;
     int type() const override { return VCMP_INTROSPECTIONDATA_DATATYPE; }
     QByteArray serialize() const override;
-    void deserialize(const QByteArray &t_data) override;
+    void deserialize(const QByteArray &data) override;
 private:
     QVariantMap m_componentValues;
     QStringList m_rpcNames;

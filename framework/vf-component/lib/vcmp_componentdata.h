@@ -21,23 +21,23 @@ public:
     };
 
     explicit ComponentData();
-    explicit ComponentData(int t_entityId, Command t_cDataCommand=Command::CCMD_SET); // !! see setCommand implementation
-    ComponentData(const ComponentData &t_other);
+    explicit ComponentData(int entityId, Command cDataCommand=Command::CCMD_SET); // !! see setCommand implementation
+    ComponentData(const ComponentData &other);
     static constexpr int dataType() { return VCMP_COMPONENTDATA_DATATYPE; }
 
     Command eventCommand() const;
     // setCommand has special ideas and is a source of confusion!!!
-    void setCommand(Command t_cDataCommand);
+    void setCommand(Command cDataCommand);
 
     const QString &componentName() const;
-    void setComponentName(const QString &t_componentName);
+    void setComponentName(const QString &componentName);
 
     /**
      * @brief The changed data this event propagates
      * @return may be invalid in case of no value is set or Command is REMOVE
      */
     const QVariant &newValue() const;
-    void setNewValue(const QVariant &t_newValue);
+    void setNewValue(const QVariant &newValue);
 
     /**
      * @brief The current data expected by the sender of this event
@@ -45,11 +45,11 @@ public:
      * @note if the currently stored value differs from oldValue() then the request is invalid (except in the CCMD_FETCH case)
      */
     const QVariant &oldValue() const;
-    void setOldValue(const QVariant &t_oldValue);
+    void setOldValue(const QVariant &oldValue);
 
     bool isValid() const override;
     QByteArray serialize() const override;
-    void deserialize(const QByteArray &t_data) override;
+    void deserialize(const QByteArray &data) override;
     int type() const override { return VCMP_COMPONENTDATA_DATATYPE; }
 
 private:

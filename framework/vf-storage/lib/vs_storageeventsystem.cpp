@@ -63,7 +63,7 @@ AbstractDatabase *StorageEventSystem::getDb() const
     return m_privHash;
 }
 
-QMap<int, QStringList> StorageEventSystem::getRpcs() const
+const QMap<int, QStringList> &StorageEventSystem::getRpcs() const
 {
     return m_entityRpcNames;
 }

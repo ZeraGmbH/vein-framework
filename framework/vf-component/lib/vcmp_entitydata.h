@@ -27,7 +27,7 @@ public:
     bool isValid() const override;
     int type() const override { return VCMP_ENTITYDATA_DATATYPE; }
     QByteArray serialize() const override;
-    void deserialize(const QByteArray &t_data) override;
+    void deserialize(const QByteArray &data) override;
 private:
     Command m_command = Command::ECMD_INVALID;
 };

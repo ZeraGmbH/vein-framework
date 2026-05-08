@@ -32,7 +32,7 @@ void StorageComponent::setValue(const QVariant &value)
     }
 }
 
-void StorageComponent::setGetValueCustomizer(AbstractComponentGetCustomizerPtr customizer)
+void StorageComponent::setGetValueCustomizer(const AbstractComponentGetCustomizerPtr &customizer)
 {
     m_getCustomizer = customizer;
 }

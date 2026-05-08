@@ -17,7 +17,7 @@ public:
 
     void processEvent(QEvent *event) override;
     AbstractDatabase* getDb() const override;
-    QMap<int,QStringList> getRpcs() const override;
+    const QMap<int,QStringList> &getRpcs() const override;
 
 private:
     void processEntityData(QEvent *event);

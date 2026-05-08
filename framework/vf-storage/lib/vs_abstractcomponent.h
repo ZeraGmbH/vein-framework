@@ -19,7 +19,7 @@ signals:
 public:
     virtual const QVariant &getValue() const = 0;
     virtual void setValue(const QVariant &value) = 0;
-    virtual void setGetValueCustomizer(AbstractComponentGetCustomizerPtr getCustomizer) = 0;
+    virtual void setGetValueCustomizer(const AbstractComponentGetCustomizerPtr &getCustomizer) = 0;
 };
 
 typedef std::shared_ptr<AbstractComponent> AbstractComponentPtr;

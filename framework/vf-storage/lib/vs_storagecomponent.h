@@ -15,7 +15,7 @@ public:
 
     const QVariant &getValue() const override;
     void setValue(const QVariant &value) override;
-    void setGetValueCustomizer(AbstractComponentGetCustomizerPtr customizer) override;
+    void setGetValueCustomizer(const AbstractComponentGetCustomizerPtr &customizer) override;
 
     static int getInstanceCount();
 

@@ -51,7 +51,7 @@ public:
      * @note m_eventTarget and m_eventOrigin are not encoded as they are local only informations
      * @return
      */
-    virtual void deserialize(const QByteArray &t_data) = 0;
+    virtual void deserialize(const QByteArray &data) = 0;
 
     /**
      * @brief unique id of the entity concerning this event data

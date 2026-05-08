@@ -19,29 +19,29 @@ RemoteProcedureData::Command RemoteProcedureData::command() const
     return m_command;
 }
 
-void RemoteProcedureData::setCommand(RemoteProcedureData::Command t_command)
+void RemoteProcedureData::setCommand(RemoteProcedureData::Command command)
 {
-    m_command = t_command;
+    m_command = command;
 }
 
-QString RemoteProcedureData::procedureName() const
+const QString &RemoteProcedureData::procedureName() const
 {
     return m_procedureName;
 }
 
-void RemoteProcedureData::setProcedureName(const QString &t_procedureName)
+void RemoteProcedureData::setProcedureName(const QString &procedureName)
 {
-    m_procedureName = t_procedureName;
+    m_procedureName = procedureName;
 }
 
-QVariantMap RemoteProcedureData::invokationData() const
+const QVariantMap &RemoteProcedureData::invokationData() const
 {
     return m_invokationData;
 }
 
-void RemoteProcedureData::setInvokationData(const QVariantMap &t_invokationData)
+void RemoteProcedureData::setInvokationData(const QVariantMap &invokationData)
 {
-    m_invokationData = t_invokationData;
+    m_invokationData = invokationData;
 }
 
 bool RemoteProcedureData::isValid() const
@@ -69,9 +69,9 @@ QByteArray RemoteProcedureData::serialize() const
     return tmpData;
 }
 
-void RemoteProcedureData::deserialize(const QByteArray &t_data)
+void RemoteProcedureData::deserialize(const QByteArray &data)
 {
-    QByteArray tmpData = t_data;
+    QByteArray tmpData = data;
     QBuffer dataBuffer(&tmpData);
     dataBuffer.open(QIODevice::ReadOnly);
 

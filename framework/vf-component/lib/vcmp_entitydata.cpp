@@ -53,9 +53,9 @@ QByteArray EntityData::serialize() const
     return tmpData;
 }
 
-void EntityData::deserialize(const QByteArray &t_data)
+void EntityData::deserialize(const QByteArray &data)
 {
-    QByteArray tmpData=t_data;
+    QByteArray tmpData=data;
     QBuffer dataBuffer(&tmpData);
     dataBuffer.open(QIODevice::ReadOnly);
 

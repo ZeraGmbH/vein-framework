@@ -50,19 +50,19 @@ public:
     RemoteProcedureData();
 
     RemoteProcedureData::Command command() const;
-    void setCommand(RemoteProcedureData::Command t_command);
+    void setCommand(RemoteProcedureData::Command command);
 
-    QString procedureName() const;
-    void setProcedureName(const QString &t_procedureName);
+    const QString &procedureName() const;
+    void setProcedureName(const QString &procedureName);
 
-    QVariantMap invokationData() const;
-    void setInvokationData(const QVariantMap &t_invokationData);
+    const QVariantMap &invokationData() const;
+    void setInvokationData(const QVariantMap &invokationData);
 
     static constexpr int dataType() { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }
     int type() const override { return VCMP_REMOTEPROCEDUREDATA_DATATYPE; }
     bool isValid() const override;
     QByteArray serialize() const override;
-    void deserialize(const QByteArray &t_data) override;
+    void deserialize(const QByteArray &data) override;
 
 private:
     Command m_command = Command::RPCMD_INVALID;

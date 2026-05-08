@@ -25,7 +25,7 @@ AbstractDatabase *ClientStorageEventSystem::getDb() const
     return m_privHash;
 }
 
-QMap<int, QStringList> ClientStorageEventSystem::getRpcs() const
+const QMap<int, QStringList> &ClientStorageEventSystem::getRpcs() const
 {
     return m_entityRpcNames;
 }
@@ -92,14 +92,14 @@ void ClientStorageEventSystem::processIntrospectionData(QEvent *event)
     if(!m_privHash->hasEntity(entityId)) {
         m_privHash->insertEntity(entityId);
 
-        const QVariantMap componentMap = iData->componentValues();
+        const QVariantMap &componentMap = iData->componentValues();
         for (auto iter=componentMap.constBegin(); iter!=componentMap.constEnd(); ++iter) {
             const QString componentName = iter.key();
             const QVariant value = iter.value();
             m_privHash->insertComponentValue(entityId, componentName, value);
         }
 
-        QStringList rpcs = iData->rpcNames();
+        const QStringList &rpcs = iData->rpcNames();
         insertRpc(entityId, rpcs);
     }
 }

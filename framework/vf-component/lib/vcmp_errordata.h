@@ -16,23 +16,23 @@ public:
     int originalDataType() const;
 
     const QByteArray &originalData() const;
-    void setOriginalData(EventData *t_originalData);
+    void setOriginalData(EventData *originalData);
 
-    QString errorDescription() const;
-    void setErrorDescription(const QString &t_errorDescription);
+    const QString &errorDescription() const;
+    void setErrorDescription(const QString &errorDescription);
 
     static constexpr int dataType() { return VCMP_ERRORDATA_DATATYPE; }
     bool isValid() const override;
     int type() const override { return VCMP_ERRORDATA_DATATYPE; }
     QByteArray serialize() const override;
-    void deserialize(const QByteArray &t_data) override;
+    void deserialize(const QByteArray &data) override;
 
 private:
     /**
      * @brief Used to deserialize the EventData
      * @sa EventData::type()
      */
-    int m_originalDataType;
+    int m_originalDataType = 0;
 
     /**
      * @brief The EventData that caused the error

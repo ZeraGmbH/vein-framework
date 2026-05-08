@@ -18,24 +18,24 @@ const QByteArray &ErrorData::originalData() const
     return m_originalData;
 }
 
-void ErrorData::setOriginalData(EventData *t_originalData)
+void ErrorData::setOriginalData(EventData *originalData)
 {
-    Q_ASSERT(t_originalData != nullptr);
+    Q_ASSERT(originalData != nullptr);
     /// @note do not cascade error data, e.g. do not send an error data event with error data event as content
-    if(t_originalData->type() != type()) {
-        m_originalDataType = t_originalData->type();
-        m_originalData = t_originalData->serialize();
+    if(originalData->type() != type()) {
+        m_originalDataType = originalData->type();
+        m_originalData = originalData->serialize();
     }
 }
 
-QString ErrorData::errorDescription() const
+const QString &ErrorData::errorDescription() const
 {
     return m_errorDescription;
 }
 
-void ErrorData::setErrorDescription(const QString &t_errorDescription)
+void ErrorData::setErrorDescription(const QString &errorDescription)
 {
-    m_errorDescription = t_errorDescription;
+    m_errorDescription = errorDescription;
 }
 
 QByteArray ErrorData::serialize() const
@@ -55,9 +55,9 @@ QByteArray ErrorData::serialize() const
     return tmpData;
 }
 
-void ErrorData::deserialize(const QByteArray &t_data)
+void ErrorData::deserialize(const QByteArray &data)
 {
-    QByteArray tmpData=t_data;
+    QByteArray tmpData=data;
     QBuffer dataBuffer(&tmpData);
     dataBuffer.open(QIODevice::ReadOnly);
 

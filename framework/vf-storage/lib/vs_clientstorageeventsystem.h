@@ -16,7 +16,7 @@ public:
     virtual ~ClientStorageEventSystem();
 
     AbstractDatabase* getDb() const override;
-    QMap<int, QStringList> getRpcs() const override;
+    const QMap<int, QStringList> &getRpcs() const override;
     void processEvent(QEvent *event) override;
 
 private:
