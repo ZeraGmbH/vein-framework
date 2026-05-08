@@ -21,11 +21,6 @@ EventHandler::~EventHandler()
     m_subsystems.clear();
 }
 
-QList<EventSystem *> EventHandler::subsystems() const
-{
-    return m_subsystems;
-}
-
 void EventHandler::setSubsystems(const QList<EventSystem *> &subsystems)
 {
     if(m_subsystems != subsystems) {
@@ -33,7 +28,6 @@ void EventHandler::setSubsystems(const QList<EventSystem *> &subsystems)
         m_subsystems = subsystems;
         for(EventSystem *tmpSystem : subsystems)
             tmpSystem->attach(this);
-        emit subsystemsChanged(m_subsystems);
     }
 }
 
@@ -43,7 +37,6 @@ void EventHandler::addSubsystem(EventSystem *subsystem)
     m_waitForAddSilenceToLogTimer->start();
     m_subsystems.append(subsystem);
     subsystem->attach(this);
-    emit subsystemsChanged(m_subsystems);
 }
 
 void EventHandler::prependSubsystem(EventSystem *subsystem)
@@ -52,7 +45,6 @@ void EventHandler::prependSubsystem(EventSystem *subsystem)
     m_waitForAddSilenceToLogTimer->start();
     m_subsystems.prepend(subsystem);
     subsystem->attach(this);
-    emit subsystemsChanged(m_subsystems);
 }
 
 void EventHandler::removeSubsystem(EventSystem *subsystem)
@@ -63,10 +55,7 @@ void EventHandler::removeSubsystem(EventSystem *subsystem)
 
 void EventHandler::clearSubsystems()
 {
-    if(m_subsystems.isEmpty() == false) {
-        m_subsystems.clear();
-        emit subsystemsChanged(m_subsystems);
-    }
+    m_subsystems.clear();
 }
 
 void EventHandler::customEvent(QEvent *event)

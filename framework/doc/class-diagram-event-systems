@@ -1,7 +1,6 @@
 @startuml
 
 class EventHandler {
-    QList<EventSystem*> subsystems
     void addSubsystem(EventSystem* subsystem)
     void prependSubsystem(VeinEvent::EventSystem* subsystem)
     void removeSubsystem(VeinEvent::EventSystem* subsystem)

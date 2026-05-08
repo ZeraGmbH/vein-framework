@@ -17,12 +17,10 @@ class EventSystem;
 class VFEVENT_EXPORT EventHandler : public QObject
 {
     Q_OBJECT
-    Q_PROPERTY(QList<EventSystem*> subsystems READ subsystems WRITE setSubsystems NOTIFY subsystemsChanged)
 public:
     explicit EventHandler(QObject *parent=nullptr);
     ~EventHandler();
-    QList<EventSystem*> subsystems() const;
-public slots:
+
     // EventHandler is not owner and therefore not responsible for deleting subsystems
     void setSubsystems(const QList<EventSystem*> &subsystems);
     void addSubsystem(VeinEvent::EventSystem* subsystem);
@@ -30,8 +28,8 @@ public slots:
     void removeSubsystem(VeinEvent::EventSystem* subsystem);
     void clearSubsystems();
 signals:
-    void subsystemsChanged(QList<EventSystem*> subsystems);
     void sigEventAccepted(VeinEvent::EventSystem* eventSystem, QEvent *event);
+
 protected:
     virtual void customEvent(QEvent *event) override;
     TimerTemplateQtPtr m_waitForAddSilenceToLogTimer;
