@@ -42,7 +42,6 @@ public:
 
 signals:
     void sigStateChanged(ConnectionState t_state);
-    void sigEntitiesLoaded();
     void sigSystemEntityAvailable();
 
 private slots:
