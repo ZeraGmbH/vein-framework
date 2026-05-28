@@ -192,7 +192,7 @@ void LicenseSystem::processEvent(QEvent *t_event)
                    cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET) {
                     const QString newSerialNumber = cData->newValue().toString();
                     if((newSerialNumber.isEmpty() == false) && (m_deviceSerial != newSerialNumber)) {
-                        qWarning() << "Changed device serial from:" << m_deviceSerial << "to:" << cData->newValue() << cData->oldValue();
+                        qInfo() << "Changed device serial from:" << m_deviceSerial << "to:" << cData->newValue() << cData->oldValue();
                         setDeviceSerial(newSerialNumber);
                     }
                 }
