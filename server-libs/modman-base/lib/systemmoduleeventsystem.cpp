@@ -108,7 +108,7 @@ bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::Componen
             emit sigSendEvent(VfServerComponentSetter::generateEvent(
                 getEntityId(),
                 sessionComponentName,
-                QVariant(),
+                cData->oldValue(),
                 QVariant("")) );
             emit sigChangeSession(m_currentSession);
             m_sessionReady = false;
