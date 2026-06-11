@@ -40,6 +40,7 @@ private:
     void sendNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void setScpiInfo();
+    void sendEmptySessionToClient(const VeinComponent::ComponentData *cData);
 
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
