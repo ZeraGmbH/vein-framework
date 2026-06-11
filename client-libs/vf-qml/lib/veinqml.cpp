@@ -108,9 +108,9 @@ void VeinQml::processEvent(QEvent *t_event)
                 const ComponentData *cData = static_cast<ComponentData *>(evData);
                 int entityId = cData->entityId();
                 EntityComponentMap *map = m_entityDict.findById(entityId);
-                if(map) { /// @note component data is only processed after the introspection has been processed
+                if(map) /// @note component data is only processed after the introspection has been processed
                     map->processComponentData(cData);
-                }
+                checkSessionLeave(cData);
                 break;
             }
             case EntityData::dataType(): // Never received!!!
@@ -185,15 +185,6 @@ void VeinQml::removeEntity(int entityId)
 {
     m_entitySubscriptionReferenceTables.remove(entityId);
     m_resolvedIds.remove(entityId);
-    // Hack: As soon as an entity is removed we assume there will be
-    // * others to leave
-    // * new set coming back
-    // That matches what session change does
-    // Note: On session change two entities remain _SYSTEM and _LOGGER
-    if(m_state != ConnectionState::VQ_IDLE) {
-        m_state = ConnectionState::VQ_IDLE;
-        emit sigStateChanged(m_state);
-    }
     EntityComponentMap *toDelete = m_entityDict.remove(entityId);
     if(toDelete) {
         toDelete->setState(EntityComponentMap::DataState::ECM_REMOVED);
@@ -201,5 +192,21 @@ void VeinQml::removeEntity(int entityId)
     }
 }
 
+void VeinQml::checkSessionLeave(const VeinComponent::ComponentData *cData)
+{
+    if (cData->entityId() != 0)
+        return;
+    if (cData->componentName() != "Session")
+        return;
+    if (cData->newValue().toString() == "") {
+        // Note: On session change two entities remain _SYSTEM and _LOGGER
+        if(m_state != ConnectionState::VQ_IDLE) {
+            m_state = ConnectionState::VQ_IDLE;
+            emit sigStateChanged(m_state);
+        }
+    }
+}
+
 VeinQml *VeinQml::s_staticInstance = nullptr;
+
 }

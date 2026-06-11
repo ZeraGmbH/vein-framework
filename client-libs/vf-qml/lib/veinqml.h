@@ -48,6 +48,7 @@ private slots:
     void onEntityLoaded(int entityId);
 private:
     void removeEntity(int entityId);
+    void checkSessionLeave(const VeinComponent::ComponentData *cData);
 
     ConnectionState m_state = ConnectionState::VQ_IDLE;
     QHash<int, quint32> m_entitySubscriptionReferenceTables;
