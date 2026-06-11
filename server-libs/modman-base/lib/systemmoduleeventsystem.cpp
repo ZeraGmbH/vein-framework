@@ -105,6 +105,7 @@ bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::Componen
     if(m_availableSessions.contains(newSession) && newSession != m_currentSession) {
         if(m_sessionReady == true) {
             m_currentSession = newSession;
+            qInfo("Send empty session to prepare %s", qPrintable(newSession));
             emit sigSendEvent(VfServerComponentSetter::generateEvent(
                 getEntityId(),
                 sessionComponentName,
