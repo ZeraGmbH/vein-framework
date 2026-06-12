@@ -97,7 +97,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
 
 void SystemModuleEventSystem::sendEmptySessionToClient(const VeinComponent::ComponentData *cData)
 {
-    qInfo("Send empty session to prepare %s", qPrintable(cData->newValue().toString()));
+    qInfo("Send empty session to prepare session '%s'", qPrintable(cData->newValue().toString()));
     emit sigSendEvent(VfServerComponentSetter::generateEvent(
         getEntityId(),
         sessionComponentName,
