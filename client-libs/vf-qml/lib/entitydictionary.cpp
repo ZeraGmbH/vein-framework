@@ -31,11 +31,12 @@ bool EntityDictionary::setEntityName(int entityId, const QString &name)
         DictEntry &entry = iter.value();
         if(entry.m_entityName == name)
             return true;
+
         if(m_entitiesByName.contains(name)) {
             qWarning("Entity name '%s' is not unique!", qPrintable(name));
             return false;
         }
-        if(!entry.m_entityName.isEmpty() && entry.m_entityName != name) {
+        if(!entry.m_entityName.isEmpty()) {
             qWarning("Renaming entity %i from '%s' to '%s' is not supported!",
                      entityId, qPrintable(entry.m_entityName), qPrintable(name));
             return false;
