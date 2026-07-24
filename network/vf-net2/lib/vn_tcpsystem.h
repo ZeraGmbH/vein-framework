@@ -19,7 +19,7 @@ class VFNET2_EXPORT TcpSystem : public VeinEvent::EventSystem
 {
     Q_OBJECT
 public:
-    explicit TcpSystem(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *t_parent = nullptr);
+    explicit TcpSystem(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory, QObject *parent = nullptr);
     virtual ~TcpSystem();
 signals:
     // client part

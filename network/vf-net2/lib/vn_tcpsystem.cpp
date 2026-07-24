@@ -11,8 +11,8 @@ using namespace VeinEvent;
 
 namespace VeinNet
 {
-TcpSystem::TcpSystem(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory, QObject *t_parent) :
-    EventSystem(t_parent),
+TcpSystem::TcpSystem(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory, QObject *parent) :
+    EventSystem(parent),
     m_tcpNetworkFactory(tcpNetworkFactory),
     m_server(new VeinTcp::TcpServer(tcpNetworkFactory, this))
 {

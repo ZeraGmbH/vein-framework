@@ -2,7 +2,7 @@
 #include "vf_client_entity_subscriber.h"
 #include "vf_client_entity_unsubscriber.h"
 
-VfCoreStackClient::VfCoreStackClient(VeinTcp::AbstractTcpNetworkFactoryPtr tcpNetworkFactory) :
+VfCoreStackClient::VfCoreStackClient(const VeinTcp::AbstractTcpNetworkFactoryPtr &tcpNetworkFactory) :
     m_tcpSystem(tcpNetworkFactory)
 {
     init();
