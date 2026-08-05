@@ -24,7 +24,7 @@ public:
         VNOM_SUBSCRIPTION /**< [default] only pass events when the other site subscribed to it */
     };
     OperationMode operationMode() const;
-    void setOperationMode(const OperationMode &operationMode);
+    void setOperationMode(const OperationMode &mode);
 
     int getSubscriberCount(int entityId) const;
 public:

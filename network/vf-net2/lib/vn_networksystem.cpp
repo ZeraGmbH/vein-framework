@@ -277,9 +277,9 @@ NetworkSystem::OperationMode NetworkSystem::operationMode() const
     return d_ptr->m_operationMode;
 }
 
-void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &operationMode)
+void NetworkSystem::setOperationMode(const NetworkSystem::OperationMode &mode)
 {
-    d_ptr->m_operationMode = operationMode;
+    d_ptr->m_operationMode = mode;
 }
 
 int NetworkSystem::getSubscriberCount(int entityId) const

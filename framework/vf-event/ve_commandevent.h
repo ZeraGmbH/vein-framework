@@ -24,7 +24,7 @@ public:
     static int getQEventType();
 
     const QUuid &peerId() const;
-    void setPeerId(const QUuid &peerId);
+    void setPeerId(const QUuid &id);
 
     EventSubtype eventSubtype() const;
     void setEventSubtype(EventSubtype newType);

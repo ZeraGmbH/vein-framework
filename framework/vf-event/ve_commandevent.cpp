@@ -33,9 +33,9 @@ const QUuid &CommandEvent::peerId() const
     return m_peerId;
 }
 
-void CommandEvent::setPeerId(const QUuid &peerId)
+void CommandEvent::setPeerId(const QUuid &id)
 {
-    m_peerId = peerId;
+    m_peerId = id;
 }
 
 CommandEvent::EventSubtype CommandEvent::eventSubtype() const

@@ -48,11 +48,11 @@ void test_task_simple_vein_entity_getter::getAllComponentsValid()
 
     QVERIFY(receivedOk);
     QCOMPARE(task->getValues().size(), 5);
-    QCOMPARE(*task->getValues()[0], "testEntity");
-    QCOMPARE(*task->getValues()[1], 1);
-    QCOMPARE(*task->getValues()[2], 0);
-    QCOMPARE(*task->getValues()[3], "foo");
-    QCOMPARE(task->getValues()[4]->value<QList<double>>()[0], 1);
+    QCOMPARE(*task->getValues().at(0), "testEntity");
+    QCOMPARE(*task->getValues().at(1), 1);
+    QCOMPARE(*task->getValues().at(2), 0);
+    QCOMPARE(*task->getValues().at(3), "foo");
+    QCOMPARE(task->getValues().at(4)->value<QList<double>>().at(0), 1);
 }
 
 void test_task_simple_vein_entity_getter::getInvalidEntity()
@@ -122,19 +122,19 @@ void test_task_simple_vein_entity_getter::fireSameTaskTwiceAfterAnother()
 
     QVERIFY(receivedOkTask);
     QCOMPARE(task->getValues().size(), 5);
-    QCOMPARE(*task->getValues()[0], "testEntity");
-    QCOMPARE(*task->getValues()[1], 1);
-    QCOMPARE(*task->getValues()[2], 0);
-    QCOMPARE(*task->getValues()[3], "foo");
-    QCOMPARE(task->getValues()[4]->value<QList<double>>()[0], 1);
+    QCOMPARE(*task->getValues().at(0), "testEntity");
+    QCOMPARE(*task->getValues().at(1), 1);
+    QCOMPARE(*task->getValues().at(2), 0);
+    QCOMPARE(*task->getValues().at(3), "foo");
+    QCOMPARE(task->getValues().at(4)->value<QList<double>>().at(0), 1);
 
     QVERIFY(receivedOkTaskTwo);
     QCOMPARE(taskTwo->getValues().size(), 5);
-    QCOMPARE(*taskTwo->getValues()[0], "testEntity");
-    QCOMPARE(*taskTwo->getValues()[1], 1);
-    QCOMPARE(*taskTwo->getValues()[2], 0);
-    QCOMPARE(*taskTwo->getValues()[3], "foo");
-    QCOMPARE(taskTwo->getValues()[4]->value<QList<double>>()[0], 1);
+    QCOMPARE(*taskTwo->getValues().at(0), "testEntity");
+    QCOMPARE(*taskTwo->getValues().at(1), 1);
+    QCOMPARE(*taskTwo->getValues().at(2), 0);
+    QCOMPARE(*taskTwo->getValues().at(3), "foo");
+    QCOMPARE(taskTwo->getValues().at(4)->value<QList<double>>().at(0), 1);
 }
 
 void test_task_simple_vein_entity_getter::getEntityWithInvalidComponent()
@@ -200,17 +200,17 @@ void test_task_simple_vein_entity_getter::fireSameTaskTwiceSameTime()
 
     QVERIFY(receivedOkTask);
     QCOMPARE(task->getValues().size(), 5);
-    QCOMPARE(*task->getValues()[0], "testEntity");
-    QCOMPARE(*task->getValues()[1], 1);
-    QCOMPARE(*task->getValues()[2], 0);
-    QCOMPARE(*task->getValues()[3], "foo");
-    QCOMPARE(task->getValues()[4]->value<QList<double>>()[0], 1);
+    QCOMPARE(*task->getValues().at(0), "testEntity");
+    QCOMPARE(*task->getValues().at(1), 1);
+    QCOMPARE(*task->getValues().at(2), 0);
+    QCOMPARE(*task->getValues().at(3), "foo");
+    QCOMPARE(task->getValues().at(4)->value<QList<double>>().at(0), 1);
 
     QVERIFY(receivedOkTaskTwo);
     QCOMPARE(taskTwo->getValues().size(), 5);
-    QCOMPARE(*taskTwo->getValues()[0], "testEntity");
-    QCOMPARE(*taskTwo->getValues()[1], 1);
-    QCOMPARE(*taskTwo->getValues()[2], 0);
-    QCOMPARE(*taskTwo->getValues()[3], "foo");
-    QCOMPARE(taskTwo->getValues()[4]->value<QList<double>>()[0], 1);
+    QCOMPARE(*taskTwo->getValues().at(0), "testEntity");
+    QCOMPARE(*taskTwo->getValues().at(1), 1);
+    QCOMPARE(*taskTwo->getValues().at(2), 0);
+    QCOMPARE(*taskTwo->getValues().at(3), "foo");
+    QCOMPARE(taskTwo->getValues().at(4)->value<QList<double>>().at(0), 1);
 }

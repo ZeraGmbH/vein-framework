@@ -13,12 +13,12 @@ LxdmConfigFileParam::LxdmConfigFileParam(const QString &configFileName,
 {
 }
 
-QString LxdmConfigFileParam::getConfigFileName() const
+const QString &LxdmConfigFileParam::getConfigFileName() const
 {
     return m_configFileName;
 }
 
-QList<LxdmConfigFileParam::XSession> LxdmConfigFileParam::getAvailableXSessions() const
+const QList<LxdmConfigFileParam::XSession> &LxdmConfigFileParam::getAvailableXSessions() const
 {
     return m_availableXSessions;
 }

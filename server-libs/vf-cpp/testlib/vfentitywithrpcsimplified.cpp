@@ -48,7 +48,7 @@ void VfEntityWithRpcSimplified::handleRpcs(VeinEvent::CommandEvent *cmdEvent)
         const QUuid callId = rpcData->invokationData().value(VeinComponent::RemoteProcedureData::s_callIdString).toUuid();
         Q_ASSERT(!callId.isNull());
         bool rpcFound = false;
-        for(auto rpc: m_rpcHandlerList) {
+        for(auto rpc: qAsConst(m_rpcHandlerList)) {
             if(rpc->getSignature() == rpcData->procedureName()) {
                 rpcFound = true;
                 rpc->callFunction(callId, cmdEvent->peerId(), rpcData->invokationData());

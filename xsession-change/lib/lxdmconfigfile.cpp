@@ -27,7 +27,7 @@ LxdmConfigFile::LxdmConfigFile(const LxdmConfigFileParam &param) :
 
 const QString LxdmConfigFile::getConfiguredXSessionName()
 {
-    QStringList lines = readLxdmConfig();
+    const QStringList lines = readLxdmConfig();
     for(const QString &line : lines) {
         if(line.startsWith(sessionLead)) {
             QStringList labelValue = line.split("=");
@@ -43,14 +43,14 @@ const QString LxdmConfigFile::getConfiguredXSessionName()
 const QStringList LxdmConfigFile::getAvailableXSessionNames()
 {
     QStringList names;
-    for(const auto  &session : m_availableXSessions)
+    for(const auto  &session : qAsConst(m_availableXSessions))
         names.append(session.m_sessionName);
     return names;
 }
 
 bool LxdmConfigFile::setCurrentXSession(const QString &sessionName)
 {
-    for(const auto &session : m_availableXSessions)
+    for(const auto &session : qAsConst(m_availableXSessions))
         if(session.m_sessionName == sessionName)
             return writeConfig(session.m_sessionFileName);
     qWarning("XSession %s to set is unknown!", qPrintable(sessionName));
@@ -75,7 +75,7 @@ QStringList LxdmConfigFile::readLxdmConfig()
 
 const QString LxdmConfigFile::sessionNameFromFile(const QString &sessionFileName)
 {
-    for(const auto &session : m_availableXSessions)
+    for(const auto &session : qAsConst(m_availableXSessions))
         if(session.m_sessionFileName == sessionFileName)
             return session.m_sessionName;
     qWarning("Unknown XSession file '%s' in %s!",

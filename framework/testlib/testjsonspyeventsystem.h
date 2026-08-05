@@ -26,7 +26,7 @@ private:
     void handleErrorData(VeinEvent::EventData *evData, QJsonObject& jsonEventInfo);
     void handleProtocolEvent(VeinNet::ProtocolEvent *pEvent, QJsonObject &jsonEventInfo);
 
-    void baseInfoFromEventData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo);
+    static void baseInfoFromEventData(VeinEvent::EventData *evData, QJsonObject &jsonEventInfo);
     void extendByCommandEventInfo(VeinEvent::CommandEvent *cEvent, QJsonObject &jsonEventInfo);
     void addJsonInfo(const QJsonObject& jsonEventInfo);
     enum OldNewType {

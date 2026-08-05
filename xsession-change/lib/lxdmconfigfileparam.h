@@ -20,8 +20,8 @@ public:
             LxdmConfigFileParam::XSession("Desktop", "/usr/share/xsessions/xfce.desktop") <<
             LxdmConfigFileParam::XSession("Fullscreen", "/usr/share/xsessions/zenux-gui.desktop")
         );
-    QString getConfigFileName() const;
-    QList<XSession> getAvailableXSessions() const;
+    const QString &getConfigFileName() const;
+    const QList<XSession> &getAvailableXSessions() const;
 private:
     const QString m_configFileName;
     const QList<XSession> m_availableXSessions;

@@ -71,10 +71,10 @@ void IntrospectionSystem::processEvent(QEvent *event)
                             cData->setNewValue(iter.value());
                             cData->setOldValue(QVariant());
 
-                            CommandEvent *newEvent = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
+                            CommandEvent *event = new CommandEvent(CommandEvent::EventSubtype::NOTIFICATION, cData);
                             /// @note sets the peer id to be the sender peer id, used for unicasting the message
-                            newEvent->setPeerId(cEvent->peerId());
-                            emit sigSendEvent(newEvent);
+                            event->setPeerId(cEvent->peerId());
+                            emit sigSendEvent(event);
                         }
                     }
                     else
