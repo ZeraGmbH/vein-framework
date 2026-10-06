@@ -18,9 +18,12 @@ public:
 
     bool hasStoredValue(int entityId, const QString &componentName) const override;
     bool hasFutureStoredValue(int entityId, const QString &componentName) const override;
+
     QVariant getStoredValue(int entityId, const QString &componentName) const override;
     QVariant getFutureStoredValue(int entityId, const QString &componentName) const override;
+
     const AbstractComponentPtr findComponent(const int entityId, const QString &componentName) const override;
+    const QList<EntityComponent> findAllComponents(const QString &componentName) const override;
     QList<QString> getComponentList(int entityId) const override;
 
     // Consumer interface to future components - where 'future' means:

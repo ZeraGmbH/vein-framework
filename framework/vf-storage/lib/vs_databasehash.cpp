@@ -52,6 +52,18 @@ const AbstractComponentPtr DatabaseHash::findComponent(const int entityId, const
     return findComponent(&entityMap, componentName);
 }
 
+const QList<AbstractDatabase::EntityComponent> DatabaseHash::findAllComponents(const QString &componentName) const
+{
+    QList<EntityComponent> foundComponents;
+    const QList<int> entityIds = getEntityList();
+    for (int entityId : entityIds) {
+        AbstractComponentPtr componentFound = findComponent(entityId, componentName);
+        if (componentFound != nullptr)
+            foundComponents.append(EntityComponent{entityId, componentFound});
+    }
+    return foundComponents;
+}
+
 QList<QString> DatabaseHash::getComponentList(int entityId) const
 {
     auto iter = m_entityComponentData.constFind(entityId);
