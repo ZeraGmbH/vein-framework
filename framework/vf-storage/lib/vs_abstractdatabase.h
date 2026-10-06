@@ -17,8 +17,8 @@ public:
     virtual bool hasStoredValue(int entityId, const QString &componentName) const = 0;
     virtual bool hasFutureStoredValue(int entityId, const QString &componentName) const = 0;
 
-    virtual QVariant getStoredValue(int t_entityId, const QString &t_componentName) const = 0;
-    virtual QVariant getFutureStoredValue(int t_entityId, const QString &t_componentName) const = 0;
+    virtual QVariant getStoredValue(int entityId, const QString &componentName) const = 0;
+    virtual QVariant getFutureStoredValue(int entityId, const QString &componentName) const = 0;
 
     virtual const AbstractComponentPtr findComponent(const int entityId, const QString &componentName) const = 0;
     struct EntityComponent {
