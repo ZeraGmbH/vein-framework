@@ -41,12 +41,22 @@ class NetworkSystemPrivate
             flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(rawBuffer.constData()), rawBuffer.size());
             if(VeinFrameworkIDL::VerifyECSEnvelopeBuffer(verifier)) {
                 const VeinFrameworkIDL::ECSEnvelope *ecsFlatBuffer = VeinFrameworkIDL::GetECSEnvelope(rawBuffer.data());
+                // No field in ecs_schema.fbs is '(required)', so the verifier accepts buffers where they are absent
                 auto ecsEventVector = ecsFlatBuffer->ecsEvents();
+                if(ecsEventVector == nullptr) {
+                    qCWarning(VEIN_NET) << "Received FlatBuffer envelope without events from peer:" << pEvent->peerId();
+                    return;
+                }
                 for(flatbuffers::uoffset_t i=0; i < ecsEventVector->size(); ++i) {
                     const VeinFrameworkIDL::ECSEvent *entityEvent = ecsEventVector->Get(i);
+                    const flatbuffers::String *eventData = entityEvent->eventData();
+                    if(eventData == nullptr) {
+                        qCWarning(VEIN_NET) << "Received FlatBuffer event without eventData from peer:" << pEvent->peerId();
+                        continue;
+                    }
                     VeinEvent::EventData *evData = nullptr;
-                    const char *eventDataArray = reinterpret_cast<const char *>(entityEvent->eventData()->data());
-                    const int eventDataArraySize = entityEvent->eventData()->size();
+                    const char *eventDataArray = reinterpret_cast<const char *>(eventData->data());
+                    const int eventDataArraySize = eventData->size();
 
                     switch(entityEvent->dataType())
                     {
