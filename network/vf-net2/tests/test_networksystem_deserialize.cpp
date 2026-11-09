@@ -15,13 +15,11 @@ QTEST_MAIN(test_networksystem_deserialize)
 
 using namespace VeinFrameworkIDL;
 
-namespace
-{
 constexpr int testEntityId = 42;
 
 enum class EventPayload { Present, Missing };
 
-flatbuffers::Offset<ECSEvent> createEvent(flatbuffers::FlatBufferBuilder &builder, EventPayload payload)
+static flatbuffers::Offset<ECSEvent> createEvent(flatbuffers::FlatBufferBuilder &builder, EventPayload payload)
 {
     flatbuffers::Offset<flatbuffers::String> eventDataOffset; // null offset: field is not written at all
     if(payload == EventPayload::Present) {
@@ -34,13 +32,13 @@ flatbuffers::Offset<ECSEvent> createEvent(flatbuffers::FlatBufferBuilder &builde
     return CreateECSEvent(builder, EventSubtype_VC_NOTIFICATION, VeinComponent::EntityData::dataType(), eventDataOffset);
 }
 
-QByteArray finishEnvelope(flatbuffers::FlatBufferBuilder &builder, flatbuffers::Offset<ECSEnvelope> envelope)
+static QByteArray finishEnvelope(flatbuffers::FlatBufferBuilder &builder, flatbuffers::Offset<ECSEnvelope> envelope)
 {
     builder.Finish(envelope);
     return QByteArray(reinterpret_cast<const char *>(builder.GetBufferPointer()), static_cast<int>(builder.GetSize()));
 }
 
-QByteArray createEnvelope(std::initializer_list<EventPayload> events)
+static QByteArray createEnvelope(std::initializer_list<EventPayload> events)
 {
     flatbuffers::FlatBufferBuilder builder;
     std::vector<flatbuffers::Offset<ECSEvent>> eventOffsets;
@@ -49,7 +47,7 @@ QByteArray createEnvelope(std::initializer_list<EventPayload> events)
     return finishEnvelope(builder, CreateECSEnvelope(builder, builder.CreateVector(eventOffsets)));
 }
 
-QByteArray createEnvelopeWithoutEventVector()
+static QByteArray createEnvelopeWithoutEventVector()
 {
     flatbuffers::FlatBufferBuilder builder;
     return finishEnvelope(builder, CreateECSEnvelope(builder)); // ecsEvents is not written at all
@@ -58,13 +56,13 @@ QByteArray createEnvelopeWithoutEventVector()
 // All fields in ecs_schema.fbs are optional (none is marked '(required)'), so the
 // verifier accepts buffers where they are absent. Tests assert this precondition so
 // they cannot pass just because the verifier rejected the buffer.
-bool isAcceptedByVerifier(const QByteArray &buffer)
+static bool isAcceptedByVerifier(const QByteArray &buffer)
 {
     flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(buffer.constData()), buffer.size());
     return VerifyECSEnvelopeBuffer(verifier);
 }
 
-std::vector<std::unique_ptr<QEvent>> processRemoteBuffer(const QByteArray &buffer, const QUuid &peerId = QUuid::createUuid())
+static std::vector<std::unique_ptr<QEvent>> processRemoteBuffer(const QByteArray &buffer, const QUuid &peerId = QUuid::createUuid())
 {
     VeinNet::NetworkSystem networkSystem;
     std::vector<std::unique_ptr<QEvent>> forwarded;
@@ -77,7 +75,6 @@ std::vector<std::unique_ptr<QEvent>> processRemoteBuffer(const QByteArray &buffe
     protocolEvent.setBuffer(buffer);
     networkSystem.processEvent(&protocolEvent);
     return forwarded;
-}
 }
 
 void test_networksystem_deserialize::initTestCase()
