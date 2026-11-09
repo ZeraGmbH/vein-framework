@@ -44,14 +44,14 @@ class NetworkSystemPrivate
                 // No field in ecs_schema.fbs is '(required)', so the verifier accepts buffers where they are absent
                 auto ecsEventVector = ecsFlatBuffer->ecsEvents();
                 if(ecsEventVector == nullptr) {
-                    qCWarning(VEIN_NET) << "Received FlatBuffer envelope without events from peer:" << pEvent->peerId();
+                    qCritical() << "Received FlatBuffer envelope without events from peer:" << pEvent->peerId();
                     return;
                 }
                 for(flatbuffers::uoffset_t i=0; i < ecsEventVector->size(); ++i) {
                     const VeinFrameworkIDL::ECSEvent *entityEvent = ecsEventVector->Get(i);
                     const flatbuffers::String *eventData = entityEvent->eventData();
                     if(eventData == nullptr) {
-                        qCWarning(VEIN_NET) << "Received FlatBuffer event without eventData from peer:" << pEvent->peerId();
+                        qCritical() << "Received FlatBuffer event without eventData from peer:" << pEvent->peerId();
                         continue;
                     }
                     VeinEvent::EventData *evData = nullptr;

@@ -80,6 +80,12 @@ std::vector<std::unique_ptr<QEvent>> processRemoteBuffer(const QByteArray &buffe
 }
 }
 
+void test_networksystem_deserialize::initTestCase()
+{
+    // This test spawns critical messages:
+    qputenv("QT_FATAL_CRITICALS", "0");
+}
+
 void test_networksystem_deserialize::wellFormedEnvelopeIsForwarded()
 {
     const QByteArray buffer = createEnvelope({EventPayload::Present});

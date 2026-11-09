@@ -7,6 +7,7 @@ class test_networksystem_deserialize : public QObject
 {
     Q_OBJECT
 private slots:
+    void initTestCase();
     void wellFormedEnvelopeIsForwarded();
     void envelopeWithoutEventVectorIsIgnored();
     void eventWithoutEventDataIsIgnored();
