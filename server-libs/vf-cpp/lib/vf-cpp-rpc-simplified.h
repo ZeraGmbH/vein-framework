@@ -3,6 +3,8 @@
 
 #include "ve_eventsystem.h"
 #include <QString>
+#include <QHash>
+#include <QUuid>
 
 namespace VfCpp {
 
