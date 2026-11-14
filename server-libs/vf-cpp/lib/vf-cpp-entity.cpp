@@ -21,7 +21,7 @@ bool VfCppEntity::hasComponent(const QString &name)
     return m_componentList.contains(name);
 }
 
-QMap<QString, VfCppComponent::Ptr> VfCppEntity::getComponents() const
+const QMap<QString, VfCppComponent::Ptr> &VfCppEntity::getComponents() const
 {
     return m_componentList;
 }

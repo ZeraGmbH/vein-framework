@@ -19,12 +19,12 @@ VfCppComponent::VfCppComponent(int entityId,
     sendNotification(VeinComponent::ComponentData::Command::CCMD_ADD);
 }
 
-QVariant VfCppComponent::getValue()
+const QVariant &VfCppComponent::getValue() const
 {
     return m_vValue;
 }
 
-QString VfCppComponent::getName()
+const QString &VfCppComponent::getName() const
 {
     return m_sName;
 }

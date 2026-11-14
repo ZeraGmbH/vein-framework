@@ -13,15 +13,15 @@ class ModuleManagerSetupFacade : public QObject
 public:
     ModuleManagerSetupFacade(LicenseSystemInterface *licenseSystem,
                              bool devMode = false,
-                             const LxdmSessionChangeParam& lxdmParam = LxdmSessionChangeParam(),
+                             const LxdmSessionChangeParam &lxdmParam = LxdmSessionChangeParam(),
                              const QString &persistencyBasePath = "");
     static void registerMetaTypeStreamOperators();
 
-    void prependModuleSystem(VeinEvent::EventSystem* subsystem);   // prepend to module event systems (topmost)
-    void addModuleSystem(VeinEvent::EventSystem* system);          // append to module event system
-    void addSubsystem(VeinEvent::EventSystem* subsystem);          // append to common event systems (bottommost)
+    void prependModuleSystem(VeinEvent::EventSystem *subsystem);   // prepend to module event systems (topmost)
+    void addModuleSystem(VeinEvent::EventSystem *system);          // append to module event system
+    void addSubsystem(VeinEvent::EventSystem *subsystem);          // append to common event systems (bottommost)
     void clearModuleSystems();
-    void clearSubSystem(VeinEvent::EventSystem* subsystem);
+    void clearSubSystem(VeinEvent::EventSystem *subsystem);
     SystemModuleEventSystem *getSystemModuleEventSystem();
     VeinStorage::AbstractEventSystem *getStorageSystem();
     ModuleEventHandler *getEventHandler();

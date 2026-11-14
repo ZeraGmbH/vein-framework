@@ -16,10 +16,6 @@ public:
     bool isSystemLicensed(const QString &uniqueModuleName) override;
 
     void setDeviceSerial(const QString &serialNumber) override;
-    /**
-   * @brief serialNumberIsInitialized
-   * @return true if the StatusModule1.PAR_SerialNr was retrieved
-   */
     bool serialNumberIsInitialized() const override;
 
 private:

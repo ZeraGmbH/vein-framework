@@ -20,41 +20,33 @@
 #include <ve_commandevent.h>
 #include <vcmp_errordata.h>
 
-namespace VeinEvent
-{
-class EventSystem;
-}
-
 namespace VfCpp {
 
-/**
- * @brief The cVeinModuleRpc class
- */
 class cVeinModuleRpc: public QObject
 {
     Q_OBJECT
 public:
-    typedef  QSharedPointer< cVeinModuleRpc > Ptr;
+    typedef QSharedPointer< cVeinModuleRpc > Ptr;
     typedef QMap<QString, QString> Param;
 
     cVeinModuleRpc(int entityId,
                    VeinEvent::EventSystem *eventsystem,
-                   QObject *p_object,
-                   QString p_funcName,
-                   QMap<QString,QString> p_parameter,
-                   bool p_threaded = true,
-                   bool pFunctionBlocks = true);
+                   QObject *object,
+                   const QString &funcName,
+                   const QMap<QString,QString> &parameter,
+                   bool threaded = true,
+                   bool functionBlocks = true);
     ~cVeinModuleRpc();
 
-    QString rpcName() const;
+    const QString &rpcName() const;
 
-    void callFunction(const QUuid &p_callId, const QUuid &p_peerId, const QVariantMap &t_rpcParameters);
-    void sendRpcResult(const QUuid &p_callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult);
+    void callFunction(const QUuid &callId, const QUuid &peerId, const QVariantMap &rpcParameters);
+    void sendRpcResult(const QUuid &callId, VeinComponent::RemoteProcedureData::RPCResultCodes resultCode, QString errorMsg, QVariant returnedResult);
 
 private slots:
-    void callFunctionPrivate(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters);
+    void callFunctionPrivate(const QUuid &callId, const QUuid &peerId, const QVariantMap &rpcParameters);
 signals:
-    void callFunctionPrivateSignal(const QUuid p_callId, const QUuid p_peerId, const QVariantMap t_rpcParameters);
+    void callFunctionPrivateSignal(const QUuid &callId, const QUuid &peerId, const QVariantMap &rpcParameters);
 
 private:
     QObject *m_object;

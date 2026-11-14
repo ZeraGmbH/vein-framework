@@ -19,7 +19,7 @@ public:
     void removeComponent(const QString &componentName);
     int getEntityId() const;
     bool hasComponent(const QString &name);
-    QMap<QString,VfCppComponent::Ptr> getComponents() const;
+    const QMap<QString,VfCppComponent::Ptr> &getComponents() const;
 
     // Notes
     // * parameter: the expected parameters key: name / value: metatype: e.g "int"

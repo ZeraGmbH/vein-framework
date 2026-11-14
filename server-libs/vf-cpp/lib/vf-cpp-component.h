@@ -18,8 +18,8 @@ public:
                    const QString &name,
                    const QVariant &initval,
                    bool readOnly = false);
-    QVariant getValue();
-    QString getName();
+    const QVariant &getValue() const;
+    const QString &getName() const;
 
     void setValue(const QVariant &value); // spawn vein event
     void setValueFromVein(const QVariant &value); // just for VfCppEntity...
