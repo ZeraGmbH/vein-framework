@@ -16,7 +16,7 @@ int ProtocolEvent::getQEventType()
     return m_registeredQEventType;
 }
 
-QByteArray ProtocolEvent::buffer() const
+const QByteArray &ProtocolEvent::buffer() const
 {
     return m_flatBuffer;
 }
@@ -27,7 +27,7 @@ void ProtocolEvent::setBuffer(const QByteArray &buffer)
     m_flatBuffer = buffer;
 }
 
-QList<QUuid> ProtocolEvent::receivers() const
+const QList<QUuid> &ProtocolEvent::receivers() const
 {
     return m_receivers;
 }
@@ -42,12 +42,12 @@ bool ProtocolEvent::isOfLocalOrigin() const
     return m_localOrigin;
 }
 
-QUuid ProtocolEvent::peerId() const
+const QUuid &ProtocolEvent::peerId() const
 {
     return m_peerId;
 }
 
-void ProtocolEvent::setPeerId(QUuid t_peerId)
+void ProtocolEvent::setPeerId(const QUuid &t_peerId)
 {
     VF_ASSERT(!t_peerId.isNull(), "Peer id must be >= 0");
     m_peerId = t_peerId;

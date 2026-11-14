@@ -33,7 +33,7 @@ namespace VeinNet
     void setError(QAbstractSocket::SocketError t_socketError);
     QAbstractSocket::SocketError getError() const;
 
-    QUuid getPeerId() const;
+    const QUuid &getPeerId() const;
 
   private:
     static const int m_registeredQEventType;

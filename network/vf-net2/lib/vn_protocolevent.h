@@ -24,16 +24,16 @@ public:
      */
     static int getQEventType();
 
-    QByteArray buffer() const;
+    const QByteArray &buffer() const;
     void setBuffer(const QByteArray &buffer);
 
-    QList<QUuid> receivers() const;
+    const QList<QUuid> &receivers() const;
     void setReceivers(const QList<QUuid> &t_receivers);
 
     bool isOfLocalOrigin() const;
 
-    QUuid peerId() const;
-    void setPeerId(QUuid t_peerId);
+    const QUuid &peerId() const;
+    void setPeerId(const QUuid &t_peerId);
 private:
     /**
      * @brief this flag is used to distinguish between local and remote events

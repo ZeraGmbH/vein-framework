@@ -32,7 +32,7 @@ QAbstractSocket::SocketError NetworkStatusEvent::getError() const
 {
     return m_socketError;
 }
-QUuid NetworkStatusEvent::getPeerId() const
+const QUuid &NetworkStatusEvent::getPeerId() const
 {
     return m_peerId;
 }

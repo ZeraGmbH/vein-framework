@@ -10,7 +10,7 @@ class StorageComponent : public AbstractComponent
 {
     Q_OBJECT
 public:
-    StorageComponent(QVariant value);
+    StorageComponent(const QVariant &value);
     virtual ~StorageComponent();
 
     const QVariant &getValue() const override;
