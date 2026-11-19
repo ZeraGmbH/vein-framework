@@ -237,21 +237,13 @@ void test_client_storage_event_system::clientInvokeNonExistingRPC()
     rpcInvoker->invokeRPC("RPC_foo",QVariantMap());
     TimeMachineObject::feedEventLoop();
 
-    QFile fileEvents(":/vein-client-storage-events/invokeIncorrectRpcEventClient.json");
-    QVERIFY(fileEvents.open(QFile::ReadOnly));
-    QByteArray jsonExpected = fileEvents.readAll();
-
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
-
-    fileEvents.setFileName(":/vein-client-storage-events/invokeIncorrectRpcEventServer.json");
-    QVERIFY(fileEvents.open(QFile::ReadOnly));
-    jsonExpected = fileEvents.readAll();
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeIncorrectRpcEventClient.json", jsonDumped));
 
     doc = QJsonDocument(jsonSpyServer);
     jsonDumped = doc.toJson();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeIncorrectRpcEventServer.json", jsonDumped));
 }
 
 void test_client_storage_event_system::clientInvokeExistingRpcCorrectParameter()
@@ -276,14 +268,9 @@ void test_client_storage_event_system::clientInvokeExistingRpcCorrectParameter()
     rpcInvoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
-    QFile fileEvents(":/vein-client-storage-events/invokeCorrectRpcEventClient.json");
-    QVERIFY(fileEvents.open(QFile::ReadOnly));
-    QByteArray jsonExpected = fileEvents.readAll();
-
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeCorrectRpcEventClient.json", jsonDumped));
 }
 
 void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
@@ -310,14 +297,9 @@ void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
     rpcInvoker->invokeRPC("RPC_forTest",parameters);
     TimeMachineObject::feedEventLoop();
 
-    QFile fileEvents(":/vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json");
-    QVERIFY(fileEvents.open(QFile::ReadOnly));
-    QByteArray jsonExpected = fileEvents.readAll();
-
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJson(jsonExpected, jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json", jsonDumped));
 }
 
 void test_client_storage_event_system::subscribeToNonExistingEntityRpc()
