@@ -56,8 +56,9 @@
                 "DevMode": false,
                 "Entities": null,
                 "EntityName": "_System",
-                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
+                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"ScpiEnableFullLog\": {\n            \"Description\": \"Enable full SCPI log\\n* Enabled by default on startup or after session change\\n* Disable not recommended - for internal test purpose only\",\n            \"Validation\": {\n                \"Data\": [\n                    0,\n                    1\n                ],\n                \"Type\": \"BOOL\"\n            }\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"LOGSCPIFULL\",\n                \"10\",\n                \"ScpiEnableFullLog\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
                 "ModulesPaused": false,
+                "ScpiEnableFullLog": 1,
                 "Session": "session",
                 "SessionsAvailable": [
                     "sessionList"
@@ -80,8 +81,9 @@
                 "DevMode": false,
                 "Entities": null,
                 "EntityName": "_System",
-                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
+                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"ScpiEnableFullLog\": {\n            \"Description\": \"Enable full SCPI log\\n* Enabled by default on startup or after session change\\n* Disable not recommended - for internal test purpose only\",\n            \"Validation\": {\n                \"Data\": [\n                    0,\n                    1\n                ],\n                \"Type\": \"BOOL\"\n            }\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"LOGSCPIFULL\",\n                \"10\",\n                \"ScpiEnableFullLog\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
                 "ModulesPaused": false,
+                "ScpiEnableFullLog": 1,
                 "Session": "session",
                 "SessionsAvailable": [
                     "sessionList"
@@ -200,6 +202,16 @@
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
                     },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
+                    },
                     "Session": {
                         "Description": "Session name",
                         "Validation": {
@@ -225,6 +237,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",
@@ -278,6 +297,16 @@
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
                     },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
+                    },
                     "Session": {
                         "Description": "Session name",
                         "Validation": {
@@ -303,6 +332,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",
@@ -363,6 +399,34 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": 1,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": 1,
             "ValueOld": null
         },
         {
@@ -464,8 +528,9 @@
                 "DevMode": false,
                 "Entities": null,
                 "EntityName": "_System",
-                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
+                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"ScpiEnableFullLog\": {\n            \"Description\": \"Enable full SCPI log\\n* Enabled by default on startup or after session change\\n* Disable not recommended - for internal test purpose only\",\n            \"Validation\": {\n                \"Data\": [\n                    0,\n                    1\n                ],\n                \"Type\": \"BOOL\"\n            }\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"LOGSCPIFULL\",\n                \"10\",\n                \"ScpiEnableFullLog\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
                 "ModulesPaused": false,
+                "ScpiEnableFullLog": 1,
                 "Session": "session",
                 "SessionsAvailable": [
                     "sessionList"
@@ -488,8 +553,9 @@
                 "DevMode": false,
                 "Entities": null,
                 "EntityName": "_System",
-                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
+                "INF_ModuleInterface": "{\n    \"ComponentInfo\": {\n        \"EntityName\": {\n            \"Description\": \"Module's name\"\n        },\n        \"INF_ModuleInterface\": {\n            \"Description\": \"Module's interface details\"\n        },\n        \"ScpiEnableFullLog\": {\n            \"Description\": \"Enable full SCPI log\\n* Enabled by default on startup or after session change\\n* Disable not recommended - for internal test purpose only\",\n            \"Validation\": {\n                \"Data\": [\n                    0,\n                    1\n                ],\n                \"Type\": \"BOOL\"\n            }\n        },\n        \"Session\": {\n            \"Description\": \"Session name\",\n            \"Validation\": {\n                \"Data\": [\n                ],\n                \"Type\": \"STRING\"\n            }\n        },\n        \"XSession\": {\n            \"Description\": \"XSession name\",\n            \"Validation\": {\n                \"Data\": [\n                    \"Foo\",\n                    \"Bar\"\n                ],\n                \"Type\": \"STRING\"\n            }\n        }\n    },\n    \"ModuleInfo\": {\n        \"Description\": \"This module gives general information about the device\",\n        \"Name\": \"_System\"\n    },\n    \"SCPIInfo\": {\n        \"Cmd\": [\n            [\n                \"CONFIGURATION\",\n                \"LOGSCPIFULL\",\n                \"10\",\n                \"ScpiEnableFullLog\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"NAMESESSION\",\n                \"10\",\n                \"Session\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION\",\n                \"10\",\n                \"XSession\",\n                \"0\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"SESSION:CATALOG\",\n                \"2\",\n                \"Session\",\n                \"1\"\n            ],\n            [\n                \"CONFIGURATION\",\n                \"XSESSION:CATALOG\",\n                \"2\",\n                \"XSession\",\n                \"1\"\n            ]\n        ],\n        \"Name\": \"SYST\"\n    }\n}\n",
                 "ModulesPaused": false,
+                "ScpiEnableFullLog": 1,
                 "Session": "session",
                 "SessionsAvailable": [
                     "sessionList"
@@ -608,6 +674,16 @@
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
                     },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
+                    },
                     "Session": {
                         "Description": "Session name",
                         "Validation": {
@@ -633,6 +709,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",
@@ -686,6 +769,16 @@
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
                     },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
+                    },
                     "Session": {
                         "Description": "Session name",
                         "Validation": {
@@ -711,6 +804,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",
@@ -771,6 +871,34 @@
             "Valid": true,
             "ValidPeer": true,
             "ValueNew": false,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "client-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": 1,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "client-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_FETCH",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_FOREIGN",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": true,
+            "ValidPeer": true,
+            "ValueNew": 1,
             "ValueOld": null
         },
         {

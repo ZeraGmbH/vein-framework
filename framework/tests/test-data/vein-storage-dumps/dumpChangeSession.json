@@ -15,6 +15,16 @@
                 "INF_ModuleInterface": {
                     "Description": "Module's interface details"
                 },
+                "ScpiEnableFullLog": {
+                    "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                    "Validation": {
+                        "Data": [
+                            0,
+                            1
+                        ],
+                        "Type": "BOOL"
+                    }
+                },
                 "Session": {
                     "Description": "Session name",
                     "Validation": {
@@ -40,6 +50,13 @@
             },
             "SCPIInfo": {
                 "Cmd": [
+                    [
+                        "CONFIGURATION",
+                        "LOGSCPIFULL",
+                        "10",
+                        "ScpiEnableFullLog",
+                        "0"
+                    ],
                     [
                         "CONFIGURATION",
                         "NAMESESSION",
@@ -73,6 +90,7 @@
             }
         },
         "ModulesPaused": false,
+        "ScpiEnableFullLog": 1,
         "Session": "test_session2.json",
         "SessionsAvailable": [
             "test_session1.json",

@@ -1,5 +1,6 @@
 #include "systemmoduleeventsystem.h"
 #include "stringvalidator.h"
+#include "boolvalidator.h"
 #include <ve_eventdata.h>
 #include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
@@ -20,6 +21,7 @@ static const char *sessionsAvailableComponentName =    "SessionsAvailable";
 static const char *xSessionComponentName =             "XSession";
 static const char *modulesPausedComponentName =        "ModulesPaused";
 static const char *devModeComponentName =              "DevMode";
+static const char *scpiFullLogComponentName =          "ScpiEnableFullLog";
 static const char *moduleInterface =                   "INF_ModuleInterface";
 
 SystemModuleEventSystem::SystemModuleEventSystem(bool devMode, const LxdmSessionChangeParam &lxdmParam) :
@@ -83,6 +85,10 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                     }
                     else if(componentName == devModeComponentName)
                         validated = true;
+                    else if(componentName == scpiFullLogComponentName) {
+                        m_scpiFullLog = cData->newValue().toBool();
+                        validated = true;
+                    }
                 }
             }
         }
@@ -103,6 +109,11 @@ void SystemModuleEventSystem::sendEmptySessionToClient(const VeinComponent::Comp
         sessionComponentName,
         cData->oldValue(),
         QVariant("")) );
+}
+
+int SystemModuleEventSystem::getBoolForScpi(bool value)
+{
+    return value ? 1 : 0;
 }
 
 bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::ComponentData *cData)
@@ -188,6 +199,12 @@ void SystemModuleEventSystem::initializeEntity(const QString &sessionPath, const
 
         emit sigSendEvent(VfServerComponentSetter::generateEvent(
             getEntityId(),
+            scpiFullLogComponentName,
+            QVariant(),
+            getBoolForScpi(m_scpiFullLog)) ); // SCPI...
+
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(
+            getEntityId(),
             moduleInterface,
             QVariant(),
             setModuleInterface()) );
@@ -210,6 +227,7 @@ void SystemModuleEventSystem::initOnce()
         componentData.insert(xSessionComponentName, m_lxdmConfFile.getConfiguredXSessionName());
         componentData.insert(modulesPausedComponentName, QVariant(false));
         componentData.insert(devModeComponentName, QVariant(false));
+        componentData.insert(scpiFullLogComponentName, getBoolForScpi(m_scpiFullLog));
         componentData.insert(moduleInterface, QVariant());
 
         const auto componentNames = componentData.keys();
@@ -328,6 +346,10 @@ void SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent:
         emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
                                                                  cData->componentName(),
                                                                  QVariant(), m_lxdmConfFile.getConfiguredXSessionName()));
+    else if(cData->componentName() == scpiFullLogComponentName)
+        emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
+                                                                 cData->componentName(),
+                                                                 QVariant(), getBoolForScpi(m_scpiFullLog)));
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)
@@ -363,6 +385,15 @@ void SystemModuleEventSystem::setScpiInfo()
     param.setValidator(sValidator);
     m_veinParameterMap[xSessionComponentName] = param;
     m_scpiCatalogCmdList.append(new VfModuleMetaInfoContainer("CONFIGURATION", "XSESSION:CATALOG", SCPI::isQuery, xSessionComponentName, SCPI::isCatalog));
+
+    initialData = new VeinComponent::ComponentData();
+    param.m_description = "Enable full SCPI log\n"
+                          "* Enabled by default on startup or after session change\n"
+                          "* Disable not recommended - for internal test purpose only";
+    param.m_veinComponentData = initialData;
+    param.setScpiInfo("CONFIGURATION", "LOGSCPIFULL", SCPI::isQuery|SCPI::isCmdwP, scpiFullLogComponentName, SCPI::isComponent);
+    param.setValidator(new cBoolValidator());
+    m_veinParameterMap[scpiFullLogComponentName] = param;
 }
 
 void SystemModuleEventSystem::TVeinParam::setScpiInfo(const QString &model,

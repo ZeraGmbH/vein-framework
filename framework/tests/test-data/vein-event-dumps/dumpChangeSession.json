@@ -471,6 +471,34 @@
             "Am command event in": "server-enter",
             "Attached data": "ComponentData",
             "ComponentCommand": "CCMD_SET",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": 1,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
+            "ComponentName": "ScpiEnableFullLog",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_ALL",
+            "Valid": true,
+            "ValidPeer": false,
+            "ValueNew": 1,
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_SET",
             "ComponentName": "INF_ModuleInterface",
             "Entity": 0,
             "EventOrigin": "EO_LOCAL",
@@ -485,6 +513,16 @@
                     },
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
+                    },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
                     },
                     "Session": {
                         "Description": "Session name",
@@ -511,6 +549,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",
@@ -564,6 +609,16 @@
                     "INF_ModuleInterface": {
                         "Description": "Module's interface details"
                     },
+                    "ScpiEnableFullLog": {
+                        "Description": "Enable full SCPI log\n* Enabled by default on startup or after session change\n* Disable not recommended - for internal test purpose only",
+                        "Validation": {
+                            "Data": [
+                                0,
+                                1
+                            ],
+                            "Type": "BOOL"
+                        }
+                    },
                     "Session": {
                         "Description": "Session name",
                         "Validation": {
@@ -589,6 +644,13 @@
                 },
                 "SCPIInfo": {
                     "Cmd": [
+                        [
+                            "CONFIGURATION",
+                            "LOGSCPIFULL",
+                            "10",
+                            "ScpiEnableFullLog",
+                            "0"
+                        ],
                         [
                             "CONFIGURATION",
                             "NAMESESSION",

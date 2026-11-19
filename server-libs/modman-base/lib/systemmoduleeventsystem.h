@@ -41,6 +41,7 @@ private:
     void sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void setScpiInfo();
     void sendEmptySessionToClient(const VeinComponent::ComponentData *cData);
+    static int getBoolForScpi(bool value);
 
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
@@ -73,6 +74,7 @@ private:
     bool m_sessionReady=false;
     bool m_modulesPaused=false;
     bool m_devMode = false;
+    bool m_scpiFullLog = true;
 };
 
 #endif // MODULEMANAGERSETTINGS_H
