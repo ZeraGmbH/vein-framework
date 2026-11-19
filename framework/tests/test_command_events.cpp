@@ -116,8 +116,10 @@ void test_command_events::clientSetNonExistingComponent()
     setterTask->start();
     TimeMachineObject::feedEventLoop();
 
+    bool allOk = true;
     QByteArray jsonDumped1 = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSetNonExistent.json", jsonDumped1));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSetNonExistent.json", jsonDumped1))
+        allOk = false;
 
     // TODO??: This time it is SystemModuleEventSystem missing error handling... How shall we test/handle
     // gazillions of error handling implementations: SystemModuleEventSystem/AbstractEventSystem/IntrospectionSystem/VfCpp/zera-classes modules???
@@ -128,7 +130,9 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonDumped2;
     QBuffer buff(&jsonDumped2);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageInitial.json", jsonDumped2));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageInitial.json", jsonDumped2))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 static constexpr int testEntityId = 37;

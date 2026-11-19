@@ -19,11 +19,15 @@ void test_test_vein_server::unfinishedSession()
     m_server->resetEventSpyData();
     m_server->addTestEntities(1, 1);
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpUnfinishedSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpUnfinishedSession.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpUnfinishedSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpUnfinishedSession.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::completeSession()
@@ -33,11 +37,15 @@ void test_test_vein_server::completeSession()
     m_server->resetEventSpyData();
     m_server->simulAllModulesLoaded("test_session1.json", QStringList() << "test_session1.json" << "test_session2.json");
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCompleteSessionSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCompleteSessionSession.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpCompleteSessionSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpCompleteSessionSession.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::changeSession()
@@ -49,11 +57,15 @@ void test_test_vein_server::changeSession()
 
     m_server->changeSession("test_session2.json");
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeSession.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeSession.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::completeSessionWithValidXSession()
@@ -63,11 +75,15 @@ void test_test_vein_server::completeSessionWithValidXSession()
     m_server->resetEventSpyData();
     m_server->simulAllModulesLoaded("test_session1.json", QStringList() << "test_session1.json" << "test_session2.json");
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCompleteSessionWithLxdm.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCompleteSessionWithLxdm.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpCompleteSessionWithLxdm.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpCompleteSessionWithLxdm.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::completeSessionXSessionChangePass()
@@ -79,11 +95,15 @@ void test_test_vein_server::completeSessionXSessionChangePass()
 
     m_server->setComponentClientTransaction(0, "XSession", "Foo");
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeXSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeXSession.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeXSession.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeXSession.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::completeSessionXSessionChangeFail()
@@ -95,11 +115,15 @@ void test_test_vein_server::completeSessionXSessionChangeFail()
 
     m_server->setComponentClientTransaction(0, "XSession", "Foo");
 
+    bool allOk = true;
     QByteArray jsonDumped = m_server->dumpEvents();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeXSessionFail.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpChangeXSessionFail.json", jsonDumped))
+        allOk = false;
 
     jsonDumped = m_server->dumpStorage(QList<int>() << 0 << m_server->getTestEntityComponentInfo().keys());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeXSessionFail.json", jsonDumped));
+    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpChangeXSessionFail.json", jsonDumped))
+        allOk = false;
+    QVERIFY(allOk);
 }
 
 void test_test_vein_server::invokeRpc()
