@@ -1,4 +1,8 @@
-# This file is used to ignore files which are generated
+# svg are generated and change by version of PlantUml regularly
+# to get them ignored run
+# git update-index --assume-unchanged `find -name '*.svg'`
+# see https://stackoverflow.com/questions/50252181/git-how-to-ignore-changes-to-a-tracked-file
+
 
 CMakeLists.txt.user*
 *~
