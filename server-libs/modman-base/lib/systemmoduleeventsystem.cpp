@@ -77,6 +77,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                             t_event->accept();
                             // swap old <-> new
                             emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(), cData->componentName(), cData->newValue(), cData->oldValue()));
+                            return;
                         }
                     }
                     else if(componentName == modulesPausedComponentName) {
@@ -89,6 +90,8 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                         m_scpiFullLog = cData->newValue().toBool();
                         validated = true;
                     }
+                    if(sendNotificationForScpiModule(cData))
+                        t_event->accept(); // it is definetly for us only
                 }
             }
         }
@@ -338,18 +341,25 @@ QString SystemModuleEventSystem::getDisplayedSessionName(const QString &jsonSess
     return QString();
 }
 
-void SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent::ComponentData *cData)
+bool SystemModuleEventSystem::sendNotificationForScpiModule(const VeinComponent::ComponentData *cData)
 {
-    if(cData->componentName() == sessionComponentName)
+    if(cData->componentName() == sessionComponentName) {
         sendSessionNotificationForScpiModule(cData);
-    else if(cData->componentName() == xSessionComponentName)
+        return true;
+    }
+    else if(cData->componentName() == xSessionComponentName) {
         emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
                                                                  cData->componentName(),
                                                                  QVariant(), m_lxdmConfFile.getConfiguredXSessionName()));
-    else if(cData->componentName() == scpiFullLogComponentName)
+        return true;
+    }
+    else if(cData->componentName() == scpiFullLogComponentName) {
         emit sigSendEvent(VfServerComponentSetter::generateEvent(getEntityId(),
                                                                  cData->componentName(),
                                                                  QVariant(), getBoolForScpi(m_scpiFullLog)));
+        return true;
+    }
+    return false;
 }
 
 void SystemModuleEventSystem::sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData)

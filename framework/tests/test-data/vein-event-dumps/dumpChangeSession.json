@@ -684,6 +684,34 @@
                 }
             },
             "ValueOld": null
+        },
+        {
+            "Am command event in": "server-enter",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_INVALID",
+            "ComponentName": "Session",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": false,
+            "ValidPeer": false,
+            "ValueNew": "",
+            "ValueOld": null
+        },
+        {
+            "Am command event in": "server-fallthrough",
+            "Attached data": "ComponentData",
+            "ComponentCommand": "CCMD_INVALID",
+            "ComponentName": "Session",
+            "Entity": 0,
+            "EventOrigin": "EO_LOCAL",
+            "EventSubtype": "NOTIFICATION",
+            "EventTarget": "ET_IRRELEVANT",
+            "Valid": false,
+            "ValidPeer": false,
+            "ValueNew": "",
+            "ValueOld": null
         }
     ]
 }

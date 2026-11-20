@@ -37,7 +37,7 @@ private:
     QString getDisplayedSessionName(const QString &jsonSessionName);
     bool handleVeinSessionSet(const VeinComponent::ComponentData *cData);
     bool handleXSessionSet(const QString &xSession);
-    void sendNotificationForScpiModule(const VeinComponent::ComponentData *cData);
+    bool sendNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void sendSessionNotificationForScpiModule(const VeinComponent::ComponentData *cData);
     void setScpiInfo();
     void sendEmptySessionToClient(const VeinComponent::ComponentData *cData);
