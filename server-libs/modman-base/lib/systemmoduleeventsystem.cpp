@@ -56,7 +56,7 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                     validated = true;
             }
             else if(cEvent->eventData()->type() == VeinComponent::ComponentData::dataType()) {
-                const VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
+                VeinComponent::ComponentData *cData = static_cast<VeinComponent::ComponentData *>(cEvent->eventData());
                 if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_FETCH) {
                     // validate fetch requests
                     validated = true;
@@ -65,7 +65,9 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
-                    const QString componentName = cData->componentName();
+                    /*bool valid =*/ validateComponentData(cData); // for now just to avoid type variant casts
+                    const QString &componentName = cData->componentName();
+
                     if(componentName == sessionComponentName) {
                         if(handleVeinSessionSet(cData))
                             t_event->accept();
@@ -117,6 +119,24 @@ void SystemModuleEventSystem::sendEmptySessionToClient(const VeinComponent::Comp
 int SystemModuleEventSystem::getBoolForScpi(bool value)
 {
     return value ? 1 : 0;
+}
+
+bool SystemModuleEventSystem::validateComponentData(VeinComponent::ComponentData *cData)
+{
+    bool valid = true;
+    const QString &componentName = cData->componentName();
+    auto iter = m_veinParameterMap.find(componentName);
+    if (iter != m_veinParameterMap.end()) {
+        ValidatorInterface *validator = iter.value().getValidator();
+        if (validator) {
+            QVariant newValue = cData->newValue();
+            if (validator->isValidParam(newValue))
+                cData->setNewValue(newValue); // Fix Variant type - On SCPI everything is string
+            else
+                valid = false;
+        }
+    }
+    return valid;
 }
 
 bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::ComponentData *cData)
@@ -422,6 +442,11 @@ void SystemModuleEventSystem::TVeinParam::setScpiInfo(const QString &model,
 void SystemModuleEventSystem::TVeinParam::setValidator(ValidatorInterface *validator)
 {
     m_pValidator = validator;
+}
+
+ValidatorInterface *SystemModuleEventSystem::TVeinParam::getValidator()
+{
+    return m_pValidator;
 }
 
 void SystemModuleEventSystem::TVeinParam::exportSCPIInfo(QJsonArray &jsArr)

@@ -42,6 +42,7 @@ private:
     void setScpiInfo();
     void sendEmptySessionToClient(const VeinComponent::ComponentData *cData);
     static int getBoolForScpi(bool value);
+    bool validateComponentData(VeinComponent::ComponentData *cData);
 
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
@@ -59,6 +60,7 @@ private:
                          const QString &veinComponentName,
                          SCPI::eSCPIEntryType entryType);
         void setValidator(ValidatorInterface* validator);
+        ValidatorInterface* getValidator();
 
         void exportSCPIInfo(QJsonArray &jsArr);
         void exportMetaData(QJsonObject &jsonObj) const;
