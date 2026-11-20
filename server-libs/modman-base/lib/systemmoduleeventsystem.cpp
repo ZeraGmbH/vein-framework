@@ -1,8 +1,8 @@
 #include "systemmoduleeventsystem.h"
 #include "stringvalidator.h"
 #include "boolvalidator.h"
+#include "vcmp_errordata.h"
 #include <ve_eventdata.h>
-#include <ve_commandevent.h>
 #include <vcmp_entitydata.h>
 #include <vcmp_introspectiondata.h>
 #include <vf_server_entity_add.h>
@@ -65,13 +65,29 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                 }
                 else if(cData->eventCommand() == VeinComponent::ComponentData::Command::CCMD_SET &&
                         cData->entityId() == getEntityId()) {
-                    /*bool valid =*/ validateComponentData(cData); // for now just to avoid type variant casts
                     const QString &componentName = cData->componentName();
-
+                    // session name is super special:
+                    // * On vein it accepts session json filenames
+                    // * On SCPI it accepts displayed names
+                    //   => validator is not set properly
+                    // * It terminates SCPI session
+                    bool valid = validateComponentData(cData) || componentName == sessionComponentName;
+                    if (!valid) {
+                        sendError(cEvent, cData);
+                        return;
+                    }
                     if(componentName == sessionComponentName) {
                         if(handleVeinSessionSet(cData))
                             t_event->accept();
                     }
+                    else if(componentName == modulesPausedComponentName) { // no validator yet (but not on SCPI)!
+                        validated = true;
+                        setModulesPaused(cData->newValue().toBool());
+                    }
+                    else if(componentName == devModeComponentName) // read only
+                        validated = true;
+
+                    // The following parameters should be validated
                     else if(componentName == xSessionComponentName) {
                         if(handleXSessionSet(cData->newValue().toString()))
                             validated = true;
@@ -82,12 +98,6 @@ void SystemModuleEventSystem::processEvent(QEvent *t_event)
                             return;
                         }
                     }
-                    else if(componentName == modulesPausedComponentName) {
-                        validated = true;
-                        setModulesPaused(cData->newValue().toBool());
-                    }
-                    else if(componentName == devModeComponentName)
-                        validated = true;
                     else if(componentName == scpiFullLogComponentName) {
                         m_scpiFullLog = cData->newValue().toBool();
                         validated = true;
@@ -136,7 +146,23 @@ bool SystemModuleEventSystem::validateComponentData(VeinComponent::ComponentData
                 valid = false;
         }
     }
+    /*else
+        valid = false;*/
     return valid;
+}
+
+void SystemModuleEventSystem::sendError(VeinEvent::CommandEvent *cEvent, VeinComponent::ComponentData *cData)
+{
+    VeinComponent::ErrorData *errData = new VeinComponent::ErrorData();
+    errData->setEntityId(cData->entityId());
+    errData->setErrorDescription("Invalid parameter");
+    errData->setOriginalData(cData);
+    errData->setEventOrigin(VeinEvent::EventData::EventOrigin::EO_LOCAL);
+    errData->setEventTarget(VeinEvent::EventData::EventTarget::ET_ALL);
+    VeinEvent::CommandEvent *errorEvent = new VeinEvent::CommandEvent(VeinEvent::CommandEvent::EventSubtype::NOTIFICATION, errData);
+    errorEvent->setPeerId(cEvent->peerId());
+    cEvent->accept();
+    emit sigSendEvent(errorEvent);
 }
 
 bool SystemModuleEventSystem::handleVeinSessionSet(const VeinComponent::ComponentData *cData)

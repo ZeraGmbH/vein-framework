@@ -6,6 +6,7 @@
 #include "validatorinterface.h"
 #include "vfmodulemetainfocontainer.h"
 #include <ve_eventsystem.h>
+#include <ve_commandevent.h>
 #include <vs_abstracteventsystem.h>
 #include <vcmp_componentdata.h>
 #include <QJsonDocument>
@@ -43,6 +44,7 @@ private:
     void sendEmptySessionToClient(const VeinComponent::ComponentData *cData);
     static int getBoolForScpi(bool value);
     bool validateComponentData(VeinComponent::ComponentData *cData);
+    void sendError(VeinEvent::CommandEvent *cEvent, VeinComponent::ComponentData *cData);
 
     VeinStorage::AbstractEventSystem *m_storageSystem = nullptr;
     QJsonDocument m_notificationMessages;
