@@ -53,7 +53,7 @@ void test_rpc_simplified::callRpcValidParam()
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallRpcValidParam.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallRpcValidParam.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callRpcInvalidParamValue()
@@ -66,7 +66,7 @@ void test_rpc_simplified::callRpcInvalidParamValue()
     QCOMPARE(getReturnError(spyRpcFinish[0]), "Error");
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallRpcInvalidParamValue.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallRpcInvalidParamValue.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callRpcInvalidParamName()
@@ -78,7 +78,7 @@ void test_rpc_simplified::callRpcInvalidParamName()
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallRpcInvalidParamName.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallRpcInvalidParamName.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callRpcMissingParam()
@@ -90,7 +90,7 @@ void test_rpc_simplified::callRpcMissingParam()
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallRpcMissingParam.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallRpcMissingParam.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callInvalidRpc()
@@ -102,7 +102,7 @@ void test_rpc_simplified::callInvalidRpc()
     QVERIFY(!isRpcFound(spyRpcFinish[0]));
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallInvalidRpc.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallInvalidRpc.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callRPCTwice()
@@ -116,7 +116,7 @@ void test_rpc_simplified::callRPCTwice()
     QCOMPARE(getReturnResult(spyRpcFinish[1]), "48");
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpCallRPCTwice.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpCallRPCTwice.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::callRPCRespondingAfterDelay()
@@ -134,7 +134,7 @@ void test_rpc_simplified::callRPCRespondingAfterDelay()
     QCOMPARE(getReturnResult(spyRpcFinish[0]), "72");
 
     QByteArray jsonDumped = TestLogHelpers::dump(m_veinEventDump);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpcallRPCRespondingAfterDelay.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpcallRPCRespondingAfterDelay.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_rpc_simplified::invokeRpc(QString rpcName, QString paramName, QVariant paramValue)

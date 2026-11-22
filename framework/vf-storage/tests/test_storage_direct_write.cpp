@@ -72,7 +72,7 @@ void test_storage_direct_write::addFutureDumpIntrospection()
     TimeMachineObject::feedEventLoop();
 
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-events/add-future-no-vein-introspection.json", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-events/add-future-no-vein-introspection.json", dumped, TEST_SRC_DIR));
 }
 
 void test_storage_direct_write::addFutureAddVeinDumpIntrospection()
@@ -96,7 +96,7 @@ void test_storage_direct_write::addFutureAddVeinDumpIntrospection()
     TimeMachineObject::feedEventLoop();
 
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-events/add-future-add-vein-introspection.json", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-events/add-future-add-vein-introspection.json", dumped, TEST_SRC_DIR));
 }
 
 void test_storage_direct_write::addFutureFetch()
@@ -127,7 +127,7 @@ void test_storage_direct_write::addFutureFetch()
 
     QVERIFY(!db->areFutureComponentsEmpty());
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-events/add-future-no-vein-fetch.json", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-events/add-future-no-vein-fetch.json", dumped, TEST_SRC_DIR));
 }
 
 void test_storage_direct_write::addFutureAddVeinFetch()
@@ -159,7 +159,7 @@ void test_storage_direct_write::addFutureAddVeinFetch()
 
     QVERIFY(db->areFutureComponentsEmpty());
     QByteArray dumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-events/add-future-add-vein-fetch.json", dumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-events/add-future-add-vein-fetch.json", dumped, TEST_SRC_DIR));
 }
 
 class TestCustomizer : public AbstractComponentGetCustomizer

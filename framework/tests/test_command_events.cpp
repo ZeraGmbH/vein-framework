@@ -24,7 +24,7 @@ void test_command_events::clientSubscribeEntity()
     subscribeClient(systemEntityId);
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSubscribe.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsSubscribe.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientSubscribeNonExistingEntity()
@@ -35,7 +35,7 @@ void test_command_events::clientSubscribeNonExistingEntity()
     subscribeClient(42);
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSubscribeNonExistent.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsSubscribeNonExistent.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientSubscribeUnsubscribeEntity()
@@ -54,7 +54,7 @@ void test_command_events::clientSubscribeUnsubscribeEntity()
     QCOMPARE(m_netServer->getSubscriberCount(systemEntityId), 0);
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsUnsubscribe.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsUnsubscribe.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientFetchComponent()
@@ -71,7 +71,7 @@ void test_command_events::clientFetchComponent()
     QCOMPARE(*value, "_System");
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsFetch.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsFetch.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientFetchNonExistingComponent()
@@ -87,7 +87,7 @@ void test_command_events::clientFetchNonExistingComponent()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsFetchNonExistentComponent.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsFetchNonExistentComponent.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientSetSytemEnttityComponent()
@@ -102,7 +102,7 @@ void test_command_events::clientSetSytemEnttityComponent()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSet.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsSet.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::clientSetNonExistingComponent()
@@ -118,7 +118,7 @@ void test_command_events::clientSetNonExistingComponent()
 
     bool allOk = true;
     QByteArray jsonDumped1 = TestLogHelpers::dump(jsonEvents);
-    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsSetNonExistent.json", jsonDumped1))
+    if (!TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsSetNonExistent.json", jsonDumped1, TEST_SRC_DIR))
         allOk = false;
 
     // TODO??: This time it is SystemModuleEventSystem missing error handling... How shall we test/handle
@@ -130,7 +130,7 @@ void test_command_events::clientSetNonExistingComponent()
     QByteArray jsonDumped2;
     QBuffer buff(&jsonDumped2);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageInitial.json", jsonDumped2))
+    if (!TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageInitial.json", jsonDumped2, TEST_SRC_DIR))
         allOk = false;
     QVERIFY(allOk);
 }
@@ -151,7 +151,7 @@ void test_command_events::serverAddEntityAndComponent()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsAddEntityComponent.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsAddEntityComponent.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverAddComponentWithSubscribedClient()
@@ -169,7 +169,7 @@ void test_command_events::serverAddComponentWithSubscribedClient()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsAddComponentClientSubscribed.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsAddComponentClientSubscribed.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverAddComponentForNomExistentEntity()
@@ -181,7 +181,7 @@ void test_command_events::serverAddComponentForNomExistentEntity()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsAddComponentNonExistingEntity.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverRemoveComponent()
@@ -198,7 +198,7 @@ void test_command_events::serverRemoveComponent()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsRemoveComponent.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsRemoveComponent.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverRemoveNonExistingComponent()
@@ -217,7 +217,7 @@ void test_command_events::serverRemoveNonExistingComponent()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsRemoveNonExistingComponent.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsRemoveNonExistingComponent.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverRemoveComponentForNomExistentEntity()
@@ -237,7 +237,7 @@ void test_command_events::serverRemoveComponentForNomExistentEntity()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsRemoveComponentNonExistingEntity.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsRemoveComponentNonExistingEntity.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::serverRemoveAllEntities()
@@ -254,7 +254,7 @@ void test_command_events::serverRemoveAllEntities()
     TimeMachineObject::feedEventLoop();
 
     QByteArray jsonDumped = TestLogHelpers::dump(jsonEvents);
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-event-dumps/dumpEventsRemoveAllEntities.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-event-dumps/dumpEventsRemoveAllEntities.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_command_events::init()

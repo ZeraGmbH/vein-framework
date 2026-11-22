@@ -240,12 +240,12 @@ void test_client_storage_event_system::clientInvokeNonExistingRPC()
     bool allOk = true;
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeIncorrectRpcEventClient.json", jsonDumped))
+    if (!TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-client-storage-events/invokeIncorrectRpcEventClient.json", jsonDumped, TEST_SRC_DIR))
         allOk = false;
 
     doc = QJsonDocument(jsonSpyServer);
     jsonDumped = doc.toJson();
-    if (!TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeIncorrectRpcEventServer.json", jsonDumped))
+    if (!TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-client-storage-events/invokeIncorrectRpcEventServer.json", jsonDumped, TEST_SRC_DIR))
         allOk = false;
     QVERIFY(allOk);
 }
@@ -274,7 +274,7 @@ void test_client_storage_event_system::clientInvokeExistingRpcCorrectParameter()
 
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeCorrectRpcEventClient.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-client-storage-events/invokeCorrectRpcEventClient.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
@@ -303,7 +303,7 @@ void test_client_storage_event_system::clientInvokeExistingRPCWrongParameter()
 
     QJsonDocument doc(jsonSpyClient);
     QByteArray jsonDumped = doc.toJson();
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-client-storage-events/invokeCorrectRpcWrongParamEventClient.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_client_storage_event_system::subscribeToNonExistingEntityRpc()

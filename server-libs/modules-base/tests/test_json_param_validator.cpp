@@ -8,7 +8,7 @@ QTEST_MAIN(test_json_param_validator)
 void test_json_param_validator::validJson()
 {
     cJsonParamValidator validator;
-    QJsonObject structure = cJsonFileLoader::loadJsonFile(":/test-structure.json");
+    QJsonObject structure = cJsonFileLoader::loadJsonFile(TEST_SRC_DIR "/test-data/test-structure.json");
     validator.setJSonParameterStructure(structure);
 
     ZeraJsonParamsState defaultStateGenerator(structure);
@@ -21,7 +21,7 @@ void test_json_param_validator::validJson()
 void test_json_param_validator::invalidJson()
 {
     cJsonParamValidator validator;
-    QJsonObject structure = cJsonFileLoader::loadJsonFile(":/test-structure.json");
+    QJsonObject structure = cJsonFileLoader::loadJsonFile(TEST_SRC_DIR "/test-data/test-structure.json");
     validator.setJSonParameterStructure(structure);
 
     ZeraJsonParamsState defaultStateGenerator(structure);
@@ -36,7 +36,8 @@ void test_json_param_validator::invalidNoStructure()
 {
     cJsonParamValidator validator;
 
-    QJsonObject structure = cJsonFileLoader::loadJsonFile(":/test-structure.json");
+    QJsonObject structure = cJsonFileLoader::loadJsonFile(TEST_SRC_DIR "/test-data/test-structure.json");
+    QVERIFY(!structure.isEmpty());
     ZeraJsonParamsState defaultStateGenerator(structure);
     QJsonObject json = defaultStateGenerator.getDefaultJsonState();
     QVariant variant(json);
@@ -47,7 +48,7 @@ void test_json_param_validator::invalidNoStructure()
 void test_json_param_validator::validVariantMapToJson()
 {
     cJsonParamValidator validator;
-    QJsonObject structure = cJsonFileLoader::loadJsonFile(":/test-structure.json");
+    QJsonObject structure = cJsonFileLoader::loadJsonFile(TEST_SRC_DIR "/test-data/test-structure.json");
     validator.setJSonParameterStructure(structure);
 
     ZeraJsonParamsState defaultStateGenerator(structure);

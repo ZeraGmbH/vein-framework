@@ -20,7 +20,7 @@ void test_storage::systemEntityOnly()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageInitial.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageInitial.json", jsonDumped, TEST_SRC_DIR));
 }
 
 static constexpr int testEntityId = 37;
@@ -40,7 +40,7 @@ void test_storage::addEntity()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageEntityAdded.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageEntityAdded.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_storage::addEntityAndComponent()
@@ -56,7 +56,7 @@ void test_storage::addEntityAndComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageEntityComponentAdd.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageEntityComponentAdd.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_storage::addRemoveEntity()
@@ -74,7 +74,7 @@ void test_storage::addRemoveEntity()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageEntityAddRemove.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageEntityAddRemove.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_storage::addRemoveComponent()
@@ -99,7 +99,7 @@ void test_storage::addRemoveComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageComponentAddRemove.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageComponentAddRemove.json", jsonDumped, TEST_SRC_DIR));
 }
 
 void test_storage::setComponent()
@@ -116,5 +116,5 @@ void test_storage::setComponent()
     QByteArray jsonDumped;
     QBuffer buff(&jsonDumped);
     VeinStorage::DumpJson::dumpToFile(storage->getDb(), &buff, QList<int>());
-    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonFile(":/vein-storage-dumps/dumpStorageComponentSet.json", jsonDumped));
+    QVERIFY(TestLogHelpers::compareAndLogOnDiffJsonSrc("vein-storage-dumps/dumpStorageComponentSet.json", jsonDumped, TEST_SRC_DIR));
 }
