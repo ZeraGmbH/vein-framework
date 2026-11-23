@@ -1,4 +1,5 @@
 #include "vftesttemplate.h"
+#include <timerfactoryqtfortest.h>
 #include <QCoreApplication>
 
 void VfTestTemplate::addEntityComponent(int entityId, const QString &componentName)
@@ -11,6 +12,7 @@ using VeinComponent::ComponentData;
 
 void VfTestTemplate::_init()
 {
+    TimerFactoryQtForTest::enableTest();
     m_vfEntity = new VfTestEntityComponentCreator;
     m_vfComponentData = new VfTestComponentData;
     m_vfListener = new VfTestComponentSpy(ComponentData::Command::CCMD_SET);

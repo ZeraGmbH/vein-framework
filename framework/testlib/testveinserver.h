@@ -14,6 +14,7 @@
 #include "vftestcomponentspy.h"
 #include "vf_client_rpc_invoker.h"
 #include "mocklxdmsessionchangeparamgenerator.h"
+#include <timerfactoryqtfortest.h>
 #include <memory>
 #include <unordered_map>
 
@@ -54,6 +55,7 @@ public:
 signals:
     void sigRPCFinished(bool ok, const QVariantMap &resultData);
 private:
+    const bool m_establishedTestTimers = TimerFactoryQtForTest::enableTest();
     VeinEvent::EventHandler m_vfEventHandler;
 
     VfTestEntitySpy m_vfEntityAddSpy;

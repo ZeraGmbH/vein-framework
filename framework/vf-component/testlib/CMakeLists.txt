@@ -18,6 +18,7 @@ target_link_libraries(VfComponentTest
     VfEvent
     VfStorage
     VfConvenientCode
+    Zera::zera-timers-testlib
     )
 
 target_include_directories(VfComponentTest

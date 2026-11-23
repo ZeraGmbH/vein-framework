@@ -229,10 +229,12 @@ void test_networkmock::clientConnectServerSideVeryImportantMockFactory()
 
 void test_networkmock::failTwoServersSamePortRealFactory()
 {
+    qputenv("QT_FATAL_CRITICALS", "0");
     VeinTcp::TcpServer server1(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server1.startServer(serverPort, false), true);
     VeinTcp::TcpServer server2(VeinTcp::TcpNetworkFactory::create());
     QCOMPARE(server2.startServer(serverPort, false), false);
+    qputenv("QT_FATAL_CRITICALS", "1");
 }
 
 void test_networkmock::failTwoServersSamePortMockFactory()
