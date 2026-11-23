@@ -90,9 +90,9 @@ QJsonValue DumpJson::convertToJsonValue(const QVariant &value)
         if (error.error == QJsonParseError::NoError)
             converted = doc.object();
         else if(tmpDataType == QMetaType::Double) // force nan handled
-            converted = value.toDouble();
+            converted = formatDouble(value.toDouble());
         else if(tmpDataType == QMetaType::Float) // force nan handled
-            converted = value.toFloat();
+            converted = formatDouble(value.toFloat());
         else
             converted = QJsonValue::fromVariant(value);
     }
@@ -114,7 +114,7 @@ QByteArray DumpJson::dumpToByteArray(AbstractDatabase *db,
 
 double DumpJson::formatDouble(double value)
 {
-    return QString("%1").arg(value, 0, 'g', 6).toDouble();
+    return QString("%1").arg(value, 0, 'g', 8).toDouble();
 }
 
 void DumpJson::skipDescrptionInModuleInterface(QJsonObject &tmpEntityObject, const QJsonValue &toInsert)
