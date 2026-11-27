@@ -182,10 +182,9 @@ class NetworkSystemPrivate
         {
         case EntityData::Command::ECMD_SUBSCRIBE:
         {
-            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
-            if(!tmpCurrentSubscriptions.contains(peerId))
-                tmpCurrentSubscriptions.append(peerId);
-            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
+            QList<QUuid> &entitySubscriptions = m_subscriptions[eData->entityId()];
+            if(!entitySubscriptions.contains(peerId))
+                entitySubscriptions.append(peerId);
             vCDebug(VEIN_NET_VERBOSE) << "Added subscription for entity:" << eData->entityId() << "network peer:" << peerId;
             isSubscription = true;
             break;
