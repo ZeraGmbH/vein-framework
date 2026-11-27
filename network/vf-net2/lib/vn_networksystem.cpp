@@ -153,9 +153,8 @@ class NetworkSystemPrivate
                     if(evData->type() == VeinComponent::EntityData::dataType()) {
                         VeinComponent::EntityData *eData = static_cast<VeinComponent::EntityData *>(evData);
                         if (eData->eventCommand() == EntityData::Command::ECMD_UNSUBSCRIBE) {
-                            QList<QUuid> tmpCurrentSubscriptions = m_subscriptions.value(eData->entityId());
-                            tmpCurrentSubscriptions.removeAll(peerId);
-                            m_subscriptions.insert(eData->entityId(), tmpCurrentSubscriptions);
+                            QList<QUuid> &entitySubscriptions = m_subscriptions[eData->entityId()];
+                            entitySubscriptions.removeAll(peerId);
                         }
                         else if (eData->eventCommand() == EntityData::Command::ECMD_REMOVE)
                             // remove all to avoid subscriptions sneaking into next session

@@ -72,26 +72,23 @@ void VeinQml::entitySubscribeById(int t_entityId)
 {
     if(!m_entityDict.findById(t_entityId))
         emit sigSendEvent(VfClientEntitySubscriber::generateEvent(t_entityId));
-    quint32 subscriptionCount = m_entitySubscriptionReferenceTables.value(t_entityId, 0);
-    subscriptionCount++;
-    m_entitySubscriptionReferenceTables.insert(t_entityId, subscriptionCount);
-    vCDebug(VEIN_API_QML_VERBOSE) << "Subscription added for entity:" << t_entityId << "new subscriptionCount:" << subscriptionCount;
+    quint32 &entitySubscriptionCount = m_entitySubscriptionReferenceTables[t_entityId];
+    entitySubscriptionCount++;
+    vCDebug(VEIN_API_QML_VERBOSE) << "Subscription added for entity:" << t_entityId << "new subscriptionCount:" << entitySubscriptionCount;
 }
 
 void VeinQml::entityUnsubscribeById(int t_entityId)
 {
     Q_ASSERT(m_entityDict.findById(t_entityId));//unsubscribe for unknown entity?
-    quint32 subscriptionCount = m_entitySubscriptionReferenceTables.value(t_entityId, 0);
-    Q_ASSERT(subscriptionCount>0); //unsubscribe when never subscribed?
-    if(subscriptionCount > 0) {
-        subscriptionCount--;
-        m_entitySubscriptionReferenceTables.insert(t_entityId, subscriptionCount);
-    }
-    if(subscriptionCount == 0) {
+    quint32 &entitySubscriptionCount = m_entitySubscriptionReferenceTables[t_entityId];
+    Q_ASSERT(entitySubscriptionCount>0); //unsubscribe when never subscribed?
+    if(entitySubscriptionCount > 0)
+        entitySubscriptionCount--;
+    if(entitySubscriptionCount == 0) {
         removeEntity(t_entityId);
         emit sigSendEvent(VfClientEntityUnsubscriber::generateEvent(t_entityId));
     }
-    vCDebug(VEIN_API_QML_VERBOSE) << "Subscription removed for entity:" << t_entityId << "new subscriptionCount:" << subscriptionCount;
+    vCDebug(VEIN_API_QML_VERBOSE) << "Subscription removed for entity:" << t_entityId << "new subscriptionCount:" << entitySubscriptionCount;
 }
 
 void VeinQml::processEvent(QEvent *t_event)
