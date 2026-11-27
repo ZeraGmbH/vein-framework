@@ -92,14 +92,12 @@ void TcpSystem::onMessageReceived(VeinTcp::TcpPeer *sender, const QByteArray &bu
     Q_ASSERT(buffer.isNull() == false);
     Q_ASSERT(sender!=nullptr);
     //vCDebug(VEIN_NET_TCP_VERBOSE)  << "Message received:" << proto->DebugString().c_str();
-    if(m_waitingAuth.contains(sender))
-    {
+    if (m_waitingAuth.removeAll(sender) > 0) {
         QUuid newId = QUuid::createUuid();
         m_peerList.insert(newId, sender);
         vCDebug(VEIN_NET_TCP) << "New connection with id:" << newId;
         sender->setPeerId(newId);
 
-        m_waitingAuth.removeAll(sender);
         emit sigConnnectionEstablished(newId);
     }
     ProtocolEvent *tmpEvent = new ProtocolEvent(ProtocolEvent::EventOrigin::EO_REMOTE);
