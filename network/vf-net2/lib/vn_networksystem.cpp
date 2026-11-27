@@ -37,7 +37,7 @@ class NetworkSystemPrivate
         Q_ASSERT(pEvent != nullptr);
         //do not process messages from this instance
         if(!pEvent->isOfLocalOrigin()) {
-            QByteArray rawBuffer = pEvent->buffer();
+            const QByteArray &rawBuffer = pEvent->buffer();
             flatbuffers::Verifier verifier(reinterpret_cast<const uint8_t *>(rawBuffer.constData()), rawBuffer.size());
             if(VeinFrameworkIDL::VerifyECSEnvelopeBuffer(verifier)) {
                 const VeinFrameworkIDL::ECSEnvelope *ecsFlatBuffer = VeinFrameworkIDL::GetECSEnvelope(rawBuffer.data());
@@ -174,7 +174,7 @@ class NetworkSystemPrivate
         return m_subscriptions[entityId].count();
     }
 
-    bool tryAddSubscription(VeinComponent::EntityData *eData, QUuid peerId)
+    bool tryAddSubscription(VeinComponent::EntityData *eData, const QUuid &peerId)
     {
         Q_ASSERT(eData != nullptr);
         bool isSubscription = false;
